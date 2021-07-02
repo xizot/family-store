@@ -1,0 +1,11 @@
+@import "../../sass-config/style";
+
+.header {
+    &__title {
+        font-size: var(--size-text-title2);
+        text-align: center;
+        @include breakpoint(sp) {
+            text-align: left;
+        }
+    }
+}

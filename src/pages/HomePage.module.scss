@@ -1,0 +1,9 @@
+@import "./../sass-config/style";
+.home {
+    @include breakpoint(sp) {
+        background-color: red;
+    }
+    &__text {
+        text-align: center;
+    }
+}
