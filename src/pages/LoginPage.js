@@ -9,7 +9,7 @@ import {
 	Box,
 } from "@material-ui/core";
 import { useInput } from "../hooks/use-input";
-import * as Validate from "../helpers/validate"
+import * as Validate from "../helpers/validate";
 import { Link } from "react-router-dom";
 import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
@@ -46,14 +46,16 @@ const useStyles = makeStyles((theme) => ({
 			pointerEvents: "all !important",
 		},
 	},
-	forwardTo: {
+	actions: {
 		marginTop: 10,
-		"& > a": {
+		display: "flex",
+		justifyContent: "space-between",
+		alignItems: "center",
+		"& a": {
 			color: mainColor,
 		},
 	},
 }));
-
 
 const LoginPage = () => {
 	const classes = useStyles();
@@ -151,12 +153,17 @@ const LoginPage = () => {
 								Sign In
 							</Button>
 						</form>
-						<Typography
-							className={classes.forwardTo}
-							variant="body2"
-						>
-							New member? <Link to="/register">Sign up</Link>
-						</Typography>
+						<div className={classes.actions}>
+							<Typography variant="body2">
+								New member? <Link to="/register">Sign up</Link>
+							</Typography>
+
+							<Link to="/forget-password">
+								<Typography variant="body2">
+									Forgot password?
+								</Typography>
+							</Link>
+						</div>
 					</Box>
 				</Container>
 			</div>

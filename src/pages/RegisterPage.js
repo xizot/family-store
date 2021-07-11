@@ -10,7 +10,7 @@ import {
 	Box,
 } from "@material-ui/core";
 import { useInput } from "../hooks/use-input";
-import * as Validate from "../helpers/validate"
+import * as Validate from "../helpers/validate";
 import { Link } from "react-router-dom";
 import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
@@ -20,28 +20,28 @@ const useStyles = makeStyles((theme) => ({
 		minHeight: "100vh",
 	},
 	content: {
-		paddingTop: "9vh",
+		paddingTop: "20vh",
 	},
 	title: {
 		marginBottom: 25,
-		padding:'0 140px',
 		[theme.breakpoints.down("sm")]: {
 			fontSize: 25,
-			padding:'0 95px',
+			padding: "0 95px",
 		},
 	},
 	form: {
 		width: "45rem",
 		maxWidth: "100%",
 		margin: "0 auto",
-		padding: "40px 120px",
+		padding: "50px 25px",
 		[theme.breakpoints.down("xs")]: {
-			padding: "35px 95px",
+			padding: "35px 15px",
 		},
 	},
 	formControl: {
 		display: "block",
 		marginBottom: 15,
+		width: "100%",
 	},
 	button: {
 		"&:disabled": {
@@ -100,17 +100,18 @@ const RegisterPage = () => {
 		inputReset: confirmPasswordReset,
 	} = useInput(Validate.isNotEmpty);
 
-
-	const formIsValid = usernameIsValid && passwordIsValid
-		&& confirmPasswordIsValid && phoneNumberIsValid && addressIsValid;
+	const formIsValid =
+		usernameIsValid &&
+		passwordIsValid &&
+		confirmPasswordIsValid &&
+		phoneNumberIsValid &&
+		addressIsValid;
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
 
 		//xử lý khi đăng ky thành công
-		console.log(
-			`Đăng ký thành công`
-		);
+		console.log(`Đăng ký thành công`);
 
 		usernameReset();
 		passwordReset();
@@ -132,14 +133,14 @@ const RegisterPage = () => {
 						<Typography variant="h3" className={classes.title}>
 							Register
 						</Typography>
-						<FormControl
+						<form
 							noValidate
 							autoComplete="off"
 							onSubmit={formSubmitHandler}
 						>
 							<FormControl className={classes.formControl}>
 								<Grid container spacing={3}>
-									<Grid item xs={6}>
+									<Grid item xs={12} sm={6}>
 										<TextField
 											error={usernameHasError}
 											label="Email"
@@ -156,7 +157,7 @@ const RegisterPage = () => {
 											onChange={usernameChangeHandler}
 										/>
 									</Grid>
-									<Grid item xs={6}>
+									<Grid item xs={12} sm={6}>
 										<TextField
 											error={phoneNumberHasError}
 											label="Phone Number"
@@ -234,13 +235,14 @@ const RegisterPage = () => {
 							>
 								Register
 							</Button>
-						</FormControl>
-						<Typography
-							className={classes.forwardTo}
-							variant="body2"
-						>
-							Already have account? <Link to="/login">Sign in</Link>
-						</Typography>
+							<Typography
+								className={classes.forwardTo}
+								variant="body2"
+							>
+								Already have account?{" "}
+								<Link to="/login">Sign in</Link>
+							</Typography>
+						</form>
 					</Box>
 				</Container>
 			</div>
@@ -249,4 +251,3 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
-
