@@ -9,6 +9,7 @@ import {
 	Box,
 } from "@material-ui/core";
 import { useInput } from "../hooks/use-input";
+import * as Validate from "../helpers/validate"
 import { Link } from "react-router-dom";
 import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
@@ -53,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const isNotEmpty = (value) => value?.trim().length > 0;
 
 const LoginPage = () => {
 	const classes = useStyles();
@@ -64,7 +64,7 @@ const LoginPage = () => {
 		inputChangeHandler: usernameChangeHandler,
 		inputIsValid: usernameIsValid,
 		inputReset: usernameReset,
-	} = useInput(isNotEmpty);
+	} = useInput(Validate.isNotEmpty);
 	const {
 		enteredInput: enteredPassword,
 		hasError: passwordHasError,
@@ -72,7 +72,7 @@ const LoginPage = () => {
 		inputChangeHandler: passwordChangeHandler,
 		inputIsValid: passwordIsValid,
 		inputReset: passwordReset,
-	} = useInput(isNotEmpty);
+	} = useInput(Validate.isNotEmpty);
 
 	const formIsValid = usernameIsValid && passwordIsValid;
 	const formSubmitHandler = (event) => {
