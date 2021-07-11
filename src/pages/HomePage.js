@@ -1,17 +1,15 @@
+import { Container } from "@material-ui/core";
 import { useEffect } from "react";
 import Header from "./../components/Layout/Header";
-import classes from "./HomePage.module.scss";
-const HomePage = ({ title }) => {
-    useEffect(() => {
-        document.title = title;
-    }, [title]);
-    return (
-        <div className={classes.home}>
-            <Header />
-            <div className={`container ${classes.home__text}`}>
-                this is home page
-            </div>
-        </div>
-    );
+const HomePage = () => {
+	useEffect(() => {
+		document.title = "Home Page";
+	}, []);
+	return (
+		<div>
+			<Header />
+			<Container>this is home page</Container>
+		</div>
+	);
 };
 export default HomePage;

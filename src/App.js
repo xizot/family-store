@@ -1,9 +1,13 @@
 import { createTheme, ThemeProvider } from "@material-ui/core";
 import { lazy, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
+import { ProtectedRoute } from "./components/Common/ProtectedRoute";
 import Loading from "./components/Loading/Loading";
 const HomePage = lazy(() => import("./pages/HomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const AccountPage = lazy(() => import("./pages/Account"));
+const PageNotFound = lazy(() => import("./pages/404NotFound"));
 
 const theme = createTheme({
 	palette: {
@@ -19,12 +23,22 @@ function App() {
 			<Suspense fallback={<Loading />}>
 				<Switch>
 					<Route exact path="/">
-						<HomePage title="Home Page" />
+						<HomePage />
 					</Route>
+					<ProtectedRoute
+						exact
+						path="/account"
+						component={AccountPage}
+					/>
 					<Route exact path="/login">
-						<LoginPage title="Login Page" />
+						<LoginPage />
 					</Route>
-					<Route path="*">404 not found</Route>
+					<Route exact path="/register">
+						<RegisterPage />
+					</Route>
+					<Route path="*">
+						<PageNotFound />
+					</Route>
 				</Switch>
 			</Suspense>
 		</ThemeProvider>
