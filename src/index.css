@@ -1,25 +1,21 @@
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
 }
 :root {
-    /* ▼ Text Size ▼*/
-    --size-text-title1: 3.4rem;
-    --size-text-title2: 2.4rem;
-    --size-text-subtitle1: 1.46rem;
-    --size-text-subtitle2: 1.4rem;
-    --size-text-body1: 1.6rem;
-    --size-text-body2: 1.4rem;
-    --size-text-caption: 1.2rem;
-    /* ▲ Text Size ▲*/
-}
-/* global css class */
-html {
-    font-size: 62.5%;
+	/* ▼ Text Size ▼*/
+	--size-text-title1: 3.4rem;
+	--size-text-title2: 2.4rem;
+	--size-text-subtitle1: 1.46rem;
+	--size-text-subtitle2: 1.4rem;
+	--size-text-body1: 1.6rem;
+	--size-text-body2: 1.4rem;
+	--size-text-caption: 1.2rem;
+	/* ▲ Text Size ▲*/
 }
 
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
+	max-width: 1400px;
+	margin: 0 auto;
 }
