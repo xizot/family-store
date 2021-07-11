@@ -60,13 +60,15 @@ const useStyles = makeStyles((theme) => ({
 const RegisterPage = () => {
 	const classes = useStyles();
 	const {
-		enteredInput: username,
-		hasError: usernameHasError,
-		inputBlurHandler: usernameBlurHandler,
-		inputChangeHandler: usernameChangeHandler,
-		inputIsValid: usernameIsValid,
-		inputReset: usernameReset,
-	} = useInput(Validate.isNotEmpty);
+		enteredInput: email,
+		hasError: emailHasError,
+		inputBlurHandler: emailBlurHandler,
+		inputChangeHandler: emailChangeHandler,
+		inputIsValid: emailIsValid,
+		inputReset: emailReset,
+	} = useInput(
+		(value) => Validate.isNotEmpty(value) && Validate.isEmail(value)
+	);
 	const {
 		enteredInput: phoneNumber,
 		hasError: phoneNumberHasError,
@@ -74,7 +76,9 @@ const RegisterPage = () => {
 		inputChangeHandler: phoneNumberChangeHandler,
 		inputIsValid: phoneNumberIsValid,
 		inputReset: phoneNumberReset,
-	} = useInput(Validate.isNotEmpty);
+	} = useInput(
+		(value) => Validate.isNotEmpty(value) && Validate.isPhoneNumber(value)
+	);
 	const {
 		enteredInput: address,
 		hasError: addressHasError,
@@ -98,10 +102,10 @@ const RegisterPage = () => {
 		inputChangeHandler: confirmPasswordChangeHandler,
 		inputIsValid: confirmPasswordIsValid,
 		inputReset: confirmPasswordReset,
-	} = useInput(Validate.isNotEmpty);
+	} = useInput((value) => Validate.isNotEmpty(value) && value === password);
 
 	const formIsValid =
-		usernameIsValid &&
+		emailIsValid &&
 		passwordIsValid &&
 		confirmPasswordIsValid &&
 		phoneNumberIsValid &&
@@ -110,10 +114,10 @@ const RegisterPage = () => {
 		event.preventDefault();
 		if (!formIsValid) return;
 
-		//xử lý khi đăng ky thành công
-		console.log(`Đăng ký thành công`);
+		//xử lý đăng ký
+		console.log(`Đăng ký`);
 
-		usernameReset();
+		emailReset();
 		passwordReset();
 		confirmPasswordReset();
 		phoneNumberReset();
@@ -142,19 +146,20 @@ const RegisterPage = () => {
 								<Grid container spacing={3}>
 									<Grid item xs={12} sm={6}>
 										<TextField
-											error={usernameHasError}
+											error={emailHasError}
 											label="Email"
+											type="email"
 											helperText={
-												usernameHasError &&
+												emailHasError &&
 												"Please enter a valid email "
 											}
 											required
 											fullWidth
 											size="small"
 											variant="outlined"
-											value={username}
-											onBlur={usernameBlurHandler}
-											onChange={usernameChangeHandler}
+											value={email}
+											onBlur={emailBlurHandler}
+											onChange={emailChangeHandler}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={6}>
