@@ -8,8 +8,9 @@ import {
 	Typography,
 	Grid,
 	Box,
+	FormHelperText,
 } from "@material-ui/core";
-import PhoneInput, { isValidPhoneNumber } from "react-phone-input-2";
+import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useInput } from "../hooks/use-input";
 import * as Validate from "../helpers/validate";
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	phoneInput: {
-		height: '255px ',
+		height: "255px ",
 	},
 	form: {
 		width: "45rem",
@@ -60,10 +61,26 @@ const useStyles = makeStyles((theme) => ({
 			color: mainColor,
 		},
 	},
+	inputInvalid: {
+		borderColor: theme.palette.error.main + "!important",
+		"& ~ div": {
+			borderColor: theme.palette.error.main + "!important",
+		},
+	},
+	formHelperText: {
+		color: theme.palette.error.main,
+	},
 }));
 
 const RegisterPage = () => {
 	const classes = useStyles();
+	const [phoneNumber, setPhoneNumber] = useState("");
+	const [phoneNumberIsTouched, setPhoneNumberIsTouched] = useState(false);
+
+	const phoneNumberIsValid =
+		Validate.isNotEmpty(phoneNumber) && Validate.isPhoneNumber(phoneNumber);
+	const phoneNumberHasError = !phoneNumberIsValid && phoneNumberIsTouched;
+
 	const {
 		enteredInput: email,
 		hasError: emailHasError,
@@ -74,6 +91,7 @@ const RegisterPage = () => {
 	} = useInput(
 		(value) => Validate.isNotEmpty(value) && Validate.isEmail(value)
 	);
+
 	const {
 		enteredInput: address,
 		hasError: addressHasError,
@@ -99,10 +117,21 @@ const RegisterPage = () => {
 		inputReset: confirmPasswordReset,
 	} = useInput((value) => Validate.isNotEmpty(value) && value === password);
 
-	const [phoneNumber, setPhoneNumber] = useState();
+	const phoneNumberChangeHandler = (value) => {
+		setPhoneNumber(value);
+	};
 
+	const phoneNumberBlurHandler = () => {
+		setPhoneNumberIsTouched(true);
+	};
+
+	const phoneNumberReset = () => {
+		setPhoneNumber("");
+		setPhoneNumberIsTouched(false);
+	};
 	const formIsValid =
 		emailIsValid &&
+		phoneNumberIsValid &&
 		passwordIsValid &&
 		confirmPasswordIsValid &&
 		addressIsValid;
@@ -114,14 +143,12 @@ const RegisterPage = () => {
 		console.log(`Đăng ký`);
 
 		emailReset();
+		phoneNumberReset();
 		passwordReset();
 		confirmPasswordReset();
 		addressReset();
 	};
 
-	const changeValue = (e, data) => {
-		setPhoneNumber(data.value);
-	}
 	useEffect(() => {
 		document.title = "Register Page";
 	}, []);
@@ -164,17 +191,30 @@ const RegisterPage = () => {
 										<PhoneInput
 											inputStyle={{
 												height: "40px",
-												width: "100%"
+												width: "100%",
 											}}
+											inputClass={
+												phoneNumberHasError &&
+												classes.inputInvalid
+											}
 											country={"vn"}
-											label='Phone Number'
+											label="Phone Number"
 											placeholder="Enter phone number"
 											value={phoneNumber}
-											onChange={(e, data) => {
-												changeValue(e, data);
-											}}
-											error={phoneNumber ? (isValidPhoneNumber(phoneNumber) ? undefined : 'Invalid phone number') : 'Phone number required'}
+											onChange={phoneNumberChangeHandler}
+											onBlur={phoneNumberBlurHandler}
 										/>
+										{phoneNumberHasError && (
+											<FormHelperText
+												variant="outlined"
+												className={
+													classes.formHelperText
+												}
+											>
+												Please enter a valid phone
+												number
+											</FormHelperText>
+										)}
 									</Grid>
 								</Grid>
 							</FormControl>
