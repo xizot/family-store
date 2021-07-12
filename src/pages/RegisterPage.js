@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	FormControl,
 	Container,
@@ -9,6 +9,8 @@ import {
 	Grid,
 	Box,
 } from "@material-ui/core";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import { useInput } from "../hooks/use-input";
 import * as Validate from "../helpers/validate";
 import { Link } from "react-router-dom";
@@ -28,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
 			fontSize: 25,
 			padding: "0 95px",
 		},
+	},
+	phoneInput: {
+		height: '255px ',
 	},
 	form: {
 		width: "45rem",
@@ -70,16 +75,6 @@ const RegisterPage = () => {
 		(value) => Validate.isNotEmpty(value) && Validate.isEmail(value)
 	);
 	const {
-		enteredInput: phoneNumber,
-		hasError: phoneNumberHasError,
-		inputBlurHandler: phoneNumberBlurHandler,
-		inputChangeHandler: phoneNumberChangeHandler,
-		inputIsValid: phoneNumberIsValid,
-		inputReset: phoneNumberReset,
-	} = useInput(
-		(value) => Validate.isNotEmpty(value) && Validate.isPhoneNumber(value)
-	);
-	const {
 		enteredInput: address,
 		hasError: addressHasError,
 		inputBlurHandler: addressBlurHandler,
@@ -104,11 +99,12 @@ const RegisterPage = () => {
 		inputReset: confirmPasswordReset,
 	} = useInput((value) => Validate.isNotEmpty(value) && value === password);
 
+	const [phoneNumber, setPhoneNumber] = useState();
+
 	const formIsValid =
 		emailIsValid &&
 		passwordIsValid &&
 		confirmPasswordIsValid &&
-		phoneNumberIsValid &&
 		addressIsValid;
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
@@ -120,10 +116,12 @@ const RegisterPage = () => {
 		emailReset();
 		passwordReset();
 		confirmPasswordReset();
-		phoneNumberReset();
 		addressReset();
 	};
 
+	const changeValue = (e, data) => {
+		setPhoneNumber(data.value);
+	}
 	useEffect(() => {
 		document.title = "Register Page";
 	}, []);
@@ -163,19 +161,19 @@ const RegisterPage = () => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={6}>
-										<TextField
-											error={phoneNumberHasError}
-											label="Phone Number"
-											helperText={
-												phoneNumberHasError &&
-												"Please enter a valid phone number."
-											}
-											fullWidth
-											size="small"
-											variant="outlined"
+										<PhoneInput
+											inputStyle={{
+												height: "40px",
+												width: "100%"
+											}}
+											country={"vn"}
+											label='Phone Number'
+											placeholder="Enter phone number"
 											value={phoneNumber}
-											onBlur={phoneNumberBlurHandler}
-											onChange={phoneNumberChangeHandler}
+											onChange={(e, data) => {
+												changeValue(e, data);
+											}}
+											error={phoneNumber ? (isValidPhoneNumber(phoneNumber) ? undefined : 'Invalid phone number') : 'Phone number required'}
 										/>
 									</Grid>
 								</Grid>
