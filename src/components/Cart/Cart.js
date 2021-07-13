@@ -1,0 +1,120 @@
+import { Button, IconButton, makeStyles, Typography } from "@material-ui/core";
+import { Close } from "@material-ui/icons";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../../reducers/cart";
+import { uiActions } from "../../reducers/ui";
+import CartModal from "../UI/CartModal/CartModal";
+import CartItem from "./CartItem";
+const useStyles = makeStyles((theme) => ({
+	title: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "space-between",
+	},
+	title2: {
+		marginTop: 25,
+		borderBottom: "1px solid #ddd",
+		[theme.breakpoints.down("xs")]: {
+			marginTop: 15,
+		},
+	},
+	content: {
+		height: "100%",
+		padding: "35px 25px",
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "space-between",
+	},
+	listItem: {
+		listStyle: "none",
+		flex: 1,
+		overflow: "auto",
+	},
+	buttonCheckout: {
+		marginTop: 12,
+		justifySelf: "flex-end",
+	},
+}));
+
+const Cart = (props) => {
+	const classes = useStyles();
+	const dispatch = useDispatch();
+
+	const cartItems = useSelector((state) => state.cart.data);
+	const totalAmount = useSelector((state) => state.cart.totalAmount);
+
+	const toggleCartModalHandler = () => {
+		dispatch(uiActions.toggleCartModal());
+	};
+
+	const cartItemAddHandler = (item) => {
+		dispatch(cartActions.addItem(item));
+	};
+	const cartItemRemoveHandler = (id) => {
+		dispatch(cartActions.removeItem(id));
+	};
+	const cartItemClearHandler = (id) => {
+		dispatch(cartActions.clearItem(id));
+	};
+	return (
+		<CartModal onClose={toggleCartModalHandler}>
+			<div className={classes.content}>
+				<div className={classes.title}>
+					<Typography variant="h4" component="p">
+						Cart
+					</Typography>
+					<IconButton onClick={toggleCartModalHandler}>
+						<Close />
+					</IconButton>
+				</div>
+				<div className={`${classes.title} ${classes.title2} `}>
+					<Typography variant="body1" component="p">
+						Total Amount
+					</Typography>
+					<Typography
+						variant="h6"
+						component="p"
+						style={{ fontWeight: "bold" }}
+					>
+						{totalAmount} VND
+					</Typography>
+				</div>
+				<ul className={classes.listItem}>
+					{cartItems.length > 0 &&
+						cartItems.map((item, index) => (
+							<CartItem
+								key={index}
+								id={item.id}
+								title={item.title}
+								imgSrc={item.image}
+								price={item.price}
+								totalPrice={item.totalPrice}
+								quantity={item.quantity}
+								info={item.info}
+								onAdd={cartItemAddHandler.bind(null, item)}
+								onRemove={cartItemRemoveHandler.bind(
+									null,
+									item.id
+								)}
+								onClear={cartItemClearHandler.bind(
+									null,
+									item.id
+								)}
+							/>
+						))}
+				</ul>
+				<Button
+					variant="contained"
+					color="primary"
+					className={classes.buttonCheckout}
+					disabled={cartItems.length <= 0}
+				>
+					PROCESSED TO CHECKOUT
+				</Button>
+			</div>
+		</CartModal>
+	);
+};
+
+export default Cart;

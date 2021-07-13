@@ -9,7 +9,9 @@ import {
 	Toolbar,
 } from "@material-ui/core";
 import { Search, LocalMall, Person, Menu } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { uiActions } from "../../reducers/ui";
 const useStyles = makeStyles((theme) => ({
 	root: {},
 	toolBar: {
@@ -27,9 +29,20 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 
-	title: {
+	home: {
 		color: "inherit",
 		textDecoration: "none",
+		display: "flex",
+		alignItems: "center",
+		"& img": {
+			width: 24,
+			marginRight: 10,
+			height: "auto",
+			maxHeight: "100%",
+			[theme.breakpoints.down("sm")]: {
+				display: "none",
+			},
+		},
 		"&>h2": {
 			[theme.breakpoints.down("sm")]: {
 				fontSize: "1rem",
@@ -86,6 +99,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Header = () => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
+	const cartItems = useSelector((state) => state.cart.data);
+	const numberOfCartItems = cartItems.reduce((cartNumber, item) => {
+		return cartNumber + item.quantity;
+	}, 0);
+
+	const toggleCartModalHandler = () => {
+		dispatch(uiActions.toggleCartModal());
+	};
 	return (
 		<AppBar position="static" className={classes.root}>
 			<Toolbar className={classes.toolBar}>
@@ -97,7 +119,11 @@ const Header = () => {
 					>
 						<Menu />
 					</IconButton>
-					<Link to="/" className={classes.title}>
+					<Link to="/" className={classes.home}>
+						<img
+							src={`${process.env.PUBLIC_URL}/img/store-icon.png`}
+							alt="store icon"
+						/>
 						<Typography variant="h6" component="h2" noWrap>
 							FAMILY STORE
 						</Typography>
@@ -128,11 +154,15 @@ const Header = () => {
 						</IconButton>
 					</Link>
 					<IconButton
-						aria-label="show 4 products"
+						aria-label="show number products"
 						color="inherit"
 						className={classes.iconButton}
+						onClick={toggleCartModalHandler}
 					>
-						<Badge badgeContent={4} color="secondary">
+						<Badge
+							badgeContent={numberOfCartItems}
+							color="secondary"
+						>
 							<LocalMall />
 						</Badge>
 					</IconButton>

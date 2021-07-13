@@ -1,6 +1,8 @@
 import { createTheme, ThemeProvider } from "@material-ui/core";
 import { lazy, Suspense } from "react";
+import { useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
+import Cart from "./components/Cart/Cart";
 import { ProtectedRoute } from "./components/Common/ProtectedRoute";
 import Loading from "./components/Loading/Loading";
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -18,8 +20,10 @@ const theme = createTheme({
 	},
 });
 function App() {
+	const isOpenCart = useSelector((state) => state.ui.isOpenCart);
 	return (
 		<ThemeProvider theme={theme}>
+			{isOpenCart && <Cart />}
 			<Suspense fallback={<Loading />}>
 				<Switch>
 					<Route exact path="/">
