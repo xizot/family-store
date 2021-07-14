@@ -1,11 +1,22 @@
-import { Container, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { useEffect } from "react";
+import Footer from "../components/Layout/Footer";
 import SideBar from "../components/SideBar/SideBar";
 import Header from "./../components/Layout/Header";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
 	root: {
 		minHeight: "100vh",
+	},
+	main: {
+		marginLeft: "auto",
+		width: "calc(100% - 320px)",
+		[theme.breakpoints.down("sm")]: {
+			width: "100%",
+		},
+	},
+	mainContent: {
+		padding: "64px 0 84px",
 	},
 }));
 const HomePage = () => {
@@ -14,14 +25,17 @@ const HomePage = () => {
 		document.title = "Family Store - Best for buy online";
 	}, []);
 	return (
-		<div className={classes.root}>
-			<Header />
+		<>
+			<div className={classes.root}>
+				<Header showMenu showCart />
 
-			<Container>
 				<SideBar />
-				This is home page
-			</Container>
-		</div>
+				<div className={classes.main}>
+					<div className={classes.mainContent}>This is homepage</div>
+				</div>
+			</div>
+			<Footer hasSideBar />
+		</>
 	);
 };
 export default HomePage;

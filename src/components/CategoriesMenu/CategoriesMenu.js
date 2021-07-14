@@ -1,4 +1,5 @@
-import { alpha, makeStyles, Typography } from "@material-ui/core";
+import { alpha, IconButton, makeStyles, Typography } from "@material-ui/core";
+import { Close } from "@material-ui/icons";
 import CategoryItem from "./CategoryItem/CategoryItem";
 
 const useStyles = makeStyles((theme) => ({
@@ -6,8 +7,19 @@ const useStyles = makeStyles((theme) => ({
 		height: "100%",
 		overflow: "auto",
 	},
-	title: {
+	top: {
+		display: "flex",
+		justifyContent: "space-between",
+		alignItems: "center",
 		padding: "30px 20px 10px",
+	},
+	iconClose: {
+		display: "none",
+		[theme.breakpoints.down("sm")]: {
+			display: "block",
+		},
+	},
+	title: {
 		opacity: 0.4,
 		fontWeight: "bold",
 	},
@@ -48,14 +60,46 @@ const categories = [
 			{ id: "tea", title: "Tea" },
 		],
 	},
+	{
+		id: "snack-beverages",
+		title: "Snack & Beverages",
+		items: [
+			{ id: "juice", title: "Juice" },
+			{ id: "coffee", title: "Coffee" },
+			{ id: "tea", title: "Tea" },
+		],
+	},
+	{
+		id: "snack-beverages",
+		title: "Snack & Beverages",
+		items: [
+			{ id: "juice", title: "Juice" },
+			{ id: "coffee", title: "Coffee" },
+			{ id: "tea", title: "Tea" },
+		],
+	},
+	{
+		id: "snack-beverages",
+		title: "Snack & Beverages",
+		items: [
+			{ id: "juice", title: "Juice" },
+			{ id: "coffee", title: "Coffee" },
+			{ id: "tea", title: "Tea" },
+		],
+	},
 ];
-const CategoriesMenu = (props) => {
+const CategoriesMenu = ({ onClose }) => {
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>
-			<Typography variant="h6" className={classes.title}>
-				All Categories
-			</Typography>
+			<div className={classes.top}>
+				<Typography variant="h6" className={classes.title}>
+					All Categories
+				</Typography>
+				<IconButton className={classes.iconClose} onClick={onClose}>
+					<Close />
+				</IconButton>
+			</div>
 			<span className={classes.line}></span>
 			<ul>
 				{categories?.length > 0 &&

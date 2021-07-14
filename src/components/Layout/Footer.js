@@ -3,12 +3,21 @@ import { Email, Facebook, GitHub, Phone } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		background: theme.palette.primary.main,
+		background: "#fff",
 		minHeight: 80,
 		marginTop: -80,
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
+		width: "100%",
+		paddingLeft: (props) => (props?.hasSideBar ? 300 : 0),
+		[theme.breakpoints.down("xs")]: {
+			minHeight: 85,
+			marginTop: -85,
+		},
+		[theme.breakpoints.down("sm")]: {
+			paddingLeft: "0 !important",
+		},
 	},
 	container: {
 		height: "100%",
@@ -19,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		flexWrap: "wrap",
 		alignItems: "center",
-		color: "#fff",
 		[theme.breakpoints.down("xs")]: {
 			padding: "10px 0",
 		},
@@ -40,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 }));
-const Footer = (props) => {
-	const classes = useStyles();
+const Footer = ({ hasSideBar }) => {
+	const classes = useStyles({ hasSideBar });
 	return (
 		<footer className={classes.root}>
 			<Container className={classes.container}>

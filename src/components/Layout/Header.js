@@ -97,10 +97,11 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 }));
-const Header = () => {
+const Header = ({ showMenu, showCart }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const cartItems = useSelector((state) => state.cart.data);
+
 	const numberOfCartItems = cartItems.reduce((cartNumber, item) => {
 		return cartNumber + item.quantity;
 	}, 0);
@@ -108,17 +109,26 @@ const Header = () => {
 	const toggleCartModalHandler = () => {
 		dispatch(uiActions.toggleCartModal());
 	};
+
+	const toggleSideBarHandler = () => {
+		dispatch(uiActions.toggleSideBar());
+	};
+
 	return (
 		<AppBar position="fixed" className={classes.root}>
 			<Toolbar className={classes.toolBar}>
 				<div className={classes.logo}>
-					<IconButton
-						aria-label="menu"
-						color="inherit"
-						className={`${classes.iconButton} ${classes.menuButton}`}
-					>
-						<Menu />
-					</IconButton>
+					{showMenu && (
+						<IconButton
+							aria-label="menu"
+							color="inherit"
+							className={`${classes.iconButton} ${classes.menuButton}`}
+							onClick={toggleSideBarHandler}
+						>
+							<Menu />
+						</IconButton>
+					)}
+
 					<Link to="/" className={classes.home}>
 						<img
 							src={`${process.env.PUBLIC_URL}/img/store-icon.png`}
@@ -153,19 +163,21 @@ const Header = () => {
 							<Person />
 						</IconButton>
 					</Link>
-					<IconButton
-						aria-label="show number products"
-						color="inherit"
-						className={classes.iconButton}
-						onClick={toggleCartModalHandler}
-					>
-						<Badge
-							badgeContent={numberOfCartItems}
-							color="secondary"
+					{showCart && (
+						<IconButton
+							aria-label="show number products"
+							color="inherit"
+							className={classes.iconButton}
+							onClick={toggleCartModalHandler}
 						>
-							<LocalMall />
-						</Badge>
-					</IconButton>
+							<Badge
+								badgeContent={numberOfCartItems}
+								color="secondary"
+							>
+								<LocalMall />
+							</Badge>
+						</IconButton>
+					)}
 				</div>
 			</Toolbar>
 		</AppBar>

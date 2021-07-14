@@ -13,6 +13,7 @@ import * as Validate from "../helpers/validate";
 import { Link } from "react-router-dom";
 import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
+import Footer from "../components/Layout/Footer";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	form: {
 		width: "30rem",
+		background: "#fff",
 		maxWidth: "100%",
 		margin: "0 auto",
 		padding: "50px 25px",
@@ -96,79 +98,83 @@ const LoginPage = () => {
 		document.title = "Login Page";
 	}, []);
 	return (
-		<div className={classes.root}>
-			<Header />
-			<div className={classes.content}>
-				<Container>
-					<Box className={classes.form} boxShadow={3}>
-						<Typography variant="h3" className={classes.title}>
-							Login
-						</Typography>
-						<form
-							noValidate
-							autoComplete="off"
-							onSubmit={formSubmitHandler}
-						>
-							<FormControl className={classes.formControl}>
-								<TextField
-									error={usernameHasError}
-									label="Email / Username"
-									helperText={
-										usernameHasError &&
-										"Please enter a valid email or username."
-									}
-									fullWidth
-									size="small"
-									variant="outlined"
-									value={enteredUsername}
-									onBlur={usernameBlurHandler}
-									onChange={usernameChangeHandler}
-								/>
-							</FormControl>
-							<FormControl className={classes.formControl}>
-								<TextField
-									// error
-									label="Password"
-									type="password"
-									error={passwordHasError}
-									helperText={
-										passwordHasError &&
-										"Please enter a valid password."
-									}
-									fullWidth
-									size="small"
-									variant="outlined"
-									value={enteredPassword}
-									onBlur={passwordBlurHandler}
-									onChange={passwordChangeHandler}
-								/>
-							</FormControl>
-							<Button
-								variant="contained"
-								color="primary"
-								fullWidth
-								disabled={!formIsValid}
-								type="submit"
-								className={classes.button}
-							>
-								Sign In
-							</Button>
-						</form>
-						<div className={classes.actions}>
-							<Typography variant="body2">
-								New member? <Link to="/register">Sign up</Link>
+		<>
+			<div className={classes.root}>
+				<Header />
+				<div className={classes.content}>
+					<Container>
+						<Box className={classes.form} boxShadow={3}>
+							<Typography variant="h3" className={classes.title}>
+								Login
 							</Typography>
-
-							<Link to="/forget-password">
+							<form
+								noValidate
+								autoComplete="off"
+								onSubmit={formSubmitHandler}
+							>
+								<FormControl className={classes.formControl}>
+									<TextField
+										error={usernameHasError}
+										label="Email / Username"
+										helperText={
+											usernameHasError &&
+											"Please enter a valid email or username."
+										}
+										fullWidth
+										size="small"
+										variant="outlined"
+										value={enteredUsername}
+										onBlur={usernameBlurHandler}
+										onChange={usernameChangeHandler}
+									/>
+								</FormControl>
+								<FormControl className={classes.formControl}>
+									<TextField
+										// error
+										label="Password"
+										type="password"
+										error={passwordHasError}
+										helperText={
+											passwordHasError &&
+											"Please enter a valid password."
+										}
+										fullWidth
+										size="small"
+										variant="outlined"
+										value={enteredPassword}
+										onBlur={passwordBlurHandler}
+										onChange={passwordChangeHandler}
+									/>
+								</FormControl>
+								<Button
+									variant="contained"
+									color="primary"
+									fullWidth
+									disabled={!formIsValid}
+									type="submit"
+									className={classes.button}
+								>
+									Sign In
+								</Button>
+							</form>
+							<div className={classes.actions}>
 								<Typography variant="body2">
-									Forgot password?
+									New member?{" "}
+									<Link to="/register">Sign up</Link>
 								</Typography>
-							</Link>
-						</div>
-					</Box>
-				</Container>
+
+								<Link to="/forget-password">
+									<Typography variant="body2">
+										Forgot password?
+									</Typography>
+								</Link>
+							</div>
+						</Box>
+					</Container>
+				</div>
 			</div>
-		</div>
+			<Footer />
+		</>
 	);
 };
 

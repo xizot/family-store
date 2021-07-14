@@ -7,22 +7,29 @@ const useStyles = makeStyles((theme) => ({
 		position: "fixed",
 		top: 0,
 		left: 0,
-		zIndex: 1200,
+		zIndex: 1300,
 		width: "100%",
 		height: "-webkit-fill-available",
 		maxHeight: "100vh",
 		background: "rgba(0,0,0,0.7)",
+		[theme.breakpoints.up("md")]: {
+			display: "none",
+		},
 	},
 	modalOverLay: {
 		position: "fixed",
 		top: 0,
-		right: 0,
-		zIndex: 1210,
-		width: "40%",
+		left: 0,
+		zIndex: 1310,
+		width: "80%",
+		overflowX: "hidden",
 		height: "-webkit-fill-available",
 		maxHeight: "100vh",
 		background: "#fff",
 		animation: "$slideIn .3s ease-in-out",
+		[theme.breakpoints.up("md")]: {
+			display: "none",
+		},
 		[theme.breakpoints.down("sm")]: {
 			width: "60%",
 		},
@@ -32,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	"@keyframes slideIn": {
 		"0%": {
-			transform: "translateX(100%)",
+			transform: "translateX(-100%)",
 		},
 		"100%": {
 			transform: "translateX(0)",
@@ -49,9 +56,9 @@ const ModalOverlay = ({ children }) => {
 	const classes = useStyles();
 	return <div className={classes.modalOverLay}>{children}</div>;
 };
-const portalElement = document.getElementById("overlay");
+const portalElement = document.getElementById("overlay2");
 
-const CartModal = ({ children, onClose }) => {
+const SideBarTablet = ({ children, onClose }) => {
 	return (
 		<>
 			{ReactDOM.createPortal(
@@ -66,4 +73,4 @@ const CartModal = ({ children, onClose }) => {
 	);
 };
 
-export default CartModal;
+export default SideBarTablet;

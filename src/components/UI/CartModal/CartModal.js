@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 		background: "#fff",
 		animation: "$slideIn .3s ease-in-out",
 		[theme.breakpoints.down("sm")]: {
-			width: "60%",
+			width: "80%",
 		},
 		[theme.breakpoints.down("xs")]: {
 			width: "100%",

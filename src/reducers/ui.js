@@ -4,10 +4,16 @@ const uiSlice = createSlice({
 	name: "ui",
 	initialState: {
 		isOpenCart: false,
+		isOpenSideBar: false,
 	},
 	reducers: {
 		toggleCartModal(state) {
+			state.isOpenSideBar = false;
 			state.isOpenCart = !state.isOpenCart;
+		},
+		toggleSideBar(state) {
+			state.isOpenCart = false;
+			state.isOpenSideBar = !state.isOpenSideBar;
 		},
 	},
 });

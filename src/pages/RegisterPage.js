@@ -17,13 +17,15 @@ import * as Validate from "../helpers/validate";
 import { Link } from "react-router-dom";
 import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
+import Footer from "../components/Layout/Footer";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		minHeight: "100vh",
+		maxHeight: "-webkit-fill-available",
 	},
 	content: {
-		paddingTop: "20vh",
+		padding: "20vh 0",
 	},
 	title: {
 		marginBottom: 25,
@@ -37,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	form: {
 		width: "45rem",
+		background: "#fff",
 		maxWidth: "100%",
 		margin: "0 auto",
 		padding: "50px 25px",
@@ -154,142 +157,147 @@ const RegisterPage = () => {
 	}, []);
 
 	return (
-		<div className={classes.root}>
-			<Header />
-			<div className={classes.content}>
-				<Container>
-					<Box className={classes.form} boxShadow={3}>
-						<Typography variant="h3" className={classes.title}>
-							Register
-						</Typography>
-						<form
-							noValidate
-							autoComplete="off"
-							onSubmit={formSubmitHandler}
-						>
-							<FormControl className={classes.formControl}>
-								<Grid container spacing={3}>
-									<Grid item xs={12} sm={6}>
-										<TextField
-											error={emailHasError}
-											label="Email"
-											type="email"
-											helperText={
-												emailHasError &&
-												"Please enter a valid email "
-											}
-											required
-											fullWidth
-											size="small"
-											variant="outlined"
-											value={email}
-											onBlur={emailBlurHandler}
-											onChange={emailChangeHandler}
-										/>
-									</Grid>
-									<Grid item xs={12} sm={6}>
-										<PhoneInput
-											inputStyle={{
-												height: "40px",
-												width: "100%",
-											}}
-											inputClass={
-												phoneNumberHasError &&
-												classes.inputInvalid
-											}
-											country={"vn"}
-											label="Phone Number"
-											placeholder="Enter phone number"
-											value={phoneNumber}
-											onChange={phoneNumberChangeHandler}
-											onBlur={phoneNumberBlurHandler}
-										/>
-										{phoneNumberHasError && (
-											<FormHelperText
-												variant="outlined"
-												className={
-													classes.formHelperText
-												}
-											>
-												Please enter a valid phone
-												number
-											</FormHelperText>
-										)}
-									</Grid>
-								</Grid>
-							</FormControl>
-							<FormControl className={classes.formControl}>
-								<TextField
-									error={addressHasError}
-									label="Address"
-									helperText={
-										addressHasError &&
-										"Please enter a valid address."
-									}
-									fullWidth
-									size="small"
-									variant="outlined"
-									value={address}
-									onBlur={addressBlurHandler}
-									onChange={addressChangeHandler}
-								/>
-							</FormControl>
-							<FormControl className={classes.formControl}>
-								<TextField
-									label="Password"
-									type="password"
-									error={passwordHasError}
-									helperText={
-										passwordHasError &&
-										"Please enter a valid password."
-									}
-									fullWidth
-									size="small"
-									variant="outlined"
-									value={password}
-									onBlur={passwordBlurHandler}
-									onChange={passwordChangeHandler}
-								/>
-							</FormControl>
-							<FormControl className={classes.formControl}>
-								<TextField
-									label="Confirm Password"
-									type="password"
-									error={confirmPasswordHasError}
-									helperText={
-										confirmPasswordHasError &&
-										"Password and confirm password does not match."
-									}
-									fullWidth
-									size="small"
-									variant="outlined"
-									value={confirmPassword}
-									onBlur={confirmPasswordBlurHandler}
-									onChange={confirmPasswordChangeHandler}
-								/>
-							</FormControl>
-							<Button
-								variant="contained"
-								color="primary"
-								fullWidth
-								disabled={!formIsValid}
-								type="submit"
-								className={classes.button}
-							>
+		<>
+			<div className={classes.root}>
+				<Header />
+				<div className={classes.content}>
+					<Container>
+						<Box className={classes.form} boxShadow={3}>
+							<Typography variant="h3" className={classes.title}>
 								Register
-							</Button>
-							<Typography
-								className={classes.forwardTo}
-								variant="body2"
-							>
-								Already have account?{" "}
-								<Link to="/login">Sign in</Link>
 							</Typography>
-						</form>
-					</Box>
-				</Container>
+							<form
+								noValidate
+								autoComplete="off"
+								onSubmit={formSubmitHandler}
+							>
+								<FormControl className={classes.formControl}>
+									<Grid container spacing={3}>
+										<Grid item xs={12} sm={6}>
+											<TextField
+												error={emailHasError}
+												label="Email"
+												type="email"
+												helperText={
+													emailHasError &&
+													"Please enter a valid email "
+												}
+												required
+												fullWidth
+												size="small"
+												variant="outlined"
+												value={email}
+												onBlur={emailBlurHandler}
+												onChange={emailChangeHandler}
+											/>
+										</Grid>
+										<Grid item xs={12} sm={6}>
+											<PhoneInput
+												inputStyle={{
+													height: "40px",
+													width: "100%",
+												}}
+												inputClass={
+													phoneNumberHasError &&
+													classes.inputInvalid
+												}
+												country={"vn"}
+												label="Phone Number"
+												placeholder="Enter phone number"
+												value={phoneNumber}
+												onChange={
+													phoneNumberChangeHandler
+												}
+												onBlur={phoneNumberBlurHandler}
+											/>
+											{phoneNumberHasError && (
+												<FormHelperText
+													variant="outlined"
+													className={
+														classes.formHelperText
+													}
+												>
+													Please enter a valid phone
+													number
+												</FormHelperText>
+											)}
+										</Grid>
+									</Grid>
+								</FormControl>
+								<FormControl className={classes.formControl}>
+									<TextField
+										error={addressHasError}
+										label="Address"
+										helperText={
+											addressHasError &&
+											"Please enter a valid address."
+										}
+										fullWidth
+										size="small"
+										variant="outlined"
+										value={address}
+										onBlur={addressBlurHandler}
+										onChange={addressChangeHandler}
+									/>
+								</FormControl>
+								<FormControl className={classes.formControl}>
+									<TextField
+										label="Password"
+										type="password"
+										error={passwordHasError}
+										helperText={
+											passwordHasError &&
+											"Please enter a valid password."
+										}
+										fullWidth
+										size="small"
+										variant="outlined"
+										value={password}
+										onBlur={passwordBlurHandler}
+										onChange={passwordChangeHandler}
+									/>
+								</FormControl>
+								<FormControl className={classes.formControl}>
+									<TextField
+										label="Confirm Password"
+										type="password"
+										error={confirmPasswordHasError}
+										helperText={
+											confirmPasswordHasError &&
+											"Password and confirm password does not match."
+										}
+										fullWidth
+										size="small"
+										variant="outlined"
+										value={confirmPassword}
+										onBlur={confirmPasswordBlurHandler}
+										onChange={confirmPasswordChangeHandler}
+									/>
+								</FormControl>
+								<Button
+									variant="contained"
+									color="primary"
+									fullWidth
+									disabled={!formIsValid}
+									type="submit"
+									className={classes.button}
+								>
+									Register
+								</Button>
+								<Typography
+									className={classes.forwardTo}
+									variant="body2"
+								>
+									Already have account?{" "}
+									<Link to="/login">Sign in</Link>
+								</Typography>
+							</form>
+						</Box>
+					</Container>
+				</div>
 			</div>
-		</div>
+			<Footer />
+		</>
 	);
 };
 
