@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "space-between",
+		overflow: "auto",
 	},
 	listItem: {
 		listStyle: "none",
@@ -33,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	buttonCheckout: {
 		marginTop: 12,
-		justifySelf: "flex-end",
 	},
 }));
 
@@ -60,25 +60,27 @@ const Cart = (props) => {
 	return (
 		<CartModal onClose={toggleCartModalHandler}>
 			<div className={classes.content}>
-				<div className={classes.title}>
-					<Typography variant="h4" component="p">
-						Cart
-					</Typography>
-					<IconButton onClick={toggleCartModalHandler}>
-						<Close />
-					</IconButton>
-				</div>
-				<div className={`${classes.title} ${classes.title2} `}>
-					<Typography variant="body1" component="p">
-						Total Amount
-					</Typography>
-					<Typography
-						variant="h6"
-						component="p"
-						style={{ fontWeight: "bold" }}
-					>
-						{totalAmount} VND
-					</Typography>
+				<div>
+					<div className={classes.title}>
+						<Typography variant="h4" component="p">
+							Cart
+						</Typography>
+						<IconButton onClick={toggleCartModalHandler}>
+							<Close />
+						</IconButton>
+					</div>
+					<div className={`${classes.title} ${classes.title2} `}>
+						<Typography variant="body1" component="p">
+							Total Amount
+						</Typography>
+						<Typography
+							variant="h6"
+							component="p"
+							style={{ fontWeight: "bold" }}
+						>
+							{totalAmount} VND
+						</Typography>
+					</div>
 				</div>
 				<ul className={classes.listItem}>
 					{cartItems.length > 0 &&

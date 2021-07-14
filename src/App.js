@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import Cart from "./components/Cart/Cart";
 import { ProtectedRoute } from "./components/Common/ProtectedRoute";
+import Footer from "./components/Layout/Footer";
 import Loading from "./components/Loading/Loading";
 const HomePage = lazy(() => import("./pages/HomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -44,6 +45,7 @@ function App() {
 						<PageNotFound />
 					</Route>
 				</Switch>
+				<Footer />
 			</Suspense>
 		</ThemeProvider>
 	);

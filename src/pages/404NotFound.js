@@ -2,7 +2,13 @@ import { Container, makeStyles, Typography } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		height: "100vh",
+		width: "100%",
+		position: "fixed",
+		left: 0,
+		top: 0,
+		zIndex: 30,
 		background: theme.palette.primary.main,
+		overflow: "hidden",
 	},
 	content: {
 		width: "100%",

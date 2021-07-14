@@ -17,9 +17,10 @@ import Header from "../components/Layout/Header";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		minHeight: "100vh",
+		maxHeight: "-webkit-fill-available",
 	},
 	content: {
-		paddingTop: "20vh",
+		padding: "20vh 0",
 	},
 	title: {
 		marginBottom: 25,

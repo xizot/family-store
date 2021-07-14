@@ -109,7 +109,7 @@ const Header = () => {
 		dispatch(uiActions.toggleCartModal());
 	};
 	return (
-		<AppBar position="static" className={classes.root}>
+		<AppBar position="fixed" className={classes.root}>
 			<Toolbar className={classes.toolBar}>
 				<div className={classes.logo}>
 					<IconButton
