@@ -1,5 +1,4 @@
-import { alpha, IconButton, makeStyles, Typography } from "@material-ui/core";
-import { Close } from "@material-ui/icons";
+import { alpha, makeStyles, Typography } from "@material-ui/core";
 import CategoryItem from "./CategoryItem/CategoryItem";
 
 const useStyles = makeStyles((theme) => ({
@@ -7,20 +6,10 @@ const useStyles = makeStyles((theme) => ({
 		height: "100%",
 		overflow: "auto",
 	},
-	top: {
-		display: "flex",
-		justifyContent: "space-between",
-		alignItems: "center",
-		padding: "30px 20px 10px",
-	},
-	iconClose: {
-		display: "none",
-		[theme.breakpoints.down("sm")]: {
-			display: "block",
-		},
-	},
+
 	title: {
 		opacity: 0.4,
+		padding: "30px 20px 5px",
 		fontWeight: "bold",
 	},
 	line: {
@@ -88,18 +77,13 @@ const categories = [
 		],
 	},
 ];
-const CategoriesMenu = ({ onClose }) => {
+const CategoriesMenu = () => {
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>
-			<div className={classes.top}>
-				<Typography variant="h6" className={classes.title}>
-					All Categories
-				</Typography>
-				<IconButton className={classes.iconClose} onClick={onClose}>
-					<Close />
-				</IconButton>
-			</div>
+			<Typography variant="h6" className={classes.title}>
+				All Categories
+			</Typography>
 			<span className={classes.line}></span>
 			<ul>
 				{categories?.length > 0 &&

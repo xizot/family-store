@@ -1,17 +1,16 @@
 import {
 	Typography,
 	AppBar,
-	InputBase,
 	makeStyles,
-	alpha,
 	IconButton,
 	Badge,
 	Toolbar,
 } from "@material-ui/core";
-import { Search, LocalMall, Person, Menu } from "@material-ui/icons";
+import { LocalMall, Person, Menu } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { uiActions } from "../../reducers/ui";
+import SearchInput from "../UI/SearchInput";
 const useStyles = makeStyles((theme) => ({
 	root: {},
 	toolBar: {
@@ -56,38 +55,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 	search: {
 		flex: 3,
-		position: "relative",
-		borderRadius: theme.shape.borderRadius,
-		backgroundColor: alpha(theme.palette.common.white, 0.15),
-		"&:hover": {
-			backgroundColor: alpha(theme.palette.common.white, 0.25),
-		},
-		marginRight: theme.spacing(2),
-		marginLeft: 0,
 		[theme.breakpoints.down("sm")]: {
 			display: "none",
 		},
 	},
-	searchIcon: {
-		padding: theme.spacing(0, 2),
-		height: "100%",
-		position: "absolute",
-		pointerEvents: "none",
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	inputRoot: {
-		color: "inherit",
-		width: "100%",
-	},
-	inputInput: {
-		padding: theme.spacing(1, 1, 1, 0),
-		// vertical padding + font size from searchIcon
-		paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-		transition: theme.transitions.create("width"),
-		width: "100%",
-	},
+
 	navLink: {
 		color: "inherit",
 	},
@@ -140,17 +112,7 @@ const Header = ({ showMenu, showCart }) => {
 					</Link>
 				</div>
 				<div className={classes.search}>
-					<div className={classes.searchIcon}>
-						<Search />
-					</div>
-					<InputBase
-						placeholder="What Are You Looking For?"
-						classes={{
-							root: classes.inputRoot,
-							input: classes.inputInput,
-						}}
-						inputProps={{ "aria-label": "search" }}
-					/>
+					<SearchInput />
 				</div>
 
 				<div className={classes.sectionDesktop}>

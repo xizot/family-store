@@ -16,7 +16,10 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	mainContent: {
-		padding: "64px 0 84px",
+		padding: "64px 0 80px",
+		[theme.breakpoints.down("xs")]: {
+			padding: "56px 0 85px",
+		},
 	},
 }));
 const HomePage = () => {
@@ -28,10 +31,9 @@ const HomePage = () => {
 		<>
 			<div className={classes.root}>
 				<Header showMenu showCart />
-
 				<SideBar />
 				<div className={classes.main}>
-					<div className={classes.mainContent}>This is homepage</div>
+					<div className={classes.mainContent}></div>
 				</div>
 			</div>
 			<Footer hasSideBar />
