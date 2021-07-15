@@ -3,14 +3,14 @@ import { Email, Facebook, GitHub, Phone } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		background: "#fff",		
+		background: "#fff",
+		minHeight: 65,
+		marginTop: -65,
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
 		width: "100%",
-		minHeight: 65,
-		marginTop: -65,
-		paddingLeft: (props) => (props?.hasSideBar ? 260 : 0),
+		paddingLeft: (props) => (props?.hasSideBar ? 300 : 0),
 		[theme.breakpoints.down("xs")]: {
 			minHeight: 85,
 			marginTop: -85,

@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: "column",
 		justifyContent: "space-between",
 		overflow: "auto",
+		[theme.breakpoints.down("xs")]: {
+			padding: "35px 15px",
+		},
 	},
 	iconClose: {
 		marginRight: -12,
@@ -95,11 +98,12 @@ const Cart = (props) => {
 								key={index}
 								id={item.id}
 								title={item.title}
-								imgSrc={item.image}
+								image={item.image}
 								price={item.price}
+								salePrice={item.salePrice}
 								totalPrice={item.totalPrice}
 								quantity={item.quantity}
-								info={item.info}
+								description={item.description}
 								onAdd={cartItemAddHandler.bind(null, item)}
 								onRemove={cartItemRemoveHandler.bind(
 									null,

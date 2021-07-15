@@ -58,9 +58,18 @@ const useStyles = makeStyles((theme) => ({
 	info: {
 		marginTop: 5,
 		opacity: 0.9,
+		display: "-webkit-box",
+		"-webkit-line-clamp": 2,
+		"-webkit-box-orient": "vertical",
+		overflow: "hidden",
+		textOverflow: "ellipsis",
 	},
 	price: {
 		opacity: 0.7,
+	},
+	hasSale: {
+		textDecoration: "line-through",
+		opacity: 0.8,
 	},
 	totalPrice: {
 		textAlign: "right",
@@ -72,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	actions: {
 		display: "flex",
-		flexDirection: "column",
+		flexFlow: "column wrap",
 		justifyContent: "space-between",
 		marginRight: 10,
 		[theme.breakpoints.down("xs")]: {
@@ -85,10 +94,11 @@ const useStyles = makeStyles((theme) => ({
 
 const CartItem = ({
 	id,
-	imgSrc,
+	image,
 	title,
-	info,
+	description,
 	price,
+	salePrice,
 	totalPrice,
 	quantity,
 	onAdd,
@@ -103,17 +113,30 @@ const CartItem = ({
 				<span onClick={onClear} className={classes.remove}>
 					<Close style={{ color: "#fff" }} />
 				</span>
-				<img src={imgSrc} alt={title} />
+				<img src={image} alt={title} />
 			</div>
 			<div className={classes.description}>
 				<div className={classes.detail}>
 					<Typography variant="body1">{title}</Typography>
 					<Typography variant="body2" className={classes.info}>
-						{info}
+						{description}
 					</Typography>
-					<Typography variant="caption" className={classes.price}>
+					<Typography
+						variant="caption"
+						className={`${classes.price} ${
+							salePrice ? classes.hasSale : ""
+						}`}
+					>
 						Unit Price {price} VND
 					</Typography>
+					{salePrice && (
+						<Typography
+							variant="subtitle2"
+							className={classes.price}
+						>
+							Sale {salePrice} VND
+						</Typography>
+					)}
 				</div>
 				<div className={classes.actions}>
 					<Typography variant="body1" className={classes.totalPrice}>

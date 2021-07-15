@@ -1,6 +1,8 @@
 import { alpha, InputBase, makeStyles } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
-
+import { useRef } from "react";
+import { isNotEmpty } from "../../helpers/validate";
+import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		position: "relative",
@@ -38,11 +40,22 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const SearchInput = ({ onInputChange, onSubmit, border }) => {
+const SearchInput = ({ border }) => {
+	const history = useHistory();
 	const classes = useStyles({ border });
+	const searchRef = useRef("");
+
+	const formSubmitHandler = (e) => {
+		e.preventDefault();
+		const enteredSearch = searchRef.current?.value;
+		if (!isNotEmpty(enteredSearch)) {
+			return;
+		}
+		history.push(`/search?q=${enteredSearch}`);
+	};
 
 	return (
-		<form className={classes.root} onSubmit={onSubmit}>
+		<form className={classes.root} onSubmit={formSubmitHandler}>
 			<div className={classes.searchIcon}>
 				<Search />
 			</div>
@@ -53,7 +66,7 @@ const SearchInput = ({ onInputChange, onSubmit, border }) => {
 					input: classes.inputInput,
 				}}
 				inputProps={{ "aria-label": "search" }}
-				onChange={onInputChange}
+				inputRef={searchRef}
 			/>
 		</form>
 	);

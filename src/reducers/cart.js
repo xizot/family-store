@@ -3,50 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 const cartSlice = createSlice({
 	name: "cart",
 	initialState: {
-		data: [
-			{
-				id: 1,
-				title: "Caffe Vergnano Coffee",
-				image: "https://picksy.vercel.app/static/e648d27d1074d0facb34419d18776e2c/aa668/Coffee-7-update-1.webp",
-				info: "Beans 450g",
-				price: 5.0,
-				totalPrice: 5.0,
-				quantity: 1,
-			},
-			{
-				id: 2,
-				title: "Caffe Vergnano Coffee",
-				image: "https://picksy.vercel.app/static/e648d27d1074d0facb34419d18776e2c/aa668/Coffee-7-update-1.webp",
-				info: "Beans 450g",
-				price: 5.0,
-				totalPrice: 5.0,
-				quantity: 1,
-			},
-			{
-				id: 3,
-				title: "Caffe Vergnano Coffee",
-				image: "https://picksy.vercel.app/static/e648d27d1074d0facb34419d18776e2c/aa668/Coffee-7-update-1.webp",
-				info: "Beans 450g",
-				price: 5.0,
-				totalPrice: 5.0,
-				quantity: 1,
-			},
-			{
-				id: 4,
-				title: "Caffe Vergnano Coffee",
-				image: "https://picksy.vercel.app/static/e648d27d1074d0facb34419d18776e2c/aa668/Coffee-7-update-1.webp",
-				info: "Beans 450g",
-				price: 5.0,
-				totalPrice: 5.0,
-				quantity: 1,
-			},
-		],
-		totalAmount: 20.0,
+		data: [],
+		totalAmount: 0,
 	},
 	reducers: {
 		addItem(state, action) {
 			const newItem = action.payload;
-			const newTotalAmount = state.totalAmount + newItem.price;
+			const newItemPrice = newItem?.salePrice || newItem.price || 0;
+
+			const newTotalAmount =
+				Number(state.totalAmount) + Number(newItemPrice);
 
 			const existingItemIndex = state.data.findIndex(
 				(item) => item.id === newItem.id
@@ -55,17 +21,23 @@ const cartSlice = createSlice({
 			const existingItem = state.data[existingItemIndex];
 
 			if (!existingItem) {
-				state.data = [...state.data, newItem];
+				state.data = [
+					...state.data,
+					{ ...newItem, totalPrice: newItemPrice },
+				];
 			} else {
 				const updatedItem = {
 					...existingItem,
 					quantity: existingItem.quantity + 1,
 				};
-				updatedItem.totalPrice =
-					updatedItem.quantity * updatedItem.price;
+
+				updatedItem.totalPrice = Number.parseFloat(
+					updatedItem.quantity * newItemPrice
+				).toFixed(2);
+
 				state.data[existingItemIndex] = updatedItem;
 			}
-			state.totalAmount = newTotalAmount;
+			state.totalAmount = Number.parseFloat(newTotalAmount).toFixed(2);
 		},
 		removeItem(state, action) {
 			const existingItemIndex = state.data.findIndex(
@@ -73,7 +45,12 @@ const cartSlice = createSlice({
 			);
 
 			const existingItem = state.data[existingItemIndex];
-			const newTotalAmount = state.totalAmount - existingItem.price;
+
+			const existingItemPrice =
+				existingItem?.salePrice || existingItem.price;
+
+			const newTotalAmount =
+				Number(state.totalAmount) - Number(existingItemPrice);
 
 			if (existingItem.quantity === 1) {
 				state.data.splice(existingItemIndex, 1);
@@ -82,12 +59,15 @@ const cartSlice = createSlice({
 					...existingItem,
 					quantity: existingItem.quantity - 1,
 				};
-				updatedItem.totalPrice =
-					updatedItem.quantity * updatedItem.price;
+
+				updatedItem.totalPrice = Number.parseFloat(
+					updatedItem.quantity * existingItemPrice
+				).toFixed(2);
+
 				state.data[existingItemIndex] = updatedItem;
 			}
 
-			state.totalAmount = newTotalAmount;
+			state.totalAmount = Number.parseFloat(newTotalAmount).toFixed(2);
 		},
 		clearItem(state, action) {
 			state.data = state.data.filter(

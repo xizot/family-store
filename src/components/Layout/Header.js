@@ -7,6 +7,7 @@ import {
 	Toolbar,
 } from "@material-ui/core";
 import { LocalMall, Person, Menu } from "@material-ui/icons";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { uiActions } from "../../reducers/ui";
@@ -68,12 +69,32 @@ const useStyles = makeStyles((theme) => ({
 			padding: "5px",
 		},
 	},
+	bump: {
+		animation: "$bump 300ms ease-out",
+	},
+	"@keyframes bump": {
+		"0%": {
+			transform: "scale(1)",
+		},
+		"10%": {
+			transform: "scale(0.9)",
+		},
+		"30%": {
+			transform: "scale(1.1)",
+		},
+		"500%": {
+			transform: "scale(1.15)",
+		},
+		"100%": {
+			transform: "scale(1)",
+		},
+	},
 }));
 const Header = ({ showMenu, showCart }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const cartItems = useSelector((state) => state.cart.data);
-
+	const [btnIsHightlighted, setBtnIsHightlighted] = useState(false);
 	const numberOfCartItems = cartItems.reduce((cartNumber, item) => {
 		return cartNumber + item.quantity;
 	}, 0);
@@ -85,7 +106,19 @@ const Header = ({ showMenu, showCart }) => {
 	const toggleSideBarHandler = () => {
 		dispatch(uiActions.toggleSideBar());
 	};
+	const btnCart = `${classes.iconButton} ${
+		btnIsHightlighted ? classes.bump : ""
+	}`;
+	useEffect(() => {
+		if (cartItems?.length === 0) {
+			return;
+		}
 
+		setBtnIsHightlighted(true);
+		setTimeout(() => {
+			setBtnIsHightlighted(false);
+		}, 300);
+	}, [cartItems]);
 	return (
 		<AppBar position="fixed" className={classes.root}>
 			<Toolbar className={classes.toolBar}>
@@ -129,7 +162,7 @@ const Header = ({ showMenu, showCart }) => {
 						<IconButton
 							aria-label="show number products"
 							color="inherit"
-							className={classes.iconButton}
+							className={btnCart}
 							onClick={toggleCartModalHandler}
 						>
 							<Badge

@@ -12,9 +12,10 @@ const useStyles = makeStyles((theme) => ({
 		position: "fixed",
 		left: 0,
 		top: 64,
+		zIndex: 10,
 		background: "#fff",
 		height: "calc(100% - 64px)",
-		width: 210,
+		width: 260,
 		[theme.breakpoints.down("sm")]: {
 			display: "none",
 		},
