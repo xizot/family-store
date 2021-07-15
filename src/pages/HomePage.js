@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 const HomePage = () => {
 	const classes = useStyles();
 	useEffect(() => {
-		document.title = "Family Store - Best for buy online";
+		document.title = "Family Store - Easy buy online";
 	}, []);
 	return (
 		<>

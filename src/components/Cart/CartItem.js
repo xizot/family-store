@@ -1,6 +1,6 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
-import NumericUpDown from "./NumericUpDown";
+import NumericUpDown from "../UI/NumericUpDown";
 
 const useStyles = makeStyles((theme) => ({
 	root: {

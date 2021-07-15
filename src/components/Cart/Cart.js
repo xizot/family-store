@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "space-between",
 		overflow: "auto",
 	},
+	iconClose: {
+		marginRight: -12,
+	},
 	listItem: {
 		listStyle: "none",
 		flex: 1,
@@ -65,8 +68,11 @@ const Cart = (props) => {
 						<Typography variant="h4" component="p">
 							Cart
 						</Typography>
-						<IconButton onClick={toggleCartModalHandler}>
-							<Close />
+						<IconButton
+							onClick={toggleCartModalHandler}
+							className={classes.iconClose}
+						>
+							<Close fontSize="large" />
 						</IconButton>
 					</div>
 					<div className={`${classes.title} ${classes.title2} `}>

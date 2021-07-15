@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 		background: "#fff",
 		maxWidth: "100%",
 		margin: "0 auto",
+		borderRadius: theme.shape.borderRadius,
 		padding: "50px 25px",
 		[theme.breakpoints.down("xs")]: {
 			padding: "35px 15px",
