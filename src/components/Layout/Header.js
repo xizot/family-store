@@ -6,10 +6,11 @@ import {
 	Badge,
 	Toolbar,
 } from "@material-ui/core";
-import { LocalMall, Person, Menu } from "@material-ui/icons";
+import { LocalMall, Person, Menu, ExitToApp } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { authActions } from "../../reducers/auth";
 import { uiActions } from "../../reducers/ui";
 import SearchInput from "../UI/SearchInput";
 const useStyles = makeStyles((theme) => ({
@@ -93,8 +94,11 @@ const useStyles = makeStyles((theme) => ({
 const Header = ({ showMenu, showCart }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const cartItems = useSelector((state) => state.cart.data);
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const [btnIsHightlighted, setBtnIsHightlighted] = useState(false);
+
 	const numberOfCartItems = cartItems.reduce((cartNumber, item) => {
 		return cartNumber + item.quantity;
 	}, 0);
@@ -106,6 +110,12 @@ const Header = ({ showMenu, showCart }) => {
 	const toggleSideBarHandler = () => {
 		dispatch(uiActions.toggleSideBar());
 	};
+
+	const logoutHandler = () => {
+		dispatch(authActions.logout());
+		history.push("/login");
+	};
+
 	const btnCart = `${classes.iconButton} ${
 		btnIsHightlighted ? classes.bump : ""
 	}`;
@@ -149,15 +159,26 @@ const Header = ({ showMenu, showCart }) => {
 				</div>
 
 				<div className={classes.sectionDesktop}>
-					<Link to="/account" className={classes.navLink}>
+					<Link to="/profile" className={classes.navLink}>
 						<IconButton
-							aria-label="my account"
+							aria-label="My profile"
 							color="inherit"
 							className={classes.iconButton}
 						>
 							<Person />
 						</IconButton>
 					</Link>
+
+					{isAuthenticated && (
+						<IconButton
+							aria-label="My profile"
+							color="inherit"
+							className={classes.iconButton}
+							onClick={logoutHandler}
+						>
+							<ExitToApp />
+						</IconButton>
+					)}
 					{showCart && (
 						<IconButton
 							aria-label="show number products"

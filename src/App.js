@@ -8,7 +8,7 @@ import Loading from "./components/Loading/Loading";
 const HomePage = lazy(() => import("./pages/HomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
-const AccountPage = lazy(() => import("./pages/Account"));
+const ProfilePage = lazy(() => import("./pages/Profile"));
 const PageNotFound = lazy(() => import("./pages/404NotFound"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 
@@ -32,8 +32,13 @@ function App() {
 					</Route>
 					<ProtectedRoute
 						exact
-						path="/account"
-						component={AccountPage}
+						path="/profile"
+						component={ProfilePage}
+					/>
+					<ProtectedRoute
+						exact
+						path="/profile/:slug"
+						component={ProfilePage}
 					/>
 					<Route exact path="/login">
 						<LoginPage />
@@ -44,6 +49,7 @@ function App() {
 					<Route exact path="/search">
 						<SearchPage />
 					</Route>
+
 					<Route path="*">
 						<PageNotFound />
 					</Route>

@@ -10,10 +10,12 @@ import {
 } from "@material-ui/core";
 import { useInput } from "../hooks/use-input";
 import * as Validate from "../helpers/validate";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useLocation } from "react-router-dom";
 import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../reducers/auth";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -63,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginPage = () => {
 	const classes = useStyles();
+	const location = useLocation();
+	const dispatch = useDispatch();
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
 	const {
 		enteredInput: enteredUsername,
 		hasError: usernameHasError,
@@ -86,6 +92,12 @@ const LoginPage = () => {
 		if (!formIsValid) return;
 
 		//handle login here
+		dispatch(
+			authActions.loginSucceeded({
+				accessToken: "123",
+				refreshToken: "123",
+			})
+		);
 		console.log(
 			`login info:\nusername: ${enteredUsername}\npassword: ${enteredPassword}`
 		);
@@ -98,6 +110,9 @@ const LoginPage = () => {
 	useEffect(() => {
 		document.title = "Login Page";
 	}, []);
+
+	if (isAuthenticated) return <Redirect to={location?.state?.from || "/"} />;
+
 	return (
 		<>
 			<div className={classes.root}>

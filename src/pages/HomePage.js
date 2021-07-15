@@ -207,15 +207,14 @@ const saleList = [
 		description: "Sữa chống toxic",
 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
 		price: "4.99",
-		salePrice: "3.99",
+		salePrice: "2.99",
 	},
 	{
 		id: 2,
 		title: "Sữa đột biến gen",
 		description: "Sữa chống toxic",
 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-		price: "4.99",
-		salePrice: "3.99",
+		price: "3.99",
 	},
 	{
 		id: 3,
@@ -231,7 +230,6 @@ const saleList = [
 		description: "Sữa chống toxic",
 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
 		price: "4.99",
-		salePrice: "3.99",
 	},
 	{
 		id: 5,
@@ -246,8 +244,7 @@ const saleList = [
 		title: "Sữa đột biến gen",
 		description: "Sữa chống toxic",
 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-		price: "4.99",
-		salePrice: "3.99",
+		price: "9.99",
 	},
 	{
 		id: 7,
@@ -263,7 +260,6 @@ const saleList = [
 		description: "Sữa chống toxic",
 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
 		price: "4.99",
-		salePrice: "3.99",
 	},
 ];
 
