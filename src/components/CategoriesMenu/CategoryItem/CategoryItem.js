@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		justifyContent: "space-between",
 		fontWeight: "bold",
-
 		"&:hover": {
 			background: alpha(theme.palette.primary.main, 0.4),
 		},
@@ -46,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
 	item: {
 		display: "block",
 		padding: "12px 12px 12px 50px",
-
 		"& a": {
 			textDecoration: "none",
 			color: "rgba(0,0,0,.8)",

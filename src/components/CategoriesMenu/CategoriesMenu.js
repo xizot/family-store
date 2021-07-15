@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
 		opacity: 0.4,
 		padding: "30px 20px 5px",
 		fontWeight: "bold",
+		fontSize:16
 	},
 	line: {
 		width: "calc(100% - 40px)",

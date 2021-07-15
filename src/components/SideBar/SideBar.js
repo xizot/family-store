@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 		top: 64,
 		background: "#fff",
 		height: "calc(100% - 64px)",
-		width: 300,
+		width: 210,
 		[theme.breakpoints.down("sm")]: {
 			display: "none",
 		},

@@ -10,6 +10,7 @@ const LoginPage = lazy(() => import("./pages/LoginPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const AccountPage = lazy(() => import("./pages/Account"));
 const PageNotFound = lazy(() => import("./pages/404NotFound"));
+const SearchPage = lazy(() => import("./pages/SearchPage"));
 
 const theme = createTheme({
 	palette: {
@@ -39,6 +40,9 @@ function App() {
 					</Route>
 					<Route exact path="/register">
 						<RegisterPage />
+					</Route>
+					<Route exact path="/search">
+						<SearchPage />
 					</Route>
 					<Route path="*">
 						<PageNotFound />
