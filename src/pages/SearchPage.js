@@ -1,8 +1,8 @@
-import { Container, Grid, makeStyles, NativeSelect, withStyles, InputBase } from "@material-ui/core";
+import { Container, Grid, makeStyles, NativeSelect, withStyles, InputBase, Typography } from "@material-ui/core";
 import Pagination from '@material-ui/lab/Pagination';
 import {
     useLocation
-  } from "react-router-dom";
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../reducers/cart";
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
         },
         [theme.breakpoints.down("xs")]: {
-            height:"auto",
+            height: "auto",
             width: "100%",
         },
     },
@@ -59,46 +59,41 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "inherit",
         margin: "0 0 15px 0",
         display: 'flex',
-        [theme.breakpoints.down("sm")]: {        
+        [theme.breakpoints.down("sm")]: {
             margin: "0 0 15px 0",
-		},
-		[theme.breakpoints.down("xs")]: {
-            
-		},
+        },
+        [theme.breakpoints.down("xs")]: {
+            display: 'inline-block',
+        },
     },
     label: {
-        margin:"15px 5px 0 0",
-        [theme.breakpoints.down("sm")]: {        
-			width: "60%",
-            margin: "10px 0 0 0",
-		},
-		[theme.breakpoints.down("xs")]: {
-			top: "8%",
-			width: "60%",
-		},
+        margin: "17px 5px 0 0",
+        [theme.breakpoints.down("sm")]: {          
+            margin: "10px 5px 0 0",
+        },
+        [theme.breakpoints.down("xs")]: {
+
+        },
     },
     labelType: {
-        margin:"15px 5px 0 100px",
+        margin: "17px 5px 0 100px",
         [theme.breakpoints.down("sm")]: {
-            width: "60%",
-            margin: "10px 0 0 10px",
-		},
-		[theme.breakpoints.down("xs")]: {
-			top: "8%",
-			width: "60%",
-		},
+            margin: "10px 5px 0 10px",
+        },
+        [theme.breakpoints.down("xs")]: {
+            margin: "17px 5px 0 0",
+        },
     },
     select: {
         marginTop: "10px",
         borderRadius: theme.shape.borderRadius,
         backgroundColor: "#F39148",
-        [theme.breakpoints.down("sm")]: {
-			width: "20%",
+        [theme.breakpoints.down("sm")]: {         
             margin: "0 0 10px 0",
-		},
-		[theme.breakpoints.down("xs")]: {
-			width: "20%",
-		},
+        },
+        [theme.breakpoints.down("xs")]: {
+           
+        },
     },
     pagination: {
         backgroundColor: "#FFF",
@@ -115,16 +110,16 @@ const BootstrapInput = withStyles((theme) => ({
     root: {
         'label + &': {
             marginTop: theme.spacing(2),
-        },  
-       
+        },
     },
     input: {
         borderRadius: 4,
         position: 'relative',
         border: '1px solid #ced4da',
-        fontSize: 14,
-        height:17,
-        width:75,
+        fontSize: 14,      
+        color:"#FFF",
+        height: 17,
+        width: 75,
         padding: '10px 26px 7px 12px',
         transition: theme.transitions.create(['border-color', 'box-shadow']),
         fontFamily: [
@@ -136,11 +131,11 @@ const BootstrapInput = withStyles((theme) => ({
             boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
         },
         [theme.breakpoints.down("sm")]: {
-            fontSize: 11,
-		},
-		[theme.breakpoints.down("xs")]: {
-            fontSize: 11,
-		},  
+            
+        },
+        [theme.breakpoints.down("xs")]: {
+            
+        },
     },
 }))(InputBase);
 const itemsSearch = [
@@ -195,7 +190,7 @@ const itemsSearch = [
 ];
 const SearchPage = (props) => {
     const classes = useStyles();
-    const location =  useLocation();
+    const location = useLocation();
     const query = location.search.slice(3) || '';
     const dispatch = useDispatch();
     const itemAddToCartHandler = (item) => {
@@ -203,10 +198,10 @@ const SearchPage = (props) => {
     };
     const [optionPrice, setOptionPrice] = useState('Price');
     const [optionType, setOptionType] = useState('Ascending');
-    const handleChange = (event) => {
+    const priceChangeHandler = (event) => {
         setOptionPrice(event.target.value);
     };
-    const handleChangeType = (event) => {
+    const typeChangeHandler = (event) => {
         setOptionType(event.target.value);
     };
     useEffect(() => {
@@ -220,36 +215,46 @@ const SearchPage = (props) => {
                 <SideBar />
                 <div className={classes.main}>
                     <div className={classes.mainContent}>
-                        <div className={classes.topContent}>
-                            <h1>Search result {query} 200g</h1>
+                        <div className={classes.topContent}>                       
+                            <Typography variant="h5">
+                                Search result {query} 200g
+                            </Typography>
                             <div className={classes.filter}>
-                                <h3 className={classes.label}>Sort by</h3>
-                                <NativeSelect
-                                    id="demo-customized-select-native-price"
+                                <div>
+                                <Typography variant="h7" className={classes.label}>
+                                    Sort by
+                                </Typography>
+                                <NativeSelect                                  
                                     className={classes.select}
                                     value={optionPrice}
-                                    onChange={handleChange}
+                                    onChange={priceChangeHandler}
+                                   
                                     name="price"
-                                    inputProps={{ 'aria-label': 'age' }}
                                     input={<BootstrapInput />}
                                 >
-                                    <option aria-label="None" value="" />
-                                    <option value={10}>Higher</option>
-                                    <option value={20}>Lower</option>
+                                    <option style={{"color":"#F39148"}} value="">Price</option>
+                                    <option style={{"color":"#F39148"}} value={10}>Higher</option>
+                                    <option style={{"color":"#F39148"}} value={20}>Lower</option>
                                 </NativeSelect>
-                                <h3 className={classes.labelType}>Sort type</h3>
+                                </div>
+                                <div>
+                                <Typography variant="h7" className={classes.labelType}>
+                                    Sort type
+                                </Typography>
                                 <NativeSelect
-                                    id="customized-select-native-count"
                                     className={classes.select}
                                     name="type"
-                                    value={optionType}
-                                    onChange={handleChangeType}
+                                    value={optionType} 
+                                    onChange={typeChangeHandler}
                                     input={<BootstrapInput />}
                                 >
-                                    <option aria-label="None" value="" />
-                                    <option value={10}>Higher</option>
-                                    <option value={20}>Lower</option>
+                                    <option style={{"color":"#F39148"}} value="">Ascending</option>
+                                    <option style={{"color":"#F39148"}} value={10}>Higher</option>
+                                    <option  style={{"color":"#F39148"}} value={20}>Lower</option>
                                 </NativeSelect>
+                                </div>
+                                
+                                
                             </div>
                         </div>
                         <Container className={classes.item}>
