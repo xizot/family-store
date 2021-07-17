@@ -28,10 +28,9 @@ const useStyles = makeStyles((theme) => ({
     },
     topContent: {
         backgroundColor: "white",
-        textAlign: "center",
         width: "92wh",
         height: "15vh",
-        padding: "15px 15px 0 0",
+        padding: "10px 15px 0 20px",
         margin: "auto",
         [theme.breakpoints.down("sm")]: {
             width: "100%",
@@ -49,20 +48,26 @@ const useStyles = makeStyles((theme) => ({
             height: "auto",
         },
     },
-    filter:{
-        backgroundColor:"inherit",
-        margin:"0 0 10px 0",
-        justifyContent:"center",
-        display:'flex'
+    filter: {
+        backgroundColor: "inherit",
+        margin: "0 0 15px 0",
+        display: 'flex'
+    },
+    label: {
+        margin:"15px 5px 0 0"
+    },
+    labelType: {
+        margin:"15px 5px 0 100px"
     },
     select: {
-        marginTop:"10px",
+        marginTop: "10px",
         borderRadius: theme.shape.borderRadius,
-        backgroundColor:"#F39148"
+        backgroundColor: "#F39148"
     },
     pagination: {
         backgroundColor: "#FFF",
         '& > *': {
+            padding: "20px",
             marginTop: theme.spacing(2),
             marginBottom: theme.spacing(1),
             justifyContent: "center",
@@ -81,7 +86,9 @@ const BootstrapInput = withStyles((theme) => ({
         position: 'relative',
         border: '1px solid #ced4da',
         fontSize: 14,
-        padding: '10px 26px 10px 12px',
+        height:17,
+        width:75,
+        padding: '10px 26px 7px 12px',
         transition: theme.transitions.create(['border-color', 'box-shadow']),
         fontFamily: [
             'Arial',
@@ -149,9 +156,13 @@ const SearchPage = () => {
     const itemAddToCartHandler = (item) => {
         dispatch(cartActions.addItem({ ...item, quantity: 1 }));
     };
-    const [optionPrice, setOptionPrice] = useState('');
+    const [optionPrice, setOptionPrice] = useState('Price');
+    const [optionType, setOptionType] = useState('Ascending');
     const handleChange = (event) => {
         setOptionPrice(event.target.value);
+    };
+    const handleChangeType = (event) => {
+        setOptionType(event.target.value);
     };
     useEffect(() => {
         document.title = "Search page";
@@ -165,25 +176,28 @@ const SearchPage = () => {
                     <div className={classes.mainContent}>
                         <div className={classes.topContent}>
                             <h1>Search result Cần sa 200g</h1>
-                        </div>
-                        <Container className={classes.item}>
                             <div className={classes.filter}>
+                                <h3 className={classes.label}>Sort by</h3>
                                 <NativeSelect
                                     id="demo-customized-select-native-price"
                                     className={classes.select}
                                     value={optionPrice}
                                     onChange={handleChange}
+                                    name="price"
+                                    inputProps={{ 'aria-label': 'age' }}
                                     input={<BootstrapInput />}
                                 >
                                     <option aria-label="None" value="" />
                                     <option value={10}>Higher</option>
                                     <option value={20}>Lower</option>
                                 </NativeSelect>
+                                <h3 className={classes.labelType}>Sort type</h3>
                                 <NativeSelect
                                     id="customized-select-native-count"
                                     className={classes.select}
-                                    value={optionPrice}
-                                    onChange={handleChange}
+                                    name="type"
+                                    value={optionType}
+                                    onChange={handleChangeType}
                                     input={<BootstrapInput />}
                                 >
                                     <option aria-label="None" value="" />
@@ -191,6 +205,9 @@ const SearchPage = () => {
                                     <option value={20}>Lower</option>
                                 </NativeSelect>
                             </div>
+                        </div>
+                        <Container className={classes.item}>
+
                             <Grid container spacing={3}	>
                                 {itemsSearch?.length > 0 &&
                                     itemsSearch.map((item, index) => (
@@ -207,10 +224,11 @@ const SearchPage = () => {
                                         </Grid>
                                     ))}
                             </Grid>
+                            <div className={classes.pagination}>
+                                <Pagination count={itemsSearch.length} color="primary" variant="outlined" shape="rounded" />
+                            </div>
                         </Container>
-                        <div className={classes.pagination}>
-                            <Pagination count={itemsSearch.length} color="primary" />
-                        </div>
+
                     </div>
                 </div>
             </div>
