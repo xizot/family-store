@@ -6,6 +6,9 @@ import ProductItem from "../components/ProductItem/ProductItem";
 import SideBar from "../components/SideBar/SideBar";
 import { cartActions } from "../reducers/cart";
 import Header from "./../components/Layout/Header";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -18,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 			width: "100%",
 		},
 	},
+
 	mainContent: {
 		padding: "80px 10px 65px",
 		[theme.breakpoints.down("xs")]: {
@@ -25,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 			width: "100%",
 		},
 	},
+
 	topContent: {
 		width: "92wh",
 		height: "50vh",
@@ -39,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 			backgroundPosition: "60% 100%" ,
 		},
 	},
+
 	topContentTitle: {
 		width: "40%",
 		position: "relative",
@@ -53,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
 			fontSize: "38px",
 		},
 	},
+
 	topContentQuotes: {
 		width: "35%",
 		position: "relative",
@@ -68,10 +75,11 @@ const useStyles = makeStyles((theme) => ({
 			fontSize: "18px",
 		},
 	},
+
 	leftContent: {
-		width: "99%",
+		width: "99.15%",
 		height: "auto",
-		marginTop: "20px",
+		marginTop: "10px",
 		float: "left",
 		borderRadius: theme.shape.borderRadius,
 		backgroundColor: "#FFF",
@@ -80,10 +88,11 @@ const useStyles = makeStyles((theme) => ({
 		},
 		
 	},
+
 	rightContent: {
-		width: "99%",
+		width: "99.15%",
 		height: "auto",
-		marginTop: "20px",
+		marginTop: "10px",
 		float: "right",
 		borderRadius: theme.shape.borderRadius,
 		backgroundColor: "#FFF",
@@ -91,10 +100,11 @@ const useStyles = makeStyles((theme) => ({
 			width: "100%",
 		},
 	},
+
 	bottomContent: {
 		width: "92wh",
 		height: "auto",
-		margin: "20px 0px",
+		margin: "10px 0px",
 		borderRadius: theme.shape.borderRadius,
 		backgroundColor: "#FFF",
 		[theme.breakpoints.down("sm")]: {
@@ -102,6 +112,7 @@ const useStyles = makeStyles((theme) => ({
 			height: "auto",
 		},
 	},
+
 	topSaleTitle: {
 		width: "100%",
 		padding: "15px",
@@ -109,19 +120,85 @@ const useStyles = makeStyles((theme) => ({
 		color: "#F39148",
 		fontWeight: "500",
 	},
+
+	sliderCustom :{
+		width: "auto",
+		height :"auto",
+		margin: "0px 30px",
+	},
+
+	sliderCustomArrowPrev :{
+		display: "block",
+		height:"30px",
+		width:"30px",
+		position:"absolute",
+		top:"45%",
+		left:"-25px"
+	},
+
+	sliderCustomArrowNext :{
+		display: "block",
+		height:"30px",
+		width:"30px",
+		position:"absolute",
+		top:"45%",
+		right:"-25px"
+	},
+
 	listSale: {
 		width: "100%",
 		margin: 0,
 	},
 }));
+
+const CustomArrowPrev = (props) => {
+	const classes = useStyles();
+	const { onClick } = props;
+	return (
+	<div 
+		className={classes.sliderCustomArrowPrev}
+		onClick={onClick}>
+		<img style = {{height:"30px"}}
+			src={`${process.env.PUBLIC_URL}/img/arrow-jump-left.png`}
+			alt="Prev icon"
+		/>
+	</div>
+	);
+};
+
+const CustomArrowNext = (props) => {
+	const classes = useStyles();
+	const { onClick } = props;
+	return (
+	<div 
+		className={classes.sliderCustomArrowNext}
+		onClick={onClick}>
+		<img style = {{height:"30px"}}
+			src={`${process.env.PUBLIC_URL}/img/arrow-jump-right.png`}
+			alt="Prev icon"
+		/>
+	</div>
+	);
+};
+
+const sliderSettings = {
+	dots: false,
+	infinite: true,
+	speed: 600,
+	slidesToShow: 3,	//number of page to show per slide
+	slidesToScroll: 1, //number of pages gonna jump per click
+	nextArrow: <CustomArrowNext />,
+	prevArrow: <CustomArrowPrev />
+};
+
 const itemTopLastWeek = [
 	{
 		id: 1,
-		title: "Sữa đột biến gen",
-		description: "Sữa chống toxic",
-		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-		price: "4.99",
-		salePrice: "3.99",
+		title: "Rau salad tươi 500g",
+		description: "Rau salada tươi từ Đà Lạt",
+		image: "https://wna.cdnxbvn.com/wp-content/uploads/2019/03/xa-lach.jpg",
+		price: "20.000",
+	
 	},
 	{
 		id: 2,
@@ -139,15 +216,56 @@ const itemTopLastWeek = [
 		price: "4.99",
 		salePrice: "3.99",
 	},
+	{
+		id: 4,
+		title: "Card: Đảo chiều/phản toàn bộ",
+		description: "Phản toàn bộ sát thương và hiệu ứng xấu.",
+		image: "https://m.media-amazon.com/images/I/515EBaHdMoL._AC_SL1000_.jpg",
+		price: "4.99",
+		salePrice: "1.99",
+	},
+	{
+		id: 5,
+		title: "Card: Tĩnh mịch",
+		description: "Làm cho đối phương bị câm nít, bất động.",
+		image: "https://ih1.redbubble.net/image.975426852.6322/flat,750x,075,f-pad,750x1000,f8f8f8.jpg",
+		price: "4.99",
+		salePrice: "3.99",
+	},
+	{
+		id: 6,
+		title: "Nước tăng động",
+		description: "Giúp bạn +200% tăng động, +1000% bại não.",
+		image: "http://bizweb.dktcdn.net/thumb/large/100/232/204/products/red-blue.jpg?v=1567174449490",
+		price: "4.99",
+		salePrice: "3.99",
+	},
+	{
+		id: 7,
+		title: "Gương chiếu yêu",
+		description: "Trừ gian diệt tà",
+		image: "https://tranhdaquyhoangthu.com/wp-content/uploads/2020/06/g%C6%B0%C6%A1ng-chieu-yeu-tranh-da-quy3.jpg",
+		price: "4.99",
+		salePrice: "3.99",
+	},
+	{
+		id: 8,
+		title: "Gậy bắt ma",
+		description: "Bắt ma hiệu quả +200%.",
+		image: "https://www.thietbithuy.vn/image/cache/catalog/cable-pig-catcher-500x500.jpg",
+		price: "4.99",
+		salePrice: "3.99",
+	},
 ];
+
 const itemTopLastMonth = [
 	{
 		id: 1,
-		title: "Sữa đột biến gen",
-		description: "Sữa chống toxic",
-		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-		price: "4.99",
-		salePrice: "3.99",
+		title: "Rau salad tươi 500g",
+		description: "Rau salada tươi từ Đà Lạt",
+		image: "https://wna.cdnxbvn.com/wp-content/uploads/2019/03/xa-lach.jpg",
+		price: "20.000",
+	
 	},
 	{
 		id: 2,
@@ -165,7 +283,48 @@ const itemTopLastMonth = [
 		price: "4.99",
 		salePrice: "3.99",
 	},
+	{
+		id: 4,
+		title: "Card: Đảo chiều/phản toàn bộ",
+		description: "Phản toàn bộ sát thương và hiệu ứng xấu.",
+		image: "https://m.media-amazon.com/images/I/515EBaHdMoL._AC_SL1000_.jpg",
+		price: "4.99",
+		salePrice: "1.99",
+	},
+	{
+		id: 5,
+		title: "Card: Tĩnh mịch",
+		description: "Làm cho đối phương bị câm nít, bất động.",
+		image: "https://ih1.redbubble.net/image.975426852.6322/flat,750x,075,f-pad,750x1000,f8f8f8.jpg",
+		price: "4.99",
+		salePrice: "3.99",
+	},
+	{
+		id: 6,
+		title: "Nước tăng động",
+		description: "Giúp bạn +200% tăng động, +1000% bại não.",
+		image: "http://bizweb.dktcdn.net/thumb/large/100/232/204/products/red-blue.jpg?v=1567174449490",
+		price: "4.99",
+		salePrice: "3.99",
+	},
+	{
+		id: 7,
+		title: "Gương chiếu yêu",
+		description: "Trừ gian diệt tà",
+		image: "https://tranhdaquyhoangthu.com/wp-content/uploads/2020/06/g%C6%B0%C6%A1ng-chieu-yeu-tranh-da-quy3.jpg",
+		price: "4.99",
+		salePrice: "3.99",
+	},
+	{
+		id: 8,
+		title: "Gậy bắt ma",
+		description: "Bắt ma hiệu quả +200%.",
+		image: "https://www.thietbithuy.vn/image/cache/catalog/cable-pig-catcher-500x500.jpg",
+		price: "4.99",
+		salePrice: "3.99",
+	},
 ];
+
 const itemsOnSale = [
 	{
 		id: 1,
@@ -200,68 +359,6 @@ const itemsOnSale = [
 		salePrice: "3.99",
 	},
 ];
-// const saleList = [
-// 	{
-// 		id: 1,
-// 		title: "Sữa đột biến gen",
-// 		description: "Sữa chống toxic",
-// 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-// 		price: "4.99",
-// 		salePrice: "2.99",
-// 	},
-// 	{
-// 		id: 2,
-// 		title: "Sữa đột biến gen",
-// 		description: "Sữa chống toxic",
-// 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-// 		price: "3.99",
-// 	},
-// 	{
-// 		id: 3,
-// 		title: "Sữa đột biến gen",
-// 		description: "Sữa chống toxic",
-// 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-// 		price: "4.99",
-// 		salePrice: "3.99",
-// 	},
-// 	{
-// 		id: 4,
-// 		title: "Sữa đột biến gen",
-// 		description: "Sữa chống toxic",
-// 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-// 		price: "4.99",
-// 	},
-// 	{
-// 		id: 5,
-// 		title: "Sữa đột biến gen",
-// 		description: "Sữa chống toxic",
-// 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-// 		price: "4.99",
-// 		salePrice: "3.99",
-// 	},
-// 	{
-// 		id: 6,
-// 		title: "Sữa đột biến gen",
-// 		description: "Sữa chống toxic",
-// 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-// 		price: "9.99",
-// 	},
-// 	{
-// 		id: 7,
-// 		title: "Sữa đột biến gen",
-// 		description: "Sữa chống toxic",
-// 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-// 		price: "4.99",
-// 		salePrice: "3.99",
-// 	},
-// 	{
-// 		id: 8,
-// 		title: "Sữa đột biến gen",
-// 		description: "Sữa chống toxic",
-// 		image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_36.jpg",
-// 		price: "4.99",
-// 	},
-// ];
 
 const HomePage = () => {
 	const classes = useStyles();
@@ -293,22 +390,20 @@ const HomePage = () => {
 									<Typography variant="h5" className={classes.topSaleTitle}>
 										TOP ITEMS SELLING LAST WEEK
 									</Typography>
-										<Grid container	spacing={3}	className={classes.listSale}>
+									<Slider {...sliderSettings} className={classes.sliderCustom}>
 										{itemTopLastWeek?.length > 0 &&
 										itemTopLastWeek.map((item, index) => (
-										<Grid item xs={12} sm={4} md={4} key={index}>
 											<ProductItem
-												id={item.id}
-												title={item.title}
-												description={item.description}
-												image={item.image}
-												price={item.price}
-												salePrice={item.salePrice}
-												onAddToCart={itemAddToCartHandler.bind(null,item)}
+											id={item.id}
+											title={item.title}
+											description={item.description}
+											image={item.image}
+											price={item.price}
+											salePrice={item.salePrice}
+											onAddToCart={itemAddToCartHandler.bind(null,item)}
 											/>
-										</Grid>
 										))}
-									</Grid>
+									</Slider>
 								</div>
 							</Grid>	
 							<Grid item xs={12} sm={12} md={6}>
@@ -316,22 +411,20 @@ const HomePage = () => {
 									<Typography variant="h5" className={classes.topSaleTitle}>
 										TOP ITEMS SELLING LAST MONTH
 									</Typography>
-										<Grid container	spacing={3}	className={classes.listSale}>
+									<Slider {...sliderSettings} className={classes.sliderCustom}>
 										{itemTopLastMonth?.length > 0 &&
 										itemTopLastMonth.map((item, index) => (
-										<Grid item xs={12} sm={4} md={4} key={index}>
 											<ProductItem
-												id={item.id}
-												title={item.title}
-												description={item.description}
-												image={item.image}
-												price={item.price}
-												salePrice={item.salePrice}
-												onAddToCart={itemAddToCartHandler.bind(null,item)}
+											id={item.id}
+											title={item.title}
+											description={item.description}
+											image={item.image}
+											price={item.price}
+											salePrice={item.salePrice}
+											onAddToCart={itemAddToCartHandler.bind(null,item)}
 											/>
-										</Grid>
 										))}
-									</Grid>
+									</Slider>
 								</div>
 							</Grid>
 						</Grid>
