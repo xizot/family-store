@@ -1,4 +1,5 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Footer from "../components/Layout/Footer";
@@ -99,6 +100,7 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: "center",
 		color: "#F39148",
 		fontWeight: "500",
+		textTransform: "uppercase",
 	},
 
 	sliderCustom: {
@@ -500,14 +502,15 @@ const itemsOnSale = [
 ];
 
 const HomePage = () => {
+	const { t } = useTranslation();
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const itemAddToCartHandler = (item) => {
 		dispatch(cartActions.addItem({ ...item, quantity: 1 }));
 	};
 	useEffect(() => {
-		document.title = "Family Store - Easy to buy online";
-	}, []);
+		document.title = t("title");
+	}, [t]);
 	return (
 		<>
 			<div className={classes.root}>
@@ -520,13 +523,13 @@ const HomePage = () => {
 								variant="h3"
 								className={classes.topContentTitle}
 							>
-								Stay home & delivered your daily need’s
+								{t("homepage.bannerTitle")}
 							</Typography>
 							<Typography
 								variant="h5"
 								className={classes.topContentQuotes}
 							>
-								Start your daily shopping with Family Store
+								{t("homepage.bannerDescription")}
 							</Typography>
 						</div>
 						<Grid
@@ -540,7 +543,7 @@ const HomePage = () => {
 										variant="h5"
 										className={classes.topSaleTitle}
 									>
-										TOP ITEMS SELLING LAST WEEK
+										{t("homepage.topTitle1")}
 									</Typography>
 									<Slider
 										{...sliderSettings}
@@ -578,7 +581,7 @@ const HomePage = () => {
 										variant="h5"
 										className={classes.topSaleTitle}
 									>
-										TOP ITEMS SELLING LAST MONTH
+										{t("homepage.topTitle2")}
 									</Typography>
 									<Slider
 										{...sliderSettings}
@@ -616,7 +619,7 @@ const HomePage = () => {
 								variant="h5"
 								className={classes.topSaleTitle}
 							>
-								ITEMS ON SALE
+								{t("homepage.topTitle3")}
 							</Typography>
 							<Grid
 								container
