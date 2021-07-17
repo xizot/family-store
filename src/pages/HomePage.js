@@ -186,9 +186,43 @@ const sliderSettings = {
 	infinite: true,
 	speed: 600,
 	slidesToShow: 3,	//number of page to show per slide
-	slidesToScroll: 1, //number of pages gonna jump per click
+	slidesToScroll: 3, //number of pages gonna jump per click
+	initialSize:0,
 	nextArrow: <CustomArrowNext />,
-	prevArrow: <CustomArrowPrev />
+	prevArrow: <CustomArrowPrev />,
+	responsive: [
+		{
+			breakpoint: 1200,
+			settings:{
+				slidesToShow: 2,	//number of items to show per slide
+				slidesToScroll: 2, //number of items gonna jump per click
+			}
+		},
+		{
+			breakpoint: 960,
+			settings:{
+				slidesToShow: 3,	//number of items to show per slide
+				slidesToScroll: 3, //number of items gonna jump per click
+				initialSize:0,
+			}
+		},
+		{
+			breakpoint: 600,
+			settings:{
+				slidesToShow: 2,	//number of items to show per slide
+				slidesToScroll: 2, //number of items gonna jump per click
+				initialSize:0,
+			}
+		},
+		{
+			breakpoint: 360,
+			settings:{
+				slidesToShow: 1,	//number of items to show per slide
+				slidesToScroll: 1, //number of items gonna jump per click
+				initialSize:0,
+			}
+		}
+	],
 };
 
 const itemTopLastWeek = [
