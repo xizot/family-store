@@ -4,30 +4,30 @@ import {
 	Typography,
 	Card,
 	CardMedia,
-	Box,
 } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import { ShoppingBasket } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
-	root: {
+	card: {
 		position: "relative",
 		width: "100%",
-		height: "100%",
-	},
+		height: "calc(100% - 2px)",
+		boxShadow:
+			"rgb(0 0 0 / 20%) 0px 3px 1px -2px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px",
 
-	link: {
-		textDecoration: "none",
-	},
-	item: {
-		height: "100%",
 		"&:hover": {
 			"& $title": {
 				textDecoration: "underline",
 			},
 		},
 	},
+
+	link: {
+		textDecoration: "none",
+	},
+
 	iconAddToCart: {
 		cursor: "pointer",
 		position: "absolute",
@@ -57,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
 		overflow: "hidden",
 		textOverflow: "ellipsis",
 		color: "#333",
+		fontSize: ({ size }) => (size === "small" ? 14 : 16),
+		marginBottom: 5,
 	},
 	hasSale: {
 		textDecoration: "line-through",
@@ -68,12 +70,12 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.palette.primary.main,
 	},
 	description: {
-		fontSize: 14,
 		display: "-webkit-box",
-		"-webkit-line-clamp": 4,
+		"-webkit-line-clamp": ({ size }) => (size === "small" ? 2 : 4),
 		"-webkit-box-orient": "vertical",
 		overflow: "hidden",
 		textOverflow: "ellipsis",
+		fontSize: ({ size }) => (size === "small" ? 13 : 14),
 	},
 }));
 
@@ -85,54 +87,50 @@ const ProductItem = ({
 	salePrice,
 	description,
 	onAddToCart,
+	size = "normal",
 }) => {
-	const classes = useStyles();
+	const classes = useStyles({ size });
 
 	return (
-		<Box className={classes.root}>
-			<Card className={classes.item}>
-				<div onClick={onAddToCart} className={classes.iconAddToCart}>
-					<ShoppingBasket fontSize="small" />
-				</div>
-				<Link to={`details/${id}`} className={classes.link}>
-					<CardMedia
-						className={classes.media}
-						image={image}
-						title={title}
-					/>
-					<CardContent className={classes.content}>
-						<Typography className={classes.title} variant="body1">
-							{title}
+		<Card className={classes.card}>
+			<div onClick={onAddToCart} className={classes.iconAddToCart}>
+				<ShoppingBasket fontSize="small" />
+			</div>
+			<Link to={`details/${id}`} className={classes.link}>
+				<CardMedia
+					className={classes.media}
+					image={image}
+					title={title}
+				/>
+				<CardContent className={classes.content}>
+					<Typography className={classes.title} variant="body1">
+						{title}
+					</Typography>
+					<Typography
+						variant="body1"
+						className={`${classes.price} ${
+							salePrice ? classes.hasSale : ""
+						}`}
+					>
+						{price} VND
+					</Typography>
+					{salePrice && (
+						<Typography variant="body1" className={classes.price}>
+							{salePrice} VND
 						</Typography>
-						<Typography
-							variant="body1"
-							className={`${classes.price} ${
-								salePrice ? classes.hasSale : ""
-							}`}
-						>
-							{price} VND
-						</Typography>
-						{salePrice && (
-							<Typography
-								variant="body1"
-								className={classes.price}
-							>
-								{salePrice} VND
-							</Typography>
-						)}
+					)}
 
-						<Typography
-							variant="body2"
-							color="textSecondary"
-							component="p"
-							className={classes.description}
-						>
-							{description}
-						</Typography>
-					</CardContent>
-				</Link>
-			</Card>
-		</Box>
+					<Typography
+						variant="body2"
+						color="textSecondary"
+						component="p"
+						className={classes.description}
+					>
+						{description}
+					</Typography>
+				</CardContent>
+			</Link>
+		</Card>
 	);
 };
 export default ProductItem;

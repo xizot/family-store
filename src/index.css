@@ -9,3 +9,17 @@ body {
 	margin: 0;
 	background: #ddd;
 }
+.slick-track {
+	display: flex !important;
+}
+
+.slick-slide {
+	height: inherit !important;
+}
+.slick-slide > div {
+	height: 100%;
+	margin: 0 7.5px;
+}
+.slick-list {
+	margin: 0 -7.5px;
+}

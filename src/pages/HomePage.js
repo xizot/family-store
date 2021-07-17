@@ -7,7 +7,7 @@ import SideBar from "../components/SideBar/SideBar";
 import { cartActions } from "../reducers/cart";
 import Header from "./../components/Layout/Header";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,88 +23,68 @@ const useStyles = makeStyles((theme) => ({
 	},
 
 	mainContent: {
-		padding: "80px 10px 65px",
+		padding: `80px ${theme.spacing(2)}px 65px`,
 		[theme.breakpoints.down("xs")]: {
-			padding: "68px 10px 85px",
+			padding: `68px ${theme.spacing(2)}px 85px`,
 			width: "100%",
 		},
 	},
 
 	topContent: {
-		width: "92wh",
 		height: "50vh",
-		margin: "auto",
 		borderRadius: theme.shape.borderRadius,
-		backgroundImage: "URL(https://images.prismic.io/jamcart/eb389b58-aacb-4cd4-8295-3732c949ace8_Mask+Group+28.png)",
+		padding: 45,
+		backgroundImage:
+			"URL(https://images.prismic.io/jamcart/eb389b58-aacb-4cd4-8295-3732c949ace8_Mask+Group+28.png)",
 		backgroundPosition: "right bottom",
 		backgroundRepeat: "no-repeat",
 		backgroundSize: "cover",
 		[theme.breakpoints.down("sm")]: {
 			width: "100%",
-			backgroundPosition: "60% 100%" ,
+			backgroundPosition: "60% 100%",
+		},
+		marginBottom: theme.spacing(2),
+		[theme.breakpoints.down("sm")]: {
+			padding: 30,
+		},
+		[theme.breakpoints.down("xs")]: {
+			padding: 15,
 		},
 	},
 
 	topContentTitle: {
-		width: "40%",
-		position: "relative",
-		top: "20%",
-		left: "5%",
+		width: "60%",
+		marginBottom: theme.spacing(2),
 		[theme.breakpoints.down("sm")]: {
-			top: "8%",
-			width: "60%",
+			width: "100%",
 		},
 		[theme.breakpoints.down("xs")]: {
-			top: "8%",
 			fontSize: "38px",
 		},
 	},
 
 	topContentQuotes: {
-		width: "35%",
-		position: "relative",
-		top: "22%",
-		left: "5%",
+		width: "60%",
 		[theme.breakpoints.down("sm")]: {
-			top: "10%",
 			fontSize: "22px",
-			width: "50%",
+			width: "100%",
 		},
 		[theme.breakpoints.down("xs")]: {
-			top: "10%",
 			fontSize: "18px",
 		},
 	},
-
-	leftContent: {
-		width: "99.15%",
-		height: "auto",
-		marginTop: "10px",
-		float: "left",
-		borderRadius: theme.shape.borderRadius,
-		backgroundColor: "#FFF",
-		[theme.breakpoints.down("sm")]: {
-			width: "100%",
-		},
-		
-	},
-
-	rightContent: {
-		width: "99.15%",
-		height: "auto",
-		marginTop: "10px",
-		float: "right",
+	sliderBox: {
 		borderRadius: theme.shape.borderRadius,
 		backgroundColor: "#FFF",
 		[theme.breakpoints.down("sm")]: {
 			width: "100%",
 		},
 	},
-
+	saleContent: {
+		marginBottom: theme.spacing(1),
+	},
 	bottomContent: {
-		width: "92wh",
-		height: "auto",
-		margin: "10px 0px",
+		marginBottom: theme.spacing(2),
 		borderRadius: theme.shape.borderRadius,
 		backgroundColor: "#FFF",
 		[theme.breakpoints.down("sm")]: {
@@ -121,28 +101,24 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: "500",
 	},
 
-	sliderCustom :{
+	sliderCustom: {
 		width: "auto",
-		height :"auto",
-		margin: "0px 30px",
+		height: "auto",
+		padding: "0px 30px 15px",
 	},
 
-	sliderCustomArrowPrev :{
-		display: "block",
-		height:"30px",
-		width:"30px",
-		position:"absolute",
-		top:"45%",
-		left:"-25px"
+	sliderCustomArrowPrev: {
+		cursor: "pointer",
+		position: "absolute",
+		top: "45%",
+		left: 5,
 	},
 
-	sliderCustomArrowNext :{
-		display: "block",
-		height:"30px",
-		width:"30px",
-		position:"absolute",
-		top:"45%",
-		right:"-25px"
+	sliderCustomArrowNext: {
+		cursor: "pointer",
+		position: "absolute",
+		top: "45%",
+		right: 5,
 	},
 
 	listSale: {
@@ -155,14 +131,13 @@ const CustomArrowPrev = (props) => {
 	const classes = useStyles();
 	const { onClick } = props;
 	return (
-	<div 
-		className={classes.sliderCustomArrowPrev}
-		onClick={onClick}>
-		<img style = {{height:"30px"}}
-			src={`${process.env.PUBLIC_URL}/img/arrow-jump-left.png`}
-			alt="Prev icon"
-		/>
-	</div>
+		<div className={classes.sliderCustomArrowPrev} onClick={onClick}>
+			<img
+				style={{ height: "24px" }}
+				src={`${process.env.PUBLIC_URL}/img/arrow-jump-left.png`}
+				alt="Prev icon"
+			/>
+		</div>
 	);
 };
 
@@ -170,58 +145,60 @@ const CustomArrowNext = (props) => {
 	const classes = useStyles();
 	const { onClick } = props;
 	return (
-	<div 
-		className={classes.sliderCustomArrowNext}
-		onClick={onClick}>
-		<img style = {{height:"30px"}}
-			src={`${process.env.PUBLIC_URL}/img/arrow-jump-right.png`}
-			alt="Prev icon"
-		/>
-	</div>
+		<div className={classes.sliderCustomArrowNext} onClick={onClick}>
+			<img
+				style={{ height: "24px" }}
+				src={`${process.env.PUBLIC_URL}/img/arrow-jump-right.png`}
+				alt="Prev icon"
+			/>
+		</div>
 	);
 };
 
 const sliderSettings = {
 	dots: false,
 	infinite: true,
-	speed: 600,
-	slidesToShow: 3,	//number of page to show per slide
+	slidesToShow: 3, //number of page to show per slide
 	slidesToScroll: 3, //number of pages gonna jump per click
-	initialSize:0,
+	initialSize: 0,
+	autoplay: true,
+	autoplaySpeed: 5000,
+	cssEase: "linear",
+	pauseOnHover: true,
 	nextArrow: <CustomArrowNext />,
 	prevArrow: <CustomArrowPrev />,
 	responsive: [
 		{
 			breakpoint: 1200,
-			settings:{
-				slidesToShow: 2,	//number of items to show per slide
+			settings: {
+				slidesToShow: 2, //number of items to show per slide
 				slidesToScroll: 2, //number of items gonna jump per click
-			}
+			},
 		},
 		{
 			breakpoint: 960,
-			settings:{
-				slidesToShow: 3,	//number of items to show per slide
+			settings: {
+				slidesToShow: 3, //number of items to show per slide
 				slidesToScroll: 3, //number of items gonna jump per click
-				initialSize:0,
-			}
+				initialSize: 0,
+			},
 		},
 		{
 			breakpoint: 600,
-			settings:{
-				slidesToShow: 2,	//number of items to show per slide
+			settings: {
+				slidesToShow: 2, //number of items to show per slide
 				slidesToScroll: 2, //number of items gonna jump per click
-				initialSize:0,
-			}
+				initialSize: 0,
+			},
 		},
 		{
 			breakpoint: 360,
-			settings:{
-				slidesToShow: 1,	//number of items to show per slide
+			settings: {
+				slidesToShow: 1, //number of items to show per slide
 				slidesToScroll: 1, //number of items gonna jump per click
-				initialSize:0,
-			}
-		}
+				initialSize: 0,
+			},
+		},
 	],
 };
 
@@ -232,7 +209,6 @@ const itemTopLastWeek = [
 		description: "Rau salada tươi từ Đà Lạt",
 		image: "https://wna.cdnxbvn.com/wp-content/uploads/2019/03/xa-lach.jpg",
 		price: "20.000",
-	
 	},
 	{
 		id: 2,
@@ -299,7 +275,6 @@ const itemTopLastMonth = [
 		description: "Rau salada tươi từ Đà Lạt",
 		image: "https://wna.cdnxbvn.com/wp-content/uploads/2019/03/xa-lach.jpg",
 		price: "20.000",
-	
 	},
 	{
 		id: 2,
@@ -411,76 +386,136 @@ const HomePage = () => {
 				<div className={classes.main}>
 					<div className={classes.mainContent}>
 						<div className={classes.topContent}>
-							<Typography variant="h3" className={classes.topContentTitle}>
+							<Typography
+								variant="h3"
+								className={classes.topContentTitle}
+							>
 								Stay home & delivered your daily need’s
 							</Typography>
-							<Typography variant="h5" className={classes.topContentQuotes}>
+							<Typography
+								variant="h5"
+								className={classes.topContentQuotes}
+							>
 								Start your daily shopping with Family Store
 							</Typography>
 						</div>
-						<Grid container spacing={0} >
+						<Grid
+							container
+							spacing={2}
+							className={classes.saleContent}
+						>
 							<Grid item xs={12} sm={12} md={6}>
-								<div className={classes.leftContent}>
-									<Typography variant="h5" className={classes.topSaleTitle}>
+								<div className={classes.sliderBox}>
+									<Typography
+										variant="h5"
+										className={classes.topSaleTitle}
+									>
 										TOP ITEMS SELLING LAST WEEK
 									</Typography>
-									<Slider {...sliderSettings} className={classes.sliderCustom}>
+									<Slider
+										{...sliderSettings}
+										className={classes.sliderCustom}
+									>
 										{itemTopLastWeek?.length > 0 &&
-										itemTopLastWeek.map((item, index) => (
-											<ProductItem
-											id={item.id}
-											title={item.title}
-											description={item.description}
-											image={item.image}
-											price={item.price}
-											salePrice={item.salePrice}
-											onAddToCart={itemAddToCartHandler.bind(null,item)}
-											/>
-										))}
+											itemTopLastWeek.map(
+												(item, index) => (
+													<ProductItem
+														key={index}
+														size="small"
+														id={item.id}
+														title={item.title}
+														description={
+															item.description
+														}
+														image={item.image}
+														price={item.price}
+														salePrice={
+															item.salePrice
+														}
+														onAddToCart={itemAddToCartHandler.bind(
+															null,
+															item
+														)}
+													/>
+												)
+											)}
 									</Slider>
 								</div>
-							</Grid>	
+							</Grid>
 							<Grid item xs={12} sm={12} md={6}>
-								<div className={classes.rightContent}>
-									<Typography variant="h5" className={classes.topSaleTitle}>
+								<div className={classes.sliderBox}>
+									<Typography
+										variant="h5"
+										className={classes.topSaleTitle}
+									>
 										TOP ITEMS SELLING LAST MONTH
 									</Typography>
-									<Slider {...sliderSettings} className={classes.sliderCustom}>
+									<Slider
+										{...sliderSettings}
+										className={classes.sliderCustom}
+									>
 										{itemTopLastMonth?.length > 0 &&
-										itemTopLastMonth.map((item, index) => (
-											<ProductItem
-											id={item.id}
-											title={item.title}
-											description={item.description}
-											image={item.image}
-											price={item.price}
-											salePrice={item.salePrice}
-											onAddToCart={itemAddToCartHandler.bind(null,item)}
-											/>
-										))}
+											itemTopLastMonth.map(
+												(item, index) => (
+													<ProductItem
+														key={index}
+														size="small"
+														id={item.id}
+														title={item.title}
+														description={
+															item.description
+														}
+														image={item.image}
+														price={item.price}
+														salePrice={
+															item.salePrice
+														}
+														onAddToCart={itemAddToCartHandler.bind(
+															null,
+															item
+														)}
+													/>
+												)
+											)}
 									</Slider>
 								</div>
 							</Grid>
 						</Grid>
 						<div className={classes.bottomContent}>
-							<Typography variant="h5" className={classes.topSaleTitle}>
+							<Typography
+								variant="h5"
+								className={classes.topSaleTitle}
+							>
 								ITEMS ON SALE
 							</Typography>
-							<Grid container	spacing={3}	className={classes.listSale}>
+							<Grid
+								container
+								spacing={3}
+								className={classes.listSale}
+							>
 								{itemsOnSale?.length > 0 &&
 									itemsOnSale.map((item, index) => (
-									<Grid item xs={12} sm={6} md={3} key={index}>
-										<ProductItem
-											id={item.id}
-											title={item.title}
-											description={item.description}
-											image={item.image}
-											price={item.price}
-											salePrice={item.salePrice}
-											onAddToCart={itemAddToCartHandler.bind(null,item)}
-										/>
-									</Grid>
-								))}
+										<Grid
+											item
+											xs={12}
+											sm={6}
+											md={3}
+											key={index}
+										>
+											<ProductItem
+												id={item.id}
+												title={item.title}
+												description={item.description}
+												image={item.image}
+												price={item.price}
+												salePrice={item.salePrice}
+												onAddToCart={itemAddToCartHandler.bind(
+													null,
+													item
+												)}
+											/>
+										</Grid>
+									))}
 							</Grid>
 						</div>
 					</div>
