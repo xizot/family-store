@@ -22,6 +22,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 	text: {
 		color: "#fff",
+		[theme.breakpoints.down("sm")]: {
+			fontSize: 40,
+		},
+		[theme.breakpoints.down("xs")]: {
+			fontSize: 30,
+		},
 	},
 }));
 const PageNotFound = (props) => {
