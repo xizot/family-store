@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     item: {
         width: "92wh",
         height: "auto",
-        margin: "15px 0px",
+        marginTop:"20px",
         borderRadius: theme.shape.borderRadius,
         backgroundColor: "#FFF",
         [theme.breakpoints.down("sm")]: {
@@ -217,7 +217,7 @@ const SearchPage = (props) => {
                     <div className={classes.mainContent}>
                         <div className={classes.topContent}>                       
                             <Typography variant="h5">
-                                Search result {query} 200g
+                                Search results for "{query}"
                             </Typography>
                             <div className={classes.filter}>
                                 <div>
