@@ -211,7 +211,6 @@ const SearchPage = (props) => {
         <>
             <div className={classes.root}>
                 <Header showMenu showCart />
-                {console.log(query)}
                 <SideBar />
                 <div className={classes.main}>
                     <div className={classes.mainContent}>
