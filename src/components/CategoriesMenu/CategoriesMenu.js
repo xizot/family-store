@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 		opacity: 0.4,
 		padding: "30px 20px 5px",
 		fontWeight: "bold",
-		fontSize:16
+		fontSize: 16,
 	},
 	line: {
 		width: "calc(100% - 40px)",
@@ -39,33 +39,6 @@ const categories = [
 			{ id: "spice", title: "Spice" },
 			{ id: "honey", title: "Honey" },
 			{ id: "oil", title: "Oil" },
-		],
-	},
-	{
-		id: "snack-beverages",
-		title: "Snack & Beverages",
-		items: [
-			{ id: "juice", title: "Juice" },
-			{ id: "coffee", title: "Coffee" },
-			{ id: "tea", title: "Tea" },
-		],
-	},
-	{
-		id: "snack-beverages",
-		title: "Snack & Beverages",
-		items: [
-			{ id: "juice", title: "Juice" },
-			{ id: "coffee", title: "Coffee" },
-			{ id: "tea", title: "Tea" },
-		],
-	},
-	{
-		id: "snack-beverages",
-		title: "Snack & Beverages",
-		items: [
-			{ id: "juice", title: "Juice" },
-			{ id: "coffee", title: "Coffee" },
-			{ id: "tea", title: "Tea" },
 		],
 	},
 	{

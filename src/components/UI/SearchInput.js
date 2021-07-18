@@ -3,6 +3,7 @@ import { Search } from "@material-ui/icons";
 import { useRef } from "react";
 import { isNotEmpty } from "../../helpers/validate";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		position: "relative",
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SearchInput = ({ border }) => {
+	const { t } = useTranslation();
 	const history = useHistory();
 	const classes = useStyles({ border });
 	const searchRef = useRef("");
@@ -60,7 +62,7 @@ const SearchInput = ({ border }) => {
 				<Search />
 			</div>
 			<InputBase
-				placeholder="What Are You Looking For?"
+				placeholder={t("searchPlaceHolder")}
 				classes={{
 					root: classes.inputRoot,
 					input: classes.inputInput,

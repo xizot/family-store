@@ -8,6 +8,7 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 import { ShoppingBasket } from "@material-ui/icons";
+import { moneyFormat } from "../../helpers";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -112,11 +113,11 @@ const ProductItem = ({
 							salePrice ? classes.hasSale : ""
 						}`}
 					>
-						{price} VND
+						{price && moneyFormat(price)} VND
 					</Typography>
 					{salePrice && (
 						<Typography variant="body1" className={classes.price}>
-							{salePrice} VND
+							{salePrice && moneyFormat(salePrice)} VND
 						</Typography>
 					)}
 

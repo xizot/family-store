@@ -2,6 +2,7 @@ import { Button, IconButton, makeStyles, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { moneyFormat } from "../../helpers";
 import { cartActions } from "../../reducers/cart";
 import { uiActions } from "../../reducers/ui";
 import CartModal from "../UI/CartModal/CartModal";
@@ -87,7 +88,7 @@ const Cart = (props) => {
 							component="p"
 							style={{ fontWeight: "bold" }}
 						>
-							{totalAmount} VND
+							{totalAmount && moneyFormat(totalAmount)} VND
 						</Typography>
 					</div>
 				</div>

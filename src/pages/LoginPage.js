@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
 	FormControl,
 	Container,
@@ -64,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginPage = () => {
+	const { t } = useTranslation();
 	const classes = useStyles();
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -108,8 +110,8 @@ const LoginPage = () => {
 	};
 
 	useEffect(() => {
-		document.title = "Login Page";
-	}, []);
+		document.title = t("loginpage.title");
+	}, [t]);
 
 	if (isAuthenticated) return <Redirect to={location?.state?.from || "/"} />;
 
@@ -121,7 +123,7 @@ const LoginPage = () => {
 					<Container>
 						<Box className={classes.form} boxShadow={3}>
 							<Typography variant="h3" className={classes.title}>
-								Login
+								{t("loginpage.formTitle")}
 							</Typography>
 							<form
 								noValidate
@@ -131,10 +133,11 @@ const LoginPage = () => {
 								<FormControl className={classes.formControl}>
 									<TextField
 										error={usernameHasError}
-										label="Email / Username"
+										label={t("loginpage.email")}
+										type="email"
 										helperText={
 											usernameHasError &&
-											"Please enter a valid email or username."
+											t("loginpage.emailInValid")
 										}
 										fullWidth
 										size="small"
@@ -147,12 +150,12 @@ const LoginPage = () => {
 								<FormControl className={classes.formControl}>
 									<TextField
 										// error
-										label="Password"
+										label={t("loginpage.password")}
 										type="password"
 										error={passwordHasError}
 										helperText={
 											passwordHasError &&
-											"Please enter a valid password."
+											t("loginpage.passwordInValid")
 										}
 										fullWidth
 										size="small"
@@ -170,18 +173,20 @@ const LoginPage = () => {
 									type="submit"
 									className={classes.button}
 								>
-									Sign In
+									{t("loginpage.buttonLogin")}
 								</Button>
 							</form>
 							<div className={classes.actions}>
 								<Typography variant="body2">
-									New member?{" "}
-									<Link to="/register">Sign up</Link>
+									{t("loginpage.newMember")}{" "}
+									<Link to="/register">
+										{t("loginpage.signUp")}
+									</Link>
 								</Typography>
 
 								<Link to="/forget-password">
 									<Typography variant="body2">
-										Forgot password?
+										{t("loginpage.forgotPassword")}
 									</Typography>
 								</Link>
 							</div>

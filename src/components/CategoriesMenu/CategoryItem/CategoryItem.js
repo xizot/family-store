@@ -83,7 +83,7 @@ export const CategoryItem = ({ id, title, items }) => {
 						items.map((item, index) => (
 							<li className={classes.item} key={index}>
 								<NavLink
-									to={`${id}/${item.id}`}
+									to={`/collections/${item.id}`}
 									activeClassName={classes["item-active"]}
 								>
 									{item.title}

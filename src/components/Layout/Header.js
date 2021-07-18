@@ -5,14 +5,24 @@ import {
 	IconButton,
 	Badge,
 	Toolbar,
+	Select,
+	MenuItem,
 } from "@material-ui/core";
-import { LocalMall, Person, Menu, ExitToApp } from "@material-ui/icons";
+import { useTranslation } from "react-i18next";
+import {
+	LocalMall,
+	Person,
+	Menu,
+	ExitToApp,
+	Translate,
+} from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { authActions } from "../../reducers/auth";
 import { uiActions } from "../../reducers/ui";
 import SearchInput from "../UI/SearchInput";
+import { langActions } from "../../reducers/lang";
 const useStyles = makeStyles((theme) => ({
 	root: {},
 	toolBar: {
@@ -70,6 +80,16 @@ const useStyles = makeStyles((theme) => ({
 			padding: "5px",
 		},
 	},
+	selectLanguage: {
+		color: "#fff",
+		margin: "0 12px",
+		"& svg": {
+			color: "#fff",
+		},
+		"&:before": {
+			border: "none !important",
+		},
+	},
 	bump: {
 		animation: "$bump 300ms ease-out",
 	},
@@ -92,10 +112,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 const Header = ({ showMenu, showCart }) => {
+	const { i18n } = useTranslation();
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const cartItems = useSelector((state) => state.cart.data);
+	const lang = useSelector((state) => state.lang.current);
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const [btnIsHightlighted, setBtnIsHightlighted] = useState(false);
 
@@ -116,6 +138,12 @@ const Header = ({ showMenu, showCart }) => {
 		history.push("/login");
 	};
 
+	const languageChangeHandler = (e) => {
+		const langSelected = e.target.value;
+		i18n.changeLanguage(langSelected);
+		dispatch(langActions.updateLang(langSelected));
+	};
+
 	const btnCart = `${classes.iconButton} ${
 		btnIsHightlighted ? classes.bump : ""
 	}`;
@@ -129,6 +157,7 @@ const Header = ({ showMenu, showCart }) => {
 			setBtnIsHightlighted(false);
 		}, 300);
 	}, [cartItems]);
+
 	return (
 		<AppBar position="fixed" className={classes.root}>
 			<Toolbar className={classes.toolBar}>
@@ -159,6 +188,17 @@ const Header = ({ showMenu, showCart }) => {
 				</div>
 
 				<div className={classes.sectionDesktop}>
+					<Select
+						onChange={languageChangeHandler}
+						value={lang}
+						displayEmpty
+						className={classes.selectLanguage}
+						inputProps={{ "aria-label": "Without label" }}
+						IconComponent={Translate}
+					>
+						<MenuItem value="en">English</MenuItem>
+						<MenuItem value="vn">Vietnamese</MenuItem>
+					</Select>
 					<Link to="/profile" className={classes.navLink}>
 						<IconButton
 							aria-label="My profile"

@@ -1,5 +1,6 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
+import { moneyFormat } from "../../helpers";
 import NumericUpDown from "../UI/NumericUpDown";
 
 const useStyles = makeStyles((theme) => ({
@@ -113,7 +114,7 @@ const CartItem = ({
 				<span onClick={onClear} className={classes.remove}>
 					<Close style={{ color: "#fff" }} />
 				</span>
-				<img src={image} alt={title} />
+				<img src={image} alt={title} loading="lazy" />
 			</div>
 			<div className={classes.description}>
 				<div className={classes.detail}>
@@ -127,14 +128,14 @@ const CartItem = ({
 							salePrice ? classes.hasSale : ""
 						}`}
 					>
-						Unit Price {price} VND
+						Unit Price {price && moneyFormat(price)} VND
 					</Typography>
 					{salePrice && (
 						<Typography
 							variant="subtitle2"
 							className={classes.price}
 						>
-							Sale {salePrice} VND
+							Sale {salePrice && moneyFormat(salePrice)} VND
 						</Typography>
 					)}
 				</div>

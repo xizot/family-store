@@ -1,16 +1,19 @@
 import { createTheme, ThemeProvider } from "@material-ui/core";
-import { lazy, Suspense } from "react";
-import { useSelector } from "react-redux";
+import { lazy, Suspense, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import Cart from "./components/Cart/Cart";
 import { ProtectedRoute } from "./components/Common/ProtectedRoute";
 import Loading from "./components/Loading/Loading";
+import { useTranslation } from "react-i18next";
+import { langActions } from "./reducers/lang";
 const HomePage = lazy(() => import("./pages/HomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const ProfilePage = lazy(() => import("./pages/Profile"));
 const PageNotFound = lazy(() => import("./pages/404NotFound"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
+const CollectionsPage = lazy(() => import("./pages/Collections"));
 
 const theme = createTheme({
 	palette: {
@@ -21,7 +24,18 @@ const theme = createTheme({
 	},
 });
 function App() {
+	const dispatch = useDispatch();
+	const { i18n } = useTranslation();
 	const isOpenCart = useSelector((state) => state.ui.isOpenCart);
+	useEffect(() => {
+		const existingLang = localStorage.getItem("lang");
+		if (!existingLang || (existingLang !== "vn" && existingLang !== "en"))
+			return;
+
+		dispatch(langActions.updateLang(existingLang));
+
+		i18n.changeLanguage(existingLang);
+	}, [i18n, dispatch]);
 	return (
 		<ThemeProvider theme={theme}>
 			{isOpenCart && <Cart />}
@@ -46,8 +60,15 @@ function App() {
 					<Route exact path="/register">
 						<RegisterPage />
 					</Route>
+
 					<Route exact path="/search">
 						<SearchPage />
+					</Route>
+					<Route exact path="/collections">
+						<CollectionsPage />
+					</Route>
+					<Route exact path="/collections/:slug">
+						<CollectionsPage />
 					</Route>
 
 					<Route path="*">

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
 	FormControl,
 	Container,
@@ -77,6 +78,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RegisterPage = () => {
+	const { t } = useTranslation();
 	const classes = useStyles();
 	const [phoneNumber, setPhoneNumber] = useState("");
 	const [phoneNumberIsTouched, setPhoneNumberIsTouched] = useState(false);
@@ -154,8 +156,8 @@ const RegisterPage = () => {
 	};
 
 	useEffect(() => {
-		document.title = "Register Page";
-	}, []);
+		document.title = t("registerpage.title");
+	}, [t]);
 
 	return (
 		<>
@@ -165,7 +167,7 @@ const RegisterPage = () => {
 					<Container>
 						<Box className={classes.form} boxShadow={3}>
 							<Typography variant="h3" className={classes.title}>
-								Register
+								{t("registerpage.formTitle")}
 							</Typography>
 							<form
 								noValidate
@@ -177,11 +179,11 @@ const RegisterPage = () => {
 										<Grid item xs={12} sm={6}>
 											<TextField
 												error={emailHasError}
-												label="Email"
+												label={t("registerpage.email")}
 												type="email"
 												helperText={
 													emailHasError &&
-													"Please enter a valid email "
+													t("registerpage.emailInValid")
 												}
 												required
 												fullWidth
@@ -218,8 +220,7 @@ const RegisterPage = () => {
 														classes.formHelperText
 													}
 												>
-													Please enter a valid phone
-													number
+													{t("registerpage.phonenumberInValid")}
 												</FormHelperText>
 											)}
 										</Grid>
@@ -228,10 +229,10 @@ const RegisterPage = () => {
 								<FormControl className={classes.formControl}>
 									<TextField
 										error={addressHasError}
-										label="Address"
+										label={t("registerpage.address")}
 										helperText={
 											addressHasError &&
-											"Please enter a valid address."
+											t("registerpage.addressInValid")
 										}
 										fullWidth
 										size="small"
@@ -243,12 +244,12 @@ const RegisterPage = () => {
 								</FormControl>
 								<FormControl className={classes.formControl}>
 									<TextField
-										label="Password"
+										label={t("registerpage.password")}
 										type="password"
 										error={passwordHasError}
 										helperText={
 											passwordHasError &&
-											"Please enter a valid password."
+											t("registerpage.passwordInValid")
 										}
 										fullWidth
 										size="small"
@@ -260,12 +261,12 @@ const RegisterPage = () => {
 								</FormControl>
 								<FormControl className={classes.formControl}>
 									<TextField
-										label="Confirm Password"
+										label={t("registerpage.confirmPassword")}
 										type="password"
 										error={confirmPasswordHasError}
 										helperText={
 											confirmPasswordHasError &&
-											"Password and confirm password does not match."
+											t("registerpage.confirmPasswordInValid")
 										}
 										fullWidth
 										size="small"
@@ -283,14 +284,14 @@ const RegisterPage = () => {
 									type="submit"
 									className={classes.button}
 								>
-									Register
+									{t("registerpage.buttonRegister")}
 								</Button>
 								<Typography
 									className={classes.forwardTo}
 									variant="body2"
 								>
-									Already have account?{" "}
-									<Link to="/login">Sign in</Link>
+									{t("registerpage.haveAccount")}{" "}
+									<Link to="/login">{t("registerpage.signIn")}</Link>
 								</Typography>
 							</form>
 						</Box>
