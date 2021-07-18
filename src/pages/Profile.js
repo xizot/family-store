@@ -17,6 +17,8 @@ import "react-phone-input-2/lib/style.css";
 import { useHistory, useParams } from "react-router-dom";
 import Footer from "../components/Layout/Footer";
 import Header from "../components/Layout/Header";
+import { useTranslation } from "react-i18next";
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		minHeight: "100vh",
@@ -77,13 +79,14 @@ const basicStyles = makeStyles((theme) => ({
 
 const BasicProfilePanel = () => {
 	const classes = basicStyles();
+	const { t } = useTranslation();
 	return (
 		<form noValidate autoComplete="off" className={classes.form}>
 			<FormControl className={classes.formControl}>
 				<TextField
 					// error
 					error={false}
-					label="Full name"
+					label={t("profilepage.fullName")}
 					type="text"
 					helperText={false && "Please enter a valid name."}
 					fullWidth
@@ -94,7 +97,7 @@ const BasicProfilePanel = () => {
 			<FormControl className={classes.formControl}>
 				<TextField
 					error={false}
-					label="Email"
+					label={t("profilepage.email")}
 					type="email"
 					helperText={false && "Please enter a valid email."}
 					fullWidth
@@ -125,7 +128,7 @@ const BasicProfilePanel = () => {
 			<FormControl className={classes.formControl}>
 				<TextField
 					error={false}
-					label="Address"
+					label={t("profilepage.address")}
 					helperText={false && "Please enter a valid address."}
 					fullWidth
 					size="small"
@@ -135,20 +138,21 @@ const BasicProfilePanel = () => {
 				/>
 			</FormControl>
 			<Button variant="contained" color="primary" fullWidth type="submit">
-				Save Changes
+				{t("profilepage.buttonExecute")}
 			</Button>
 		</form>
 	);
 };
 const ChangePasswordPanel = () => {
 	const classes = basicStyles();
+	const { t } = useTranslation();
 	return (
 		<form noValidate autoComplete="off" className={classes.form}>
 			<FormControl className={classes.formControl}>
 				<TextField
 					// error
 					error={false}
-					label="Your current password"
+					label={t("profilepage.currentPassword")}
 					type="text"
 					fullWidth
 					size="small"
@@ -158,7 +162,7 @@ const ChangePasswordPanel = () => {
 			<FormControl className={classes.formControl}>
 				<TextField
 					error={false}
-					label="New password"
+					label={t("profilepage.newPassword")}
 					type="text"
 					fullWidth
 					size="small"
@@ -168,7 +172,7 @@ const ChangePasswordPanel = () => {
 			<FormControl className={classes.formControl}>
 				<TextField
 					error={false}
-					label="Confirm your new password"
+					label={t("profilepage.confirmNewPassword")}
 					helperText={false && "Confirm password is not match"}
 					fullWidth
 					size="small"
@@ -176,7 +180,7 @@ const ChangePasswordPanel = () => {
 				/>
 			</FormControl>
 			<Button variant="contained" color="primary" fullWidth type="submit">
-				Save Changes
+				{t("profilepage.buttonExecute")}
 			</Button>
 		</form>
 	);
@@ -211,6 +215,7 @@ const avatarPanelStyles = makeStyles((theme) => ({
 	},
 }));
 const AvatarPanel = () => {
+	const { t } = useTranslation();
 	const avatarClasses = avatarPanelStyles();
 	return (
 		<div className={avatarClasses.root}>
@@ -225,18 +230,18 @@ const AvatarPanel = () => {
 				<Grid container spacing={1} className={avatarClasses.actions}>
 					<Grid item xs={6}>
 						<Button variant="contained" color="primary" fullWidth>
-							Remove
+							{t("profilepage.buttonRemove")}
 						</Button>
 					</Grid>
 					<Grid item xs={6}>
 						<Button variant="contained" fullWidth>
-							Browse
+							{t("profilepage.buttonBrowse")}
 						</Button>
 					</Grid>
 				</Grid>
 			</div>
 			<Button variant="contained" color="primary" fullWidth type="submit">
-				Save Changes
+				{t("profilepage.buttonExecute")}
 			</Button>
 		</div>
 	);
@@ -247,11 +252,12 @@ const Profile = (props) => {
 	let { slug } = useParams();
 	const classes = useStyles();
 	const [tabValue, setTabValue] = useState(0);
+	const { t } = useTranslation();
 
 	const indexToTabName = {
-		0: "basic",
-		1: "password",
-		2: "avatar",
+		0: 'basic',
+		1: 'password',
+		2: 'avatar'
 	};
 	const tabChangeHandler = (event, newValue) => {
 		history.push(`/profile/${indexToTabName[newValue]}`);
@@ -268,8 +274,8 @@ const Profile = (props) => {
 	}, [slug]);
 
 	useEffect(() => {
-		document.title = "My Account";
-	}, []);
+		document.title = t("profilepage.title");
+	}, [t]);
 	return (
 		<>
 			<div className={classes.root}>
@@ -284,9 +290,9 @@ const Profile = (props) => {
 							className={classes.tabs}
 							TabIndicatorProps={{ className: classes.tabActive }}
 						>
-							<Tab label="BASIC PROFILE" />
-							<Tab label="CHANGE PASSWORD" />
-							<Tab label="AVATAR" />
+							<Tab label={t("profilepage.tabTitle.1")} />
+							<Tab label={t("profilepage.tabTitle.2")} />
+							<Tab label={t("profilepage.tabTitle.3")} />
 						</Tabs>
 					</Paper>
 					<TabPanel

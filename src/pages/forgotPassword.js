@@ -11,12 +11,10 @@ import {
 } from "@material-ui/core";
 import { useInput } from "../hooks/use-input";
 import * as Validate from "../helpers/validate";
-import { Link, Redirect, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
-import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../reducers/auth";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -64,12 +62,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const LoginPage = () => {
+const ForgotPasswordPage = () => {
 	const { t } = useTranslation();
 	const classes = useStyles();
-	const location = useLocation();
-	const dispatch = useDispatch();
-	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
 	const {
 		enteredInput: enteredUsername,
@@ -78,42 +73,26 @@ const LoginPage = () => {
 		inputChangeHandler: usernameChangeHandler,
 		inputIsValid: usernameIsValid,
 		inputReset: usernameReset,
-	} = useInput(Validate.isNotEmpty);
-	const {
-		enteredInput: enteredPassword,
-		hasError: passwordHasError,
-		inputBlurHandler: passwordBlurHandler,
-		inputChangeHandler: passwordChangeHandler,
-		inputIsValid: passwordIsValid,
-		inputReset: passwordReset,
-	} = useInput(Validate.isNotEmpty);
+	} = useInput(Validate.isEmail);
 
-	const formIsValid = usernameIsValid && passwordIsValid;
+
+	const formIsValid = usernameIsValid;
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
 
-		//handle login here
-		dispatch(
-			authActions.loginSucceeded({
-				accessToken: "123",
-				refreshToken: "123",
-			})
-		);
 		console.log(
-			`login info:\nusername: ${enteredUsername}\npassword: ${enteredPassword}`
+			`login info:\nusername: ${enteredUsername}`
 		);
+		//handle....
 
 		//reset text field
 		usernameReset();
-		passwordReset();
 	};
 
 	useEffect(() => {
-		document.title = t("loginpage.title");
+		document.title = t("forgotpasswordpage.title");
 	}, [t]);
-
-	if (isAuthenticated) return <Redirect to={location?.state?.from || "/"} />;
 
 	return (
 		<>
@@ -123,7 +102,7 @@ const LoginPage = () => {
 					<Container>
 						<Box className={classes.form} boxShadow={3}>
 							<Typography variant="h3" className={classes.title}>
-								{t("loginpage.formTitle")}
+								{t("forgotpasswordpage.formTitle")}
 							</Typography>
 							<form
 								noValidate
@@ -133,11 +112,11 @@ const LoginPage = () => {
 								<FormControl className={classes.formControl}>
 									<TextField
 										error={usernameHasError}
-										label={t("loginpage.email")}
+										label={t("forgotpasswordpage.email")}
 										type="email"
 										helperText={
 											usernameHasError &&
-											t("loginpage.emailInValid")
+											t("forgotpasswordpage.emailInValid")
 										}
 										fullWidth
 										size="small"
@@ -145,24 +124,6 @@ const LoginPage = () => {
 										value={enteredUsername}
 										onBlur={usernameBlurHandler}
 										onChange={usernameChangeHandler}
-									/>
-								</FormControl>
-								<FormControl className={classes.formControl}>
-									<TextField
-										// error
-										label={t("loginpage.password")}
-										type="password"
-										error={passwordHasError}
-										helperText={
-											passwordHasError &&
-											t("loginpage.passwordInValid")
-										}
-										fullWidth
-										size="small"
-										variant="outlined"
-										value={enteredPassword}
-										onBlur={passwordBlurHandler}
-										onChange={passwordChangeHandler}
 									/>
 								</FormControl>
 								<Button
@@ -173,20 +134,20 @@ const LoginPage = () => {
 									type="submit"
 									className={classes.button}
 								>
-									{t("loginpage.buttonLogin")}
+									{t("forgotpasswordpage.buttonExecute")}
 								</Button>
 							</form>
 							<div className={classes.actions}>
 								<Typography variant="body2">
-									{t("loginpage.newMember")}{" "}
+									{t("forgotpasswordpage.newMember")}{" "}
 									<Link to="/register">
-										{t("loginpage.signUp")}
+										{t("forgotpasswordpage.signUp")}
 									</Link>
 								</Typography>
 
-								<Link to="/forgot-password">
+								<Link to="/login">
 									<Typography variant="body2">
-										{t("loginpage.forgotPassword")}
+										{t("forgotpasswordpage.haveAccount")}
 									</Typography>
 								</Link>
 							</div>
@@ -199,4 +160,4 @@ const LoginPage = () => {
 	);
 };
 
-export default LoginPage;
+export default ForgotPasswordPage;
