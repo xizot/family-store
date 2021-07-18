@@ -39,6 +39,16 @@ const vnTranslation = {
 		haveAccount: "Bạn đã có tài khoản ?",
 		signIn: "Đăng nhập",
 	},
+	searchpage: {
+		title: "Family Store - Tìm kiếm",
+		topContent: "Kết quả tìm kiếm cho",
+		sortBy: "Theo giá",
+		sortType: "Theo loại",
+		optionPrice: "Giá",
+		optionAscending: "Tốt",
+		optionHigher: "Từ cao",
+		optionLower: "Từ thấp",
+	},
 	searchPlaceHolder: "Tìm kiếm sản phẩm...",
 };
 const enTranslation = {
@@ -77,6 +87,16 @@ const enTranslation = {
 		buttonRegister: "Register",
 		haveAccount: "Already have account ?",
 		signIn: "Login",
+	},
+	searchpage: {
+		title: "Family Store - Search",
+		topContent: "Search results for",
+		sortBy: "Sort by",
+		sortType: "Sort type",
+		optionPrice: "Price",
+		optionAscending: "Ascending",
+		optionHigher: "Higher",
+		optionLower: "Lower",
 	},
 	searchPlaceHolder: "What are you looking for?",
 };

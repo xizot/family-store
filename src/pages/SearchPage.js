@@ -7,6 +7,7 @@ import {
 	InputBase,
 	Typography,
 } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 import Pagination from "@material-ui/lab/Pagination";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -247,7 +248,7 @@ const itemsSearch = [
 		title: "Bánh quy vị sữa Richwell hộp 160g",
 		description: "",
 		image: "https://cdn.tgdd.vn/Products/Images/3357/237360/bhx/banh-quy-sua-richwell-hop-160g-202105030958519213_300x300.jpg",
-		price: "21000₫21000₫",
+		price: "21000₫",
 		salePrice: null,
 		cateId: null,
 	},
@@ -370,6 +371,7 @@ const itemsSearch = [
 	},
 ];
 const SearchPage = (props) => {
+	const { t } = useTranslation();
 	const classes = useStyles();
 	const location = useLocation();
 	const query = location.search.slice(3) || "";
@@ -386,19 +388,18 @@ const SearchPage = (props) => {
 		setOptionType(event.target.value);
 	};
 	useEffect(() => {
-		document.title = "Search page";
-	}, []);
+		document.title = t("searchpage.title");
+	}, [t]);
 	return (
 		<>
 			<div className={classes.root}>
 				<Header showMenu showCart />
-				{console.log(query)}
 				<SideBar />
 				<div className={classes.main}>
 					<div className={classes.mainContent}>
 						<div className={classes.topContent}>
 							<Typography variant="h5">
-								Search results for "{query}"
+								{t("searchpage.topContent")} "{query}"
 							</Typography>
 							<div className={classes.filter}>
 								<div>
@@ -406,7 +407,7 @@ const SearchPage = (props) => {
 										variant="h7"
 										className={classes.label}
 									>
-										Sort by
+										{t("searchpage.sortBy")}
 									</Typography>
 									<NativeSelect
 										className={classes.select}
@@ -419,19 +420,19 @@ const SearchPage = (props) => {
 											style={{ color: "#F39148" }}
 											value=""
 										>
-											Price
+											{t("searchpage.optionPrice")}
 										</option>
 										<option
 											style={{ color: "#F39148" }}
 											value={10}
 										>
-											Higher
+											{t("searchpage.optionHigher")}
 										</option>
 										<option
 											style={{ color: "#F39148" }}
 											value={20}
 										>
-											Lower
+											{t("searchpage.optionLower")}
 										</option>
 									</NativeSelect>
 								</div>
@@ -440,7 +441,7 @@ const SearchPage = (props) => {
 										variant="h7"
 										className={classes.labelType}
 									>
-										Sort type
+										{t("searchpage.sortType")}
 									</Typography>
 									<NativeSelect
 										className={classes.select}
@@ -453,19 +454,19 @@ const SearchPage = (props) => {
 											style={{ color: "#F39148" }}
 											value=""
 										>
-											Ascending
+											{t("searchpage.optionAscending")}
 										</option>
 										<option
 											style={{ color: "#F39148" }}
 											value={10}
 										>
-											Higher
+											{t("searchpage.optionHigher")}
 										</option>
 										<option
 											style={{ color: "#F39148" }}
 											value={20}
 										>
-											Lower
+											{t("searchpage.optionLower")}
 										</option>
 									</NativeSelect>
 								</div>
