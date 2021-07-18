@@ -499,6 +499,24 @@ const itemsOnSale = [
 		salePrice: null,
 		cateId: null,
 	},
+	{
+		id: "it34",
+		title: "Nước rửa tay khô Green cross",
+		description: "",
+		image: "https://www.watsons.vn/medias/Green-Cross-Liquid-Hand-Santizier-Green-Tea-100ml-208155.jpg?context=bWFzdGVyfGZyb250L3pvb218MjA2MTY3fGltYWdlL2pwZWd8ZnJvbnQvem9vbS9oNjEvaDBhLzkyMjYyMzM1Nzc1MDIuanBnfDk1NGVmZjNmZmYxYzk3MDc2ZjgzNjMyMTY4NjU4OWI1MmM4NzQyOWVjNzIwYjliYmYwYWI0YjU3Y2E3OTAxYmQ",
+		price: "37000",
+		salePrice: null,
+		cateId: null,
+	},
+	{
+		id: "it35",
+		title: "Chai kem đánh răng Colgate MaxFresh 22g",
+		description: "",
+		image: "https://h2hglobal.org/wp-content/uploads/2020/11/che_pham_lam_sach_rang.jpg",
+		price: "24000",
+		salePrice: null,
+		cateId: null,
+	},
 ];
 
 const HomePage = () => {

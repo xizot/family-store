@@ -11,12 +11,10 @@ import {
 } from "@material-ui/core";
 import { useInput } from "../hooks/use-input";
 import * as Validate from "../helpers/validate";
-import { Link, Redirect, useLocation } from "react-router-dom";
 import { mainColor } from "../utils";
+import { useLocation } from "react-router-dom";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
-import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../reducers/auth";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -65,20 +63,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginPage = () => {
+	const location = useLocation();
+	const query = location.search.slice(6) || ""; //?code=123
 	const { t } = useTranslation();
 	const classes = useStyles();
-	const location = useLocation();
-	const dispatch = useDispatch();
-	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-	const {
-		enteredInput: enteredUsername,
-		hasError: usernameHasError,
-		inputBlurHandler: usernameBlurHandler,
-		inputChangeHandler: usernameChangeHandler,
-		inputIsValid: usernameIsValid,
-		inputReset: usernameReset,
-	} = useInput(Validate.isNotEmpty);
 	const {
 		enteredInput: enteredPassword,
 		hasError: passwordHasError,
@@ -88,32 +77,31 @@ const LoginPage = () => {
 		inputReset: passwordReset,
 	} = useInput(Validate.isNotEmpty);
 
-	const formIsValid = usernameIsValid && passwordIsValid;
+	const {
+		enteredInput: enteredConfirmPassword,
+		hasError: confirmPasswordHasError,
+		inputBlurHandler: confirmPasswordBlurHandler,
+		inputChangeHandler: confirmPasswordChangeHandler,
+		inputIsValid: confirmPasswordIsValid,
+		inputReset: confirmPasswordReset,
+	} = useInput((value) => Validate.isNotEmpty(value) && value === enteredPassword);
+
+	const formIsValid = passwordIsValid && confirmPasswordIsValid;
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
 
-		//handle login here
-		dispatch(
-			authActions.loginSucceeded({
-				accessToken: "123",
-				refreshToken: "123",
-			})
-		);
-		console.log(
-			`login info:\nusername: ${enteredUsername}\npassword: ${enteredPassword}`
-		);
+		//handle...
+		console.log(query);
 
 		//reset text field
-		usernameReset();
 		passwordReset();
+		confirmPasswordReset();
 	};
 
 	useEffect(() => {
-		document.title = t("loginpage.title");
+		document.title = t("recoverypasswordpage.title");
 	}, [t]);
-
-	if (isAuthenticated) return <Redirect to={location?.state?.from || "/"} />;
 
 	return (
 		<>
@@ -123,7 +111,7 @@ const LoginPage = () => {
 					<Container>
 						<Box className={classes.form} boxShadow={3}>
 							<Typography variant="h3" className={classes.title}>
-								{t("loginpage.formTitle")}
+								{t("recoverypasswordpage.formTitle")}
 							</Typography>
 							<form
 								noValidate
@@ -132,30 +120,13 @@ const LoginPage = () => {
 							>
 								<FormControl className={classes.formControl}>
 									<TextField
-										error={usernameHasError}
-										label={t("loginpage.email")}
-										type="email"
-										helperText={
-											usernameHasError &&
-											t("loginpage.emailInValid")
-										}
-										fullWidth
-										size="small"
-										variant="outlined"
-										value={enteredUsername}
-										onBlur={usernameBlurHandler}
-										onChange={usernameChangeHandler}
-									/>
-								</FormControl>
-								<FormControl className={classes.formControl}>
-									<TextField
 										// error
-										label={t("loginpage.password")}
+										label={t("recoverypasswordpage.password")}
 										type="password"
 										error={passwordHasError}
 										helperText={
 											passwordHasError &&
-											t("loginpage.passwordInValid")
+											t("recoverypasswordpage.passwordInValid")
 										}
 										fullWidth
 										size="small"
@@ -163,6 +134,24 @@ const LoginPage = () => {
 										value={enteredPassword}
 										onBlur={passwordBlurHandler}
 										onChange={passwordChangeHandler}
+									/>
+								</FormControl>
+								<FormControl className={classes.formControl}>
+									<TextField
+										// error
+										label={t("recoverypasswordpage.confirmPassword")}
+										type="password"
+										error={confirmPasswordHasError}
+										helperText={
+											confirmPasswordHasError &&
+											t("recoverypasswordpage.confirmPasswordInValid")
+										}
+										fullWidth
+										size="small"
+										variant="outlined"
+										value={enteredConfirmPassword}
+										onBlur={confirmPasswordBlurHandler}
+										onChange={confirmPasswordChangeHandler}
 									/>
 								</FormControl>
 								<Button
@@ -173,23 +162,9 @@ const LoginPage = () => {
 									type="submit"
 									className={classes.button}
 								>
-									{t("loginpage.buttonLogin")}
+									{t("recoverypasswordpage.buttonExecute")}
 								</Button>
 							</form>
-							<div className={classes.actions}>
-								<Typography variant="body2">
-									{t("loginpage.newMember")}{" "}
-									<Link to="/register">
-										{t("loginpage.signUp")}
-									</Link>
-								</Typography>
-
-								<Link to="/forgot-password">
-									<Typography variant="body2">
-										{t("loginpage.forgotPassword")}
-									</Typography>
-								</Link>
-							</div>
 						</Box>
 					</Container>
 				</div>
