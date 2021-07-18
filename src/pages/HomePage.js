@@ -32,8 +32,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 
 	topContent: {
-		height: "50vh",
+		position: "relative",
 		borderRadius: theme.shape.borderRadius,
+		overflow: "hidden",
 		padding: 45,
 		backgroundImage:
 			"URL(https://images.prismic.io/jamcart/eb389b58-aacb-4cd4-8295-3732c949ace8_Mask+Group+28.png)",
@@ -48,14 +49,14 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down("sm")]: {
 			padding: 30,
 		},
-		[theme.breakpoints.down("xs")]: {
-			padding: 15,
-		},
 	},
 
 	topContentTitle: {
+		position: "relative",
+		zIndex: 1,
 		width: "60%",
 		marginBottom: theme.spacing(2),
+
 		[theme.breakpoints.down("sm")]: {
 			width: "100%",
 		},
@@ -65,6 +66,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 
 	topContentQuotes: {
+		position: "relative",
+		zIndex: 1,
 		width: "60%",
 		[theme.breakpoints.down("sm")]: {
 			fontSize: "22px",
@@ -73,6 +76,14 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down("xs")]: {
 			fontSize: "18px",
 		},
+	},
+	overlay: {
+		position: "absolute",
+		top: 0,
+		left: 0,
+		width: "100%",
+		height: "100%",
+		background: "rgba(0,0,0,.1)",
 	},
 	sliderBox: {
 		borderRadius: theme.shape.borderRadius,
@@ -126,6 +137,7 @@ const useStyles = makeStyles((theme) => ({
 	listSale: {
 		width: "100%",
 		margin: 0,
+		padding: theme.spacing(1),
 	},
 }));
 
@@ -537,6 +549,7 @@ const HomePage = () => {
 				<div className={classes.main}>
 					<div className={classes.mainContent}>
 						<div className={classes.topContent}>
+							<span className={classes.overlay}></span>
 							<Typography
 								variant="h3"
 								className={classes.topContentTitle}

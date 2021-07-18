@@ -1,5 +1,6 @@
 import { Button, IconButton, makeStyles, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { moneyFormat } from "../../helpers";
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Cart = (props) => {
+	const { t } = useTranslation();
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -70,7 +72,7 @@ const Cart = (props) => {
 				<div>
 					<div className={classes.title}>
 						<Typography variant="h4" component="p">
-							Cart
+							{t("cartModal.cart")}
 						</Typography>
 						<IconButton
 							onClick={toggleCartModalHandler}
@@ -81,7 +83,7 @@ const Cart = (props) => {
 					</div>
 					<div className={`${classes.title} ${classes.title2} `}>
 						<Typography variant="body1" component="p">
-							Total Amount
+							{t("cartModal.total")}
 						</Typography>
 						<Typography
 							variant="h6"
@@ -123,7 +125,7 @@ const Cart = (props) => {
 					className={classes.buttonCheckout}
 					disabled={cartItems.length <= 0}
 				>
-					PROCESSED TO CHECKOUT
+					{t("cartModal.checkout")}
 				</Button>
 			</div>
 		</CartModal>

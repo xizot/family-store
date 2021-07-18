@@ -1,5 +1,4 @@
 import {
-	Container,
 	Grid,
 	makeStyles,
 	NativeSelect,
@@ -17,6 +16,7 @@ import Footer from "../components/Layout/Footer";
 import SideBar from "../components/SideBar/SideBar";
 import Header from "./../components/Layout/Header";
 import ProductItem from "./../components/ProductItem/ProductItem";
+import { uiActions } from "../reducers/ui";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -29,75 +29,62 @@ const useStyles = makeStyles((theme) => ({
 			width: "100%",
 		},
 	},
+	shadow: {
+		boxShadow: "0px 2px 8px rgba(0,0,0,.1)",
+	},
+
 	mainContent: {
-		padding: "80px 10px 65px",
+		padding: `80px ${theme.spacing(2)}px 65px`,
 		[theme.breakpoints.down("xs")]: {
-			padding: "68px 10px 85px",
+			padding: `68px ${theme.spacing(2)}px 85px`,
 			width: "100%",
 		},
 	},
 	topContent: {
 		backgroundColor: "white",
-		width: "92wh",
-		height: "15vh",
-		padding: "10px 15px 0 20px",
-		margin: "auto",
-		[theme.breakpoints.down("sm")]: {
-			width: "100%",
-		},
-		[theme.breakpoints.down("xs")]: {
-			height: "auto",
-			width: "100%",
-		},
-	},
-	item: {
-		width: "92wh",
-		height: "auto",
-		marginTop: "20px",
 		borderRadius: theme.shape.borderRadius,
-		backgroundColor: "#FFF",
-		[theme.breakpoints.down("sm")]: {
-			width: "100%",
-			height: "auto",
-		},
+
+		padding: theme.spacing(2),
+		marginBottom: theme.spacing(2),
+	},
+
+	listItem: {
+		background: "#fff",
+		borderRadius: theme.shape.borderRadius,
+		width: "100%",
+		margin: 0,
+		padding: theme.spacing(1),
 	},
 	filter: {
-		backgroundColor: "inherit",
-		margin: "0 0 15px 0",
+		marginTop: theme.spacing(2),
 		display: "flex",
-		[theme.breakpoints.down("sm")]: {
-			margin: "0 0 15px 0",
+		flexWrap: "wrap",
+		alignItems: "center",
+	},
+	filterItem: {
+		display: "flex",
+		alignItems: "center",
+		"&:not(:last-child)": {
+			marginRight: theme.spacing(3),
 		},
 		[theme.breakpoints.down("xs")]: {
-			display: "inline-block",
+			"&:not(:last-child)": {
+				marginBottom: theme.spacing(1),
+			},
 		},
 	},
 	label: {
-		margin: "17px 5px 0 0",
-		[theme.breakpoints.down("sm")]: {
-			margin: "10px 5px 0 0",
-		},
-		[theme.breakpoints.down("xs")]: {},
-	},
-	labelType: {
-		margin: "17px 5px 0 100px",
-		[theme.breakpoints.down("sm")]: {
-			margin: "10px 5px 0 10px",
-		},
 		[theme.breakpoints.down("xs")]: {
-			margin: "17px 5px 0 0",
+			minWidth: 70,
 		},
 	},
 	select: {
-		marginTop: "10px",
 		borderRadius: theme.shape.borderRadius,
 		backgroundColor: "#F39148",
-		[theme.breakpoints.down("sm")]: {
-			margin: "0 0 10px 0",
-		},
-		[theme.breakpoints.down("xs")]: {},
+		marginLeft: theme.spacing(1),
 	},
 	pagination: {
+		borderRadius: theme.shape.borderRadius,
 		backgroundColor: "#FFF",
 		"& > *": {
 			padding: "20px",
@@ -376,20 +363,26 @@ const SearchPage = (props) => {
 	const location = useLocation();
 	const query = location.search.slice(3) || "";
 	const dispatch = useDispatch();
+	const [optionPrice, setOptionPrice] = useState("Price");
+	const [optionType, setOptionType] = useState("Ascending");
+
 	const itemAddToCartHandler = (item) => {
 		dispatch(cartActions.addItem({ ...item, quantity: 1 }));
 	};
-	const [optionPrice, setOptionPrice] = useState("Price");
-	const [optionType, setOptionType] = useState("Ascending");
 	const priceChangeHandler = (event) => {
 		setOptionPrice(event.target.value);
 	};
 	const typeChangeHandler = (event) => {
 		setOptionType(event.target.value);
 	};
+
+	useEffect(() => {
+		dispatch(uiActions.hideModal());
+	}, [dispatch, query]);
 	useEffect(() => {
 		document.title = t("searchpage.title");
 	}, [t]);
+
 	return (
 		<>
 			<div className={classes.root}>
@@ -397,14 +390,16 @@ const SearchPage = (props) => {
 				<SideBar />
 				<div className={classes.main}>
 					<div className={classes.mainContent}>
-						<div className={classes.topContent}>
+						<div
+							className={`${classes.topContent} ${classes.shadow}`}
+						>
 							<Typography variant="h5">
 								{t("searchpage.topContent")} "{query}"
 							</Typography>
 							<div className={classes.filter}>
-								<div>
+								<div className={classes.filterItem}>
 									<Typography
-										variant="h7"
+										variant="subtitle2"
 										className={classes.label}
 									>
 										{t("searchpage.sortBy")}
@@ -436,10 +431,10 @@ const SearchPage = (props) => {
 										</option>
 									</NativeSelect>
 								</div>
-								<div>
+								<div className={classes.filterItem}>
 									<Typography
-										variant="h7"
-										className={classes.labelType}
+										vvariant="subtitle2"
+										className={classes.label}
 									>
 										{t("searchpage.sortType")}
 									</Typography>
@@ -472,41 +467,46 @@ const SearchPage = (props) => {
 								</div>
 							</div>
 						</div>
-						<Container className={classes.item}>
-							<Grid container spacing={3}>
-								{itemsSearch?.length > 0 &&
-									itemsSearch.map((item, index) => (
-										<Grid
-											item
-											xs={12}
-											sm={6}
-											md={3}
-											key={index}
-										>
-											<ProductItem
-												id={item.id}
-												title={item.title}
-												description={item.description}
-												image={item.image}
-												price={item.price}
-												salePrice={item.salePrice}
-												onAddToCart={itemAddToCartHandler.bind(
-													null,
-													item
-												)}
-											/>
-										</Grid>
-									))}
-							</Grid>
-							<div className={classes.pagination}>
-								<Pagination
-									count={itemsSearch.length}
-									color="primary"
-									variant="outlined"
-									shape="rounded"
-								/>
-							</div>
-						</Container>
+
+						<Grid
+							container
+							spacing={2}
+							className={`${classes.listItem} ${classes.shadow}`}
+						>
+							{itemsSearch?.length > 0 &&
+								itemsSearch.map((item, index) => (
+									<Grid
+										item
+										xs={12}
+										sm={6}
+										md={3}
+										key={index}
+									>
+										<ProductItem
+											id={item.id}
+											title={item.title}
+											description={item.description}
+											image={item.image}
+											price={item.price}
+											salePrice={item.salePrice}
+											onAddToCart={itemAddToCartHandler.bind(
+												null,
+												item
+											)}
+										/>
+									</Grid>
+								))}
+						</Grid>
+						<div
+							className={`${classes.pagination} ${classes.shadow}`}
+						>
+							<Pagination
+								count={itemsSearch.length}
+								color="primary"
+								variant="outlined"
+								shape="rounded"
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

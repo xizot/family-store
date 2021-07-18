@@ -1,4 +1,5 @@
 import { Breadcrumbs, Grid, makeStyles, Typography } from "@material-ui/core";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import Footer from "../components/Layout/Footer";
@@ -6,6 +7,7 @@ import Header from "../components/Layout/Header";
 import ProductItem from "../components/ProductItem/ProductItem";
 import SideBar from "../components/SideBar/SideBar";
 import { cartActions } from "../reducers/cart";
+import { uiActions } from "../reducers/ui";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -38,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	banner: {
 		position: "relative",
-		height: "45vh",
+		padding: "6.5rem 0",
 		width: "100%",
 		borderRadius: theme.shape.borderRadius,
 		marginBottom: theme.spacing(2),
@@ -49,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
 		background: `url(${
 			process.env.PUBLIC_URL + "/img/category-banner.jpg"
 		}) no-repeat center/cover`,
+		[theme.breakpoints.down("xs")]: {
+			padding: "4rem 0",
+		},
 	},
 	bannerOverlay: {
 		position: "absolute",
@@ -56,16 +61,25 @@ const useStyles = makeStyles((theme) => ({
 		top: 0,
 		width: "100%",
 		height: "100%",
-		background: "rgba(0,0,0,.7)",
+		background: "rgba(0,0,0,.3)",
 	},
 	bannerTitle: {
 		position: "relative",
 		zIndex: 1,
 		color: "#fff",
 		textTransform: "capitalize",
+		textAlign: "center",
+		[theme.breakpoints.down("xs")]: {
+			fontSize: 38,
+		},
 	},
 	collectionItems: {
+		width: "100%",
+		margin: 0,
+		background: "#fff",
+		borderRadius: theme.shape.borderRadius,
 		marginBottom: theme.spacing(1),
+		padding: theme.spacing(1),
 	},
 }));
 
@@ -610,6 +624,9 @@ const Collections = (props) => {
 	const itemAddToCartHandler = (item) => {
 		dispatch(cartActions.addItem({ ...item, quantity: 1 }));
 	};
+	useEffect(() => {
+		dispatch(uiActions.hideModal());
+	}, [dispatch, cateId]);
 	return (
 		<>
 			<div className={classes.root}>
@@ -661,7 +678,13 @@ const Collections = (props) => {
 						>
 							{collectionItems?.length > 0 &&
 								collectionItems.map((item, index) => (
-									<Grid item key={index} xs={6} sm={4} md={3}>
+									<Grid
+										item
+										key={index}
+										xs={12}
+										sm={4}
+										md={3}
+									>
 										<ProductItem
 											id={item.id}
 											title={item.title}

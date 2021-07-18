@@ -27,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
 	root: {},
 	toolBar: {
 		width: "100%",
+		[theme.breakpoints.down("xs")]: {
+			paddingLeft: 0,
+			paddingRight: 0,
+		},
 	},
 	logo: {
 		flex: 1,
@@ -36,6 +40,18 @@ const useStyles = makeStyles((theme) => ({
 	menuButton: {
 		display: "none",
 		[theme.breakpoints.down("sm")]: {
+			display: "block",
+		},
+	},
+	fromTablet: {
+		display: "block",
+		[theme.breakpoints.down("xs")]: {
+			display: "none",
+		},
+	},
+	mobileOnly: {
+		display: "none",
+		[theme.breakpoints.down("xs")]: {
 			display: "block",
 		},
 	},
@@ -196,8 +212,22 @@ const Header = ({ showMenu, showCart }) => {
 						inputProps={{ "aria-label": "Without label" }}
 						IconComponent={Translate}
 					>
-						<MenuItem value="en">English</MenuItem>
-						<MenuItem value="vn">Vietnamese</MenuItem>
+						<MenuItem value="en">
+							<Typography className={classes.fromTablet}>
+								English
+							</Typography>
+							<Typography className={classes.mobileOnly}>
+								EN
+							</Typography>
+						</MenuItem>
+						<MenuItem value="vn">
+							<Typography className={classes.fromTablet}>
+								Vietnamese
+							</Typography>
+							<Typography className={classes.mobileOnly}>
+								VN
+							</Typography>
+						</MenuItem>
 					</Select>
 					<Link to="/profile" className={classes.navLink}>
 						<IconButton

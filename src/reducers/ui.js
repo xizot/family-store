@@ -15,6 +15,10 @@ const uiSlice = createSlice({
 			state.isOpenCart = false;
 			state.isOpenSideBar = !state.isOpenSideBar;
 		},
+		hideModal(state) {
+			state.isOpenCart = false;
+			state.isOpenSideBar = false;
+		},
 	},
 });
 

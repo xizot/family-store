@@ -1,4 +1,5 @@
 import { alpha, makeStyles, Typography } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 import CategoryItem from "./CategoryItem/CategoryItem";
 
 const useStyles = makeStyles((theme) => ({
@@ -52,11 +53,12 @@ const categories = [
 	},
 ];
 const CategoriesMenu = () => {
+	const { t } = useTranslation();
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>
 			<Typography variant="h6" className={classes.title}>
-				All Categories
+				{t("sideBar.categories")}
 			</Typography>
 			<span className={classes.line}></span>
 			<ul>
