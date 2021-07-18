@@ -5,7 +5,8 @@ const vnTranslation = {
 	title: 'Family Store - Mua sắm online dễ dàng hơn',
 	homepage: {
 		bannerTitle: 'Mua sắm ngay tại nhà',
-		bannerDescription: 'Vì sức khỏe cộng đồng "Kết nối không khoảng cách". An tâm shop tại nhà cùng Family Store',
+		bannerDescription:
+			'Vì sức khỏe cộng đồng "Kết nối không khoảng cách". An tâm mua sắm tại nhà cùng Family Store',
 		topTitle1: 'Bán chạy nhất tuần',
 		topTitle2: 'Bán chạy nhất tháng',
 		topTitle3: 'Sản phẩm giá tốt'
@@ -57,6 +58,24 @@ const vnTranslation = {
 		confirmPasswordInValid: 'Mật khẩu và xác nhận mật khẩu không trùng nhau',
 		buttonExecute: 'Xác nhận'
 	},
+	profilepage: {
+		title: 'Tài khoản của tôi',
+		tabTitle: {
+			1: 'CƠ BẢN',
+			2: 'ĐỔI MẬT KHẨU',
+			3: 'ẢNH ĐẠI DIỆN'
+		},
+		fullName: 'Tên đầy đủ',
+		email: 'Email',
+		address: 'Địa chỉ',
+		currentPassword: 'Mật khẩu hiện tại của bạn',
+		newPassword: 'Mật khẩu mới',
+		confirmNewPassword: 'Nhập lại mật khẩu mới',
+		buttonRemove: 'Xóa',
+		buttonBrowse: 'Chọn',
+		buttonExecute: 'Lưu thay đổi'
+	},
+
 	searchPlaceHolder: 'Tìm kiếm sản phẩm...'
 };
 const enTranslation = {
@@ -114,6 +133,23 @@ const enTranslation = {
 		confirmPassword: 'Retype new password',
 		confirmPasswordInValid: 'Password and confirm password does not match',
 		buttonExecute: 'Confirm'
+	},
+	profilepage: {
+		title: 'My account',
+		tabTitle: {
+			1: 'BASIC PROFILE',
+			2: 'CHANGE PASSWORD',
+			3: 'AVATAR'
+		},
+		fullName: 'Full name',
+		email: 'Email',
+		address: 'Address',
+		currentPassword: 'Your current password',
+		newPassword: 'New password',
+		confirmNewPassword: 'Retype your new password',
+		buttonRemove: 'Remove',
+		buttonBrowse: 'Browse',
+		buttonExecute: 'Save changes'
 	},
 
 	searchPlaceHolder: 'What are you looking for?'
