@@ -12,6 +12,7 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/forgotPassword'));
 const RecoveryPasswordPage = lazy(() => import('./pages/recoveryPassword'));
+const AccountActivationPage = lazy(() => import('./pages/accountActivation'));
 const ProfilePage = lazy(() => import('./pages/Profile'));
 const PageNotFound = lazy(() => import('./pages/404NotFound'));
 const SearchPage = lazy(() => import('./pages/SearchPage'));
@@ -62,7 +63,9 @@ function App() {
 					<Route exact path="/recovery-password">
 						<RecoveryPasswordPage />
 					</Route>
-
+					<Route exact path="/account-activation">
+						<AccountActivationPage />
+					</Route>
 					<Route exact path="/search">
 						<SearchPage />
 					</Route>

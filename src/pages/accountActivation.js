@@ -62,36 +62,36 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ForgotPasswordPage = () => {
+const AccountActivationPage = () => {
 	const { t } = useTranslation();
 	const classes = useStyles();
 
 	const {
-		enteredInput: enteredEmail,
-		hasError: emailHasError,
-		inputBlurHandler: emailBlurHandler,
-		inputChangeHandler: emailChangeHandler,
-		inputIsValid: emailIsValid,
-		inputReset: emailReset,
-	} = useInput(Validate.isEmail);
+		enteredInput: enteredCode,
+		hasError: codeHasError,
+		inputBlurHandler: codeBlurHandler,
+		inputChangeHandler: codeChangeHandler,
+		inputIsValid: codeIsValid,
+		inputReset: codeReset,
+	} = useInput(Validate.isNotEmpty);
 
 
-	const formIsValid = emailIsValid;
+	const formIsValid = codeIsValid;
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
 
 		console.log(
-			`info_email: ${enteredEmail}`
+			`info_code: ${enteredCode}`
 		);
 		//handle....
 
 		//reset text field
-		emailReset();
+		codeReset();
 	};
 
 	useEffect(() => {
-		document.title = t("forgotpasswordpage.title");
+		document.title = t("accountactivationpage.title");
 	}, [t]);
 
 	return (
@@ -102,7 +102,7 @@ const ForgotPasswordPage = () => {
 					<Container>
 						<Box className={classes.form} boxShadow={3}>
 							<Typography variant="h3" className={classes.title}>
-								{t("forgotpasswordpage.formTitle")}
+								{t("accountactivationpage.formTitle")}
 							</Typography>
 							<form
 								noValidate
@@ -111,19 +111,19 @@ const ForgotPasswordPage = () => {
 							>
 								<FormControl className={classes.formControl}>
 									<TextField
-										error={emailHasError}
-										label={t("forgotpasswordpage.email")}
-										type="email"
+										error={codeHasError}
+										label={t("accountactivationpage.code")}
+										type="number"
 										helperText={
-											emailHasError &&
-											t("forgotpasswordpage.emailInValid")
+											codeHasError &&
+											t("accountactivationpage.codeInvalid")
 										}
 										fullWidth
 										size="small"
 										variant="outlined"
-										value={enteredEmail}
-										onBlur={emailBlurHandler}
-										onChange={emailChangeHandler}
+										value={enteredCode}
+										onBlur={codeBlurHandler}
+										onChange={codeChangeHandler}
 									/>
 								</FormControl>
 								<Button
@@ -134,20 +134,13 @@ const ForgotPasswordPage = () => {
 									type="submit"
 									className={classes.button}
 								>
-									{t("forgotpasswordpage.buttonExecute")}
+									{t("accountactivationpage.buttonExecute")}
 								</Button>
 							</form>
 							<div className={classes.actions}>
-								<Typography variant="body2">
-									{t("forgotpasswordpage.newMember")}{" "}
-									<Link to="/register">
-										{t("forgotpasswordpage.signUp")}
-									</Link>
-								</Typography>
-
 								<Link to="/login">
 									<Typography variant="body2">
-										{t("forgotpasswordpage.haveAccount")}
+										{t("accountactivationpage.haveAccount")}
 									</Typography>
 								</Link>
 							</div>
@@ -160,4 +153,4 @@ const ForgotPasswordPage = () => {
 	);
 };
 
-export default ForgotPasswordPage;
+export default AccountActivationPage;
