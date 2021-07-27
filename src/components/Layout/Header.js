@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
 	toolBar: {
 		width: "100%",
 		[theme.breakpoints.down("xs")]: {
-			paddingLeft: 0,
-			paddingRight: 0,
+			paddingLeft: theme.spacing(1),
+			paddingRight: theme.spacing(1),
 		},
 	},
 	logo: {
@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: "none",
 		display: "flex",
 		alignItems: "center",
+		paddingLeft: ({ showMenu }) => (showMenu ? 0 : theme.spacing(1)),
 		"& img": {
 			width: 24,
 			marginRight: 10,
@@ -83,6 +84,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	search: {
 		flex: 3,
+		marginLeft: theme.spacing(2),
+		marginRight: theme.spacing(2),
 		[theme.breakpoints.down("sm")]: {
 			display: "none",
 		},
@@ -92,9 +95,60 @@ const useStyles = makeStyles((theme) => ({
 		color: "inherit",
 	},
 	iconButton: {
+		position: "relative",
 		[theme.breakpoints.down("sm")]: {
 			padding: "5px",
 		},
+		"&:hover $iconButtonCaption": {
+			opacity: 1,
+		},
+	},
+	iconButtonCaption: {
+		position: "absolute",
+		bottom: -theme.spacing(1.25),
+		left: "50%",
+		transform: "translate(-50%, 100%)",
+		whiteSpace: "nowrap",
+		color: "#333",
+		padding: "0px 2px",
+		background: theme.palette.common.white,
+		borderRadius: theme.shape.borderRadius,
+		opacity: 0,
+		transition: "opacity .3s",
+		pointerEvents: "none",
+		boxShadow: "0px 1px 3px rgba(0,0,0,.3)",
+	},
+	dropDown: {
+		position: "absolute",
+		bottom: -theme.spacing(1.25),
+		right: -5,
+		transform: "translateY(100%)",
+		color: "#333",
+		padding: `${theme.spacing(1.5)}px ${theme.spacing(2)}px`,
+		background: theme.palette.common.white,
+		borderRadius: theme.shape.borderRadius,
+		opacity: 0,
+		transition: "opacity .3s",
+		boxShadow: "0px 1px 3px rgba(0,0,0,.3)",
+		minWidth: "max-content",
+		listStyle: "none",
+		"& li:not(:last-child)": {
+			display: "block",
+			marginBottom: theme.spacing(1),
+		},
+		"& a": {
+			fontSize: theme.typography.fontSize,
+			textAlign: "left",
+			display: "block",
+			textDecoration: "none",
+			color: "#333",
+			"&:hover": {
+				textDecoration: "underline",
+			},
+		},
+	},
+	dropDownActive: {
+		opacity: 1,
 	},
 	selectLanguage: {
 		color: "#fff",
@@ -129,13 +183,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Header = ({ showMenu, showCart }) => {
 	const { i18n } = useTranslation();
-	const classes = useStyles();
+	const classes = useStyles({ showMenu });
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const cartItems = useSelector((state) => state.cart.data);
 	const lang = useSelector((state) => state.lang.current);
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const [btnIsHightlighted, setBtnIsHightlighted] = useState(false);
+
+	const [toggleUserDropdown, setToggleUserDropdown] = useState(false);
+
+	const toggleUserDropdownHandler = () => {
+		setToggleUserDropdown((prevState) => !prevState);
+	};
 
 	const numberOfCartItems = cartItems.reduce((cartNumber, item) => {
 		return cartNumber + item.quantity;
@@ -229,16 +289,26 @@ const Header = ({ showMenu, showCart }) => {
 							</Typography>
 						</MenuItem>
 					</Select>
-					<Link to="/profile" className={classes.navLink}>
-						<IconButton
-							aria-label="My profile"
-							color="inherit"
-							className={classes.iconButton}
+					<IconButton
+						aria-label="My profile"
+						color="inherit"
+						className={classes.iconButton}
+						onClick={toggleUserDropdownHandler}
+					>
+						<Person />
+						<ul
+							className={`${classes.dropDown} ${
+								toggleUserDropdown ? classes.dropDownActive : ""
+							}`}
 						>
-							<Person />
-						</IconButton>
-					</Link>
-
+							<li>
+								<Link to="/profile">My account</Link>
+							</li>
+							<li>
+								<Link to="/order">My orders</Link>
+							</li>
+						</ul>
+					</IconButton>
 					{isAuthenticated && (
 						<IconButton
 							aria-label="My profile"
@@ -247,6 +317,12 @@ const Header = ({ showMenu, showCart }) => {
 							onClick={logoutHandler}
 						>
 							<ExitToApp />
+							<Typography
+								variant="caption"
+								className={classes.iconButtonCaption}
+							>
+								Log out
+							</Typography>
 						</IconButton>
 					)}
 					{showCart && (
@@ -262,6 +338,12 @@ const Header = ({ showMenu, showCart }) => {
 							>
 								<LocalMall />
 							</Badge>
+							<Typography
+								variant="caption"
+								className={classes.iconButtonCaption}
+							>
+								My cart
+							</Typography>
 						</IconButton>
 					)}
 				</div>

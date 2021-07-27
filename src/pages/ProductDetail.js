@@ -8,7 +8,7 @@ import {
 	FormControl,
 	MenuItem,
 } from "@material-ui/core";
-import { useEffect, useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
@@ -386,49 +386,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const suggestSettings = {
-	dots: false,
-	infinite: true,
-	speed: 500,
-	slidesToShow: 6,
-	slidesToScroll: 6,
-	nextArrow: <CustomArrowNext />,
-	prevArrow: <CustomArrowPrev />,
-	responsive: [
-		{
-			breakpoint: 1200,
-			settings: {
-				slidesToShow: 4, //number of items to show per slide
-				slidesToScroll: 4, //number of items gonna jump per click
-			},
-		},
-		{
-			breakpoint: 960,
-			settings: {
-				slidesToShow: 3, //number of items to show per slide
-				slidesToScroll: 3, //number of items gonna jump per click
-				initialSize: 0,
-			},
-		},
-		{
-			breakpoint: 600,
-			settings: {
-				slidesToShow: 2, //number of items to show per slide
-				slidesToScroll: 2, //number of items gonna jump per click
-				initialSize: 0,
-			},
-		},
-		{
-			breakpoint: 360,
-			settings: {
-				slidesToShow: 1, //number of items to show per slide
-				slidesToScroll: 1, //number of items gonna jump per click
-				initialSize: 0,
-			},
-		},
-	],
-};
-
 const ProductDetail = (props) => {
 	const { t } = useTranslation();
 	const dispatch = useDispatch();
@@ -459,6 +416,51 @@ const ProductDetail = (props) => {
 		}),
 		[]
 	);
+	const suggestSettings = useMemo(
+		() => ({
+			dots: false,
+			infinite: true,
+			speed: 500,
+			slidesToShow: 6,
+			slidesToScroll: 6,
+			nextArrow: <CustomArrowNext />,
+			prevArrow: <CustomArrowPrev />,
+			responsive: [
+				{
+					breakpoint: 1200,
+					settings: {
+						slidesToShow: 4, //number of items to show per slide
+						slidesToScroll: 4, //number of items gonna jump per click
+					},
+				},
+				{
+					breakpoint: 960,
+					settings: {
+						slidesToShow: 3, //number of items to show per slide
+						slidesToScroll: 3, //number of items gonna jump per click
+						initialSize: 0,
+					},
+				},
+				{
+					breakpoint: 600,
+					settings: {
+						slidesToShow: 2, //number of items to show per slide
+						slidesToScroll: 2, //number of items gonna jump per click
+						initialSize: 0,
+					},
+				},
+				{
+					breakpoint: 360,
+					settings: {
+						slidesToShow: 1, //number of items to show per slide
+						slidesToScroll: 1, //number of items gonna jump per click
+						initialSize: 0,
+					},
+				},
+			],
+		}),
+		[]
+	);
 	const [nav1, setNav1] = useState(null);
 	const [nav2, setNav2] = useState(null);
 
@@ -485,14 +487,9 @@ const ProductDetail = (props) => {
 		setSelectedDistrict(e.target.value);
 	};
 
-	useEffect(() => {
-		if (suggestList?.length >= 6) {
-			suggestSettings.infinite = true;
-		} else {
-			suggestSettings.infinite = false;
-		}
+	useLayoutEffect(() => {
+		window.scrollTo(0, 0);
 	}, []);
-
 	return (
 		<>
 			<div className={classes.root}>
