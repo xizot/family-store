@@ -75,15 +75,12 @@ const ForgotPasswordPage = () => {
 		inputReset: emailReset,
 	} = useInput(Validate.isEmail);
 
-
 	const formIsValid = emailIsValid;
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
 
-		console.log(
-			`info_email: ${enteredEmail}`
-		);
+		console.log(`info_email: ${enteredEmail}`);
 		//handle....
 
 		//reset text field

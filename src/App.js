@@ -7,7 +7,7 @@ import { ProtectedRoute } from "./components/Common/ProtectedRoute";
 import Loading from "./components/Loading/Loading";
 import { useTranslation } from "react-i18next";
 import { langActions } from "./reducers/lang";
-import ProductDetail from "./pages/ProductDetail";
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
