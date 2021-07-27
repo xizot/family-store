@@ -8,12 +8,10 @@ const cartSlice = createSlice({
 	},
 	reducers: {
 		addItem(state, action) {
-			const newItem = action.payload;
-			const newItemPrice = newItem?.salePrice || newItem.price || 0;
-
-			const newTotalAmount =
-				Number(state.totalAmount) + Number(newItemPrice);
-
+			const { quantity, ...newItem } = action.payload;
+			const newItemPrice =
+				quantity * Number(newItem?.salePrice || newItem.price);
+			const newTotalAmount = +state.totalAmount + newItemPrice;
 			const existingItemIndex = state.data.findIndex(
 				(item) => item.id === newItem.id
 			);
@@ -23,12 +21,12 @@ const cartSlice = createSlice({
 			if (!existingItem) {
 				state.data = [
 					...state.data,
-					{ ...newItem, totalPrice: newItemPrice },
+					{ ...newItem, totalPrice: newItemPrice, quantity },
 				];
 			} else {
 				const updatedItem = {
 					...existingItem,
-					quantity: existingItem.quantity + 1,
+					quantity: existingItem.quantity + quantity,
 				};
 
 				updatedItem.totalPrice = Number.parseFloat(
@@ -71,11 +69,13 @@ const cartSlice = createSlice({
 		},
 		clearItem(state, action) {
 			state.data = state.data.filter(
-				(item) => item.id !== Number(action.payload)
+				(item) => item.id !== action.payload
 			);
-			state.totalAmount = state.data.reduce((totalAmount, item) => {
+			const newTotalAmount = state.data.reduce((totalAmount, item) => {
 				return totalAmount + item.totalPrice;
 			}, 0);
+
+			state.totalAmount = Number.parseFloat(newTotalAmount).toFixed(2);
 		},
 	},
 });

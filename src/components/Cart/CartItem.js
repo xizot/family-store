@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 		height: 100,
 		width: 80,
 		background: "#ddd",
-		marginRight: 15,
+		marginRight: theme.spacing(1),
 		"& img": {
 			width: "100%",
 			height: "100%",
@@ -42,16 +42,17 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	description: {
-		marginTop: 10,
+		marginTop: theme.spacing(0.5),
 		display: "flex",
 		flex: 1,
-		[theme.breakpoints.down("xs")]: {
+		[theme.breakpoints.down("sm")]: {
 			flexDirection: "column",
+			marginTop: 0,
 		},
 	},
 	detail: {
 		flex: 1,
-		marginRight: 15,
+		marginRight: theme.spacing(1),
 		[theme.breakpoints.down("xs")]: {
 			paddingRight: 0,
 		},
@@ -77,16 +78,17 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: "bold",
 		[theme.breakpoints.down("xs")]: {
 			textAlign: "left",
-			paddingRight: 15,
+			paddingRight: theme.spacing(2),
 		},
 	},
 	actions: {
 		display: "flex",
 		flexFlow: "column wrap",
 		justifyContent: "space-between",
-		marginRight: 10,
+		marginRight: theme.spacing(1),
 		[theme.breakpoints.down("xs")]: {
-			marginTop: 15,
+			marginRight: 0,
+			marginTop: theme.spacing(1),
 			flexDirection: "row",
 			justifyContent: "flex-start",
 		},
@@ -141,12 +143,14 @@ const CartItem = ({
 				</div>
 				<div className={classes.actions}>
 					<Typography variant="body1" className={classes.totalPrice}>
-						{totalPrice} VND
+						{totalPrice && moneyFormat(totalPrice)} VND
 					</Typography>
+
 					<NumericUpDown
 						quantity={quantity}
 						onAdd={onAdd}
 						onRemove={onRemove}
+						alignSelf="flex-end"
 					/>
 				</div>
 			</div>

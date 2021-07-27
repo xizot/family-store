@@ -23,13 +23,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	content: {
 		height: "100%",
-		padding: "35px 25px",
+		padding: `${theme.spacing(4)}px ${theme.spacing(3)}px`,
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "space-between",
 		overflow: "auto",
 		[theme.breakpoints.down("xs")]: {
-			padding: "35px 15px",
+			padding: `${theme.spacing(4)}px ${theme.spacing(2)}px`,
 		},
 	},
 	iconClose: {
@@ -58,7 +58,7 @@ const Cart = (props) => {
 	};
 
 	const cartItemAddHandler = (item) => {
-		dispatch(cartActions.addItem(item));
+		dispatch(cartActions.addItem({ ...item, quantity: 1 }));
 	};
 	const cartItemRemoveHandler = (id) => {
 		dispatch(cartActions.removeItem(id));

@@ -619,7 +619,7 @@ const collectionItems = [
 
 const Collections = (props) => {
 	const classes = useStyles();
-	const { slug: cateId } = useParams();
+	const { categoryId: cateId } = useParams();
 	const dispatch = useDispatch();
 	const itemAddToCartHandler = (item) => {
 		dispatch(cartActions.addItem({ ...item, quantity: 1 }));

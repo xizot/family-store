@@ -82,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: theme.shape.borderRadius,
 		backgroundColor: "#F39148",
 		marginLeft: theme.spacing(1),
+		"& svg": {
+			color: theme.palette.common.white,
+		},
 	},
 	pagination: {
 		borderRadius: theme.shape.borderRadius,
@@ -367,7 +370,7 @@ const SearchPage = (props) => {
 	const [optionType, setOptionType] = useState("Ascending");
 
 	const itemAddToCartHandler = (item) => {
-		dispatch(cartActions.addItem({ ...item, quantity: 1 }));
+		dispatch(cartActions.addItem({ ...item, amount: 1 }));
 	};
 	const priceChangeHandler = (event) => {
 		setOptionPrice(event.target.value);

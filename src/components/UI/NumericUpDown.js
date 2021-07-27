@@ -5,9 +5,10 @@ const useStyles = makeStyles((theme) => ({
 		background: theme.palette.primary.main,
 		display: "flex",
 		width: "fit-content",
-		height: "fit-content",
 		alignItems: "center",
 		borderRadius: 5,
+		alignSelf: (props) => props?.alignSelf || "flex-start",
+		height: (props) => props?.height || "fit-content",
 	},
 	quantity: {
 		padding: "0 20px",
@@ -17,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
 		color: "#fff",
 	},
 }));
-const NumericUpDown = ({ quantity, onAdd, onRemove }) => {
-	const classes = useStyles();
+const NumericUpDown = ({ quantity, onAdd, onRemove, alignSelf, height }) => {
+	const classes = useStyles({ alignSelf, height });
 	return (
 		<div className={classes.root}>
 			<IconButton size="small" onClick={onRemove}>

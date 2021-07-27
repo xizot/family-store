@@ -97,7 +97,7 @@ const ProductItem = ({
 			<div onClick={onAddToCart} className={classes.iconAddToCart}>
 				<ShoppingBasket fontSize="small" />
 			</div>
-			<Link to={`details/${id}`} className={classes.link}>
+			<Link to={`/details/${id}`} className={classes.link}>
 				<CardMedia
 					className={classes.media}
 					image={image}
