@@ -22,6 +22,10 @@ import NumericUpDown from "../components/UI/NumericUpDown";
 import { moneyFormat } from "../helpers";
 import Footer from "../components/Layout/Footer";
 import { useTranslation } from "react-i18next";
+import { StarRounded } from "@material-ui/icons";
+import ReviewItem from "../components/ReviewItem/ReviewItem";
+import { Pagination } from "@material-ui/lab";
+import GenerateStar from "../components/GenerateStar/GenerateStar";
 
 const productItem = {
 	id: "it1",
@@ -182,13 +186,15 @@ const useStyles = makeStyles((theme) => ({
 			width: "100%",
 		},
 	},
-
-	top: {
+	section: {
+		borderRadius: theme.shape.borderRadius,
 		background: theme.palette.common.white,
+		padding: theme.spacing(2),
+		marginBottom: theme.spacing(2),
+	},
+	top: {
 		display: "flex",
 		padding: "20px 30px",
-		borderRadius: theme.shape.borderRadius,
-		marginBottom: theme.spacing(2),
 		[theme.breakpoints.down("sm")]: {
 			flexWrap: "wrap",
 			padding: theme.spacing(2),
@@ -282,12 +288,7 @@ const useStyles = makeStyles((theme) => ({
 			height: "100%",
 		},
 	},
-	description: {
-		borderRadius: theme.shape.borderRadius,
-		background: theme.palette.common.white,
-		padding: theme.spacing(2),
-		marginBottom: theme.spacing(2),
-	},
+
 	descriptionText: {
 		position: "relative",
 		marginBottom: theme.spacing(2),
@@ -359,12 +360,6 @@ const useStyles = makeStyles((theme) => ({
 		width: 165,
 		fontWeight: "bold",
 	},
-	suggestList: {
-		padding: theme.spacing(2),
-		marginBottom: theme.spacing(2),
-		background: theme.palette.common.white,
-		borderRadius: theme.shape.borderRadius,
-	},
 	suggestSlider: {
 		overflow: "hidden",
 		padding: "0px 2px",
@@ -378,11 +373,73 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		width: 400,
 		maxWidth: "100%",
-		"& > button": {
-			marginLeft: theme.spacing(2),
-			flex: 1,
-			whiteSpace: "nowrap",
+		[theme.breakpoints.down("xs")]: {
+			flexWrap: "wrap",
 		},
+	},
+	btnAddToCart: {
+		flex: 1,
+		marginLeft: theme.spacing(2),
+		whiteSpace: "nowrap",
+		[theme.breakpoints.down("xs")]: {
+			width: "100%",
+			flex: "auto",
+			marginTop: theme.spacing(1),
+			marginLeft: 0,
+		},
+	},
+	reviewContent: {
+		display: "flex",
+		alignItems: "flex-start",
+		[theme.breakpoints.down("sm")]: {
+			flexWrap: "wrap",
+		},
+	},
+
+	star: {
+		display: "flex",
+		alignItems: "center",
+		padding: theme.spacing(2),
+		borderRadius: theme.shape.borderRadius,
+		border: `1px solid ${theme.palette.primary.main}`,
+		marginRight: theme.spacing(5),
+		[theme.breakpoints.down("sm")]: {
+			justifyContent: "center",
+			width: "100%",
+			marginRight: 0,
+			marginBottom: theme.spacing(2),
+		},
+		[theme.breakpoints.down("xs")]: {
+			padding: theme.spacing(1),
+		},
+	},
+	bigStar: {
+		fontSize: 50,
+	},
+	totalReviewed: {
+		textAlign: "center",
+		paddingRight: theme.spacing(2),
+		[theme.breakpoints.down("xs")]: {
+			paddingRight: theme.spacing(1),
+		},
+	},
+	comment: {
+		flex: 1,
+		[theme.breakpoints.down("sm")]: {
+			width: "100%",
+		},
+	},
+	commentContent: {
+		listStyle: "none",
+		marginBottom: theme.spacing(2),
+	},
+	starReviewed: {
+		"&:not(:last-child)": {
+			marginBottom: theme.spacing(1),
+		},
+	},
+	pagination: {
+		"& ul": { justifyContent: "flex-end" },
 	},
 }));
 
@@ -497,7 +554,7 @@ const ProductDetail = (props) => {
 				<SideBar />
 				<div className={classes.main}>
 					<div className={classes.mainContent}>
-						<div className={classes.top}>
+						<div className={`${classes.section} ${classes.top}`}>
 							<div className={classes.productImage}>
 								<Slider
 									asNavFor={nav2}
@@ -618,6 +675,7 @@ const ProductDetail = (props) => {
 									<Button
 										variant="contained"
 										color="primary"
+										className={classes.btnAddToCart}
 										onClick={() =>
 											itemAddToCartHandler(
 												{
@@ -634,7 +692,7 @@ const ProductDetail = (props) => {
 								</div>
 							</div>
 						</div>
-						<div className={classes.description}>
+						<div className={classes.section}>
 							<Typography
 								variant="h5"
 								component="h3"
@@ -674,7 +732,94 @@ const ProductDetail = (props) => {
 								</Typography>
 							</div>
 						</div>
-						<div className={classes.suggestList}>
+						<div className={classes.section}>
+							<Typography
+								variant="h5"
+								component="h3"
+								className={classes.title}
+							>
+								{t("productDetailPage.productReview")}
+							</Typography>
+							<div className={classes.reviewContent}>
+								<div className={classes.star}>
+									<div className={classes.totalReviewed}>
+										<Typography
+											variant="h6"
+											color="primary"
+										>
+											4.5
+										</Typography>
+										<StarRounded
+											color="primary"
+											className={classes.bigStar}
+										/>
+										<Typography
+											variant="body2"
+											color="primary"
+										>
+											10 <br /> đánh giá
+										</Typography>
+									</div>
+									<div>
+										<GenerateStar
+											numOfStar={5}
+											rootCustom={classes.starReviewed}
+											totalReviewed={5}
+										/>
+										<GenerateStar
+											numOfStar={4}
+											rootCustom={classes.starReviewed}
+											totalReviewed={5}
+										/>
+										<GenerateStar
+											numOfStar={3}
+											rootCustom={classes.starReviewed}
+											totalReviewed={0}
+										/>
+										<GenerateStar
+											numOfStar={2}
+											rootCustom={classes.starReviewed}
+											totalReviewed={0}
+										/>
+										<GenerateStar
+											numOfStar={1}
+											rootCustom={classes.starReviewed}
+											totalReviewed={0}
+										/>
+									</div>
+								</div>
+								<div className={classes.comment}>
+									<ul className={classes.commentContent}>
+										<ReviewItem
+											imgSrc="https://ddragon.leagueoflegends.com/cdn/11.15.1/img/champion/Tristana.png"
+											name="Tristana"
+											numOfStar={4}
+											content="Sợi mì nhỏ, gia vị đơn giản nhưng khá là ngon, nấu mì này mình đều thêm 1 quả trứng vào để ăn, ngon dã man"
+										/>
+										<ReviewItem
+											imgSrc="https://ddragon.leagueoflegends.com/cdn/11.15.1/img/champion/Irelia.png"
+											name="Irelia"
+											numOfStar={3}
+											content="Sợi mì nhỏ, gia vị đơn giản nhưng khá là ngon, nấu mì này mình đều thêm 1 quả trứng vào để ăn, ngon dã man"
+										/>
+										<ReviewItem
+											imgSrc="https://ddragon.leagueoflegends.com/cdn/11.15.1/img/champion/Morgana.png"
+											name="Morgana"
+											numOfStar={2}
+											content="Sợi mì nhỏ, gia vị đơn giản nhưng khá là ngon, nấu mì này mình đều thêm 1 quả trứng vào để ăn, ngon dã man"
+										/>
+									</ul>
+									<Pagination
+										count={10}
+										variant="outlined"
+										shape="rounded"
+										color="primary"
+										className={classes.pagination}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className={classes.section}>
 							<Typography
 								variant="h5"
 								component="h3"
