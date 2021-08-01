@@ -1,6 +1,7 @@
 import axios from "axios";
-const baseURL = process.env.REACT_APP_BASE_URL;
 import { history } from "../helpers";
+const baseURL = process.env.REACT_APP_BASE_URL;
+
 
 // Add a request interceptor
 axios.interceptors.request.use(

@@ -18,6 +18,7 @@ const ProfilePage = lazy(() => import('./pages/Profile'));
 const PageNotFound = lazy(() => import('./pages/404NotFound'));
 const SearchPage = lazy(() => import('./pages/SearchPage'));
 const CollectionsPage = lazy(() => import('./pages/Collections'));
+const OrderPage = lazy(() => import('./pages/OrderPage'));
 
 const theme = createTheme({
 	palette: {
@@ -78,6 +79,9 @@ function App() {
 					</Route>
 					<Route exact path="/collections">
 						<CollectionsPage />
+					</Route>
+					<Route exact path="/orders">
+						<OrderPage />
 					</Route>
 					<Route path="*">
 						<PageNotFound />
