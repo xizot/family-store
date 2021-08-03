@@ -2,23 +2,14 @@ import { createTheme, ThemeProvider } from "@material-ui/core";
 import { lazy, Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import Cart from "./components/Cart/Cart";
 import { ProtectedRoute } from "./components/Common/ProtectedRoute";
-import Loading from "./components/Loading/Loading";
 import { useTranslation } from "react-i18next";
 import { langActions } from "./reducers/lang";
 import { authActions } from "./reducers/auth";
-const ProductDetail = lazy(() => import("./pages/ProductDetail"));
-const HomePage = lazy(() => import("./pages/HomePage"));
-const LoginPage = lazy(() => import("./pages/LoginPage"));
-const RegisterPage = lazy(() => import("./pages/RegisterPage"));
-const ForgotPasswordPage = lazy(() => import("./pages/ForgotPassword"));
-const RecoveryPasswordPage = lazy(() => import("./pages/RecoveryPassword"));
-const AccountActivationPage = lazy(() => import("./pages/AccountActivation"));
-const ProfilePage = lazy(() => import("./pages/Profile"));
+import { routes } from "./config/routes";
+import Loading from "./components/Loading/Loading";
+import Cart from "./components/Cart/Cart";
 const PageNotFound = lazy(() => import("./pages/404NotFound"));
-const SearchPage = lazy(() => import("./pages/SearchPage"));
-const CollectionsPage = lazy(() => import("./pages/Collections"));
 
 const theme = createTheme({
 	palette: {
@@ -62,46 +53,32 @@ function App() {
 			{isOpenCart && <Cart />}
 			<Suspense fallback={<Loading />}>
 				<Switch>
-					<Route exact path="/">
-						<HomePage />
-					</Route>
-					<ProtectedRoute
-						exact
-						path="/profile"
-						component={ProfilePage}
-					/>
-					<ProtectedRoute
-						exact
-						path="/profile/:slug"
-						component={ProfilePage}
-					/>
-					<Route exact path="/login">
-						<LoginPage />
-					</Route>
-					<Route exact path="/register">
-						<RegisterPage />
-					</Route>
-					<Route exact path="/forgot-password">
-						<ForgotPasswordPage />
-					</Route>
-					<Route exact path="/recovery-password">
-						<RecoveryPasswordPage />
-					</Route>
-					<Route exact path="/account-activation">
-						<AccountActivationPage />
-					</Route>
-					<Route exact path="/search">
-						<SearchPage />
-					</Route>
-					<Route exact path="/details/:productId">
-						<ProductDetail />
-					</Route>
-					<Route exact path="/collections/:categoryId">
-						<CollectionsPage />
-					</Route>
-					<Route exact path="/collections">
-						<CollectionsPage />
-					</Route>
+					{routes.map((route, index) => {
+						return (
+							<Route
+								key={index}
+								path={route.path}
+								exact={route.exact}
+								render={(props) => {
+									if (route.protected) {
+										return (
+											<ProtectedRoute {...props}>
+												<route.component
+													{...route.props}
+												/>
+											</ProtectedRoute>
+										);
+									}
+									return (
+										<route.component
+											{...props}
+											{...route.props}
+										/>
+									);
+								}}
+							/>
+						);
+					})}
 					<Route path="*">
 						<PageNotFound />
 					</Route>

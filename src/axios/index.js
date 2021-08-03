@@ -1,8 +1,7 @@
 import axios from "axios";
 import { history } from "../helpers";
-
 const baseURL =
-	"https://familystore.herokuapp.com" || process.env.REACT_APP_BASE_URL;
+	process.env.REACT_APP_BASE_URL || "https://familystore.herokuapp.com";
 
 axios.defaults.baseURL = baseURL;
 

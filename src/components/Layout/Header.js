@@ -305,7 +305,7 @@ const Header = ({ showMenu, showCart }) => {
 								<Link to="/profile">My account</Link>
 							</li>
 							<li>
-								<Link to="/order">My orders</Link>
+								<Link to="/orders">My orders</Link>
 							</li>
 						</ul>
 					</IconButton>
