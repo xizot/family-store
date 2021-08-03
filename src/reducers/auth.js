@@ -7,7 +7,6 @@ const initialState = {
 	isAuthenticated: false,
 	loading: false,
 	user: null,
-	error: null,
 };
 
 export const login = createAsyncThunk(
@@ -17,7 +16,9 @@ export const login = createAsyncThunk(
 			const response = await authApi.login({ username, password });
 			return response.data;
 		} catch (error) {
-			return rejectWithValue(error.response.data);
+			return rejectWithValue(
+				error.response.data?.errorMessage || "Something went wrong!"
+			);
 		}
 	}
 );
@@ -38,7 +39,38 @@ export const register = createAsyncThunk(
 			});
 			return response.data;
 		} catch (error) {
-			return rejectWithValue(error.response.data);
+			return rejectWithValue(
+				error.response.data?.errorMessage || "Something went wrong!"
+			);
+		}
+	}
+);
+export const changePassword = createAsyncThunk(
+	"user/ChangePassword",
+	async ({ userId, newPassword }, { rejectWithValue }) => {
+		try {
+			const response = await authApi.changePassword({
+				userId,
+				newPassword,
+			});
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response.data?.errorMessage || "Something went wrong!"
+			);
+		}
+	}
+);
+export const verifyEmail = createAsyncThunk(
+	"user/VerifyEmail",
+	async ({ userId, accessToken }, { rejectWithValue }) => {
+		try {
+			const response = await authApi.verifyEmail({ userId, accessToken });
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response.data?.errorMessage || "Something went wrong!"
+			);
 		}
 	}
 );
@@ -65,9 +97,8 @@ const authSlice = createSlice({
 		[login.pending]: (state) => {
 			state.loading = true;
 		},
-		[login.rejected]: (state, action) => {
+		[login.rejected]: (state) => {
 			state.loading = false;
-			state.error = action.payload.errorMessage;
 		},
 		[login.fulfilled]: (state, action) => {
 			const { user, token } = action.payload.data;
@@ -82,10 +113,8 @@ const authSlice = createSlice({
 		[register.pending]: (state) => {
 			state.loading = true;
 		},
-		[register.rejected]: (state, action) => {
+		[register.rejected]: (state) => {
 			state.loading = false;
-			console.log(action.payload);
-			state.error = action.payload.errorMessage;
 		},
 		[register.fulfilled]: (state) => {
 			state.loading = false;

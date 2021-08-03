@@ -38,7 +38,7 @@ const vnTranslation = {
 			"Mật khẩu và xác nhận mật khẩu không trùng nhau",
 		phonenumberInValid: "Số điện thoại không hợp lệ",
 		buttonRegister: "Đăng ký",
-		buttonRegisterPending: "Đăng đăng ký",
+		buttonRegisterPending: "Đang đăng ký...",
 		haveAccount: "Bạn đã có tài khoản ?",
 		signIn: "Đăng nhập",
 	},

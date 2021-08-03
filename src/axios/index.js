@@ -26,36 +26,11 @@ axios.interceptors.response.use(
 		return response;
 	},
 	(error) => {
-		const originalRequest = error.config;
-		if (
-			error.response.status === 401 &&
-			originalRequest.url`${baseURL}/auth/refreshtoken`
-		) {
+		if (error.response.status === 401 || error.response.status === 403) {
+			console.log("Your access token is expired. Please log in again");
 			history.push("/login");
-			return Promise.reject(error);
 		}
 
-		if (error.response.status === 401 && !originalRequest._retry) {
-			originalRequest._retry = true;
-			const refreshToken = localStorage.refreshToken();
-			return axios
-				.post(`${baseURL}/auth/refreshtoken`, {
-					refreshToken: refreshToken,
-				})
-				.then((res) => {
-					if (res.status === 201) {
-						const {
-							accessToken: newAccessToken,
-							refreshToken: newRefreshToken,
-						} = res.data;
-						localStorage.setItem("accessToken", newAccessToken);
-						localStorage.setItem("refreshToken", newRefreshToken);
-						axios.defaults.headers.common["Authorization"] =
-							"Bearer " + newAccessToken;
-						return axios(originalRequest);
-					}
-				});
-		}
 		return Promise.reject(error);
 	}
 );

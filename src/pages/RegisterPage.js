@@ -85,7 +85,7 @@ const RegisterPage = () => {
 	const dispatch = useDispatch();
 
 	const loading = useSelector((state) => state.auth.loading);
-	const error = useSelector((state) => state.auth.error);
+	const [error, setError] = useState(null);
 
 	const [phoneNumber, setPhoneNumber] = useState("");
 	const [phoneNumberIsTouched, setPhoneNumberIsTouched] = useState(false);
@@ -169,7 +169,7 @@ const RegisterPage = () => {
 			confirmPasswordReset();
 			addressReset();
 		} catch (rejectedValueOrSerializedError) {
-			console.log(rejectedValueOrSerializedError);
+			setError(rejectedValueOrSerializedError);
 		}
 	};
 
@@ -303,7 +303,10 @@ const RegisterPage = () => {
 									/>
 								</FormControl>
 								{error?.length > 0 && (
-									<FormHelperText error>
+									<FormHelperText
+										error
+										style={{ marginBottom: 10 }}
+									>
 										{error}
 									</FormHelperText>
 								)}

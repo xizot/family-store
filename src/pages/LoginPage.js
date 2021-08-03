@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	FormControl,
@@ -73,8 +73,7 @@ const LoginPage = () => {
 	const dispatch = useDispatch();
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const loading = useSelector((state) => state.auth.loading);
-	const error = useSelector((state) => state.auth.error);
-
+	const [error, setError] = useState(null);
 	const {
 		enteredInput: enteredUsername,
 		hasError: usernameHasError,
@@ -109,7 +108,7 @@ const LoginPage = () => {
 			usernameReset();
 			passwordReset();
 		} catch (rejectedValueOrSerializedError) {
-			console.log(rejectedValueOrSerializedError);
+			setError(rejectedValueOrSerializedError);
 		}
 	};
 
@@ -170,7 +169,10 @@ const LoginPage = () => {
 									/>
 								</FormControl>
 								{error?.length > 0 && (
-									<FormHelperText error>
+									<FormHelperText
+										error
+										style={{ marginBottom: 10 }}
+									>
 										{error}
 									</FormHelperText>
 								)}

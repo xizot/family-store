@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export const useInput = (validateFn) => {
-	const [enteredInput, setEnteredInput] = useState("");
+export const useInput = (validateFn, initialState = "") => {
+	const [enteredInput, setEnteredInput] = useState(initialState);
 	const [isTouched, setIsTouched] = useState(false);
 	const inputIsValid = validateFn(enteredInput);
 
@@ -16,6 +16,10 @@ export const useInput = (validateFn) => {
 		setIsTouched(false);
 		setEnteredInput("");
 	};
+
+	useEffect(() => {
+		setEnteredInput(initialState);
+	}, [initialState]);
 
 	return {
 		enteredInput,
