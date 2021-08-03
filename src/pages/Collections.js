@@ -622,7 +622,7 @@ const Collections = (props) => {
 	const { categoryId: cateId } = useParams();
 	const dispatch = useDispatch();
 	const itemAddToCartHandler = (item) => {
-		dispatch(cartActions.addItem({ ...item, quantity: 1 }));
+		dispatch(cartActions.addItem({ ...item, amount: 1 }));
 	};
 	useEffect(() => {
 		dispatch(uiActions.hideModal());

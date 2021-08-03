@@ -19,6 +19,8 @@ import { Link } from "react-router-dom";
 import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../reducers/auth";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -80,6 +82,11 @@ const useStyles = makeStyles((theme) => ({
 const RegisterPage = () => {
 	const { t } = useTranslation();
 	const classes = useStyles();
+	const dispatch = useDispatch();
+
+	const loading = useSelector((state) => state.auth.loading);
+	const error = useSelector((state) => state.auth.error);
+
 	const [phoneNumber, setPhoneNumber] = useState("");
 	const [phoneNumberIsTouched, setPhoneNumberIsTouched] = useState(false);
 
@@ -141,18 +148,29 @@ const RegisterPage = () => {
 		passwordIsValid &&
 		confirmPasswordIsValid &&
 		addressIsValid;
-	const formSubmitHandler = (event) => {
+	const formSubmitHandler = async (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
 
 		//xử lý đăng ký
-		console.log(`Đăng ký`);
-
-		emailReset();
-		phoneNumberReset();
-		passwordReset();
-		confirmPasswordReset();
-		addressReset();
+		try {
+			await dispatch(
+				register({
+					fullName: "xizot", //[Hieu: thiếu fullname]
+					username: email,
+					password: password,
+					email: email,
+					phoneNumber: phoneNumber,
+				})
+			).unwrap();
+			emailReset();
+			phoneNumberReset();
+			passwordReset();
+			confirmPasswordReset();
+			addressReset();
+		} catch (rejectedValueOrSerializedError) {
+			console.log(rejectedValueOrSerializedError);
+		}
 	};
 
 	useEffect(() => {
@@ -183,7 +201,9 @@ const RegisterPage = () => {
 												type="email"
 												helperText={
 													emailHasError &&
-													t("registerpage.emailInValid")
+													t(
+														"registerpage.emailInValid"
+													)
 												}
 												required
 												fullWidth
@@ -220,7 +240,9 @@ const RegisterPage = () => {
 														classes.formHelperText
 													}
 												>
-													{t("registerpage.phonenumberInValid")}
+													{t(
+														"registerpage.phonenumberInValid"
+													)}
 												</FormHelperText>
 											)}
 										</Grid>
@@ -261,12 +283,16 @@ const RegisterPage = () => {
 								</FormControl>
 								<FormControl className={classes.formControl}>
 									<TextField
-										label={t("registerpage.confirmPassword")}
+										label={t(
+											"registerpage.confirmPassword"
+										)}
 										type="password"
 										error={confirmPasswordHasError}
 										helperText={
 											confirmPasswordHasError &&
-											t("registerpage.confirmPasswordInValid")
+											t(
+												"registerpage.confirmPasswordInValid"
+											)
 										}
 										fullWidth
 										size="small"
@@ -276,6 +302,11 @@ const RegisterPage = () => {
 										onChange={confirmPasswordChangeHandler}
 									/>
 								</FormControl>
+								{error?.length > 0 && (
+									<FormHelperText error>
+										{error}
+									</FormHelperText>
+								)}
 								<Button
 									variant="contained"
 									color="primary"
@@ -284,14 +315,20 @@ const RegisterPage = () => {
 									type="submit"
 									className={classes.button}
 								>
-									{t("registerpage.buttonRegister")}
+									{!loading
+										? t("registerpage.buttonRegister")
+										: t(
+												"registerpage.buttonRegisterPending"
+										  )}
 								</Button>
 								<Typography
 									className={classes.forwardTo}
 									variant="body2"
 								>
 									{t("registerpage.haveAccount")}{" "}
-									<Link to="/login">{t("registerpage.signIn")}</Link>
+									<Link to="/login">
+										{t("registerpage.signIn")}
+									</Link>
 								</Typography>
 							</form>
 						</Box>

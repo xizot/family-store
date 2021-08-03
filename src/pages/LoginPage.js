@@ -16,7 +16,8 @@ import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../reducers/auth";
+import { login } from "../reducers/auth";
+import { FormHelperText } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -71,6 +72,8 @@ const LoginPage = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+	const loading = useSelector((state) => state.auth.loading);
+	const error = useSelector((state) => state.auth.error);
 
 	const {
 		enteredInput: enteredUsername,
@@ -90,24 +93,24 @@ const LoginPage = () => {
 	} = useInput(Validate.isNotEmpty);
 
 	const formIsValid = usernameIsValid && passwordIsValid;
-	const formSubmitHandler = (event) => {
+
+	const formSubmitHandler = async (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
 
 		//handle login here
-		dispatch(
-			authActions.loginSucceeded({
-				accessToken: "123",
-				refreshToken: "123",
-			})
-		);
-		console.log(
-			`login info:\nusername: ${enteredUsername}\npassword: ${enteredPassword}`
-		);
-
-		//reset text field
-		usernameReset();
-		passwordReset();
+		try {
+			await dispatch(
+				login({
+					username: enteredUsername,
+					password: enteredPassword,
+				})
+			).unwrap();
+			usernameReset();
+			passwordReset();
+		} catch (rejectedValueOrSerializedError) {
+			console.log(rejectedValueOrSerializedError);
+		}
 	};
 
 	useEffect(() => {
@@ -166,6 +169,11 @@ const LoginPage = () => {
 										onChange={passwordChangeHandler}
 									/>
 								</FormControl>
+								{error?.length > 0 && (
+									<FormHelperText error>
+										{error}
+									</FormHelperText>
+								)}
 								<Button
 									variant="contained"
 									color="primary"
@@ -174,7 +182,9 @@ const LoginPage = () => {
 									type="submit"
 									className={classes.button}
 								>
-									{t("loginpage.buttonLogin")}
+									{!loading
+										? t("loginpage.buttonLogin")
+										: t("loginpage.buttonLoginPending")}
 								</Button>
 							</form>
 							<div className={classes.actions}>
