@@ -46,8 +46,7 @@ const useStyles = makeStyles((theme) => ({
 		width: "100%",
 	},
 }));
-
-const itemsOrder = [
+const itemsOrderDelivering = [
 	{
 		id: "000144004",
 		img: "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png",
@@ -55,6 +54,70 @@ const itemsOrder = [
 		expected: "23/02/2021",
 		total: 700000,
 		status: "Delivering",
+	},
+	{
+		id: "000144007",
+		img: "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png",
+		date: "15/12/2021",
+		expected: "23/12/2021",
+		total: 1100000,
+		status: "Delivering"
+	},
+]
+const itemsOrderCancel = [
+	{
+		id: "000144006",
+		img: "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png",
+		date: "05/02/2021",
+		expected: "23/02/2021",
+		total: 100000,
+		status: "Cancel"
+	},
+]
+const itemsOrderConfirm = [
+	{
+		id: "000144008",
+		img: "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png",
+		date: "01/02/2022",
+		expected: "25/02/2022",
+		total: 500000,
+		status: "Await confirm"
+	},
+]
+const itemsOrderDelivered = [
+	{
+		id: "000144005",
+		img: "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png",
+		date: "22/12/2011",
+		expected: "13/02/2021",
+		total: 500000,
+		status: "Delivered"
+	},
+]
+const itemsOrder = [
+	{
+		id: "000144008",
+		img: "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png",
+		date: "01/02/2022",
+		expected: "25/02/2022",
+		total: 500000,
+		status: "Await confirm"
+	},
+	{
+		id: "000144004",
+		img: "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png",
+		date: "22/02/2021",
+		expected: "23/02/2021",
+		total: 700000,
+		status: "Delivering",
+	},
+	{
+		id: "000144007",
+		img: "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png",
+		date: "15/12/2021",
+		expected: "23/12/2021",
+		total: 1100000,
+		status: "Delivering"
 	},
 	{
 		id: "000144005",
@@ -71,22 +134,6 @@ const itemsOrder = [
 		expected: "23/02/2021",
 		total: 100000,
 		status: "Cancel"
-	},
-	{
-		id: "000144007",
-		img: "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png",
-		date: "15/12/2021",
-		expected: "23/12/2021",
-		total: 1100000,
-		status: "Delivering"
-	},
-	{
-		id: "000144008",
-		img: "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png",
-		date: "01/02/2022",
-		expected: "25/02/2022",
-		total: 500000,
-		status: "Await confirm"
 	},
 ]
 
@@ -117,7 +164,7 @@ const OrderPage = (props) => {
 									<Tab label="All Order" value="0" />
 									<Tab label="Awaiting confirm" value="1" />
 									<Tab label="Delivering" value="2" />
-									<Tab label="Delivery success" value="3" />
+									<Tab label="Delivered" value="3" />
 									<Tab label="Cancel" value="4" />
 								</TabList>
 							</div>
@@ -133,19 +180,59 @@ const OrderPage = (props) => {
 												expected={item.expected}
 												total={item.total}
 											/>
-										))} 
+										))}
 								</TabPanel>
 								<TabPanel value="1">
-									Confirm
+									{itemsOrderConfirm?.length > 0 &&
+										itemsOrderConfirm.map((item, index) => (
+											<OrderItem
+												id={item.id}
+												img={item.img}
+												status={item.status}
+												date={item.date}
+												expected={item.expected}
+												total={item.total}
+											/>
+										))}
 								</TabPanel>
 								<TabPanel value="2">
-									Delivering
+									{itemsOrderDelivering?.length > 0 &&
+										itemsOrderDelivering.map((item, index) => (
+											<OrderItem
+												id={item.id}
+												img={item.img}
+												status={item.status}
+												date={item.date}
+												expected={item.expected}
+												total={item.total}
+											/>
+										))}
 								</TabPanel>
 								<TabPanel value="3">
-									Success		
+									{itemsOrderDelivered?.length > 0 &&
+										itemsOrderDelivered.map((item, index) => (
+											<OrderItem
+												id={item.id}
+												img={item.img}
+												status={item.status}
+												date={item.date}
+												expected={item.expected}
+												total={item.total}
+											/>
+										))}
 								</TabPanel>
 								<TabPanel value="4">
-									Cancel
+									{itemsOrderCancel?.length > 0 &&
+										itemsOrderCancel.map((item, index) => (
+											<OrderItem
+												id={item.id}
+												img={item.img}
+												status={item.status}
+												date={item.date}
+												expected={item.expected}
+												total={item.total}
+											/>
+										))}
 								</TabPanel>
 							</div>
 						</TabContext>
