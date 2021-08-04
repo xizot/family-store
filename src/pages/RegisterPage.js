@@ -130,6 +130,15 @@ const RegisterPage = () => {
 		inputReset: confirmPasswordReset,
 	} = useInput((value) => Validate.isNotEmpty(value) && value === password);
 
+	const {
+		enteredInput: fullName,
+		hasError: fullNameHasError,
+		inputBlurHandler: fullNameBlurHandler,
+		inputChangeHandler: fullNameChangeHandler,
+		inputIsValid: fullNameIsValid,
+		inputReset: fullNameReset,
+	} = useInput(Validate.isNotEmpty);
+
 	const phoneNumberChangeHandler = (value) => {
 		setPhoneNumber(value);
 	};
@@ -147,16 +156,15 @@ const RegisterPage = () => {
 		phoneNumberIsValid &&
 		passwordIsValid &&
 		confirmPasswordIsValid &&
-		addressIsValid;
+		addressIsValid &&
+		fullNameIsValid ;
 	const formSubmitHandler = async (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
-
-		//xử lý đăng ký
 		try {
 			await dispatch(
 				register({
-					fullName: "xizot", //[Hieu: thiếu fullname]
+					fullName: fullName, 
 					username: email,
 					password: password,
 					email: email,
@@ -168,6 +176,7 @@ const RegisterPage = () => {
 			passwordReset();
 			confirmPasswordReset();
 			addressReset();
+			fullNameReset();
 		} catch (rejectedValueOrSerializedError) {
 			setError(rejectedValueOrSerializedError);
 		}
@@ -247,6 +256,22 @@ const RegisterPage = () => {
 											)}
 										</Grid>
 									</Grid>
+								</FormControl>
+								<FormControl className={classes.formControl}>
+									<TextField
+										error={fullNameHasError}
+										label={t("registerpage.fullName")}
+										helperText={
+											fullNameHasError &&
+											t("registerpage.fullNameInValid")
+										}
+										fullWidth
+										size="small"
+										variant="outlined"
+										value={fullName}
+										onBlur={fullNameBlurHandler}
+										onChange={fullNameChangeHandler}
+									/>
 								</FormControl>
 								<FormControl className={classes.formControl}>
 									<TextField

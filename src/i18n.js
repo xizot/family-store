@@ -30,6 +30,8 @@ const vnTranslation = {
 		email: "Email",
 		emailInValid: "Địa chỉ email không hợp lệ",
 		address: "Địa chỉ",
+		fullName: "Tên đầy đủ",
+		fullNameInValid: "Tên người dùng không hợp lệ.",
 		addressInValid: "Địa chỉ không hợp lệ.",
 		password: "Mật khẩu",
 		passwordInValid: "Mật khẩu không hợp lệ",
