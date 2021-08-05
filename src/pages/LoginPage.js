@@ -101,7 +101,7 @@ const LoginPage = () => {
 		try {
 			await dispatch(
 				login({
-					username: enteredUsername,
+					email: enteredUsername,
 					password: enteredPassword,
 				})
 			).unwrap();

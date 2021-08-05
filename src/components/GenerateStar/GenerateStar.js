@@ -24,7 +24,7 @@ const GenerateStar = ({ numOfStar, rootCustom, totalReviewed }) => {
 				</li>
 			))}
 			{[...Array(5 - numOfStar)].map((_, index) => (
-				<li key={numOfStar + index - 1}>
+				<li key={numOfStar + index}>
 					<StarBorderRounded color="primary" fontSize="small" />
 				</li>
 			))}

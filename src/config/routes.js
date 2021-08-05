@@ -11,6 +11,7 @@ const ProfilePage = lazy(() => import("../pages/Profile"));
 const SearchPage = lazy(() => import("../pages/SearchPage"));
 const CollectionsPage = lazy(() => import("../pages/Collections"));
 const OrderPage = lazy(() => import("../pages/OrderPage"));
+const ReviewsPage = lazy(() => import("../pages/ReviewsPage"));
 
 export const routes = [
 	{
@@ -69,7 +70,7 @@ export const routes = [
 	},
 	{
 		path: "/details/:productId",
-		protected: true,
+		protected: false,
 		exact: true,
 		component: ProductDetail,
 	},
@@ -90,5 +91,11 @@ export const routes = [
 		protected: true,
 		exact: true,
 		component: OrderPage,
+	},
+	{
+		path: "/reviews/:orderId",
+		protected: false,
+		exact: true,
+		component: ReviewsPage,
 	},
 ];
