@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
 	FormControl,
 	Container,
@@ -8,6 +10,7 @@ import {
 	TextField,
 	Typography,
 	Box,
+	FormHelperText,
 } from "@material-ui/core";
 import { useInput } from "../hooks/use-input";
 import * as Validate from "../helpers/validate";
@@ -15,6 +18,7 @@ import { Link } from "react-router-dom";
 import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
+import { verifyEmail } from "../reducers/auth";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -62,8 +66,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const AccountActivationPage = () => {
+const AccountActivationPage = (props) => {
 	const { t } = useTranslation();
+	const dispatch = useDispatch();
+	let history = useHistory();
+	const id = props.location.state.id || 1;
+	const [error, setError] = useState(null);
 	const classes = useStyles();
 
 	const {
@@ -77,17 +85,28 @@ const AccountActivationPage = () => {
 
 
 	const formIsValid = codeIsValid;
-	const formSubmitHandler = (event) => {
+	const formSubmitHandler = async (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
-
-		console.log(
-			`info_code: ${enteredCode}`
-		);
-		//handle.....
-
-		//reset text field
-		codeReset();
+		try {
+			const result = await dispatch(
+				verifyEmail({
+					userId:id,
+					accessToken:enteredCode,
+				})
+			).unwrap();
+			if(result.statusCode === 0){
+				const location = {
+					pathname: '/login',
+					state: { id: result.accId }
+				}
+				history.push(location);
+			}
+			codeReset();
+		} catch (rejectedValueOrSerializedError) {
+			setError(rejectedValueOrSerializedError);
+		}
+		
 	};
 
 	useEffect(() => {
@@ -126,6 +145,14 @@ const AccountActivationPage = () => {
 										onChange={codeChangeHandler}
 									/>
 								</FormControl>
+								{error?.length > 0 && (
+									<FormHelperText
+										error
+										style={{ marginBottom: 10 }}
+									>
+										{error}
+									</FormHelperText>
+								)}
 								<Button
 									variant="contained"
 									color="primary"

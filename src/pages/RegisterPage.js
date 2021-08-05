@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import {
 	FormControl,
 	Container,
@@ -81,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
 
 const RegisterPage = () => {
 	const { t } = useTranslation();
+	let history = useHistory();
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -157,20 +159,25 @@ const RegisterPage = () => {
 		passwordIsValid &&
 		confirmPasswordIsValid &&
 		addressIsValid &&
-		fullNameIsValid ;
+		fullNameIsValid;
 	const formSubmitHandler = async (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
 		try {
-			await dispatch(
+			const result = await dispatch(
 				register({
-					fullName: fullName, 
+					fullName: fullName,
 					username: email,
 					password: password,
 					email: email,
 					phoneNumber: phoneNumber,
 				})
 			).unwrap();
+			const location = {
+				pathname: '/account-activation',
+				state: { id: result.accId }
+			}
+			history.push(location);
 			emailReset();
 			phoneNumberReset();
 			passwordReset();
@@ -346,8 +353,8 @@ const RegisterPage = () => {
 									{!loading
 										? t("registerpage.buttonRegister")
 										: t(
-												"registerpage.buttonRegisterPending"
-										  )}
+											"registerpage.buttonRegisterPending"
+										)}
 								</Button>
 								<Typography
 									className={classes.forwardTo}

@@ -57,7 +57,7 @@ export const routes = [
 	},
 	{
 		path: "/account-activation",
-		protected: true,
+		protected: false,
 		exact: true,
 		component: AccountActivationPage,
 	},

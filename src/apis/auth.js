@@ -2,7 +2,7 @@ import axios from "../axios/index";
 
 const login = ({ username, password }) => {
 	return axios.post("/api/authentication/login", {
-		userName: username,
+		email: username,
 		passWord: password,
 	});
 };
