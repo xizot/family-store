@@ -8,9 +8,9 @@ axios.defaults.baseURL = baseURL;
 // Add a request interceptor
 axios.interceptors.request.use(
 	(config) => {
-		const token = localStorage.accessToken;
-		if (token) {
-			config.headers["Authorization"] = "Bearer " + token;
+		const accessToken = localStorage.accessToken;
+		if (accessToken) {
+			config.headers["Authorization"] = accessToken;
 		}
 		// config.headers['Content-Type'] = 'application/json';
 		return config;

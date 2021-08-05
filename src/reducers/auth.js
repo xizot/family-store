@@ -11,9 +11,9 @@ const initialState = {
 
 export const login = createAsyncThunk(
 	"user/Login",
-	async ({ username, password }, { rejectWithValue }) => {
+	async ({ email, password }, { rejectWithValue }) => {
 		try {
-			const response = await authApi.login({ username, password });
+			const response = await authApi.login({ email, password });
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(

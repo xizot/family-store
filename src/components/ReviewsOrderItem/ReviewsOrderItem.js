@@ -1,97 +1,127 @@
-import { makeStyles, Typography, Grid, TextareaAutosize, Button } from '@material-ui/core';
-import GenerateStar from "../GenerateStar/GenerateStar";
-import React from 'react';
+import {
+	makeStyles,
+	Typography,
+	Grid,
+	Button,
+	TextField,
+} from "@material-ui/core";
+import React, { useState } from "react";
+import GenerateStarV2 from "../GenerateStarV2/GenerateStarV2";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		marginBottom: theme.spacing(1),
-		height: 'auto',
-		width: '100%',
+		height: "auto",
+		width: "100%",
 		borderBottom: `1px solid #D3D3D3`,
-		padding: theme.spacing(2)
+		padding: theme.spacing(2),
 	},
 	image: {
 		width: 100,
-		height: 100,
-		borderRadius: theme.shape.borderRadius,
 		marginRight: theme.spacing(2),
-		border: `solid 1px #DDDDDD`
+		"& img": {
+			width: "100%",
+			height: "auto",
+			maxHeight: "100%",
+			borderRadius: theme.shape.borderRadius,
+			border: `solid 1px #DDDDDD`,
+		},
 	},
-	nameAndQuantity :{
-		float:"left",
-		marginLeft: theme.spacing(2)
+	productInfo: {
+		display: "flex",
+	},
+	nameAndQuantity: {
+		flex: 1,
 	},
 	name: {
-		fontWeight: 'bold',
-		width: '100%'
+		fontWeight: "bold",
+		width: "100%",
 	},
 	quantity: {
-		width: '100%'
+		width: "100%",
 	},
 	stars: {
 		float: "right",
-		marginBottom: theme.spacing(2),
-		[theme.breakpoints.down("sm")]: {
-			float:"none",
-			marginLeft:"40%"
-		},
-		[theme.breakpoints.down("xs")]: {
-			
-		},
+		marginBottom: theme.spacing(1),
 	},
 	textarea: {
-		borderColor: '#DDDDDD',
 		borderRadius: theme.shape.borderRadius,
-		padding: theme.spacing(1),
-		width: '100%',
-		marginBottom: theme.spacing(2)
+		width: "100%",
+		marginBottom: theme.spacing(2),
 	},
 	executeButton: {
-		float: 'right',
-		marginBottom: theme.spacing(2)
-	}
+		float: "right",
+		marginBottom: theme.spacing(2),
+	},
 }));
 
-const ReviewsOrderItem = ({ name, quantity, img }) => {
+const ReviewsOrderItem = ({ id, name, quantity, img, onReview }) => {
 	const classes = useStyles();
+	const [numOfStar, setNumOfStar] = useState(5);
+	const [comment, setComment] = useState("");
 
+	const commentHandler = (e) => {
+		setComment(e.target.value);
+	};
+	const numOfStarHandler = (number) => {
+		setNumOfStar(number);
+	};
+	const reviewHandler = () => {
+		onReview({
+			productId: id,
+			numOfStar,
+			comment,
+		});
+	};
 	return (
 		<div className={classes.root}>
 			<Grid container spacing={2}>
-				<Grid item xs={6} sm={6} md={1}>
-					<img src={img} alt="Product Img" className={classes.image} />
-				</Grid>
-				<Grid item xs={6} sm={6} md={5}>
+				<Grid item sm={12} md={6} className={classes.productInfo}>
+					<div className={classes.image}>
+						<img src={img} alt="Product Img" />
+					</div>
 					<div className={classes.nameAndQuantity}>
 						<div className={classes.name}>
-							<Typography variant="body1" className={classes.name}>
+							<Typography
+								variant="body1"
+								className={classes.name}
+							>
 								{name}
 							</Typography>
 						</div>
 						<div className={classes.quantity}>
 							<div>
-								<Typography variant="body2">x{quantity}</Typography>
+								<Typography variant="body2">
+									x{quantity}
+								</Typography>
 							</div>
 						</div>
 					</div>
 				</Grid>
-				<Grid item xs={12} sm={12} md={6}>
+				<Grid item xs={12} md={6} className={classes.actions}>
 					<div className={classes.stars}>
-						<GenerateStar
-							numOfStar={5}
-							rootCustom={classes.starReviewed}
+						<GenerateStarV2
+							numOfStar={numOfStar}
+							onChangeStar={numOfStarHandler}
 						/>
 					</div>
-					<TextareaAutosize
-						maxRows={4}
-						minRows={4}
-						aria-label=""
+
+					<TextField
+						multiline
+						rows={4}
+						variant="filled"
 						placeholder="Comment what you think about this product?"
-						defaultValue=""
 						className={classes.textarea}
+						value={comment}
+						onChange={commentHandler}
 					/>
-					<Button variant="contained" color="primary" className={classes.executeButton}>
-						Done
+					<Button
+						variant="contained"
+						color="primary"
+						className={classes.executeButton}
+						onClick={reviewHandler}
+					>
+						Review
 					</Button>
 				</Grid>
 			</Grid>

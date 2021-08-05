@@ -128,6 +128,7 @@ const useStyles = makeStyles((theme) => ({
 		background: theme.palette.common.white,
 		borderRadius: theme.shape.borderRadius,
 		opacity: 0,
+		pointerEvents: "none",
 		transition: "opacity .3s",
 		boxShadow: "0px 1px 3px rgba(0,0,0,.3)",
 		minWidth: "max-content",
@@ -149,6 +150,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	dropDownActive: {
 		opacity: 1,
+		pointerEvents: "all",
 	},
 	selectLanguage: {
 		color: "#fff",

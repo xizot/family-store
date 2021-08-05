@@ -1,101 +1,101 @@
-import { lazy } from 'react';
+import { lazy } from "react";
 
-const ProductDetail = lazy(() => import('../pages/ProductDetail'));
-const HomePage = lazy(() => import('../pages/HomePage'));
-const LoginPage = lazy(() => import('../pages/LoginPage'));
-const RegisterPage = lazy(() => import('../pages/RegisterPage'));
-const ForgotPasswordPage = lazy(() => import('../pages/ForgotPassword'));
-const RecoveryPasswordPage = lazy(() => import('../pages/RecoveryPassword'));
-const AccountActivationPage = lazy(() => import('../pages/AccountActivation'));
-const ProfilePage = lazy(() => import('../pages/Profile'));
-const SearchPage = lazy(() => import('../pages/SearchPage'));
-const CollectionsPage = lazy(() => import('../pages/Collections'));
-const OrderPage = lazy(() => import('../pages/OrderPage'));
-const ReviewsPage = lazy(() => import('../pages/ReviewsPage'));
+const ProductDetail = lazy(() => import("../pages/ProductDetail"));
+const HomePage = lazy(() => import("../pages/HomePage"));
+const LoginPage = lazy(() => import("../pages/LoginPage"));
+const RegisterPage = lazy(() => import("../pages/RegisterPage"));
+const ForgotPasswordPage = lazy(() => import("../pages/ForgotPassword"));
+const RecoveryPasswordPage = lazy(() => import("../pages/RecoveryPassword"));
+const AccountActivationPage = lazy(() => import("../pages/AccountActivation"));
+const ProfilePage = lazy(() => import("../pages/Profile"));
+const SearchPage = lazy(() => import("../pages/SearchPage"));
+const CollectionsPage = lazy(() => import("../pages/Collections"));
+const OrderPage = lazy(() => import("../pages/OrderPage"));
+const ReviewsPage = lazy(() => import("../pages/ReviewsPage"));
 
 export const routes = [
 	{
-		path: '/',
+		path: "/",
 		protected: false,
 		exact: true,
-		component: HomePage
+		component: HomePage,
 	},
 	{
-		path: '/login',
+		path: "/login",
 		protected: false,
 		exact: true,
-		component: LoginPage
+		component: LoginPage,
 	},
 	{
-		path: '/register',
+		path: "/register",
 		protected: false,
 		exact: true,
-		component: RegisterPage
+		component: RegisterPage,
 	},
 	{
-		path: '/profile/:slug',
+		path: "/profile/:slug",
 		protected: true,
 		exact: true,
-		component: ProfilePage
+		component: ProfilePage,
 	},
 	{
-		path: '/profile',
+		path: "/profile",
 		protected: true,
 		exact: true,
-		component: ProfilePage
+		component: ProfilePage,
 	},
 	{
-		path: '/forgot-password',
+		path: "/forgot-password",
 		protected: true,
 		exact: true,
-		component: ForgotPasswordPage
+		component: ForgotPasswordPage,
 	},
 	{
-		path: '/recovery-password',
+		path: "/recovery-password",
 		protected: true,
 		exact: true,
-		component: RecoveryPasswordPage
+		component: RecoveryPasswordPage,
 	},
 	{
-		path: '/account-activation',
+		path: "/account-activation",
 		protected: true,
 		exact: true,
-		component: AccountActivationPage
+		component: AccountActivationPage,
 	},
 	{
-		path: '/search',
+		path: "/search",
 		protected: true,
 		exact: true,
-		component: SearchPage
+		component: SearchPage,
 	},
 	{
-		path: '/details/:productId',
+		path: "/details/:productId",
 		protected: false,
 		exact: true,
-		component: ProductDetail
+		component: ProductDetail,
 	},
 	{
-		path: '/collections/:categoryId',
+		path: "/collections/:categoryId",
 		protected: true,
 		exact: true,
-		component: CollectionsPage
+		component: CollectionsPage,
 	},
 	{
-		path: '/collections',
+		path: "/collections",
 		protected: true,
 		exact: true,
-		component: CollectionsPage
+		component: CollectionsPage,
 	},
 	{
-		path: '/orders',
+		path: "/orders",
 		protected: true,
 		exact: true,
-		component: OrderPage
+		component: OrderPage,
 	},
 	{
-		path: '/reviews',
+		path: "/reviews/:orderId",
 		protected: false,
 		exact: true,
-		component: ReviewsPage
-	}
+		component: ReviewsPage,
+	},
 ];
