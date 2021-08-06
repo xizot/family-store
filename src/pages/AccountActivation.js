@@ -132,7 +132,7 @@ const AccountActivationPage = (props) => {
 									<TextField
 										error={codeHasError}
 										label={t("accountactivationpage.code")}
-										type="number"
+									
 										helperText={
 											codeHasError &&
 											t("accountactivationpage.codeInvalid")

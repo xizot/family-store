@@ -139,7 +139,7 @@ const itemsOrder = [
 
 const OrderPage = (props) => {
 	const classes = useStyles();
-	const [value, setValue] = useState(0);
+	const [value, setValue] = useState('0');
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
@@ -173,6 +173,7 @@ const OrderPage = (props) => {
 									{itemsOrder?.length > 0 &&
 										itemsOrder.map((item, index) => (
 											<OrderItem
+												key={index}
 												id={item.id}
 												img={item.img}
 												status={item.status}
@@ -186,6 +187,7 @@ const OrderPage = (props) => {
 									{itemsOrderConfirm?.length > 0 &&
 										itemsOrderConfirm.map((item, index) => (
 											<OrderItem
+												key={index}	
 												id={item.id}
 												img={item.img}
 												status={item.status}
@@ -199,6 +201,7 @@ const OrderPage = (props) => {
 									{itemsOrderDelivering?.length > 0 &&
 										itemsOrderDelivering.map((item, index) => (
 											<OrderItem
+												key={index}
 												id={item.id}
 												img={item.img}
 												status={item.status}
@@ -212,6 +215,7 @@ const OrderPage = (props) => {
 									{itemsOrderDelivered?.length > 0 &&
 										itemsOrderDelivered.map((item, index) => (
 											<OrderItem
+												key={index}
 												id={item.id}
 												img={item.img}
 												status={item.status}
@@ -225,6 +229,7 @@ const OrderPage = (props) => {
 									{itemsOrderCancel?.length > 0 &&
 										itemsOrderCancel.map((item, index) => (
 											<OrderItem
+												key={index}
 												id={item.id}
 												img={item.img}
 												status={item.status}

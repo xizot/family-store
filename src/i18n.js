@@ -148,6 +148,8 @@ const enTranslation = {
 		emailInValid: "Please enter a valid email",
 		address: "Address",
 		addressInValid: "Please enter a valid address",
+		fullName: "FullName",
+		fullNameInValid: "Please enter a valid name",
 		password: "Password",
 		passwordInValid: "Please enter a valid password",
 		confirmPassword: "Confirm Password",

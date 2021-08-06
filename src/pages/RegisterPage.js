@@ -108,14 +108,6 @@ const RegisterPage = () => {
 	);
 
 	const {
-		enteredInput: address,
-		hasError: addressHasError,
-		inputBlurHandler: addressBlurHandler,
-		inputChangeHandler: addressChangeHandler,
-		inputIsValid: addressIsValid,
-		inputReset: addressReset,
-	} = useInput(Validate.isNotEmpty);
-	const {
 		enteredInput: password,
 		hasError: passwordHasError,
 		inputBlurHandler: passwordBlurHandler,
@@ -158,7 +150,6 @@ const RegisterPage = () => {
 		phoneNumberIsValid &&
 		passwordIsValid &&
 		confirmPasswordIsValid &&
-		addressIsValid &&
 		fullNameIsValid;
 	const formSubmitHandler = async (event) => {
 		event.preventDefault();
@@ -182,7 +173,6 @@ const RegisterPage = () => {
 			phoneNumberReset();
 			passwordReset();
 			confirmPasswordReset();
-			addressReset();
 			fullNameReset();
 		} catch (rejectedValueOrSerializedError) {
 			setError(rejectedValueOrSerializedError);
@@ -278,22 +268,6 @@ const RegisterPage = () => {
 										value={fullName}
 										onBlur={fullNameBlurHandler}
 										onChange={fullNameChangeHandler}
-									/>
-								</FormControl>
-								<FormControl className={classes.formControl}>
-									<TextField
-										error={addressHasError}
-										label={t("registerpage.address")}
-										helperText={
-											addressHasError &&
-											t("registerpage.addressInValid")
-										}
-										fullWidth
-										size="small"
-										variant="outlined"
-										value={address}
-										onBlur={addressBlurHandler}
-										onChange={addressChangeHandler}
 									/>
 								</FormControl>
 								<FormControl className={classes.formControl}>
