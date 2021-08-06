@@ -1,15 +1,12 @@
-import {
-	makeStyles,
-	Tab,
-} from "@material-ui/core";
+import { makeStyles, Tab } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import TabPanel from '@material-ui/lab/TabPanel';
-import TabContext from '@material-ui/lab/TabContext';
-import TabList from '@material-ui/lab/TabList';
-import Footer from "../components/Layout/Footer";
-import SideBar from "../components/SideBar/SideBar";
-import Header from "./../components/Layout/Header";
-import OrderItem from "./../components/Order/OrderItem";
+import TabPanel from "@material-ui/lab/TabPanel";
+import TabContext from "@material-ui/lab/TabContext";
+import TabList from "@material-ui/lab/TabList";
+import Footer from "../../components/Layout/Footer";
+import SideBar from "../../components/SideBar/SideBar";
+import Header from "./../../components/Layout/Header";
+import OrderItem from "./../../components/Order/OrderItem";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -61,9 +58,9 @@ const itemsOrderDelivering = [
 		date: "15/12/2021",
 		expected: "23/12/2021",
 		total: 1100000,
-		status: "Delivering"
+		status: "Delivering",
 	},
-]
+];
 const itemsOrderCancel = [
 	{
 		id: "000144006",
@@ -71,9 +68,9 @@ const itemsOrderCancel = [
 		date: "05/02/2021",
 		expected: "23/02/2021",
 		total: 100000,
-		status: "Cancel"
+		status: "Cancel",
 	},
-]
+];
 const itemsOrderConfirm = [
 	{
 		id: "000144008",
@@ -81,9 +78,9 @@ const itemsOrderConfirm = [
 		date: "01/02/2022",
 		expected: "25/02/2022",
 		total: 500000,
-		status: "Await confirm"
+		status: "Await confirm",
 	},
-]
+];
 const itemsOrderDelivered = [
 	{
 		id: "000144005",
@@ -91,9 +88,9 @@ const itemsOrderDelivered = [
 		date: "22/12/2011",
 		expected: "13/02/2021",
 		total: 500000,
-		status: "Delivered"
+		status: "Delivered",
 	},
-]
+];
 const itemsOrder = [
 	{
 		id: "000144008",
@@ -101,7 +98,7 @@ const itemsOrder = [
 		date: "01/02/2022",
 		expected: "25/02/2022",
 		total: 500000,
-		status: "Await confirm"
+		status: "Await confirm",
 	},
 	{
 		id: "000144004",
@@ -117,7 +114,7 @@ const itemsOrder = [
 		date: "15/12/2021",
 		expected: "23/12/2021",
 		total: 1100000,
-		status: "Delivering"
+		status: "Delivering",
 	},
 	{
 		id: "000144005",
@@ -125,7 +122,7 @@ const itemsOrder = [
 		date: "22/12/2011",
 		expected: "13/02/2021",
 		total: 500000,
-		status: "Delivered"
+		status: "Delivered",
 	},
 	{
 		id: "000144006",
@@ -133,18 +130,18 @@ const itemsOrder = [
 		date: "05/02/2021",
 		expected: "23/02/2021",
 		total: 100000,
-		status: "Cancel"
+		status: "Cancel",
 	},
-]
+];
 
 const OrderPage = (props) => {
 	const classes = useStyles();
-	const [value, setValue] = useState('0');
+	const [value, setValue] = useState("0");
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
 	useEffect(() => {
-		document.title = "All Order"
+		document.title = "All Order";
 	}, []);
 
 	return (
@@ -155,12 +152,16 @@ const OrderPage = (props) => {
 				<div className={classes.main}>
 					<div className={classes.mainContent}>
 						<TabContext value={value}>
-							<div className={`${classes.topContent} ${classes.shadow}`}>
-								<TabList value={value}
+							<div
+								className={`${classes.topContent} ${classes.shadow}`}
+							>
+								<TabList
+									value={value}
 									onChange={handleChange}
-									indicatorColor='primary'
+									indicatorColor="primary"
 									variant="fullWidth"
-									aria-label="full width tabs example">
+									aria-label="full width tabs example"
+								>
 									<Tab label="All Order" value="0" />
 									<Tab label="Awaiting confirm" value="1" />
 									<Tab label="Delivering" value="2" />
@@ -187,7 +188,7 @@ const OrderPage = (props) => {
 									{itemsOrderConfirm?.length > 0 &&
 										itemsOrderConfirm.map((item, index) => (
 											<OrderItem
-												key={index}	
+												key={index}
 												id={item.id}
 												img={item.img}
 												status={item.status}
@@ -199,31 +200,35 @@ const OrderPage = (props) => {
 								</TabPanel>
 								<TabPanel value="2">
 									{itemsOrderDelivering?.length > 0 &&
-										itemsOrderDelivering.map((item, index) => (
-											<OrderItem
-												key={index}
-												id={item.id}
-												img={item.img}
-												status={item.status}
-												date={item.date}
-												expected={item.expected}
-												total={item.total}
-											/>
-										))}
+										itemsOrderDelivering.map(
+											(item, index) => (
+												<OrderItem
+													key={index}
+													id={item.id}
+													img={item.img}
+													status={item.status}
+													date={item.date}
+													expected={item.expected}
+													total={item.total}
+												/>
+											)
+										)}
 								</TabPanel>
 								<TabPanel value="3">
 									{itemsOrderDelivered?.length > 0 &&
-										itemsOrderDelivered.map((item, index) => (
-											<OrderItem
-												key={index}
-												id={item.id}
-												img={item.img}
-												status={item.status}
-												date={item.date}
-												expected={item.expected}
-												total={item.total}
-											/>
-										))}
+										itemsOrderDelivered.map(
+											(item, index) => (
+												<OrderItem
+													key={index}
+													id={item.id}
+													img={item.img}
+													status={item.status}
+													date={item.date}
+													expected={item.expected}
+													total={item.total}
+												/>
+											)
+										)}
 								</TabPanel>
 								<TabPanel value="4">
 									{itemsOrderCancel?.length > 0 &&

@@ -1,4 +1,5 @@
 import { lazy } from "react";
+import { Role } from "./role";
 
 const ProductDetail = lazy(() => import("../pages/ProductDetail"));
 const HomePage = lazy(() => import("../pages/HomePage"));
@@ -7,11 +8,11 @@ const RegisterPage = lazy(() => import("../pages/RegisterPage"));
 const ForgotPasswordPage = lazy(() => import("../pages/ForgotPassword"));
 const RecoveryPasswordPage = lazy(() => import("../pages/RecoveryPassword"));
 const AccountActivationPage = lazy(() => import("../pages/AccountActivation"));
-const ProfilePage = lazy(() => import("../pages/Profile"));
+const ProfilePage = lazy(() => import("../pages/auth/Profile"));
 const SearchPage = lazy(() => import("../pages/SearchPage"));
 const CollectionsPage = lazy(() => import("../pages/Collections"));
-const OrderPage = lazy(() => import("../pages/OrderPage"));
-const ReviewsPage = lazy(() => import("../pages/ReviewsPage"));
+const OrderPage = lazy(() => import("../pages/auth/OrderPage"));
+const ReviewsPage = lazy(() => import("../pages/auth/ReviewsPage"));
 
 export const routes = [
 	{
@@ -46,13 +47,13 @@ export const routes = [
 	},
 	{
 		path: "/forgot-password",
-		protected: true,
+		protected: false,
 		exact: true,
 		component: ForgotPasswordPage,
 	},
 	{
 		path: "/recovery-password",
-		protected: true,
+		protected: false,
 		exact: true,
 		component: RecoveryPasswordPage,
 	},
@@ -64,7 +65,7 @@ export const routes = [
 	},
 	{
 		path: "/search",
-		protected: true,
+		protected: false,
 		exact: true,
 		component: SearchPage,
 	},
@@ -76,13 +77,13 @@ export const routes = [
 	},
 	{
 		path: "/collections/:categoryId",
-		protected: true,
+		protected: false,
 		exact: true,
 		component: CollectionsPage,
 	},
 	{
 		path: "/collections",
-		protected: true,
+		protected: false,
 		exact: true,
 		component: CollectionsPage,
 	},
@@ -91,10 +92,11 @@ export const routes = [
 		protected: true,
 		exact: true,
 		component: OrderPage,
+		roles: [Role.User, Role.Admin],
 	},
 	{
 		path: "/reviews/:orderId",
-		protected: false,
+		protected: true,
 		exact: true,
 		component: ReviewsPage,
 	},

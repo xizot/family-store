@@ -23,6 +23,7 @@ function App() {
 	const dispatch = useDispatch();
 	const { i18n } = useTranslation();
 	const isOpenCart = useSelector((state) => state.ui.isOpenCart);
+
 	useEffect(() => {
 		const existingLang = localStorage.getItem("lang");
 		if (!existingLang || (existingLang !== "vn" && existingLang !== "en"))
@@ -46,8 +47,10 @@ function App() {
 					accessToken,
 				})
 			);
+			console.log(user);
 		} catch (err) {}
 	}, [dispatch]);
+
 	return (
 		<ThemeProvider theme={theme}>
 			{isOpenCart && <Cart />}
@@ -62,7 +65,10 @@ function App() {
 								render={(props) => {
 									if (route.protected) {
 										return (
-											<ProtectedRoute {...props}>
+											<ProtectedRoute
+												{...props}
+												roles={route.roles}
+											>
 												<route.component
 													{...route.props}
 												/>

@@ -1,11 +1,11 @@
 import { Grid, makeStyles, Typography, Button } from "@material-ui/core";
 import { useEffect } from "react";
-import Footer from "../components/Layout/Footer";
-import SideBar from "../components/SideBar/SideBar";
-import Header from "../components/Layout/Header";
-import ReviewsOrderItem from "../components/ReviewsOrderItem/ReviewsOrderItem";
 import { ArrowBackIos } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import ReviewsOrderItem from "../../components/ReviewsOrderItem/ReviewsOrderItem";
+import SideBar from "../../components/SideBar/SideBar";
+import Footer from "../../components/Layout/Footer";
+import Header from "../../components/Layout/Header";
 //import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({

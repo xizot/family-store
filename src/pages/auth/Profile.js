@@ -8,12 +8,12 @@ import {
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import Footer from "../components/Layout/Footer";
-import Header from "../components/Layout/Header";
 import { useTranslation } from "react-i18next";
-import BasicProfilePanel from "../components/Panels/BasicProfilePanel";
-import ChangePasswordPanel from "../components/Panels/ChangePasswordPanel";
-import AvatarPanel from "../components/Panels/AvatarPanel";
+import BasicProfilePanel from "../../components/Panels/BasicProfilePanel";
+import AvatarPanel from "../../components/Panels/AvatarPanel";
+import ChangePasswordPanel from "../../components/Panels/ChangePasswordPanel";
+import Footer from "../../components/Layout/Footer";
+import Header from "../../components/Layout/Header";
 
 const useStyles = makeStyles((theme) => ({
 	root: {

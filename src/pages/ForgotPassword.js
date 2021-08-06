@@ -11,10 +11,11 @@ import {
 } from "@material-ui/core";
 import { useInput } from "../hooks/use-input";
 import * as Validate from "../helpers/validate";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { mainColor } from "../utils";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -65,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 const ForgotPasswordPage = () => {
 	const { t } = useTranslation();
 	const classes = useStyles();
-
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const {
 		enteredInput: enteredEmail,
 		hasError: emailHasError,
@@ -90,6 +91,10 @@ const ForgotPasswordPage = () => {
 	useEffect(() => {
 		document.title = t("forgotpasswordpage.title");
 	}, [t]);
+
+	if (isAuthenticated) {
+		return <Redirect to="/" />;
+	}
 
 	return (
 		<>

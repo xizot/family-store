@@ -7,21 +7,13 @@ const login = ({ email, password }) => {
 	});
 };
 
-const register = ({
-	username,
-	password,
-	email,
-	fullName,
-	phoneNumber,
-	role = "ADM",
-}) => {
+const register = ({ username, password, email, fullName, phoneNumber }) => {
 	return axios.post("/api/authentication/register", {
 		userName: username,
 		passWord: password,
 		email,
 		fullName,
 		phoneNumber,
-		role,
 	});
 };
 

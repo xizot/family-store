@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect, useHistory } from "react-router-dom";
 import {
 	FormControl,
 	Container,
@@ -70,10 +70,10 @@ const AccountActivationPage = (props) => {
 	const { t } = useTranslation();
 	const dispatch = useDispatch();
 	let history = useHistory();
-	const id = props.location.state.id || 1;
+	const id = props.location.state?.id;
 	const [error, setError] = useState(null);
 	const classes = useStyles();
-
+	const user = useSelector((state) => state.auth.user);
 	const {
 		enteredInput: enteredCode,
 		hasError: codeHasError,
@@ -83,35 +83,38 @@ const AccountActivationPage = (props) => {
 		inputReset: codeReset,
 	} = useInput(Validate.isNotEmpty);
 
-
 	const formIsValid = codeIsValid;
+
 	const formSubmitHandler = async (event) => {
 		event.preventDefault();
 		if (!formIsValid) return;
 		try {
 			const result = await dispatch(
 				verifyEmail({
-					userId:id,
-					accessToken:enteredCode,
+					userId: id,
+					accessToken: enteredCode,
 				})
 			).unwrap();
-			if(result.statusCode === 0){
+			if (result.statusCode === 0) {
 				const location = {
-					pathname: '/login',
-					state: { id: result.accId }
-				}
+					pathname: "/login",
+					state: { id: result.accId },
+				};
 				history.push(location);
 			}
 			codeReset();
 		} catch (rejectedValueOrSerializedError) {
 			setError(rejectedValueOrSerializedError);
 		}
-		
 	};
 
 	useEffect(() => {
 		document.title = t("accountactivationpage.title");
 	}, [t]);
+
+	if (!id || (user && user.acc_status) === 0) {
+		return <Redirect to="/" />;
+	}
 
 	return (
 		<>
@@ -132,10 +135,11 @@ const AccountActivationPage = (props) => {
 									<TextField
 										error={codeHasError}
 										label={t("accountactivationpage.code")}
-									
 										helperText={
 											codeHasError &&
-											t("accountactivationpage.codeInvalid")
+											t(
+												"accountactivationpage.codeInvalid"
+											)
 										}
 										fullWidth
 										size="small"

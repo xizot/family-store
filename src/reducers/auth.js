@@ -25,7 +25,7 @@ export const login = createAsyncThunk(
 export const register = createAsyncThunk(
 	"user/Register",
 	async (
-		{ username, password, email, fullName, phoneNumber, role = "ADM" },
+		{ username, password, email, fullName, phoneNumber },
 		{ rejectWithValue }
 	) => {
 		try {
@@ -35,7 +35,6 @@ export const register = createAsyncThunk(
 				email,
 				fullName,
 				phoneNumber,
-				role,
 			});
 			return response.data;
 		} catch (error) {
@@ -102,9 +101,10 @@ const authSlice = createSlice({
 		},
 		[login.fulfilled]: (state, action) => {
 			const { user, token } = action.payload.data;
-			state.loading = false;
-			state.accessToken = token;
 			state.user = user;
+			state.loading = false;
+
+			state.accessToken = token;
 			state.isAuthenticated = true;
 
 			localStorage.setItem("accessToken", token);
