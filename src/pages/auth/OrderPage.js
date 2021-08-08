@@ -4,8 +4,8 @@ import TabPanel from "@material-ui/lab/TabPanel";
 import TabContext from "@material-ui/lab/TabContext";
 import TabList from "@material-ui/lab/TabList";
 import Footer from "../../components/Layout/Footer";
-import SideBar from "../../components/SideBar/SideBar";
 import Header from "./../../components/Layout/Header";
+import SideBar from "../../components/SideBar/SideBar";
 import OrderItem from "./../../components/Order/OrderItem";
 
 const useStyles = makeStyles((theme) => ({

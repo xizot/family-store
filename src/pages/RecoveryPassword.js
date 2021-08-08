@@ -1,177 +1,239 @@
-import React, { useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-	FormControl,
-	Container,
-	makeStyles,
-	Button,
-	TextField,
-	Typography,
-	Box,
-} from "@material-ui/core";
-import { useInput } from "../hooks/use-input";
-import * as Validate from "../helpers/validate";
-import { mainColor } from "../utils";
-import { useLocation } from "react-router-dom";
-import Header from "../components/Layout/Header";
-import Footer from "../components/Layout/Footer";
+  FormControl,
+  Container,
+  makeStyles,
+  Button,
+  TextField,
+  Typography,
+  Box,
+  FormHelperText,
+} from '@material-ui/core';
+import { useInput } from '../hooks/use-input';
+import * as Validate from '../helpers/validate';
+import { mainColor } from '../utils';
+import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import Header from '../components/Layout/Header';
+import Footer from '../components/Layout/Footer';
+import { useDispatch } from 'react-redux';
+import { resetPassword } from '../reducers/auth';
+import { useTimer } from '../hooks/user-timer';
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		minHeight: "100vh",
-		maxHeight: "-webkit-fill-available",
-	},
-	content: {
-		padding: "20vh 0",
-	},
-	title: {
-		marginBottom: 25,
-		[theme.breakpoints.down("sm")]: {
-			fontSize: 25,
-		},
-	},
-	form: {
-		width: "30rem",
-		background: "#fff",
-		maxWidth: "100%",
-		margin: "0 auto",
-		borderRadius: theme.shape.borderRadius,
-		padding: "50px 25px",
-		[theme.breakpoints.down("xs")]: {
-			padding: "35px 15px",
-		},
-	},
-	formControl: {
-		display: "block",
-		marginBottom: 15,
-	},
-	button: {
-		"&:disabled": {
-			cursor: "not-allowed",
-			pointerEvents: "all !important",
-		},
-	},
-	actions: {
-		marginTop: 10,
-		display: "flex",
-		justifyContent: "space-between",
-		alignItems: "center",
-		"& a": {
-			color: mainColor,
-		},
-	},
+  root: {
+    minHeight: '100vh',
+    maxHeight: '-webkit-fill-available',
+  },
+  content: {
+    padding: '20vh 0',
+  },
+  title: {
+    marginBottom: 25,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 25,
+    },
+  },
+  form: {
+    width: '30rem',
+    background: '#fff',
+    maxWidth: '100%',
+    margin: '0 auto',
+    borderRadius: theme.shape.borderRadius,
+    padding: '50px 25px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '35px 15px',
+    },
+  },
+  formControl: {
+    display: 'block',
+    marginBottom: 15,
+  },
+  button: {
+    '&:disabled': {
+      cursor: 'not-allowed',
+      pointerEvents: 'all !important',
+    },
+  },
+  actions: {
+    marginTop: 10,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    '& a': {
+      color: mainColor,
+    },
+  },
 }));
 
 const LoginPage = () => {
-	const location = useLocation();
-	const query = location.search.slice(6) || ""; //?code=123
-	const { t } = useTranslation();
-	const classes = useStyles();
+  const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
+  const { id: userId } = queryString.parse(location.search);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const [error, setError] = useState('');
+  const [resetSucceed, setResetSucceed] = useState(false);
+  const { timer, setTimer, startCounterHandler } = useTimer(5);
+  const {
+    enteredInput: enteredCode,
+    inputBlurHandler: codeBlurHandler,
+    inputChangeHandler: codeChangeHandler,
+    inputReset: codeReset,
+  } = useInput(Validate.isNotEmpty);
+  const {
+    enteredInput: enteredPassword,
+    hasError: passwordHasError,
+    inputBlurHandler: passwordBlurHandler,
+    inputChangeHandler: passwordChangeHandler,
+    inputIsValid: passwordIsValid,
+    inputReset: passwordReset,
+  } = useInput(Validate.isNotEmpty);
 
-	const {
-		enteredInput: enteredPassword,
-		hasError: passwordHasError,
-		inputBlurHandler: passwordBlurHandler,
-		inputChangeHandler: passwordChangeHandler,
-		inputIsValid: passwordIsValid,
-		inputReset: passwordReset,
-	} = useInput(Validate.isNotEmpty);
+  const {
+    enteredInput: enteredConfirmPassword,
+    hasError: confirmPasswordHasError,
+    inputBlurHandler: confirmPasswordBlurHandler,
+    inputChangeHandler: confirmPasswordChangeHandler,
+    inputIsValid: confirmPasswordIsValid,
+    inputReset: confirmPasswordReset,
+  } = useInput((value) => Validate.isNotEmpty(value) && value === enteredPassword);
 
-	const {
-		enteredInput: enteredConfirmPassword,
-		hasError: confirmPasswordHasError,
-		inputBlurHandler: confirmPasswordBlurHandler,
-		inputChangeHandler: confirmPasswordChangeHandler,
-		inputIsValid: confirmPasswordIsValid,
-		inputReset: confirmPasswordReset,
-	} = useInput((value) => Validate.isNotEmpty(value) && value === enteredPassword);
+  const formIsValid = passwordIsValid && confirmPasswordIsValid;
+  const formSubmitHandler = async (event) => {
+    event.preventDefault();
+    if (!formIsValid) return;
 
-	const formIsValid = passwordIsValid && confirmPasswordIsValid;
-	const formSubmitHandler = (event) => {
-		event.preventDefault();
-		if (!formIsValid) return;
+    try {
+      setError('');
+      setResetSucceed(false);
+      await dispatch(
+        resetPassword({
+          userId,
+          newPassword: enteredPassword,
+          code: enteredCode,
+        })
+      ).unwrap();
 
-		//handle....
-		console.log(query);
+      setResetSucceed(true);
+      startCounterHandler(true);
 
-		//reset text field
-		passwordReset();
-		confirmPasswordReset();
-	};
+      passwordReset();
+      confirmPasswordReset();
+      codeReset();
 
-	useEffect(() => {
-		document.title = t("recoverypasswordpage.title");
-	}, [t]);
+      setTimeout(() => {
+        history.push('/login');
+      }, 5100);
+    } catch (error) {
+      setError(error);
+    }
+  };
 
-	return (
-		<>
-			<div className={classes.root}>
-				<Header />
-				<div className={classes.content}>
-					<Container>
-						<Box className={classes.form} boxShadow={3}>
-							<Typography variant="h3" className={classes.title}>
-								{t("recoverypasswordpage.formTitle")}
-							</Typography>
-							<form
-								noValidate
-								autoComplete="off"
-								onSubmit={formSubmitHandler}
-							>
-								<FormControl className={classes.formControl}>
-									<TextField
-										// error
-										label={t("recoverypasswordpage.password")}
-										type="password"
-										error={passwordHasError}
-										helperText={
-											passwordHasError &&
-											t("recoverypasswordpage.passwordInValid")
-										}
-										fullWidth
-										size="small"
-										variant="outlined"
-										value={enteredPassword}
-										onBlur={passwordBlurHandler}
-										onChange={passwordChangeHandler}
-									/>
-								</FormControl>
-								<FormControl className={classes.formControl}>
-									<TextField
-										// error
-										label={t("recoverypasswordpage.confirmPassword")}
-										type="password"
-										error={confirmPasswordHasError}
-										helperText={
-											confirmPasswordHasError &&
-											t("recoverypasswordpage.confirmPasswordInValid")
-										}
-										fullWidth
-										size="small"
-										variant="outlined"
-										value={enteredConfirmPassword}
-										onBlur={confirmPasswordBlurHandler}
-										onChange={confirmPasswordChangeHandler}
-									/>
-								</FormControl>
-								<Button
-									variant="contained"
-									color="primary"
-									fullWidth
-									disabled={!formIsValid}
-									type="submit"
-									className={classes.button}
-								>
-									{t("recoverypasswordpage.buttonExecute")}
-								</Button>
-							</form>
-						</Box>
-					</Container>
-				</div>
-			</div>
-			<Footer />
-		</>
-	);
+  useEffect(() => {
+    document.title = t('recoverypasswordpage.title');
+  }, [t]);
+  useEffect(() => {
+    setTimer(5);
+  }, [setTimer]);
+
+  if (!userId) {
+    return <Redirect to="/" />;
+  }
+  return (
+    <>
+      <div className={classes.root}>
+        <Header />
+        <div className={classes.content}>
+          <Container>
+            <Box className={classes.form} boxShadow={3}>
+              <Typography variant="h3" className={classes.title}>
+                {t('recoverypasswordpage.formTitle')}
+              </Typography>
+              <form noValidate autoComplete="off" onSubmit={formSubmitHandler}>
+                <FormControl className={classes.formControl}>
+                  <TextField
+                    // error
+                    label="Code"
+                    type="text"
+                    helperText="Enter code from email"
+                    fullWidth
+                    size="small"
+                    variant="outlined"
+                    value={enteredCode}
+                    onBlur={codeBlurHandler}
+                    onChange={codeChangeHandler}
+                    autoComplete="off"
+                  />
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                  <TextField
+                    // error
+                    label={t('recoverypasswordpage.password')}
+                    type="password"
+                    error={passwordHasError}
+                    helperText={passwordHasError && t('recoverypasswordpage.passwordInValid')}
+                    fullWidth
+                    size="small"
+                    variant="outlined"
+                    value={enteredPassword}
+                    onBlur={passwordBlurHandler}
+                    onChange={passwordChangeHandler}
+                  />
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                  <TextField
+                    // error
+                    label={t('recoverypasswordpage.confirmPassword')}
+                    type="password"
+                    error={confirmPasswordHasError}
+                    helperText={
+                      confirmPasswordHasError && t('recoverypasswordpage.confirmPasswordInValid')
+                    }
+                    fullWidth
+                    size="small"
+                    variant="outlined"
+                    value={enteredConfirmPassword}
+                    onBlur={confirmPasswordBlurHandler}
+                    onChange={confirmPasswordChangeHandler}
+                  />
+                </FormControl>
+
+                {error?.length > 0 && (
+                  <FormHelperText error style={{ marginBottom: 10 }}>
+                    {error}
+                  </FormHelperText>
+                )}
+                {resetSucceed && (
+                  <Typography variant="h6" style={{ color: 'green' }}>
+                    Reset password thành công! <br /> Chuyển sang trang đăng nhập sau: {timer} giây
+                  </Typography>
+                )}
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  disabled={!formIsValid}
+                  type="submit"
+                  className={classes.button}>
+                  {t('recoverypasswordpage.buttonExecute')}
+                </Button>
+              </form>
+              <div className={classes.actions}>
+                <Link to="/forgot-password">
+                  <Typography variant="body2">{t('back')}</Typography>
+                </Link>
+              </div>
+            </Box>
+          </Container>
+        </div>
+      </div>
+      <Footer />
+    </>
+  );
 };
 
 export default LoginPage;
