@@ -136,8 +136,7 @@ const ForgotPasswordPage = () => {
               </Typography>
               {userId && (
                 <Typography variant="h6" style={{ color: 'green' }}>
-                  Vui lòng kiểm tra email để reset password! <br /> Chuyển sang trang đổi mật khẩu
-                  sau: {timer} giây
+                  {t('forgotpasswordpage.pleaseCheckEmail')} {timer}s
                 </Typography>
               )}
               {!userId && (

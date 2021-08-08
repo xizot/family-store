@@ -62,6 +62,8 @@ const vnTranslation = {
     newMember: 'Chưa có tài khoản?',
     haveAccount: 'Quay lại trang đăng nhập',
     signUp: 'Đăng kí',
+    pleaseCheckEmail:
+      'Vui lòng kiểm tra email để reset password!. Chuyển sang trang đổi mật khẩu sau: ',
   },
   recoverypasswordpage: {
     title: 'Family Store - Khôi phục tài khoản',
@@ -71,6 +73,8 @@ const vnTranslation = {
     confirmPassword: 'Nhập lại mật khẩu',
     confirmPasswordInValid: 'Mật khẩu và xác nhận mật khẩu không trùng nhau',
     buttonExecute: 'Xác nhận',
+    resetPasswordSucceed: 'Đổi mật thành công! Chuyển sang trang đăng nhập sau:',
+    checkEmail: 'Lấy code từ email',
   },
   accountactivationpage: {
     title: 'Family Store - Kích hoạt tài khoản',
@@ -168,6 +172,7 @@ const enTranslation = {
     newMember: 'New member?',
     haveAccount: 'Back to login',
     signUp: 'Sign up',
+    pleaseCheckEmail: 'Email has been sent!. Forward to  reset password page after: ',
   },
   recoverypasswordpage: {
     title: 'Family Store - Restore account',
@@ -177,6 +182,8 @@ const enTranslation = {
     confirmPassword: 'Retype new password',
     confirmPasswordInValid: 'Password and confirm password does not match',
     buttonExecute: 'Confirm',
+    resetPasswordSucceed: 'Reset password successfully! Forward to login page after',
+    checkEmail: 'Enter code from email',
   },
   accountactivationpage: {
     title: 'Family Store - Account activation',

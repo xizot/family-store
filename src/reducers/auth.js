@@ -13,8 +13,7 @@ export const login = createAsyncThunk(
   'user/Login',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await authApi.login({ email, password });
-      return response.data;
+      return (await authApi.login({ email, password })).data.data;
     } catch (error) {
       return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
     }
@@ -100,15 +99,17 @@ const authSlice = createSlice({
       state.loading = false;
     },
     [login.fulfilled]: (state, action) => {
-      const { user, token } = action.payload.data;
-      state.user = user;
+      const { user, token } = action.payload;
       state.loading = false;
+      if (user.accStatus === 0) {
+        state.user = user;
 
-      state.accessToken = token;
-      state.isAuthenticated = true;
+        state.accessToken = token;
+        state.isAuthenticated = true;
 
-      localStorage.setItem('accessToken', token);
-      localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('accessToken', token);
+        localStorage.setItem('user', JSON.stringify(user));
+      }
     },
     [register.pending]: (state) => {
       state.loading = true;

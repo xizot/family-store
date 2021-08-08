@@ -158,7 +158,7 @@ const LoginPage = () => {
                     // error
                     label="Code"
                     type="text"
-                    helperText="Enter code from email"
+                    helperText={t('recoverypasswordpage.checkEmail')}
                     fullWidth
                     size="small"
                     variant="outlined"
@@ -208,7 +208,7 @@ const LoginPage = () => {
                 )}
                 {resetSucceed && (
                   <Typography variant="h6" style={{ color: 'green' }}>
-                    Reset password thành công! <br /> Chuyển sang trang đăng nhập sau: {timer} giây
+                    {t('recoverypasswordpage.resetPasswordSucceed')} {timer}s
                   </Typography>
                 )}
 
