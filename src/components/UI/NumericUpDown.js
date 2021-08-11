@@ -2,6 +2,7 @@ import { IconButton, makeStyles, Typography } from "@material-ui/core";
 import { Add, Remove } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
 	root: {
+		minWidth:'113px',
 		background: theme.palette.primary.main,
 		display: "flex",
 		width: "fit-content",
