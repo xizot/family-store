@@ -25,15 +25,26 @@ import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddComponent from './AddProduct';
+import { Add } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
-  shadow: {
+  root: {
+    padding: theme.spacing(2),
+  },
+  title: {
+    marginBottom: theme.spacing(3),
+    textAlign: 'center',
+    color: theme.palette.primary.main,
+  },
+  section: {
+    borderRadius: theme.shape.borderRadius,
+    background: 'white',
     boxShadow: '0px 2px 8px rgba(0,0,0,.1)',
+    padding: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   topContent: {
     borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(2),
-    marginBottom: theme.spacing(2),
   },
   modal: {
     display: 'flex',
@@ -58,11 +69,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     '&:not(:last-child)': {
-      marginRight: theme.spacing(3),
+      marginRight: theme.spacing(2),
     },
     [theme.breakpoints.down('xs')]: {
+      marginBottom: theme.spacing(1),
+      width: '100%',
+      justifyContent: 'space-between',
       '&:not(:last-child)': {
-        marginBottom: theme.spacing(1),
+        marginRight: 0,
       },
     },
   },
@@ -80,20 +94,29 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   addButton: {
-    paddingLeft: '0px',
-    position: 'absolute',
-    right: '40px',
+    marginLeft: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 0,
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: theme.spacing(1),
+    },
   },
   search: {
-    paddingRight: '38%',
+    border: '1px solid #ddd',
+    borderRadius: theme.shape.borderRadius,
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 0,
+      marginBottom: theme.spacing(1),
+      width: '100%',
+      justifyContent: 'space-between',
+    },
   },
   pagination: {
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: '#FFF',
     '& > *': {
       padding: '20px',
       marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(1),
       justifyContent: 'center',
       display: 'flex',
     },
@@ -240,63 +263,65 @@ const ProductManager = (props) => {
 
   return (
     <AdminTemplate>
-      <div className={`${classes.topContent} `}>
-        <Typography variant="h5" style={{ color: '#F39148', textAlign: 'center' }}>
-          PRODUCT MANAGER
-        </Typography>
-        <div className={classes.filter}>
-          <div className={classes.search}>
-            <SearchInput />
-          </div>
-          <div className={classes.filterItem}>
-            <Typography variant="subtitle2" className={classes.label}>
-              CATEGORY
-            </Typography>
-            <NativeSelect
-              className={classes.select}
-              value={optionPrice}
-              onChange={priceChangeHandler}
-              name="price"
-              input={<BootstrapInput />}>
-              <option style={{ color: '#F39148' }} value="">
-                Vegetables
-              </option>
-              <option style={{ color: '#F39148' }} value={10}>
-                Milk, Drink
-              </option>
-              <option style={{ color: '#F39148' }} value={20}>
-                Rice, Bread
-              </option>
-            </NativeSelect>
-          </div>
-          <div className={classes.filterItem}>
-            <Typography variant="subtitle2" className={classes.label}>
-              SUB CATEGORY
-            </Typography>
-            <NativeSelect
-              className={classes.select}
-              name="type"
-              value={optionType}
-              onChange={typeChangeHandler}
-              input={<BootstrapInput />}>
-              <option style={{ color: '#F39148' }} value="">
-                Milk
-              </option>
-              <option style={{ color: '#F39148' }} value={10}>
-                Borecole
-              </option>
-              <option style={{ color: '#F39148' }} value={20}>
-                Fish
-              </option>
-            </NativeSelect>
-          </div>
-          <div className={classes.addButton}>
-            <Button variant="contained" color="primary" onClick={handleOpen}>
-              Add
-            </Button>
+      <div className={classes.root}>
+        <div className={classes.section}>
+          <Typography variant="h5" className={classes.title}>
+            PRODUCT MANAGER
+          </Typography>
+          <div className={classes.filter}>
+            <div className={classes.search}>
+              <SearchInput />
+            </div>
+            <div className={classes.filterItem}>
+              <Typography variant="subtitle2" className={classes.label}>
+                CATEGORY
+              </Typography>
+              <NativeSelect
+                className={classes.select}
+                value={optionPrice}
+                onChange={priceChangeHandler}
+                name="price"
+                input={<BootstrapInput />}>
+                <option style={{ color: '#F39148' }} value="">
+                  Vegetables
+                </option>
+                <option style={{ color: '#F39148' }} value={10}>
+                  Milk, Drink
+                </option>
+                <option style={{ color: '#F39148' }} value={20}>
+                  Rice, Bread
+                </option>
+              </NativeSelect>
+            </div>
+            <div className={classes.filterItem}>
+              <Typography variant="subtitle2" className={classes.label}>
+                SUB CATEGORY
+              </Typography>
+              <NativeSelect
+                className={classes.select}
+                name="type"
+                value={optionType}
+                onChange={typeChangeHandler}
+                input={<BootstrapInput />}>
+                <option style={{ color: '#F39148' }} value="">
+                  Milk
+                </option>
+                <option style={{ color: '#F39148' }} value={10}>
+                  Borecole
+                </option>
+                <option style={{ color: '#F39148' }} value={20}>
+                  Fish
+                </option>
+              </NativeSelect>
+            </div>
+            <div className={classes.addButton}>
+              <Button variant="contained" color="primary" onClick={handleOpen} startIcon={<Add />}>
+                Add
+              </Button>
+            </div>
           </div>
         </div>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={classes.section}>
           <Table aria-label="a dense table">
             <TableHead>
               <TableRow className={classes.tableHead}>
@@ -336,7 +361,7 @@ const ProductManager = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <div className={`${classes.pagination} ${classes.shadow}`}>
+        <div className={`${classes.pagination} ${classes.section}`}>
           <Pagination count={rows.length} color="primary" variant="outlined" shape="rounded" />
         </div>
       </div>
