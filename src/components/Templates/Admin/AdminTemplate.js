@@ -50,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 65,
     width: 'calc(100% - 260px)',
     marginLeft: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      marginLeft: 0,
+    },
     [theme.breakpoints.down('xs')]: {
       paddingTop: 80,
       marginBottom: 85,
