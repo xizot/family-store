@@ -16,103 +16,117 @@ const CollectionsPage = lazy(() => import('../pages/Collections'));
 const OrderPage = lazy(() => import('../pages/auth/OrderPage'));
 const ReviewsPage = lazy(() => import('../pages/auth/ReviewsPage'));
 const AdminProductPage = lazy(() => import("../pages/auth/Admin/Product/Product"));
+const AdminSubCatePage = lazy(() => import("../pages/auth/Admin/SubCategory/SubCategory"));
+const AdminCategoryPage = lazy(() => import("../pages/auth/Admin/Category/Category"));
 
 export const routes = [
-  {
-    path: '/',
-    protected: false,
-    exact: true,
-    component: HomePage,
-  },
-  {
-    path: '/login',
-    protected: false,
-    exact: true,
-    component: LoginPage,
-  },
-  {
-    path: '/register',
-    protected: false,
-    exact: true,
-    component: RegisterPage,
-  },
-  {
-    path: '/profile/:slug',
-    protected: true,
-    exact: true,
-    component: ProfilePage,
-  },
-  {
-    path: '/profile',
-    protected: true,
-    exact: true,
-    component: ProfilePage,
-  },
-  {
-    path: '/forgot-password',
-    protected: false,
-    exact: true,
-    component: ForgotPasswordPage,
-  },
-  {
-    path: '/recovery-password',
-    protected: false,
-    exact: true,
-    component: RecoveryPasswordPage,
-  },
-  {
-    path: '/account-activation',
-    protected: false,
-    exact: true,
-    component: AccountActivationPage,
-  },
-  {
-    path: '/search',
-    protected: false,
-    exact: true,
-    component: SearchPage,
-  },
-  {
-    path: '/details/:productId',
-    protected: false,
-    exact: true,
-    component: ProductDetail,
-  },
-  {
-    path: '/collections/:categoryId',
-    protected: false,
-    exact: true,
-    component: CollectionsPage,
-  },
-  {
-    path: '/collections',
-    protected: false,
-    exact: true,
-    component: CollectionsPage,
-  },
-  {
-    path: '/orders',
-    protected: true,
-    exact: true,
-    component: OrderPage,
-    roles: [Role.User, Role.Admin],
-  },
-  {
-    path: '/reviews/:orderId',
-    protected: true,
-    exact: true,
-    component: ReviewsPage,
-  },
-  {
-    path: '/admin/user-manager',
-    protected: false,
-    exact: true,
-    component: UserManager,
-  },
-  {
-	path: "/admin/product-manager",
-	protected: false,
-	exact: true,
-	component: AdminProductPage,
-},
+	{
+		path: '/',
+		protected: false,
+		exact: true,
+		component: HomePage,
+	},
+	{
+		path: '/login',
+		protected: false,
+		exact: true,
+		component: LoginPage,
+	},
+	{
+		path: '/register',
+		protected: false,
+		exact: true,
+		component: RegisterPage,
+	},
+	{
+		path: '/profile/:slug',
+		protected: true,
+		exact: true,
+		component: ProfilePage,
+	},
+	{
+		path: '/profile',
+		protected: true,
+		exact: true,
+		component: ProfilePage,
+	},
+	{
+		path: '/forgot-password',
+		protected: false,
+		exact: true,
+		component: ForgotPasswordPage,
+	},
+	{
+		path: '/recovery-password',
+		protected: false,
+		exact: true,
+		component: RecoveryPasswordPage,
+	},
+	{
+		path: '/account-activation',
+		protected: false,
+		exact: true,
+		component: AccountActivationPage,
+	},
+	{
+		path: '/search',
+		protected: false,
+		exact: true,
+		component: SearchPage,
+	},
+	{
+		path: '/details/:productId',
+		protected: false,
+		exact: true,
+		component: ProductDetail,
+	},
+	{
+		path: '/collections/:categoryId',
+		protected: false,
+		exact: true,
+		component: CollectionsPage,
+	},
+	{
+		path: '/collections',
+		protected: false,
+		exact: true,
+		component: CollectionsPage,
+	},
+	{
+		path: '/orders',
+		protected: true,
+		exact: true,
+		component: OrderPage,
+		roles: [Role.User, Role.Admin],
+	},
+	{
+		path: '/reviews/:orderId',
+		protected: true,
+		exact: true,
+		component: ReviewsPage,
+	},
+	{
+		path: '/admin/user-manager',
+		protected: false,
+		exact: true,
+		component: UserManager,
+	},
+	{
+		path: "/admin/product-manager",
+		protected: false,
+		exact: true,
+		component: AdminProductPage,
+	},
+	{
+		path: "/admin/sub-category-manager",
+		protected: false,
+		exact: true,
+		component: AdminSubCatePage,
+	},
+	{
+		path: "/admin/category-manager",
+		protected: false,
+		exact: true,
+		component: AdminCategoryPage,
+	},
 ];
