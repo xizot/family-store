@@ -13,6 +13,7 @@ const SearchPage = lazy(() => import("../pages/SearchPage"));
 const CollectionsPage = lazy(() => import("../pages/Collections"));
 const OrderPage = lazy(() => import("../pages/auth/OrderPage"));
 const ReviewsPage = lazy(() => import("../pages/auth/ReviewsPage"));
+const AdminProductPage = lazy(() => import("../pages/admin/Product"));
 
 export const routes = [
 	{
@@ -99,5 +100,11 @@ export const routes = [
 		protected: true,
 		exact: true,
 		component: ReviewsPage,
+	},
+	{
+		path: "/admin/product",
+		protected: false,
+		exact: true,
+		component: AdminProductPage,
 	},
 ];
