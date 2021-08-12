@@ -13,6 +13,7 @@ import {
   withStyles,
   Button,
   Fade,
+  Backdrop,
   Modal,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -152,50 +153,56 @@ const BootstrapInput = withStyles((theme) => ({
 const rows = [
   {
     id: 1,
-    name: 'Mì trứng cao cấp Meizan gói 500g',
+    name: 'Mì trứng',
     subCate: 'Thực phẩm',
     quantity: '200',
     price: '31800',
+    description:'Mì trứng cao cấp Meizan gói 500g',
     lastModi: '01-02-2010',
   },
   {
     id: 2,
-    name: 'Bột giặt 500g',
+    name: 'Bột giặt Detech',
     subCate: 'Đồ tiện dụng',
     quantity: '2002',
     price: '318000 ',
+    description:'Bột giặc Detech 400g Mỹ',
     lastModi: '01-01-2021',
   },
   {
     id: 3,
-    name: 'Hành lá 1kg',
+    name: 'Hành lá ',
     subCate: 'Rau củ',
     quantity: '400',
     price: '10000',
+    description:'Hành lá 1kg Thượng Hải',
     lastModi: '01-01-2021',
   },
   {
     id: 4,
-    name: 'Hành Tây 500g',
+    name: 'Hành Tây',
     subCate: 'Rau củ',
     quantity: '1000',
     price: '21000',
+    description:'Hành Tây Long An 500g',
     lastModi: '01-01-2021',
   },
   {
     id: 5,
-    name: 'Bột xã Omo 500g',
+    name: 'Bột xã Omo',
     subCate: 'Đồ tiện dụng',
     quantity: '2000',
     price: '3180000',
+    description:'Bột giặc Oma 500g',
     lastModi: '22-01-2021',
   },
   {
     id: 6,
-    name: 'Bánh mì Bơ Tewan',
+    name: 'Bánh mì Bơ ',
     subCate: 'Lương thực',
     quantity: '400',
     price: '28000',
+    description:'Bánh mì bơ Tewan',
     lastModi: '11-12-2021',
   },
   {
@@ -204,6 +211,7 @@ const rows = [
     subCate: 'Rau củ',
     quantity: '4000',
     price: '48000',
+    description:'Rau cần Đà Lạt',
     lastModi: '25-08-2021',
   },
   {
@@ -212,6 +220,7 @@ const rows = [
     subCate: 'Sữa, nước ngọt',
     quantity: '1000',
     price: '58000',
+    description:'Sữa thùng Vina milk socola',
     lastModi: '12-01-2021',
   },
   {
@@ -220,6 +229,7 @@ const rows = [
     subCate: 'Lương thực',
     quantity: '2000',
     price: '8000',
+    description:'Bánh tầm Long An',
     lastModi: '22-02-2021',
   },
 ];
@@ -327,6 +337,7 @@ const ProductManager = (props) => {
                 <TableCell>Sub Category</TableCell>
                 <TableCell>Quantity</TableCell>
                 <TableCell>Price</TableCell>
+                <TableCell>Description</TableCell>
                 <TableCell>Last Modified</TableCell>
                 <TableCell align="center">Options</TableCell>
               </TableRow>
@@ -341,6 +352,7 @@ const ProductManager = (props) => {
                   <TableCell>{row.subCate}</TableCell>
                   <TableCell>{row.quantity}</TableCell>
                   <TableCell>{row.price}</TableCell>
+                  <TableCell>{row.description}</TableCell>
                   <TableCell>{row.lastModi}</TableCell>
                   <TableCell align="center">
                     <Button
@@ -368,7 +380,11 @@ const ProductManager = (props) => {
         className={classes.modal}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        closeAfterTransition>
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}>
         <Fade in={open}>
           <AddComponent />
         </Fade>

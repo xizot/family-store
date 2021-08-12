@@ -1,8 +1,11 @@
 import { makeStyles, TextField, Typography, Button, FormControl, Grid } from '@material-ui/core';
-import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import SearchInput from '../../../../components/UI/SearchInput';
 import { addCategory } from '../../../../reducers/category';
+import { useInput } from '../../../../hooks/use-input';
+import * as Validate from '../../../../helpers/validate';
+import { FormHelperText } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 const useStyles = makeStyles((theme) => ({
   paper: {
     minWidth: '60vh',
@@ -56,58 +59,82 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddSubCate = (props) => {
-  const classes = useStyles();
-  const inputRef = useRef();
-
   const dispatch = useDispatch();
+  const classes = useStyles();
+  const [error, setError] = useState('');
+
+  const {
+    enteredInput: cateName,
+    hasError: cateNameHasError,
+    inputBlurHandler: cateNameBlurHandler,
+    inputChangeHandler: cateNameChangeHandler,
+    inputIsValid: cateNameIsValid,
+    inputReset: cateNameReset,
+  } = useInput(Validate.isNotEmpty);
+
+  const formSubmitHandler = async (event) => {
+    event.preventDefault();
+    if (!cateNameIsValid) return;
+    setError('');
+    cateNameReset();
+  };
 
   const addCategoryHandler = async () => {
-    console.log(inputRef.current);
     try {
       await dispatch(
         addCategory({
-          cateId: inputRef.current.value,
-          cateName: inputRef.current.value,
+          cateId: cateName,
+          cateName: cateName,
         })
       ).unwrap();
     } catch (error) {
       console.log(error);
     }
   };
+  useEffect(() => {}, []);
 
   return (
     <>
       <div className={classes.paper}>
         <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
-          SUB CATEGORY
+          CATEGORY
         </Typography>
-        <FormControl className={classes.form}>
-          <TextField
-            placeholder="Name"
-            fullWidth
-            variant="outlined"
-            inputRef={inputRef}
-            onChange={() => console.log(inputRef.current)}
-          />
-          <div className={classes.search}>
-            <SearchInput />
-          </div>
-          <Grid container spacing={2} className={classes.native}>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" className={classes.label} />
-              Add sub category
+        <form noValidate autoComplete="off" onSubmit={formSubmitHandler}>
+          <FormControl className={classes.form}>
+            <TextField
+              placeholder="Name"
+              fullWidth
+              variant="outlined"
+              value={cateName}
+              helperText={cateNameHasError && 'Name invalid'}
+              onBlur={cateNameBlurHandler}
+              onChange={cateNameChangeHandler}
+            />
+            <div className={classes.search}>
+              <SearchInput />
+            </div>
+            <Grid container spacing={2} className={classes.native}>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="subtitle2" className={classes.label} />
+                Add sub category
+              </Grid>
+              <Grid item xs={12} sm={6}></Grid>
             </Grid>
-            <Grid item xs={12} sm={6}></Grid>
-          </Grid>
-          <Button
-            className={classes.save}
-            variant="contained"
-            fullWidth
-            component="label"
-            onClick={addCategoryHandler}>
-            Save
-          </Button>
-        </FormControl>
+            <Button
+              className={classes.save}
+              variant="contained"
+              fullWidth
+              component="label"
+              onClick={addCategoryHandler}>
+              Save
+            </Button>
+          </FormControl>
+          {error?.length > 0 && (
+            <FormHelperText error style={{ marginBottom: 10 }}>
+              {error}
+            </FormHelperText>
+          )}
+        </form>
       </div>
     </>
   );

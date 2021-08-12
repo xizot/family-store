@@ -9,6 +9,7 @@ import {
   Paper,
   Typography,
   Button,
+  Backdrop,
   Fade,
   Modal,
 } from '@material-ui/core';
@@ -303,7 +304,11 @@ const SubCateManager = (props) => {
         className={classes.modal}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        closeAfterTransition>
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}>
         <Fade in={open}>
           <AddComponent />
         </Fade>
