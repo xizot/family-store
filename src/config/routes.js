@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import UserManager from '../pages/auth/Admin/UserManager';
+import UserManager from '../pages/auth/Admin/UserManager/UserManager';
 import { Role } from './role';
 
 
