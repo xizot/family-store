@@ -9,9 +9,13 @@ const initialState = {
 export const addCategory = createAsyncThunk(
   'admin/Category',
   async ({ cateId, cateName }, { rejectWithValue }) => {
+    console.log('🚀 ~ file: admin-category.js ~ line 12 ~  cateId, cateName', cateId, cateName);
+
     try {
       return (await adminCategoryApi.addCategory({ cateId, cateName })).data;
     } catch (error) {
+      console.log('🚀 ~ file: admin-category.js ~ line 29 ~ error', error);
+
       return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
     }
   }

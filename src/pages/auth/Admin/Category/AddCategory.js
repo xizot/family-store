@@ -1,5 +1,7 @@
-import { makeStyles, TextField, Typography, Button, FormControl } from '@material-ui/core';
+import { makeStyles, TextField, Typography, Button, FormControl, Grid } from '@material-ui/core';
+import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import SearchInput from '../../../../components/UI/SearchInput';
 import { addCategory } from '../../../../reducers/admin-category';
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,15 +57,17 @@ const useStyles = makeStyles((theme) => ({
 
 const AddSubCate = (props) => {
   const classes = useStyles();
+  const inputRef = useRef();
 
   const dispatch = useDispatch();
 
   const addCategoryHandler = async () => {
+    console.log(inputRef.current);
     try {
       await dispatch(
         addCategory({
-          cateId: 'meat',
-          cateName: 'Meats',
+          cateId: inputRef.current.value,
+          cateName: inputRef.current.value,
         })
       ).unwrap();
     } catch (error) {
@@ -75,10 +79,26 @@ const AddSubCate = (props) => {
     <>
       <div className={classes.paper}>
         <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
-          ADD NEW CATEGORY
+          SUB CATEGORY
         </Typography>
         <FormControl className={classes.form}>
-          <TextField placeholder="Name" fullWidth variant="outlined" />
+          <TextField
+            placeholder="Name"
+            fullWidth
+            variant="outlined"
+            inputRef={inputRef}
+            onChange={() => console.log(inputRef.current)}
+          />
+          <div className={classes.search}>
+            <SearchInput />
+          </div>
+          <Grid container spacing={2} className={classes.native}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle2" className={classes.label} />
+              Add sub category
+            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
+          </Grid>
           <Button
             className={classes.save}
             variant="contained"
