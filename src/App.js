@@ -6,9 +6,10 @@ import { ProtectedRoute } from './components/Common/ProtectedRoute';
 import { useTranslation } from 'react-i18next';
 import { langActions } from './reducers/lang';
 import { authActions } from './reducers/auth';
-import { routes } from './config/routes';
+import { adminRoutes, routes } from './config/routes';
 import Loading from './components/Loading/Loading';
 import Cart from './components/Cart/Cart';
+import { AdminTemplate } from './components/Templates/Admin/AdminTemplate';
 const PageNotFound = lazy(() => import('./pages/404NotFound'));
 
 const theme = createTheme({
@@ -71,6 +72,33 @@ function App() {
               />
             );
           })}
+
+          <Route
+            path="/admin"
+            render={(props) => {
+              return (
+                <ProtectedRoute {...props} roles={['ADM']}>
+                  <AdminTemplate>
+                    <Switch>
+                      {adminRoutes.map((route, index) => {
+                        return (
+                          <Route
+                            key={index}
+                            path={route.path}
+                            exact={route.exact}
+                            render={(props) => {
+                              return <route.component {...props} {...route.props} />;
+                            }}
+                          />
+                        );
+                      })}
+                    </Switch>
+                  </AdminTemplate>
+                </ProtectedRoute>
+              );
+            }}
+          />
+
           <Route path="*">
             <PageNotFound />
           </Route>

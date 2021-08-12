@@ -1,4 +1,3 @@
-import { AdminTemplate } from '../../../../components/Templates/Admin/AdminTemplate';
 import {
   makeStyles,
   Table,
@@ -115,8 +114,6 @@ const useStyles = makeStyles((theme) => ({
   },
   pagination: {
     '& > *': {
-      padding: '20px',
-      marginTop: theme.spacing(2),
       justifyContent: 'center',
       display: 'flex',
     },
@@ -262,7 +259,7 @@ const ProductManager = (props) => {
   }, []);
 
   return (
-    <AdminTemplate>
+    <>
       <div className={classes.root}>
         <div className={classes.section}>
           <Typography variant="h5" className={classes.title}>
@@ -376,7 +373,7 @@ const ProductManager = (props) => {
           <AddComponent />
         </Fade>
       </Modal>
-    </AdminTemplate>
+    </>
   );
 };
 export default ProductManager;
