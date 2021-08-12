@@ -18,27 +18,27 @@ const options = [
     subItems: [
       {
         title: 'Categories',
-        link: '/admin/category-manager',
+        link: '/admin/categories',
       },
       {
         title: 'Sub Categories',
-        link: '/admin/subcategory-manager',
+        link: '/admin/sub-categories',
       },
       {
         title: 'Product List',
-        link: '/admin/product-manager',
+        link: '/admin/products',
       },
     ],
   },
   {
     icon: Person,
     title: 'Users',
-    link: '/admin/user-manager',
+    link: '/admin/users',
   },
   {
     icon: AttachMoney,
     title: 'Orders',
-    link: '/admin/order-manager',
+    link: '/admin/orders',
   },
 ];
 
@@ -65,7 +65,7 @@ export const AdminTemplate = ({ children }) => {
   const classes = useStyles();
   return (
     <>
-      <HeaderAdmin />
+      <HeaderAdmin showMenu />
       <SideBar>
         <UserInfomation
           avatar="http://themes.pixelstrap.com/multikart/assets/images/dashboard/man.png"

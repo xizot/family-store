@@ -1,108 +1,22 @@
 import { useLayoutEffect } from 'react';
-import { AdminTemplate } from '../../../../components/Templates/Admin/AdminTemplate';
-import {
-  makeStyles,
-  
-  Typography,
- 
-} from "@material-ui/core";
-
+import { makeStyles, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: "100vh",
+    padding: theme.spacing(2),
   },
-  main: {
-    marginLeft: "auto",
-    width: "calc(100% - 260px)",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
-  },
-  shadow: {
-    boxShadow: "0px 2px 8px rgba(0,0,0,.1)",
-  },
-
-  mainContent: {
-    padding: `80px ${theme.spacing(2)}px 65px`,
-    [theme.breakpoints.down("xs")]: {
-      padding: `68px ${theme.spacing(2)}px 85px`,
-      width: "100%",
-    },
-  },
-  topContent: {
-    backgroundColor: "white",
+  section: {
     borderRadius: theme.shape.borderRadius,
+    background: 'white',
+    boxShadow: '0px 2px 8px rgba(0,0,0,.1)',
     padding: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  title: {
+    marginBottom: theme.spacing(3),
+    textAlign: 'center',
+    color: theme.palette.primary.main,
   },
-  listItem: {
-    background: "#fff",
-    borderRadius: theme.shape.borderRadius,
-    width: "100%",
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-  filter: {
-    marginTop: theme.spacing(2),
-    marginBottom: "12px",
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "center",
-  },
-  filterItem: {
-    display: "flex",
-    alignItems: "center",
-    "&:not(:last-child)": {
-      marginRight: theme.spacing(3),
-    },
-    [theme.breakpoints.down("xs")]: {
-      "&:not(:last-child)": {
-        marginBottom: theme.spacing(1),
-      },
-    },
-  },
-  label: {
-    [theme.breakpoints.down("xs")]: {
-      minWidth: 70,
-    },
-  },
-  select: {
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: "#F39148",
-    marginLeft: theme.spacing(1),
-    "& svg": {
-      color: theme.palette.common.white,
-    },
-  },
-  addButton: {
-    paddingLeft: "0px",
-    position: "absolute",
-    right: "40px"
-  },
-  search: {
-    paddingRight: "5%"
-  },
-  pagination: {
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: "#FFF",
-    "& > *": {
-      padding: "20px",
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(1),
-      justifyContent: "center",
-      display: "flex",
-    },
-  },
-  tableHead: {
-    fontWeight: "bold",
-    color: "red"
-  }
 }));
 const UserManager = (props) => {
   const classes = useStyles();
@@ -111,16 +25,15 @@ const UserManager = (props) => {
     window.scrollTo(0, 0);
   }, []);
 
-  return (<AdminTemplate>
-    <div className={classes.main}>
-      <div className={classes.mainContent}>
-        <div
-          className={`${classes.topContent} `}
-        >
-          <Typography variant="h5" style={{ color: "#F39148", textAlign: "center" }}>USER MANAGER</Typography>
-        </div>
+  return (
+    <div className={classes.root}>
+      <div className={classes.section}>
+        <Typography variant="h5" style={{ color: '#F39148', textAlign: 'center' }}>
+          USER MANAGER
+        </Typography>
       </div>
-    </div></AdminTemplate>)
+    </div>
+  );
 };
 
 export default UserManager;

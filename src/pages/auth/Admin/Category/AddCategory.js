@@ -1,6 +1,9 @@
-import { makeStyles, TextField, Typography, Button, FormControl, Grid } from "@material-ui/core";
-import { useEffect } from "react";
-import SearchInput from "../../../../components/UI/SearchInput";
+import { makeStyles, TextField, Typography, Button, FormControl, Grid } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import SearchInput from '../../../../components/UI/SearchInput';
+import { useInput } from '../../../../hooks/use-input'
+import * as Validate from '../../../../helpers/validate';
+import { FormHelperText } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     paper: {
         minWidth: '60vh',
@@ -18,12 +21,12 @@ const useStyles = makeStyles((theme) => ({
         minWidth: '60vh',
     },
     select: {
-        position: "absolute",
-        right: "0px",
+        position: 'absolute',
+        right: '0px',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: "#F39148",
+        backgroundColor: '#F39148',
         marginLeft: theme.spacing(1),
-        "& svg": {
+        '& svg': {
             color: theme.palette.common.white,
         },
     },
@@ -34,66 +37,82 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
     },
     importImg: {
-        color: "#fff",
-        position: "absolute",
-        right: "0px",
+        color: '#fff',
+        position: 'absolute',
+        right: '0px',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: "#F39148",
-        width: "113px",
-        height: "27px",
-        "& svg": {
+        backgroundColor: '#F39148',
+        width: '113px',
+        height: '27px',
+        '& svg': {
             color: theme.palette.common.white,
         },
     },
     save: {
-        color: "#fff",
+        color: '#fff',
         marginTop: theme.spacing(2),
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: "#F39148",
-    }
+        backgroundColor: '#F39148',
+    },
 }));
 
 const AddSubCate = (props) => {
+
     const classes = useStyles();
+    const [error, setError] = useState('');
+    const {
+        enteredInput: cateName,
+        hasError: cateNameHasError,
+        inputBlurHandler: cateNameBlurHandler,
+        inputChangeHandler: cateNameChangeHandler,
+        inputIsValid: cateNameIsValid,
+        inputReset: cateNameReset,
+    } = useInput(Validate.isNotEmpty);
 
+    const formSubmitHandler = async (event) => {
+        event.preventDefault();
+        if (!cateNameIsValid) return;
+        setError('');
+        cateNameReset();
+    }
 
-    useEffect(() => {
-
-    }, []);
+    useEffect(() => { }, []);
 
     return (
         <>
             <div className={classes.paper}>
-                <Typography variant="h5" style={{ textAlign: "center", color: "#F39148" }}>SUB CATEGORY</Typography>
-                <FormControl className={classes.form}>
-                    <TextField
-                        placeholder="Name"
-                        fullWidth
-                        variant="outlined"
-                    />
-                    <div className={classes.search}>
-                        <SearchInput />
-                    </div>
-                    <Grid container spacing={2} className={classes.native}>
-                        <Grid item xs={12} sm={6}>
-                            <Typography
-                                variant="subtitle2"
-                                className={classes.label}
-                            />
-                            Add sub category
+                <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
+                    CATEGORY
+                </Typography>
+                <form noValidate autoComplete="off" onSubmit={formSubmitHandler}>
+                    <FormControl className={classes.form}>
+                        <TextField placeholder="Name"
+                            fullWidth
+                            variant="outlined"
+                            value={cateName}
+                            helperText={cateNameHasError && 'Name invalid'}
+                            onBlur={cateNameBlurHandler}
+                            onChange={cateNameChangeHandler} />
+                        <div className={classes.search}>
+                            <SearchInput />
+                        </div>
+                        <Grid container spacing={2} className={classes.native}>
+                            <Grid item xs={12} sm={6}>
+                                <Typography variant="subtitle2" className={classes.label} />
+                                Add sub category
+                            </Grid>
+                            <Grid item xs={12} sm={6}></Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-
-                        </Grid>
-                    </Grid>
-                    <Button
-                        className={classes.save}
-                        variant="contained"
-                        fullWidth
-                        component="label"
-                    >
-                        Save</Button>
-                </FormControl>
+                        <Button className={classes.save} variant="contained" fullWidth component="label">
+                            Save
+                        </Button>
+                    </FormControl>
+                    {error?.length > 0 && (
+                        <FormHelperText error style={{ marginBottom: 10 }}>
+                            {error}
+                        </FormHelperText>
+                    )}
+                </form>
             </div>
         </>
     );

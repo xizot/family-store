@@ -6,7 +6,6 @@ import ReviewsOrderItem from '../../components/ReviewsOrderItem/ReviewsOrderItem
 import SideBar from '../../components/SideBar/SideBar';
 import Footer from '../../components/Layout/Footer';
 import Header from '../../components/Layout/Header';
-//import { useLocation } from "react-router-dom";
 import CategoryMenu from '../../components/CategoriesMenu/CategoriesMenu';
 
 const useStyles = makeStyles((theme) => ({

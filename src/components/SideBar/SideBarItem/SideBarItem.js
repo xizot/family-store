@@ -18,8 +18,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     fontWeight: 'bold',
+    transition: 'all .5s',
+    textDecoration: 'none',
+    color: '#333',
     '&:hover': {
       background: alpha(theme.palette.primary.main, 0.4),
+    },
+    '&.active': {
+      color: theme.palette.primary.main,
     },
   },
   title: {
@@ -46,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
     },
     '& li,a': {
       display: 'block',
+      transition: 'all .5s',
     },
     '& li:hover': {
       background: alpha(theme.palette.primary.main, 0.4),
@@ -59,15 +66,18 @@ const useStyles = makeStyles((theme) => ({
       color: 'rgba(0,0,0,.8)',
     },
   },
-  itemActive: {
-    fontWeight: 'bold',
-  },
   '@keyframes toggle': {
     '0%': {
       maxHeight: 0,
     },
     '100%': {
       maxHeight: 200,
+    },
+  },
+  itemActive: {
+    color: theme.palette.primary.main + '!important',
+    '& > h6': {
+      color: theme.palette.primary.main,
     },
   },
 }));
@@ -80,15 +90,16 @@ export const SideBarItem = ({ IconComponent, title, link, subItems }) => {
   };
   return (
     <li className={classes.root}>
-      <div className={classes.navLink}>
-        <IconComponent className={classes.icon} />
-        {link ? (
-          <NavLink to={link} className={classes.title} activeClassName={classes['item-active']}>
-            <Typography variant="subtitle1" style={{ fontWeight: '500' }}>
-              {title}
-            </Typography>
-          </NavLink>
-        ) : (
+      {link ? (
+        <NavLink to={link} className={classes.navLink} activeClassName={classes.itemActive}>
+          <IconComponent className={classes.icon} />
+          <Typography variant="subtitle1" className={classes.title}>
+            {title}
+          </Typography>
+        </NavLink>
+      ) : (
+        <div className={classes.navLink}>
+          <IconComponent className={classes.icon} />
           <Typography
             variant="subtitle1"
             className={classes.title}
@@ -96,19 +107,20 @@ export const SideBarItem = ({ IconComponent, title, link, subItems }) => {
             onClick={toggleListHandler}>
             {title}
           </Typography>
-        )}
-        {subItems?.length > 0 && (
-          <>
-            {toggleList && <ExpandMore className={classes.arrowIcon} />}
-            {!toggleList && <ChevronRight className={classes.arrowIcon} />}
-          </>
-        )}
-      </div>
+          {subItems?.length > 0 && (
+            <>
+              {toggleList && <ExpandMore className={classes.arrowIcon} />}
+              {!toggleList && <ChevronRight className={classes.arrowIcon} />}
+            </>
+          )}
+        </div>
+      )}
+
       {toggleList && subItems?.length > 0 && (
         <ul className={classes.items}>
           {subItems.map((item, index) => (
             <li className={classes.item} key={index}>
-              <NavLink to={item.link} activeClassName={classes['item-active']}>
+              <NavLink to={item.link} activeClassName={classes.itemActive}>
                 {item.title}
               </NavLink>
             </li>

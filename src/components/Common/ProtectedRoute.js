@@ -16,7 +16,7 @@ export const ProtectedRoute = (props) => {
     );
   }
 
-  if (roles && roles.indexOf(user.role_id) === -1) {
+  if (roles && roles.indexOf(user.role) === -1) {
     return (
       <Redirect
         to={{
