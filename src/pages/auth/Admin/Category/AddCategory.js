@@ -1,6 +1,6 @@
-import { makeStyles, TextField, Typography, Button, FormControl, Grid } from '@material-ui/core';
-import { useEffect } from 'react';
-import SearchInput from '../../../../components/UI/SearchInput';
+import { makeStyles, TextField, Typography, Button, FormControl } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { addCategory } from '../../../../reducers/admin-category';
 const useStyles = makeStyles((theme) => ({
   paper: {
     minWidth: '60vh',
@@ -56,27 +56,35 @@ const useStyles = makeStyles((theme) => ({
 const AddSubCate = (props) => {
   const classes = useStyles();
 
-  useEffect(() => {}, []);
+  const dispatch = useDispatch();
+
+  const addCategoryHandler = async () => {
+    try {
+      await dispatch(
+        addCategory({
+          cateId: 'meat',
+          cateName: 'Meats',
+        })
+      ).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
       <div className={classes.paper}>
         <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
-          SUB CATEGORY
+          ADD NEW CATEGORY
         </Typography>
         <FormControl className={classes.form}>
           <TextField placeholder="Name" fullWidth variant="outlined" />
-          <div className={classes.search}>
-            <SearchInput />
-          </div>
-          <Grid container spacing={2} className={classes.native}>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" className={classes.label} />
-              Add sub category
-            </Grid>
-            <Grid item xs={12} sm={6}></Grid>
-          </Grid>
-          <Button className={classes.save} variant="contained" fullWidth component="label">
+          <Button
+            className={classes.save}
+            variant="contained"
+            fullWidth
+            component="label"
+            onClick={addCategoryHandler}>
             Save
           </Button>
         </FormControl>

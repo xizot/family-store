@@ -82,7 +82,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export const SideBarItem = ({ IconComponent, title, link, subItems }) => {
-  console.log(subItems);
   const classes = useStyles();
   const [toggleList, setToggleList] = useState(false);
   const toggleListHandler = () => {

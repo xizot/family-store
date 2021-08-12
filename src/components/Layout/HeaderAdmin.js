@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { authActions } from '../../reducers/auth';
 import { uiActions } from '../../reducers/ui';
-import SearchInput from '../UI/SearchInput';
 import { langActions } from '../../reducers/lang';
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -248,9 +247,6 @@ const HeaderAdmin = ({ showMenu, showCart }) => {
               FAMILY STORE
             </Typography>
           </Link>
-        </div>
-        <div className={classes.search}>
-          <SearchInput />
         </div>
 
         <div className={classes.sectionDesktop}>
