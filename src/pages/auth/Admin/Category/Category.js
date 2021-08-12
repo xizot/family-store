@@ -11,7 +11,7 @@ import {
     Typography,
     Button,
     Fade,
-    Modal
+    Modal,Backdrop
 } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import Pagination from "@material-ui/lab/Pagination";
@@ -272,6 +272,10 @@ const SubCateManager = (props) => {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                      timeout: 500,
+                    }}
                 >
                      <Fade in={open}>
                         <AddComponent />

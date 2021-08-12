@@ -2,29 +2,11 @@ import { useLayoutEffect } from 'react';
 import { AdminTemplate } from '../../../../components/Templates/Admin/AdminTemplate';
 import {
   makeStyles,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
+  
   Typography,
-  NativeSelect,
-  InputBase,
-  withStyles,
-  Button,
-  Fade,
-  Modal
+ 
 } from "@material-ui/core";
-import { useTranslation } from "react-i18next";
-import Pagination from "@material-ui/lab/Pagination";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { uiActions } from "../../../../reducers/ui";
-import SearchInput from "../../../../components/UI/SearchInput";
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
