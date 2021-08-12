@@ -17,7 +17,7 @@ const ReviewsPage = lazy(() => import('../pages/auth/ReviewsPage'));
 const AdminProductPage = lazy(() => import('../pages/auth/Admin/Product/Product'));
 const AdminSubCatePage = lazy(() => import('../pages/auth/Admin/SubCategory/SubCategory'));
 const AdminCategoryPage = lazy(() => import('../pages/auth/Admin/Category/Category'));
-const Dashboard = lazy(() => import('../pages/auth/Admin/DashBoard'));
+const Dashboard = lazy(() => import('../pages/auth/Admin/Dash.js'));
 
 export const routes = [
   {
@@ -25,6 +25,7 @@ export const routes = [
     protected: false,
     exact: true,
     component: HomePage,
+    roles: [Role.User],
   },
   {
     path: '/login',
@@ -73,37 +74,42 @@ export const routes = [
     protected: false,
     exact: true,
     component: SearchPage,
+    roles: [Role.User],
   },
   {
     path: '/details/:productId',
     protected: false,
     exact: true,
     component: ProductDetail,
+    roles: [Role.User],
   },
   {
     path: '/collections/:categoryId',
     protected: false,
     exact: true,
     component: CollectionsPage,
+    roles: [Role.User],
   },
   {
     path: '/collections',
     protected: false,
     exact: true,
     component: CollectionsPage,
+    roles: [Role.User],
   },
   {
     path: '/orders',
     protected: true,
     exact: true,
     component: OrderPage,
-    roles: [Role.User, Role.Admin],
+    roles: [Role.User],
   },
   {
     path: '/reviews/:orderId',
     protected: true,
     exact: true,
     component: ReviewsPage,
+    roles: [Role.User],
   },
 ];
 
@@ -113,29 +119,34 @@ export const adminRoutes = [
     protected: false,
     exact: true,
     component: Dashboard,
+    roles: [Role.Admin],
   },
   {
     path: '/admin/users',
     protected: false,
     exact: true,
     component: UserManager,
+    roles: [Role.Admin],
   },
   {
     path: '/admin/products',
     protected: false,
     exact: true,
     component: AdminProductPage,
+    roles: [Role.Admin],
   },
   {
     path: '/admin/sub-categories',
     protected: false,
     exact: true,
     component: AdminSubCatePage,
+    roles: [Role.Admin],
   },
   {
     path: '/admin/categories',
     protected: false,
     exact: true,
     component: AdminCategoryPage,
+    roles: [Role.Admin],
   },
 ];

@@ -116,7 +116,7 @@ const LoginPage = () => {
           pathname: '/account-activation',
           state: { id: user.accId },
         };
-        history.push(location);
+        return history.push(location);
       }
     } catch (err) {
       setError(err);

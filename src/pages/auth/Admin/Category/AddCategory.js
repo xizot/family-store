@@ -1,9 +1,11 @@
 import { makeStyles, TextField, Typography, Button, FormControl, Grid } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import SearchInput from '../../../../components/UI/SearchInput';
 import { useInput } from '../../../../hooks/use-input'
 import * as Validate from '../../../../helpers/validate';
 import { FormHelperText } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { addCategory } from '../../../../reducers/admin-category';
 const useStyles = makeStyles((theme) => ({
     paper: {
         minWidth: '60vh',
@@ -57,9 +59,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddSubCate = (props) => {
-
+    const inputRef = useRef();
+    const dispatch = useDispatch();
     const classes = useStyles();
     const [error, setError] = useState('');
+
     const {
         enteredInput: cateName,
         hasError: cateNameHasError,
@@ -76,6 +80,18 @@ const AddSubCate = (props) => {
         cateNameReset();
     }
 
+    const addCategoryHandler = async () => {
+        try {
+            await dispatch(
+                addCategory({
+                    cateId: cateName,
+                    cateName: cateName,
+                })
+            ).unwrap();
+        } catch (error) {
+            console.log(error);
+        }
+    };
     useEffect(() => { }, []);
 
     return (
@@ -103,7 +119,7 @@ const AddSubCate = (props) => {
                             </Grid>
                             <Grid item xs={12} sm={6}></Grid>
                         </Grid>
-                        <Button className={classes.save} variant="contained" fullWidth component="label">
+                        <Button className={classes.save} variant="contained" fullWidth component="label"  onClick={addCategoryHandler}>
                             Save
                         </Button>
                     </FormControl>

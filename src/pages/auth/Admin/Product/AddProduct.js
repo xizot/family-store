@@ -1,6 +1,5 @@
 import { makeStyles, withStyles, TextField, Typography, Button, NativeSelect, InputBase, FormControl, Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import NumberUp from "../../../../components/UI/NumericUpDown";
 import { useInput } from '../../../../hooks/use-input'
 import * as Validate from '../../../../helpers/validate';
 import { FormHelperText } from '@material-ui/core';
@@ -85,15 +84,9 @@ const AddProduct = (props) => {
     const classes = useStyles();
     const [optionFatherCate, setOptionFatherCate] = useState("Milk");
     const [optionSubCate, setOptionSubCate] = useState("Beef");
-    const [quantity, setQuantity] = useState(0);
+
     const [error, setError] = useState('');
 
-    const addQuantity = () => {
-        setQuantity(quantity + 1);
-    }
-    const removeQuantity = () => {
-        setQuantity(quantity - 1);
-    }
     const fatherCateChangeHandler = (event) => {
         setOptionFatherCate(event.target.value);
     };
@@ -101,7 +94,7 @@ const AddProduct = (props) => {
         setOptionSubCate(event.target.value);
     };
 
-    
+
     const {
         enteredInput: productName,
         hasError: productNameHasError,
@@ -120,12 +113,22 @@ const AddProduct = (props) => {
         inputReset: priceReset,
     } = useInput(Validate.isNotEmpty);
 
+    const {
+        enteredInput: quantity,
+        hasError: quantityHasError,
+        inputBlurHandler: quantityBlurHandler,
+        inputChangeHandler: quantityChangeHandler,
+        inputIsValid: quantityIsValid,
+        inputReset: quantityReset,
+    } = useInput(Validate.isNotEmpty);
+
     const formSubmitHandler = async (event) => {
         event.preventDefault();
-        if (!productNameIsValid && !priceIsValid) return;
+        if (!productNameIsValid && !priceIsValid && !quantityIsValid) return;
         setError('');
         productNameReset();
         priceReset();
+        quantityReset();
     }
 
     useEffect(() => {
@@ -229,13 +232,15 @@ const AddProduct = (props) => {
                                 Quantity
                             </Grid>
                             <Grid item xs={12} sm={6} >
-                                <div className={classes.select}>
-                                    <NumberUp
-                                        quantity={quantity}
-                                        onAdd={addQuantity}
-                                        onRemove={removeQuantity}
-                                    />
-                                </div>
+                                <TextField
+                                    placeholder="Quantity"
+                                    fullWidth
+                                    type="number"
+                                    value={quantity}
+                                    helperText={quantityHasError && 'Quantity invalid'}
+                                    onBlur={quantityBlurHandler}
+                                    onChange={quantityChangeHandler} />
+
                             </Grid>
                         </Grid>
                         <TextField
