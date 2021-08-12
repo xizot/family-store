@@ -1,5 +1,5 @@
 import { makeStyles, TextField, Typography, Button, FormControl, Grid } from '@material-ui/core';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import SearchInput from '../../../../components/UI/SearchInput';
 import { useInput } from '../../../../hooks/use-input'
 import * as Validate from '../../../../helpers/validate';
@@ -59,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddSubCate = (props) => {
-    const inputRef = useRef();
     const dispatch = useDispatch();
     const classes = useStyles();
     const [error, setError] = useState('');
