@@ -7,22 +7,28 @@ const initialState = {
 };
 
 export const addCategory = createAsyncThunk(
-  'admin/Category',
+  'category/Add',
   async ({ cateId, cateName }, { rejectWithValue }) => {
-    console.log('🚀 ~ file: admin-category.js ~ line 12 ~  cateId, cateName', cateId, cateName);
-
     try {
       return (await adminCategoryApi.addCategory({ cateId, cateName })).data;
     } catch (error) {
-      console.log('🚀 ~ file: admin-category.js ~ line 29 ~ error', error);
-
+      return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
+    }
+  }
+);
+export const getListCategory = createAsyncThunk(
+  'category/Get',
+  async (page, { rejectWithValue }) => {
+    try {
+      return (await adminCategoryApi.getListCategory(page)).data;
+    } catch (error) {
       return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
     }
   }
 );
 
 const adminCategorySlice = createSlice({
-  name: 'adminCategory',
+  name: 'category',
   initialState,
   reducers: {},
   extraReducers: {
@@ -34,6 +40,17 @@ const adminCategorySlice = createSlice({
     },
     [addCategory.fulfilled]: (state) => {
       state.loading = false;
+    },
+    [getListCategory.pending]: (state) => {
+      state.loading = true;
+    },
+    [getListCategory.rejected]: (state) => {
+      state.loading = false;
+    },
+    [getListCategory.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.data = action.payload.listCategories;
+      console.log('🚀 ~ file: admin-category.js ~ line 53 ~ action.payload', action.payload);
     },
   },
 });

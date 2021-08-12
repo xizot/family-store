@@ -2,7 +2,7 @@ import { makeStyles, TextField, Typography, Button, FormControl, Grid } from '@m
 import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import SearchInput from '../../../../components/UI/SearchInput';
-import { addCategory } from '../../../../reducers/admin-category';
+import { addCategory } from '../../../../reducers/category';
 const useStyles = makeStyles((theme) => ({
   paper: {
     minWidth: '60vh',
