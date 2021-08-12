@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import adminCategorySlice from '../reducers/admin-category';
+import categorySlice from '../reducers/category';
 import authSlice from '../reducers/auth';
 import cartSlice from '../reducers/cart';
 import langSlice from '../reducers/lang';
@@ -11,7 +11,7 @@ const store = configureStore({
     ui: uiSlice.reducer,
     cart: cartSlice.reducer,
     lang: langSlice.reducer,
-    adminCategory: adminCategorySlice.reducer,
+    category: categorySlice.reducer,
   },
 });
 export default store;

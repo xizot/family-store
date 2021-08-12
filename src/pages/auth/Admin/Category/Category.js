@@ -15,14 +15,17 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Pagination from '@material-ui/lab/Pagination';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
 import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddComponent from './AddCategory';
 import { Add } from '@material-ui/icons';
+import { getListCategory } from '../../../../reducers/category';
+import TableError from '../../../../components/TableError/TableError';
+import TableLoading from '../../../../components/TableLoading/TableLoading';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -181,7 +184,9 @@ const SubCateManager = (props) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-
+  const [error, setError] = useState('');
+  const data = useSelector((state) => state.category.data);
+  const loading = useSelector((state) => state.category.loading);
   const dispatch = useDispatch();
 
   const handleOpen = () => {
@@ -192,9 +197,22 @@ const SubCateManager = (props) => {
     setOpen(false);
   };
 
+  const getListCategoryHandler = useCallback(
+    async (page) => {
+      try {
+        await dispatch(getListCategory(page)).unwrap();
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     dispatch(uiActions.hideModal());
-  }, [dispatch]);
+
+    getListCategoryHandler();
+  }, [dispatch, getListCategoryHandler]);
 
   useEffect(() => {
     document.title = 'Category Admin';
@@ -218,43 +236,66 @@ const SubCateManager = (props) => {
         </div>
       </div>
 
-      <TableContainer component={Paper} className={classes.section}>
-        <Table aria-label="a dense table">
-          <TableHead>
-            <TableRow className={classes.tableHead}>
-              <TableCell>Index</TableCell>
-              <TableCell>Category Name</TableCell>
-              <TableCell>Sub Category Inside</TableCell>
-              <TableCell>Total Product</TableCell>
-              <TableCell>Last Modified</TableCell>
-              <TableCell align="center">Options</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  {row.id}
-                </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.subCate}</TableCell>
-                <TableCell>{row.quantity}</TableCell>
-                <TableCell>{row.lastModi}</TableCell>
-                <TableCell align="center">
-                  <Button
-                    size="small"
-                    startIcon={<EditIcon />}
-                    style={{ padding: '0' }}
-                    onClick={handleOpen}></Button>
-                  <Button size="small" startIcon={<DeleteIcon />} style={{ padding: '0' }}></Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <div className={`${classes.pagination} ${classes.section}`}>
-        <Pagination count={rows.length} color="primary" variant="outlined" shape="rounded" />
+      <div className={`${classes.tableSection} `}>
+        {loading ? (
+          <TableLoading />
+        ) : error?.length > 0 ? (
+          <TableError message={error} onTryAgain={getListCategoryHandler} />
+        ) : data?.length > 0 ? (
+          <>
+            <TableContainer component={Paper} className={classes.section}>
+              <Table aria-label="a dense table">
+                <TableHead>
+                  <TableRow className={classes.tableHead}>
+                    <TableCell style={{ width: 20, textAlign: 'center' }}>Index</TableCell>
+                    <TableCell>Category ID</TableCell>
+                    <TableCell>Category Name</TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>Sub Category Inside</TableCell>
+                    {/* <TableCell>Total Product</TableCell>
+              <TableCell>Last Modified</TableCell> */}
+                    <TableCell align="center">Options</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data?.length > 0 &&
+                    data.map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          style={{ width: 20, textAlign: 'center' }}>
+                          {index + 1}
+                        </TableCell>
+                        <TableCell>{row.cateId}</TableCell>
+                        <TableCell>{row.cateName}</TableCell>
+                        <TableCell style={{ textAlign: 'center' }}>
+                          {row.subCategories.length}
+                        </TableCell>
+                        {/* <TableCell>{row.quantity}</TableCell>
+                <TableCell>{row.lastModi}</TableCell> */}
+                        <TableCell align="center">
+                          <Button
+                            size="small"
+                            startIcon={<EditIcon />}
+                            style={{ padding: '0' }}
+                            onClick={handleOpen}></Button>
+                          <Button
+                            size="small"
+                            startIcon={<DeleteIcon />}
+                            style={{ padding: '0' }}></Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <div className={`${classes.pagination} ${classes.section}`}>
+              <Pagination count={rows.length} color="primary" variant="outlined" shape="rounded" />
+            </div>
+          </>
+        ) : (
+          <TableError message="No data in database" onTryAgain={getListCategoryHandler} />
+        )}
       </div>
 
       <Modal
