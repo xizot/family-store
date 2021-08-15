@@ -31,6 +31,7 @@ import TableError from '../../../../components/TableError/TableError';
 import { toast } from 'react-toastify';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
 import { getListSubCategory, deleteCategory } from '../../../../reducers/sub-category';
+import DeleteModal from "../DeleteModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -157,17 +158,28 @@ const SubCateManager = (props) => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [close, setClose] = useState(false);
+  const [detail, setDetail] = useState({})
+  const [action, setAction] = useState('insert')
   const data = useSelector((state) => state.category.data);
   const sub = useSelector((state) => state.subCategory.data);
   const loading = useSelector((state) => state.category.loading);
 
-  const [optionFather, setOptionFather] = useState(1);
+  const [optionFather, setOptionFather] = useState(3);
 
   const fatherChangeHandler = (event) => {
     setOptionFather(event.target.value);
     dispatch(getListSubCategory(event.target.value));
   };
+
+  const editSubCategory = (item) => {
+    setAction('update');
+    setDetail(item);
+    setOpen(true);
+  }
+
   const handleOpen = () => {
+    setAction('insert');
     setOpen(true);
   };
 
@@ -175,11 +187,19 @@ const SubCateManager = (props) => {
     setOpen(false);
   };
 
-  const subCateDeleteHandler = (id) => {
-    dispatch(deleteCategory(id));
-    toast.success('Xóa thành công');
-
+  const subCateDeleteHandler = (item) => {
+    setClose(true);
+    setDetail(item)
   }
+  const subCateDeleteConfirm = () => {
+      dispatch(deleteCategory(detail.cateId));
+      toast.success('Xóa thành công');
+  }
+
+  const subCateDeleteClose = () => {
+    setClose(false);
+  }
+
   const getListSubCategoryHandler = useCallback(
     async () => {
       try {
@@ -198,7 +218,7 @@ const SubCateManager = (props) => {
 
   useEffect(() => {
     document.title = 'Sub Category Admin';
-    dispatch(getListSubCategory(1));
+    dispatch(getListSubCategory(optionFather));
   }, [t, optionFather, dispatch]);
 
   return (
@@ -267,8 +287,8 @@ const SubCateManager = (props) => {
                             size="small"
                             startIcon={<EditIcon />}
                             style={{ padding: '0' }}
-                            onClick={handleOpen}></Button>
-                          <Button size="small" startIcon={<DeleteIcon />} style={{ padding: '0' }} onClick={() => subCateDeleteHandler(row.cateId)}></Button>
+                            onClick={() => editSubCategory(row)}></Button>
+                          <Button size="small" startIcon={<DeleteIcon />} style={{ padding: '0' }} onClick={() => subCateDeleteHandler(row)}></Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -295,8 +315,30 @@ const SubCateManager = (props) => {
           timeout: 500,
         }}>
         <Fade in={open}>
-          <AddComponent 
+          <AddComponent
             cateFather={optionFather}
+            action={action}
+            cate={detail}
+            father={data}
+            parentHandleClose={handleClose}
+          />
+        </Fade>
+      </Modal>
+      <Modal
+        open={close}
+        onClose={handleClose}
+        className={classes.modal}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}>
+        <Fade in={open}>
+          <DeleteModal
+            parentHandleConfirm={subCateDeleteConfirm}
+            parentHandleClose={subCateDeleteClose}
           />
         </Fade>
       </Modal>

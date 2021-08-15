@@ -9,9 +9,9 @@ const initialState = {
 
 export const addCategory = createAsyncThunk(
   'category/Add',
-  async ({ cateId, cateName }, { rejectWithValue }) => {
+  async ({  cateName }, { rejectWithValue }) => {
     try {
-      return (await adminCategoryApi.addCategory({ cateId, cateName })).data;
+      return (await adminCategoryApi.addCategory({ cateName })).data;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }
