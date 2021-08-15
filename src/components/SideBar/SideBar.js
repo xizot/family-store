@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 10,
     background: '#fff',
     height: 'calc(100% - 64px)',
+    overflow: 'auto',
     width: 260,
     boxShadow: '0px 2px 8px rgba(0,0,0,.1)',
     [theme.breakpoints.down('sm')]: {

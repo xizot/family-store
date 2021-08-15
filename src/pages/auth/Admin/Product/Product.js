@@ -12,20 +12,19 @@ import {
   InputBase,
   withStyles,
   Button,
-  Fade,
-  Backdrop,
-  Modal,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Pagination from '@material-ui/lab/Pagination';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
 import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import AddComponent from './AddProduct';
 import { Add } from '@material-ui/icons';
+import { getListProductByPage } from '../../../../reducers/product';
+import AddProduct from './AddProduct';
+import UpdateProduct from './UpdateProduct';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -157,7 +156,7 @@ const rows = [
     subCate: 'Thực phẩm',
     quantity: '200',
     price: '31800',
-    description:'Mì trứng cao cấp Meizan gói 500g',
+    description: 'Mì trứng cao cấp Meizan gói 500g',
     lastModi: '01-02-2010',
   },
   {
@@ -166,7 +165,7 @@ const rows = [
     subCate: 'Đồ tiện dụng',
     quantity: '2002',
     price: '318000 ',
-    description:'Bột giặc Detech 400g Mỹ',
+    description: 'Bột giặc Detech 400g Mỹ',
     lastModi: '01-01-2021',
   },
   {
@@ -175,7 +174,7 @@ const rows = [
     subCate: 'Rau củ',
     quantity: '400',
     price: '10000',
-    description:'Hành lá 1kg Thượng Hải',
+    description: 'Hành lá 1kg Thượng Hải',
     lastModi: '01-01-2021',
   },
   {
@@ -184,7 +183,7 @@ const rows = [
     subCate: 'Rau củ',
     quantity: '1000',
     price: '21000',
-    description:'Hành Tây Long An 500g',
+    description: 'Hành Tây Long An 500g',
     lastModi: '01-01-2021',
   },
   {
@@ -193,7 +192,7 @@ const rows = [
     subCate: 'Đồ tiện dụng',
     quantity: '2000',
     price: '3180000',
-    description:'Bột giặc Oma 500g',
+    description: 'Bột giặc Oma 500g',
     lastModi: '22-01-2021',
   },
   {
@@ -202,7 +201,7 @@ const rows = [
     subCate: 'Lương thực',
     quantity: '400',
     price: '28000',
-    description:'Bánh mì bơ Tewan',
+    description: 'Bánh mì bơ Tewan',
     lastModi: '11-12-2021',
   },
   {
@@ -211,7 +210,7 @@ const rows = [
     subCate: 'Rau củ',
     quantity: '4000',
     price: '48000',
-    description:'Rau cần Đà Lạt',
+    description: 'Rau cần Đà Lạt',
     lastModi: '25-08-2021',
   },
   {
@@ -220,7 +219,7 @@ const rows = [
     subCate: 'Sữa, nước ngọt',
     quantity: '1000',
     price: '58000',
-    description:'Sữa thùng Vina milk socola',
+    description: 'Sữa thùng Vina milk socola',
     lastModi: '12-01-2021',
   },
   {
@@ -229,7 +228,7 @@ const rows = [
     subCate: 'Lương thực',
     quantity: '2000',
     price: '8000',
-    description:'Bánh tầm Long An',
+    description: 'Bánh tầm Long An',
     lastModi: '22-02-2021',
   },
 ];
@@ -237,7 +236,8 @@ const rows = [
 const ProductManager = (props) => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const dispatch = useDispatch();
   const [optionPrice, setOptionPrice] = useState('Price');
@@ -245,20 +245,43 @@ const ProductManager = (props) => {
   const priceChangeHandler = (event) => {
     setOptionPrice(event.target.value);
   };
-  const handleOpen = () => {
-    setOpen(true);
+
+  const openAddModalHandler = () => {
+    setOpenAddModal(true);
+    setOpenUpdateModal(false);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const openUpdateModalHandler = () => {
+    setOpenUpdateModal(true);
+    setOpenAddModal(false);
+  };
+
+  const closeModalHandler = () => {
+    setOpenUpdateModal(false);
+    setOpenAddModal(false);
   };
   const typeChangeHandler = (event) => {
     setOptionType(event.target.value);
   };
 
+  const getListProductByPageHandler = useCallback(
+    async (page = 0) => {
+      try {
+        await dispatch(getListProductByPage(page)).unwrap();
+      } catch (err) {
+        console.log('🚀 ~ file: Product.js ~ line 265 ~ getListProductByPageHandler ~ err', err);
+        // alert(err);
+        // setError(err);
+      }
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     dispatch(uiActions.hideModal());
-  }, [dispatch]);
+
+    getListProductByPageHandler();
+  }, [dispatch, getListProductByPageHandler]);
 
   useEffect(() => {
     document.title = 'Product Admin';
@@ -271,6 +294,9 @@ const ProductManager = (props) => {
   return (
     <>
       <div className={classes.root}>
+        <AddProduct isOpen={openAddModal} onClose={closeModalHandler} />
+        <UpdateProduct isOpen={openUpdateModal} onClose={closeModalHandler} />
+
         <div className={classes.section}>
           <Typography variant="h5" className={classes.title}>
             PRODUCT MANAGER
@@ -279,7 +305,7 @@ const ProductManager = (props) => {
             <div className={classes.search}>
               <SearchInput />
             </div>
-            <div className={classes.filterItem}>
+            {/* <div className={classes.filterItem}>
               <Typography variant="subtitle2" className={classes.label}>
                 CATEGORY
               </Typography>
@@ -320,9 +346,14 @@ const ProductManager = (props) => {
                   Fish
                 </option>
               </NativeSelect>
-            </div>
+            </div> */}
             <div className={classes.addButton}>
-              <Button variant="contained" color="primary" onClick={handleOpen} startIcon={<Add />}>
+              <Button
+                startIcon={<Add />}
+                variant="contained"
+                color="primary"
+                className={classes.addButton}
+                onClick={openAddModalHandler}>
                 Add
               </Button>
             </div>
@@ -354,16 +385,13 @@ const ProductManager = (props) => {
                   <TableCell>{row.price}</TableCell>
                   <TableCell>{row.description}</TableCell>
                   <TableCell>{row.lastModi}</TableCell>
-                  <TableCell align="center">
-                    <Button
-                      size="small"
-                      startIcon={<EditIcon />}
-                      style={{ padding: '0' }}
-                      onClick={handleOpen}></Button>
-                    <Button
-                      size="small"
-                      startIcon={<DeleteIcon />}
-                      style={{ padding: '0' }}></Button>
+                  <TableCell align="center" style={{ minWidth: 150 }}>
+                    <EditIcon
+                      onClick={openUpdateModalHandler}
+                      fontSize="small"
+                      style={{ marginRight: 5, cursor: 'pointer' }}
+                    />
+                    <DeleteIcon fontSize="small" style={{ cursor: 'pointer' }} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -374,21 +402,6 @@ const ProductManager = (props) => {
           <Pagination count={rows.length} color="primary" variant="outlined" shape="rounded" />
         </div>
       </div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        className={classes.modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}>
-        <Fade in={open}>
-          <AddComponent />
-        </Fade>
-      </Modal>
     </>
   );
 };

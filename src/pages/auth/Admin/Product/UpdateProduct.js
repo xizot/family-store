@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddProduct = ({ isOpen, onClose }) => {
+const UpdateProduct = ({ item, isOpen, onClose }) => {
   const classes = useStyles();
 
   return (
@@ -67,7 +67,7 @@ const AddProduct = ({ isOpen, onClose }) => {
         <Box borderRadius={6} className={classes.content}>
           <Box marginBottom={4} marginTop={2}>
             <Typography variant="h5" className={classes.title}>
-              ADD PRODUCTS
+              UPDATE PRODUCTS
             </Typography>
             <Typography variant="caption" className={classes.subTitle}>
               Family Admin Panel
@@ -154,4 +154,4 @@ const AddProduct = ({ isOpen, onClose }) => {
   );
 };
 
-export default AddProduct;
+export default UpdateProduct;
