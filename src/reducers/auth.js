@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authApi from '../apis/auth';
+import { getResponseError } from '../helpers';
 
 const initialState = {
   accessToken: null,
@@ -15,7 +16,7 @@ export const login = createAsyncThunk(
     try {
       return (await authApi.login({ email, password })).data.data;
     } catch (error) {
-      return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
+      return rejectWithValue(getResponseError(error));
     }
   }
 );
@@ -32,7 +33,7 @@ export const register = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
+      return rejectWithValue(getResponseError(error));
     }
   }
 );
@@ -47,7 +48,7 @@ export const resetPassword = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
+      return rejectWithValue(getResponseError(error));
     }
   }
 );
@@ -58,7 +59,7 @@ export const verifyEmail = createAsyncThunk(
       const response = await authApi.verifyEmail({ userId, accessToken });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
+      return rejectWithValue(getResponseError(error));
     }
   }
 );
@@ -68,7 +69,7 @@ export const forgotPassword = createAsyncThunk(
     try {
       return (await authApi.forgotPassword(email)).data;
     } catch (error) {
-      return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
+      return rejectWithValue(getResponseError(error));
     }
   }
 );
@@ -99,7 +100,7 @@ const authSlice = createSlice({
       state.loading = false;
     },
     [login.fulfilled]: (state, action) => {
-      const { user, accessToken,refreshToken } = action.payload;
+      const { user, accessToken, refreshToken } = action.payload;
       state.loading = false;
       if (user.accStatus === 0) {
         state.user = user;
@@ -108,7 +109,7 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
 
         localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken',refreshToken);
+        localStorage.setItem('refreshToken', refreshToken);
         localStorage.setItem('user', JSON.stringify(user));
       }
     },

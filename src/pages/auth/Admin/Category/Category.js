@@ -113,7 +113,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const SubCateManager = (props) => {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -131,16 +130,14 @@ const SubCateManager = (props) => {
     setOpen(false);
   };
 
-  const getListCategoryHandler = useCallback(
-    async () => {
-      try {
-        await dispatch(getListCategory()).unwrap();
-      } catch (err) {
-        setError(err);
-      }
-    },
-    [dispatch]
-  );
+  const getListCategoryHandler = useCallback(async () => {
+    try {
+      await dispatch(getListCategory()).unwrap();
+    } catch (err) {
+      alert(err);
+      setError(err);
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(uiActions.hideModal());
