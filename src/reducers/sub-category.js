@@ -33,13 +33,23 @@ export const addSubCategory = createAsyncThunk(
   'subcategory/Add',
   async ({ cateFather, cateName }, { rejectWithValue }) => {
     try {
-      return (await adminSubCategoryApi.addSubCategory(cateName,cateFather)).data;
+      return (await adminSubCategoryApi.addSubCategory(cateName, cateFather)).data;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }
   }
 );
 
+export const updateSubCategory = createAsyncThunk(
+  'subcategory/Update',
+  async ({ cateFather, cateId, cateName }, { rejectWithValue }) => {
+    try {
+      return (await adminSubCategoryApi.updateSubCategory(cateFather, cateId, cateName)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
 const adminSubCategorySlice = createSlice({
   name: 'subCategory',
   initialState,
@@ -63,6 +73,15 @@ const adminSubCategorySlice = createSlice({
       state.loading = false;
     },
     [addSubCategory.fulfilled]: (state) => {
+      state.loading = false;
+    },
+    [updateSubCategory.pending]: (state) => {
+      state.loading = true;
+    },
+    [updateSubCategory.rejected]: (state) => {
+      state.loading = false;
+    },
+    [updateSubCategory.fulfilled]: (state) => {
       state.loading = false;
     },
     [deleteCategory.pending]: (state) => {

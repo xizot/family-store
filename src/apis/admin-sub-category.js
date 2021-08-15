@@ -12,13 +12,17 @@ const getListSubCategory = (cateFather) => {
 const deleteCategory = (cateId) => {
     return axios.post('api/categories/delete', { cateId })
 }
-const addSubCategory = (cateName,cateFather) => {
-    return axios.post('/api/categories/add-child', {cateName,cateFather});
-  };
+const addSubCategory = (cateName, cateFather) => {
+    return axios.post('/api/categories/add-child', { cateName, cateFather });
+};
+const updateSubCategory = (cateFather, cateId, cateName,) => {
+    return axios.post('/api/categories/update', { cateFather, cateId, cateName });
+}
 const adminSubCategoryApi = {
     getListSubCategory,
     deleteCategory,
-    addSubCategory
+    addSubCategory,
+    updateSubCategory
 };
 
 export default adminSubCategoryApi;

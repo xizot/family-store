@@ -1,4 +1,5 @@
 import axios from '../axios/index';
+// import { updateSubCategory } from '../reducers/sub-category';
 
 /**
  * @param  {object} data
@@ -12,9 +13,17 @@ const getListCategory = () => {
   let query = '/api/categories/list';
   return axios.get(query);
 };
+const updateCategory = (cateId, cateName) => {
+  return axios.post('/api/categories/update', { cateId, cateName });
+};
+const deleteCategory = (cateId) => {
+  return axios.post('api/categories/delete', { cateId });
+};
 const adminCategoryApi = {
   addCategory,
-  getListCategory
+  getListCategory,
+  updateCategory,
+  deleteCategory,
 };
 
 export default adminCategoryApi;

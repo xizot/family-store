@@ -19,12 +19,13 @@ import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Add } from '@material-ui/icons';
-import { getListProductByPage } from '../../../../reducers/product';
+import { deleteProduct, getListProductByPage } from '../../../../reducers/product';
 import AddProduct from './AddProduct';
 import UpdateProduct from './UpdateProduct';
 import TableError from '../../../../components/TableError/TableError';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
-
+import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
+import { toast } from 'react-toastify';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
@@ -128,10 +129,14 @@ const ProductManager = (props) => {
   const classes = useStyles();
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [productInfo, setProductInfo] = useState({});
+  const [selectedId, setSelectedId] = useState(null);
   const [error, setError] = useState('');
-  const loading = useSelector((state) => state.product.loading);
+  const [page, setPage] = useState(1);
 
+  const loading = useSelector((state) => state.product.loading);
+  let { listProduct, numberOfPage } = productInfo;
   const dispatch = useDispatch();
   // const [optionPrice, setOptionPrice] = useState('Price');
   // const [optionType, setOptionType] = useState('Ascending');
@@ -139,23 +144,43 @@ const ProductManager = (props) => {
   const openAddModalHandler = () => {
     setOpenAddModal(true);
     setOpenUpdateModal(false);
+    setOpenDeleteModal(false);
   };
 
   const openUpdateModalHandler = () => {
     setOpenUpdateModal(true);
     setOpenAddModal(false);
+    setOpenDeleteModal(false);
+  };
+  const openDeleteModalHandler = (id) => {
+    setSelectedId(id);
+    setOpenUpdateModal(false);
+    setOpenAddModal(false);
+    setOpenDeleteModal(true);
   };
 
   const closeModalHandler = () => {
     setOpenUpdateModal(false);
     setOpenAddModal(false);
+    setOpenDeleteModal(false);
   };
-  // const typeChangeHandler = (event) => {
-  //   setOptionType(event.target.value);
-  // };
-  // const priceChangeHandler = (event) => {
-  //   setOptionPrice(event.target.value);
-  // };
+
+  const pageChangeHandler = (event, value) => {
+    setPage(value);
+  };
+  const productDeleteHandler = async () => {
+    if (!selectedId) return;
+    try {
+      await dispatch(deleteProduct(selectedId)).unwrap();
+      toast.success(`Delete product id ${selectedId} successfully`);
+      productInfo.listProduct = productInfo.listProduct.filter(
+        (product) => product.prod_id !== selectedId
+      );
+    } catch (err) {
+      toast.error(err);
+    }
+    closeModalHandler();
+  };
 
   const getListProductByPageHandler = useCallback(
     async (page = 1) => {
@@ -172,9 +197,8 @@ const ProductManager = (props) => {
 
   useEffect(() => {
     dispatch(uiActions.hideModal());
-
-    getListProductByPageHandler();
-  }, [dispatch, getListProductByPageHandler]);
+    getListProductByPageHandler(page);
+  }, [dispatch, getListProductByPageHandler, page]);
 
   useEffect(() => {
     document.title = 'Product Admin';
@@ -189,6 +213,12 @@ const ProductManager = (props) => {
       <div className={classes.root}>
         <AddProduct isOpen={openAddModal} onClose={closeModalHandler} />
         <UpdateProduct isOpen={openUpdateModal} onClose={closeModalHandler} />
+        <ModalConfirm
+          title="Delete Product"
+          isOpen={openDeleteModal}
+          onClose={closeModalHandler}
+          onConfirm={productDeleteHandler}
+        />
 
         <div className={classes.section}>
           <Typography variant="h5" className={classes.title}>
@@ -198,48 +228,7 @@ const ProductManager = (props) => {
             <div className={classes.search}>
               <SearchInput />
             </div>
-            {/* <div className={classes.filterItem}>
-              <Typography variant="subtitle2" className={classes.label}>
-                CATEGORY
-              </Typography>
-              <NativeSelect
-                className={classes.select}
-                value={optionPrice}
-                onChange={priceChangeHandler}
-                name="price"
-                input={<BootstrapInput />}>
-                <option style={{ color: '#F39148' }} value="">
-                  Vegetables
-                </option>
-                <option style={{ color: '#F39148' }} value={10}>
-                  Milk, Drink
-                </option>
-                <option style={{ color: '#F39148' }} value={20}>
-                  Rice, Bread
-                </option>
-              </NativeSelect>
-            </div>
-            <div className={classes.filterItem}>
-              <Typography variant="subtitle2" className={classes.label}>
-                SUB CATEGORY
-              </Typography>
-              <NativeSelect
-                className={classes.select}
-                name="type"
-                value={optionType}
-                onChange={typeChangeHandler}
-                input={<BootstrapInput />}>
-                <option style={{ color: '#F39148' }} value="">
-                  Milk
-                </option>
-                <option style={{ color: '#F39148' }} value={10}>
-                  Borecole
-                </option>
-                <option style={{ color: '#F39148' }} value={20}>
-                  Fish
-                </option>
-              </NativeSelect>
-            </div> */}
+
             <div className={classes.addButton}>
               <Button
                 startIcon={<Add />}
@@ -258,13 +247,13 @@ const ProductManager = (props) => {
             <TableLoading />
           ) : error?.length > 0 ? (
             <TableError message={error} onTryAgain={getListProductByPageHandler} />
-          ) : productInfo?.listProduct?.length > 0 ? (
+          ) : listProduct?.length > 0 ? (
             <>
               <TableContainer component={Paper} className={classes.section}>
                 <Table aria-label="a dense table">
                   <TableHead>
                     <TableRow className={classes.tableHead}>
-                      <TableCell>Index</TableCell>
+                      <TableCell>ID</TableCell>
                       <TableCell>Product Name</TableCell>
                       <TableCell>Image</TableCell>
                       <TableCell>Category</TableCell>
@@ -276,40 +265,50 @@ const ProductManager = (props) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {productInfo?.listProduct &&
-                      productInfo.listProduct.map((row, index) => (
-                        <TableRow key={index}>
-                          <TableCell component="th" scope="row">
-                            {index + 1}
-                          </TableCell>
-                          <TableCell>{row.prod_name}</TableCell>
-                          <TableCell>
-                            <img
-                              src={row.images[0]}
-                              alt={row.prod_name}
-                              style={{ width: 100, height: 80 }}
-                            />
-                          </TableCell>
-                          <TableCell>{row.prod_category_id}</TableCell>
-                          <TableCell>{row.prod_amount}</TableCell>
-                          <TableCell>{row.prod_price}</TableCell>
-                          <TableCell>{row.prod_description}</TableCell>
-                          <TableCell>{row.prod_updated_date}</TableCell>
-                          <TableCell align="center" style={{ minWidth: 150 }}>
-                            <EditIcon
-                              onClick={openUpdateModalHandler}
-                              fontSize="small"
-                              style={{ marginRight: 5, cursor: 'pointer' }}
-                            />
-                            <DeleteIcon fontSize="small" style={{ cursor: 'pointer' }} />
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                    {listProduct.map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell component="th" scope="row">
+                          {row.prod_id}
+                        </TableCell>
+                        <TableCell>{row.prod_name}</TableCell>
+                        <TableCell>
+                          <img
+                            src={row.images[0]}
+                            alt={row.prod_name}
+                            style={{ width: 100, height: 80 }}
+                          />
+                        </TableCell>
+                        <TableCell>{row.prod_category_id}</TableCell>
+                        <TableCell>{row.prod_amount}</TableCell>
+                        <TableCell>{row.prod_price}</TableCell>
+                        <TableCell>{row.prod_description}</TableCell>
+                        <TableCell>{row.prod_updated_date}</TableCell>
+                        <TableCell align="center" style={{ minWidth: 150 }}>
+                          <EditIcon
+                            onClick={openUpdateModalHandler}
+                            fontSize="small"
+                            style={{ marginRight: 5, cursor: 'pointer' }}
+                          />
+                          <DeleteIcon
+                            fontSize="small"
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => openDeleteModalHandler(row.prod_id)}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>
               <div className={`${classes.pagination} ${classes.section}`}>
-                <Pagination count={10} color="primary" variant="outlined" shape="rounded" />
+                <Pagination
+                  count={numberOfPage}
+                  color="primary"
+                  variant="outlined"
+                  shape="rounded"
+                  page={page}
+                  onChange={pageChangeHandler}
+                />
               </div>
             </>
           ) : (

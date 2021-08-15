@@ -9,9 +9,9 @@ const initialState = {
 
 export const addCategory = createAsyncThunk(
   'category/Add',
-  async ({ cateId, cateName }, { rejectWithValue }) => {
+  async ({  cateName }, { rejectWithValue }) => {
     try {
-      return (await adminCategoryApi.addCategory({ cateId, cateName })).data;
+      return (await adminCategoryApi.addCategory({ cateName })).data;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }
@@ -22,6 +22,28 @@ export const getListCategory = createAsyncThunk(
   async (page, { rejectWithValue }) => {
     try {
       return (await adminCategoryApi.getListCategory(page)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
+
+export const deleteCategory = createAsyncThunk(
+  'subcategory/Delete',
+  async (id, { rejectWithValue }) => {
+    try {
+      return (await adminCategoryApi.deleteCategory(id)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
+
+export const updateSubCategory = createAsyncThunk(
+  'subcategory/Update',
+  async ({ cateId, cateName }, { rejectWithValue }) => {
+    try {
+      return (await adminCategoryApi.updateSubCategory( cateId, cateName)).data;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }

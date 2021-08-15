@@ -8,8 +8,18 @@ const initialState = {
   modifyLoading: false,
 };
 
+export const deleteProduct = createAsyncThunk(
+  'product/DeleteProduct',
+  async (productId, { rejectWithValue }) => {
+    try {
+      return (await adminProductApis.deleteById(productId)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
 export const addNewProduct = createAsyncThunk(
-  'product/GetList',
+  'product/AddNewProduct',
   async (formData, { rejectWithValue }) => {
     console.log('Form data', formData);
     try {

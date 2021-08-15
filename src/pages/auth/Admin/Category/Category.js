@@ -23,9 +23,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddComponent from './AddCategory';
 import { Add } from '@material-ui/icons';
-import { getListCategory } from '../../../../reducers/category';
+import { getListCategory,deleteCategory } from '../../../../reducers/category';
 import TableError from '../../../../components/TableError/TableError';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
+import DeleteModal from "../DeleteModal";
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -118,17 +120,43 @@ const SubCateManager = (props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState('');
+  const [close, setClose] = useState(false);
+  const [detail, setDetail] = useState({})
+  const [action, setAction] = useState('insert')
   const data = useSelector((state) => state.category.data);
   const loading = useSelector((state) => state.category.loading);
   const dispatch = useDispatch();
 
   const handleOpen = () => {
+    setAction('insert');
     setOpen(true);
+  
   };
-
+ 
   const handleClose = () => {
     setOpen(false);
   };
+
+  const DeleteHandler = (item) => {
+    setClose(true);
+    setDetail(item)
+  }
+  const DeleteConfirm = () => {
+      dispatch(deleteCategory(detail.cateId));
+      setClose(false);
+      dispatch(getListCategory());
+      toast.success('Xóa thành công');
+  }
+
+  const DeleteClose = () => {
+    setClose(false);
+  }
+
+  const editCateHandler = (item) => {
+    setAction('update');
+    setDetail(item);
+    setOpen(true);
+  }
 
   const getListCategoryHandler = useCallback(async () => {
     try {
@@ -160,7 +188,7 @@ const SubCateManager = (props) => {
             <SearchInput />
           </div>
           <div className={classes.addButton}>
-            <Button variant="contained" color="primary" onClick={handleOpen} startIcon={<Add />}>
+            <Button variant="contained" color="primary"  startIcon={<Add />} onClick={handleOpen}>
               Add
             </Button>
           </div>
@@ -205,11 +233,11 @@ const SubCateManager = (props) => {
                             size="small"
                             startIcon={<EditIcon />}
                             style={{ padding: '0' }}
-                            onClick={handleOpen}></Button>
+                            onClick={()=>editCateHandler(row)}></Button>
                           <Button
                             size="small"
                             startIcon={<DeleteIcon />}
-                            style={{ padding: '0' }}></Button>
+                            style={{ padding: '0' }} onClick={() => DeleteHandler(row)}></Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -237,7 +265,29 @@ const SubCateManager = (props) => {
           timeout: 500,
         }}>
         <Fade in={open}>
-          <AddComponent />
+          <AddComponent 
+            action={action}
+            cate={detail}
+            parentHandleClose={handleClose}
+          />
+        </Fade>
+      </Modal>
+      <Modal
+        open={close}
+        onClose={handleClose}
+        className={classes.modal}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}>
+        <Fade in={open}>
+          <DeleteModal
+            parentHandleConfirm={DeleteConfirm}
+            parentHandleClose={DeleteClose}
+          />
         </Fade>
       </Modal>
     </div>
