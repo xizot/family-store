@@ -30,7 +30,7 @@ const adminSubCategorySlice = createSlice({
     },
     [getListSubCategory.fulfilled]: (state, action) => {
       state.loading = false;
-      state.data = action.payload.listCategories;
+      state.data = action.payload.listCategories.subCategories;
       console.log('🚀 ~ file: admin-subcategory.js ~ line 53 ~ action.payload', action.payload);
     },
   },

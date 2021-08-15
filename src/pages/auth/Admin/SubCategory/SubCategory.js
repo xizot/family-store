@@ -26,9 +26,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddComponent from './AddSubCategory';
 import { Add } from '@material-ui/icons';
-import { getListSubCategory } from '../../../../reducers/sub-category';
+import { getListCategory } from '../../../../reducers/category';
 import TableError from '../../../../components/TableError/TableError';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
+import { getListSubCategory } from '../../../../reducers/sub-category';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -153,14 +154,17 @@ const SubCateManager = (props) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const [error, setError] = useState("");
-  const [open, setOpen] = useState(false);
-  const data = useSelector((state) => state.subCategory.data);
-  const loading = useSelector((state) => state.subCategory.loading);
   const dispatch = useDispatch();
-  const [optionPrice, setOptionPrice] = useState('Price');
+  const [open, setOpen] = useState(false);
+  const data = useSelector((state) => state.category.data);
+  const sub = useSelector((state) => state.subCategory.data);
+  const loading = useSelector((state) => state.category.loading);
+ 
+  const [optionFather, setOptionFather] = useState('Category 1');
 
-  const priceChangeHandler = (event) => {
-    setOptionPrice(event.target.value);
+  const fatherChangeHandler = (event) => {
+    setOptionFather(event.target.value);
+    dispatch(getListSubCategory(event.target.value));
   };
   const handleOpen = () => {
     setOpen(true);
@@ -173,7 +177,7 @@ const SubCateManager = (props) => {
   const getListSubCategoryHandler = useCallback(
     async () => {
       try {
-        await dispatch(getListSubCategory()).unwrap();
+        await dispatch(getListCategory()).unwrap();
       } catch (err) {
         setError(err);
       }
@@ -206,19 +210,15 @@ const SubCateManager = (props) => {
             </Typography>
             <NativeSelect
               className={classes.select}
-              value={optionPrice}
-              onChange={priceChangeHandler}
+              value={optionFather}
+              onChange={fatherChangeHandler}
               name="price"
               input={<BootstrapInput />}>
-              <option style={{ color: '#F39148' }} value="">
-                Vegetables
-              </option>
-              <option style={{ color: '#F39148' }} value={10}>
-                Milk, Drink
-              </option>
-              <option style={{ color: '#F39148' }} value={20}>
-                Rice, Bread
-              </option>
+              {data.map((row) => (
+                <option style={{ color: '#F39148' }} value={row.cateId}>
+                    {row.cateName}
+                 </option>
+              ))}            
             </NativeSelect>
           </div>
           <div className={classes.addButton}>
@@ -242,20 +242,18 @@ const SubCateManager = (props) => {
                   <TableRow className={classes.tableHead}>
                     <TableCell>Index</TableCell>
                     <TableCell>Sub Category Name</TableCell>
-                    <TableCell>Father Category</TableCell>
                     <TableCell>Last Modified</TableCell>
                     <TableCell align="center">Options</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                {data?.length > 0 &&
-                  data.map((row) => (
-                    <TableRow key={row.id}>
+                {sub?.length > 0 &&
+                  sub.map((row,index) => (
+                    <TableRow key={index + 1}>
                       <TableCell component="th" scope="row">
-                        {row.cateId}
+                        {index}
                       </TableCell>
                       <TableCell>{row.cateName}</TableCell>
-                      <TableCell>Thực phẩm</TableCell>
                       <TableCell>01-02-2021</TableCell>
                       <TableCell align="center">
                         <Button

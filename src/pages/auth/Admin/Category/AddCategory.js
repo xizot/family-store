@@ -128,8 +128,6 @@ const AddSubCate = (props) => {
                             className={classes.autoComplete}
                             multiple
                             id="tags-standard"
-                            
-                            freeSolo
                             options={top100Films.map((option) => option.title)}
                             defaultValue={[top100Films[2].title]}
                             freeSolo

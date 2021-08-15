@@ -6,9 +6,8 @@ import axios from '../axios/index';
  * @param {string} data.cateName
  */
 
-const getListSubCategory = () => {
-    let query = '/api/categories/list-child';
-    return axios.get(query);
+const getListSubCategory = (cateFather) => {
+    return axios.post('/api/categories/list-child',{cateFather});
 };
 const adminSubCategoryApi = {
     getListSubCategory

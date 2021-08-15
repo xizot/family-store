@@ -112,6 +112,7 @@ const AddSubCate = (props) => {
     subCateNameReset();
   }
 
+  
   const fatherCateChangeHandler = (event) => {
     setOptionFatherCate(event.target.value);
   };
