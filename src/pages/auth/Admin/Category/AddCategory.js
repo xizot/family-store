@@ -1,6 +1,5 @@
-import { makeStyles, TextField, Typography, Button, FormControl, Chip } from '@material-ui/core';
-import { useEffect, useState} from 'react';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { makeStyles, TextField, Typography, Button, FormControl } from '@material-ui/core';
+import { useEffect, useState } from 'react';
 import { useInput } from '../../../../hooks/use-input';
 import * as Validate from '../../../../helpers/validate';
 import { FormHelperText } from '@material-ui/core';
@@ -61,14 +60,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
 }));
-const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-];
-const AddSubCate = (props) => {
+
+const AddSubCate = ({ action, detail, parentHandleClose }) => {
   const dispatch = useDispatch();
 
   const classes = useStyles();
@@ -123,23 +116,6 @@ const AddSubCate = (props) => {
               onBlur={cateNameBlurHandler}
               onChange={cateNameChangeHandler}
             />
-            <Autocomplete
-              className={classes.autoComplete}
-              multiple
-              id="tags-standard"
-              freeSolo
-              options={top100Films.map((option) => option.title)}
-              defaultValue={[top100Films[2].title]}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                ))
-              }
-              renderInput={(params) => (
-                <TextField {...params} variant="filled" label="Sub Categories" placeholder="Fish" />
-              )}
-            />
-
             <Button
               className={classes.save}
               variant="contained"

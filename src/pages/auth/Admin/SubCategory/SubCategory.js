@@ -193,6 +193,8 @@ const SubCateManager = (props) => {
   }
   const subCateDeleteConfirm = () => {
       dispatch(deleteCategory(detail.cateId));
+      setClose(false);
+      dispatch(getListSubCategory(optionFather));
       toast.success('Xóa thành công');
   }
 
@@ -219,7 +221,7 @@ const SubCateManager = (props) => {
   useEffect(() => {
     document.title = 'Sub Category Admin';
     dispatch(getListSubCategory(optionFather));
-  }, [t, optionFather, dispatch]);
+  }, [t, optionFather, dispatch,data]);
 
   return (
     <div className={classes.root}>

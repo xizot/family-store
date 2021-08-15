@@ -28,6 +28,28 @@ export const getListCategory = createAsyncThunk(
   }
 );
 
+export const deleteCategory = createAsyncThunk(
+  'subcategory/Delete',
+  async (id, { rejectWithValue }) => {
+    try {
+      return (await adminCategoryApi.deleteCategory(id)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
+
+export const updateSubCategory = createAsyncThunk(
+  'subcategory/Update',
+  async ({ cateId, cateName }, { rejectWithValue }) => {
+    try {
+      return (await adminCategoryApi.updateSubCategory( cateId, cateName)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
+
 const adminCategorySlice = createSlice({
   name: 'category',
   initialState,

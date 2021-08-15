@@ -9,9 +9,7 @@ import {
   InputBase,
   withStyles
 } from '@material-ui/core';
-import { useState } from 'react';
-import { useInput } from '../../../../hooks/use-input'
-import * as Validate from '../../../../helpers/validate';
+import { useEffect, useState } from 'react';
 import { FormHelperText } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -94,22 +92,23 @@ const BootstrapInput = withStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {},
   },
 }))(InputBase);
-const AddSubCate = ({ cateFather, cate, action, parentHandleClose,father }) => {
+const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [error, setError] = useState('');
+  const [subCateName, setSubCateName] = useState(cate?.cateName || '')
+  const [cateIdFather, setCateIdFather] = useState(cateFather);
 
-  const {
-    enteredInput: subCateName,
-    hasError: subCateNameHasError,
-    inputBlurHandler: subCateNameBlurHandler,
-    inputChangeHandler: subCateNameChangeHandler,
-    inputIsValid: subCateNameIsValid,
-    inputReset: subCateNameReset,
-  } = useInput(Validate.isNotEmpty);
-
-  const fatherCateChangeHandler = () => {
-
+  useEffect (() => {
+    if (action === "insert") {
+      setSubCateName("")
+    }
+  }, [action])
+  const subCateNameChangeHandler = (e) => {
+    setSubCateName(e.target.value);
+  }
+  const fatherCateChangeHandler = (event) => {
+    setCateIdFather(event.target.value);
   }
 
   const addCategoryHandler = () => {
@@ -117,21 +116,20 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose,father }) => {
       dispatch(
         addSubCategory({
           cateName: subCateName,
-          cateFather: cateFather
+          cateFather: cateIdFather
         })
       ).unwrap();
-      if (!subCateNameIsValid) return;
+
       toast.success('Thêm thành công');
       setError('');
-      subCateNameReset();
+
     }
     if (action === "update") {
       dispatch(
         updateSubCategory({
-          cateFather: cateFather,
+          cateFather: cateIdFather,
           cateId: cate.cateId,
           cateName: subCateName
-
         })
       ).unwrap();
       toast.success('Sửa thành công');
@@ -143,14 +141,11 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose,father }) => {
     <>
       <div className={classes.paper}>
         <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
-          ADD SUB CATEGORY
+          MODAL SUB CATEGORY
         </Typography>
-        {console.log(cate)}
         <FormControl className={classes.form}>
-          <TextField placeholder="Name" fullWidth variant="outlined"
-            value={cate.name || subCateName}
-            helperText={subCateNameHasError && 'Name invalid'}
-            onBlur={subCateNameBlurHandler}
+          <TextField fullWidth variant="outlined"
+            value={subCateName}
             onChange={subCateNameChangeHandler} />
           <Grid container spacing={2} className={classes.native}>
             <Grid item xs={12} sm={6}>
@@ -160,15 +155,15 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose,father }) => {
             <Grid item xs={12} sm={6}>
               <NativeSelect
                 className={classes.select}
-                value={father}
+                value={cateIdFather}
                 onChange={fatherCateChangeHandler}
                 name="price"
                 input={<BootstrapInput />}>
                 {father.map((row) => (
-                <option style={{ color: '#F39148' }} value={row.cateId}>
-                  {row.cateName}
-                </option>
-              ))}
+                  <option style={{ color: '#F39148' }} value={row.cateId}>
+                    {row.cateName}
+                  </option>
+                ))}
               </NativeSelect>
             </Grid>
           </Grid>

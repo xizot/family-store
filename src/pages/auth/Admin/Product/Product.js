@@ -8,9 +8,9 @@ import {
   TableRow,
   Paper,
   Typography,
-  NativeSelect,
-  InputBase,
-  withStyles,
+  // NativeSelect,
+  // InputBase,
+  // withStyles,
   Button,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -123,32 +123,32 @@ const useStyles = makeStyles((theme) => ({
     color: 'red',
   },
 }));
-const BootstrapInput = withStyles((theme) => ({
-  root: {
-    'label + &': {
-      marginTop: theme.spacing(2),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: 'relative',
-    border: '1px solid #ced4da',
-    fontSize: 14,
-    color: '#FFF',
-    height: 17,
-    width: 75,
-    padding: '10px 26px 7px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    fontFamily: ['Arial'].join(','),
-    '&:focus': {
-      borderRadius: 4,
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
-    [theme.breakpoints.down('sm')]: {},
-    [theme.breakpoints.down('xs')]: {},
-  },
-}))(InputBase);
+// const BootstrapInput = withStyles((theme) => ({
+//   root: {
+//     'label + &': {
+//       marginTop: theme.spacing(2),
+//     },
+//   },
+//   input: {
+//     borderRadius: 4,
+//     position: 'relative',
+//     border: '1px solid #ced4da',
+//     fontSize: 14,
+//     color: '#FFF',
+//     height: 17,
+//     width: 75,
+//     padding: '10px 26px 7px 12px',
+//     transition: theme.transitions.create(['border-color', 'box-shadow']),
+//     fontFamily: ['Arial'].join(','),
+//     '&:focus': {
+//       borderRadius: 4,
+//       borderColor: '#80bdff',
+//       boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+//     },
+//     [theme.breakpoints.down('sm')]: {},
+//     [theme.breakpoints.down('xs')]: {},
+//   },
+// }))(InputBase);
 const rows = [
   {
     id: 1,
