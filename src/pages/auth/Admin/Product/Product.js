@@ -240,11 +240,7 @@ const ProductManager = (props) => {
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const dispatch = useDispatch();
-  const [optionPrice, setOptionPrice] = useState('Price');
-  const [optionType, setOptionType] = useState('Ascending');
-  const priceChangeHandler = (event) => {
-    setOptionPrice(event.target.value);
-  };
+  
 
   const openAddModalHandler = () => {
     setOpenAddModal(true);
@@ -260,10 +256,7 @@ const ProductManager = (props) => {
     setOpenUpdateModal(false);
     setOpenAddModal(false);
   };
-  const typeChangeHandler = (event) => {
-    setOptionType(event.target.value);
-  };
-
+  
   const getListProductByPageHandler = useCallback(
     async (page = 0) => {
       try {
