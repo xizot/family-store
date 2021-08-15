@@ -1,5 +1,7 @@
 import { createTheme, ThemeProvider } from '@material-ui/core';
 import { lazy, Suspense, useEffect } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { ProtectedRoute } from './components/Common/ProtectedRoute';
@@ -12,6 +14,7 @@ import Cart from './components/Cart/Cart';
 import { AdminTemplate } from './components/Templates/Admin/AdminTemplate';
 import { CheckRole } from './components/Common/CheckRole';
 const PageNotFound = lazy(() => import('./pages/404NotFound'));
+
 
 const theme = createTheme({
   palette: {
@@ -46,11 +49,16 @@ function App() {
           accessToken,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   }, [dispatch]);
 
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer
+        autoClose={5000}
+        closeOnClick
+        position="top-right"
+      />
       {isOpenCart && <Cart />}
       <Suspense fallback={<Loading />}>
         <Switch>

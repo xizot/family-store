@@ -7,10 +7,18 @@ import axios from '../axios/index';
  */
 
 const getListSubCategory = (cateFather) => {
-    return axios.post('/api/categories/list-child',{cateFather});
+    return axios.post('/api/categories/list-child', { cateFather });
 };
+const deleteCategory = (cateId) => {
+    return axios.post('api/categories/delete', { cateId })
+}
+const addSubCategory = (cateName,cateFather) => {
+    return axios.post('/api/categories/add-child', {cateName,cateFather});
+  };
 const adminSubCategoryApi = {
-    getListSubCategory
+    getListSubCategory,
+    deleteCategory,
+    addSubCategory
 };
 
 export default adminSubCategoryApi;

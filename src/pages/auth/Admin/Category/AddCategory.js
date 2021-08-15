@@ -1,10 +1,10 @@
 import { makeStyles, TextField, Typography, Button, FormControl, Chip } from '@material-ui/core';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState} from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useInput } from '../../../../hooks/use-input';
 import * as Validate from '../../../../helpers/validate';
 import { FormHelperText } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addCategory } from '../../../../reducers/category';
 import { getListSubCategory } from '../../../../reducers/sub-category';
 const useStyles = makeStyles((theme) => ({
@@ -69,9 +69,8 @@ const top100Films = [
   { title: '12 Angry Men', year: 1957 },
 ];
 const AddSubCate = (props) => {
-  const inputRef = useRef();
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.subCategory.data);
+
   const classes = useStyles();
   const [error, setError] = useState('');
 
@@ -95,8 +94,7 @@ const AddSubCate = (props) => {
     try {
       await dispatch(
         addCategory({
-          cateId: inputRef.current.value,
-          cateName: inputRef.current.value,
+          cateName: cateName,
         })
       ).unwrap();
     } catch (error) {
@@ -111,7 +109,6 @@ const AddSubCate = (props) => {
   return (
     <>
       <div className={classes.paper}>
-        {console.log(data)}
         <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
           CATEGORY
         </Typography>

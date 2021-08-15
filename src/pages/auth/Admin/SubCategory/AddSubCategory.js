@@ -1,19 +1,16 @@
 import {
   makeStyles,
-  withStyles,
   TextField,
   Typography,
   Button,
-  NativeSelect,
-  InputBase,
   FormControl,
-  Grid,
 } from '@material-ui/core';
-import { useEffect, useState } from 'react';
-import SearchInput from './../../../../components/UI/SearchInput';
+import { useState } from 'react';
 import { useInput } from '../../../../hooks/use-input'
 import * as Validate from '../../../../helpers/validate';
 import { FormHelperText } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { addSubCategory } from '../../../../reducers/sub-category';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -66,35 +63,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#F39148',
   },
 }));
-const BootstrapInput = withStyles((theme) => ({
-  root: {
-    'label + &': {
-      marginTop: theme.spacing(2),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: 'relative',
-    border: '1px solid #ced4da',
-    fontSize: 14,
-    color: '#FFF',
-    height: 17,
-    width: 75,
-    padding: '10px 26px 7px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    fontFamily: ['Arial'].join(','),
-    '&:focus': {
-      borderRadius: 4,
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
-    [theme.breakpoints.down('sm')]: {},
-    [theme.breakpoints.down('xs')]: {},
-  },
-}))(InputBase);
-const AddSubCate = (props) => {
+
+const AddSubCate = ({ cateFather }) => {
   const classes = useStyles();
-  const [optionFatherCate, setOptionFatherCate] = useState('Milk');
+  const dispatch = useDispatch();
   const [error, setError] = useState('');
   const {
     enteredInput: subCateName,
@@ -105,19 +77,18 @@ const AddSubCate = (props) => {
     inputReset: subCateNameReset,
   } = useInput(Validate.isNotEmpty);
 
-  const formSubmitHandler = async (event) => {
-    event.preventDefault();
+  const addCategoryHandler = () => {
+    dispatch(
+      addSubCategory({
+        cateName: subCateName,
+        cateFather: cateFather
+      })
+    ).unwrap();
     if (!subCateNameIsValid) return;
     setError('');
     subCateNameReset();
-  }
 
-  
-  const fatherCateChangeHandler = (event) => {
-    setOptionFatherCate(event.target.value);
   };
-
-  useEffect(() => { }, []);
 
   return (
     <>
@@ -125,50 +96,23 @@ const AddSubCate = (props) => {
         <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
           ADD SUB CATEGORY
         </Typography>
-        <form noValidate autoComplete="off" onSubmit={formSubmitHandler}>
-          <FormControl className={classes.form}>
-            <TextField placeholder="Name" fullWidth variant="outlined"
-              value={subCateName}
-              helperText={subCateNameHasError && 'Name invalid'}
-              onBlur={subCateNameBlurHandler}
-              onChange={subCateNameChangeHandler} />
-            <Grid container spacing={2} className={classes.native}>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle2" className={classes.label} />
-                Father Category Name
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <NativeSelect
-                  className={classes.select}
-                  value={optionFatherCate}
-                  onChange={fatherCateChangeHandler}
-                  name="price"
-                  input={<BootstrapInput />}>
-                  <option style={{ color: '#F39148' }} value="">
-                    Vegetables
-                  </option>
-                  <option style={{ color: '#F39148' }} value={10}>
-                    Milk, Drink
-                  </option>
-                  <option style={{ color: '#F39148' }} value={20}>
-                    Rice, Bread
-                  </option>
-                </NativeSelect>
-              </Grid>
-            </Grid>
-            <div className={classes.search}>
-              <SearchInput />
-            </div>
-            <Button className={classes.save} variant="contained" fullWidth component="label">
-              Save
-            </Button>
-          </FormControl>
-          {error?.length > 0 && (
-            <FormHelperText error style={{ marginBottom: 10 }}>
-              {error}
-            </FormHelperText>
-          )}
-        </form>
+
+        <FormControl className={classes.form}>
+          <TextField placeholder="Name" fullWidth variant="outlined"
+            value={subCateName}
+            helperText={subCateNameHasError && 'Name invalid'}
+            onBlur={subCateNameBlurHandler}
+            onChange={subCateNameChangeHandler} />
+          <Button className={classes.save} variant="contained" fullWidth component="label" onClick={addCategoryHandler}>
+            Save
+          </Button>
+        </FormControl>
+        {error?.length > 0 && (
+          <FormHelperText error style={{ marginBottom: 10 }}>
+            {error}
+          </FormHelperText>
+        )}
+
       </div>
     </>
   );

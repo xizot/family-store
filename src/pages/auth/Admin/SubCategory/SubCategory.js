@@ -28,8 +28,9 @@ import AddComponent from './AddSubCategory';
 import { Add } from '@material-ui/icons';
 import { getListCategory } from '../../../../reducers/category';
 import TableError from '../../../../components/TableError/TableError';
+import { toast } from 'react-toastify';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
-import { getListSubCategory } from '../../../../reducers/sub-category';
+import { getListSubCategory, deleteCategory } from '../../../../reducers/sub-category';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -159,8 +160,8 @@ const SubCateManager = (props) => {
   const data = useSelector((state) => state.category.data);
   const sub = useSelector((state) => state.subCategory.data);
   const loading = useSelector((state) => state.category.loading);
- 
-  const [optionFather, setOptionFather] = useState('Category 1');
+
+  const [optionFather, setOptionFather] = useState(1);
 
   const fatherChangeHandler = (event) => {
     setOptionFather(event.target.value);
@@ -174,6 +175,11 @@ const SubCateManager = (props) => {
     setOpen(false);
   };
 
+  const subCateDeleteHandler = (id) => {
+    dispatch(deleteCategory(id));
+    toast.success('Xóa thành công');
+
+  }
   const getListSubCategoryHandler = useCallback(
     async () => {
       try {
@@ -188,11 +194,12 @@ const SubCateManager = (props) => {
   useEffect(() => {
     dispatch(uiActions.hideModal());
     getListSubCategoryHandler();
-  }, [dispatch,getListSubCategoryHandler]);
+  }, [dispatch, getListSubCategoryHandler]);
 
   useEffect(() => {
     document.title = 'Sub Category Admin';
-  }, [t]);
+    dispatch(getListSubCategory(1));
+  }, [t, optionFather, dispatch]);
 
   return (
     <div className={classes.root}>
@@ -216,9 +223,9 @@ const SubCateManager = (props) => {
               input={<BootstrapInput />}>
               {data.map((row) => (
                 <option style={{ color: '#F39148' }} value={row.cateId}>
-                    {row.cateName}
-                 </option>
-              ))}            
+                  {row.cateName}
+                </option>
+              ))}
             </NativeSelect>
           </div>
           <div className={classes.addButton}>
@@ -247,24 +254,24 @@ const SubCateManager = (props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                {sub?.length > 0 &&
-                  sub.map((row,index) => (
-                    <TableRow key={index + 1}>
-                      <TableCell component="th" scope="row">
-                        {index}
-                      </TableCell>
-                      <TableCell>{row.cateName}</TableCell>
-                      <TableCell>01-02-2021</TableCell>
-                      <TableCell align="center">
-                        <Button
-                          size="small"
-                          startIcon={<EditIcon />}
-                          style={{ padding: '0' }}
-                          onClick={handleOpen}></Button>
-                        <Button size="small" startIcon={<DeleteIcon />} style={{ padding: '0' }}></Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {sub?.length > 0 &&
+                    sub.map((row, index) => (
+                      <TableRow key={index + 1}>
+                        <TableCell component="th" scope="row">
+                          {index}
+                        </TableCell>
+                        <TableCell>{row.cateName}</TableCell>
+                        <TableCell>01-02-2021</TableCell>
+                        <TableCell align="center">
+                          <Button
+                            size="small"
+                            startIcon={<EditIcon />}
+                            style={{ padding: '0' }}
+                            onClick={handleOpen}></Button>
+                          <Button size="small" startIcon={<DeleteIcon />} style={{ padding: '0' }} onClick={() => subCateDeleteHandler(row.cateId)}></Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -288,7 +295,9 @@ const SubCateManager = (props) => {
           timeout: 500,
         }}>
         <Fade in={open}>
-          <AddComponent />
+          <AddComponent 
+            cateFather={optionFather}
+          />
         </Fade>
       </Modal>
     </div>
