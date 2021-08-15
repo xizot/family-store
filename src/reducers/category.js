@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import adminCategoryApi from '../apis/admin-category';
+import { getResponseError } from '../helpers';
 
 const initialState = {
   data: [],
@@ -12,7 +13,7 @@ export const addCategory = createAsyncThunk(
     try {
       return (await adminCategoryApi.addCategory({ cateId, cateName })).data;
     } catch (error) {
-      return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
+      return rejectWithValue(getResponseError(error));
     }
   }
 );
@@ -22,7 +23,7 @@ export const getListCategory = createAsyncThunk(
     try {
       return (await adminCategoryApi.getListCategory(page)).data;
     } catch (error) {
-      return rejectWithValue(error.response.data?.errorMessage || 'Something went wrong!');
+      return rejectWithValue(getResponseError(error));
     }
   }
 );
