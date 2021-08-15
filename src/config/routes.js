@@ -17,7 +17,6 @@ const ReviewsPage = lazy(() => import('../pages/auth/ReviewsPage'));
 const AdminProductPage = lazy(() => import('../pages/auth/Admin/Product/Product'));
 const AdminSubCatePage = lazy(() => import('../pages/auth/Admin/SubCategory/SubCategory'));
 const AdminCategoryPage = lazy(() => import('../pages/auth/Admin/Category/Category'));
-const AddProduct = lazy(() => import('../pages/auth/Admin/AddProduct/AddProduct'));
 const Dashboard = lazy(() => import('../pages/auth/Admin/Dash.js'));
 
 export const routes = [
@@ -134,13 +133,6 @@ export const adminRoutes = [
     protected: false,
     exact: true,
     component: AdminProductPage,
-    roles: [Role.Admin],
-  },
-  {
-    path: '/admin/add-product',
-    protected: false,
-    exact: true,
-    component: AddProduct,
     roles: [Role.Admin],
   },
   {

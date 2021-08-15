@@ -12,9 +12,6 @@ import {
   InputBase,
   withStyles,
   Button,
-  Fade,
-  Backdrop,
-  Modal,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Pagination from '@material-ui/lab/Pagination';
@@ -26,7 +23,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Add } from '@material-ui/icons';
 import { getListProductByPage } from '../../../../reducers/product';
-import { Link } from 'react-router-dom';
+import AddProduct from './AddProduct';
+import UpdateProduct from './UpdateProduct';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -238,7 +236,8 @@ const rows = [
 const ProductManager = (props) => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const dispatch = useDispatch();
   const [optionPrice, setOptionPrice] = useState('Price');
@@ -246,12 +245,20 @@ const ProductManager = (props) => {
   const priceChangeHandler = (event) => {
     setOptionPrice(event.target.value);
   };
-  const handleOpen = () => {
-    setOpen(true);
+
+  const openAddModalHandler = () => {
+    setOpenAddModal(true);
+    setOpenUpdateModal(false);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const openUpdateModalHandler = () => {
+    setOpenUpdateModal(true);
+    setOpenAddModal(false);
+  };
+
+  const closeModalHandler = () => {
+    setOpenUpdateModal(false);
+    setOpenAddModal(false);
   };
   const typeChangeHandler = (event) => {
     setOptionType(event.target.value);
@@ -287,6 +294,9 @@ const ProductManager = (props) => {
   return (
     <>
       <div className={classes.root}>
+        <AddProduct isOpen={openAddModal} onClose={closeModalHandler} />
+        <UpdateProduct isOpen={openUpdateModal} onClose={closeModalHandler} />
+
         <div className={classes.section}>
           <Typography variant="h5" className={classes.title}>
             PRODUCT MANAGER
@@ -295,7 +305,7 @@ const ProductManager = (props) => {
             <div className={classes.search}>
               <SearchInput />
             </div>
-            <div className={classes.filterItem}>
+            {/* <div className={classes.filterItem}>
               <Typography variant="subtitle2" className={classes.label}>
                 CATEGORY
               </Typography>
@@ -336,13 +346,16 @@ const ProductManager = (props) => {
                   Fish
                 </option>
               </NativeSelect>
-            </div>
+            </div> */}
             <div className={classes.addButton}>
-              <Link to="/admin/add-product" style={{ textDecoration: 'none' }}>
-                <Button startIcon={<Add />} variant="contained" color="primary">
-                  Add
-                </Button>
-              </Link>
+              <Button
+                startIcon={<Add />}
+                variant="contained"
+                color="primary"
+                className={classes.addButton}
+                onClick={openAddModalHandler}>
+                Add
+              </Button>
             </div>
           </div>
         </div>
@@ -372,16 +385,13 @@ const ProductManager = (props) => {
                   <TableCell>{row.price}</TableCell>
                   <TableCell>{row.description}</TableCell>
                   <TableCell>{row.lastModi}</TableCell>
-                  <TableCell align="center">
-                    <Button
-                      size="small"
-                      startIcon={<EditIcon />}
-                      style={{ padding: '0' }}
-                      onClick={handleOpen}></Button>
-                    <Button
-                      size="small"
-                      startIcon={<DeleteIcon />}
-                      style={{ padding: '0' }}></Button>
+                  <TableCell align="center" style={{ minWidth: 150 }}>
+                    <EditIcon
+                      onClick={openUpdateModalHandler}
+                      fontSize="small"
+                      style={{ marginRight: 5, cursor: 'pointer' }}
+                    />
+                    <DeleteIcon fontSize="small" style={{ cursor: 'pointer' }} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -392,19 +402,6 @@ const ProductManager = (props) => {
           <Pagination count={rows.length} color="primary" variant="outlined" shape="rounded" />
         </div>
       </div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        className={classes.modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}>
-        <Fade in={open}></Fade>
-      </Modal>
     </>
   );
 };
