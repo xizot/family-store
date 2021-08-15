@@ -18,14 +18,15 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Pagination from '@material-ui/lab/Pagination';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
 import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import AddComponent from './AddProduct';
 import { Add } from '@material-ui/icons';
+import { getListProductByPage } from '../../../../reducers/product';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -157,7 +158,7 @@ const rows = [
     subCate: 'Thực phẩm',
     quantity: '200',
     price: '31800',
-    description:'Mì trứng cao cấp Meizan gói 500g',
+    description: 'Mì trứng cao cấp Meizan gói 500g',
     lastModi: '01-02-2010',
   },
   {
@@ -166,7 +167,7 @@ const rows = [
     subCate: 'Đồ tiện dụng',
     quantity: '2002',
     price: '318000 ',
-    description:'Bột giặc Detech 400g Mỹ',
+    description: 'Bột giặc Detech 400g Mỹ',
     lastModi: '01-01-2021',
   },
   {
@@ -175,7 +176,7 @@ const rows = [
     subCate: 'Rau củ',
     quantity: '400',
     price: '10000',
-    description:'Hành lá 1kg Thượng Hải',
+    description: 'Hành lá 1kg Thượng Hải',
     lastModi: '01-01-2021',
   },
   {
@@ -184,7 +185,7 @@ const rows = [
     subCate: 'Rau củ',
     quantity: '1000',
     price: '21000',
-    description:'Hành Tây Long An 500g',
+    description: 'Hành Tây Long An 500g',
     lastModi: '01-01-2021',
   },
   {
@@ -193,7 +194,7 @@ const rows = [
     subCate: 'Đồ tiện dụng',
     quantity: '2000',
     price: '3180000',
-    description:'Bột giặc Oma 500g',
+    description: 'Bột giặc Oma 500g',
     lastModi: '22-01-2021',
   },
   {
@@ -202,7 +203,7 @@ const rows = [
     subCate: 'Lương thực',
     quantity: '400',
     price: '28000',
-    description:'Bánh mì bơ Tewan',
+    description: 'Bánh mì bơ Tewan',
     lastModi: '11-12-2021',
   },
   {
@@ -211,7 +212,7 @@ const rows = [
     subCate: 'Rau củ',
     quantity: '4000',
     price: '48000',
-    description:'Rau cần Đà Lạt',
+    description: 'Rau cần Đà Lạt',
     lastModi: '25-08-2021',
   },
   {
@@ -220,7 +221,7 @@ const rows = [
     subCate: 'Sữa, nước ngọt',
     quantity: '1000',
     price: '58000',
-    description:'Sữa thùng Vina milk socola',
+    description: 'Sữa thùng Vina milk socola',
     lastModi: '12-01-2021',
   },
   {
@@ -229,7 +230,7 @@ const rows = [
     subCate: 'Lương thực',
     quantity: '2000',
     price: '8000',
-    description:'Bánh tầm Long An',
+    description: 'Bánh tầm Long An',
     lastModi: '22-02-2021',
   },
 ];
@@ -256,9 +257,24 @@ const ProductManager = (props) => {
     setOptionType(event.target.value);
   };
 
+  const getListProductByPageHandler = useCallback(
+    async (page = 0) => {
+      try {
+        await dispatch(getListProductByPage(page)).unwrap();
+      } catch (err) {
+        console.log('🚀 ~ file: Product.js ~ line 265 ~ getListProductByPageHandler ~ err', err);
+        // alert(err);
+        // setError(err);
+      }
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     dispatch(uiActions.hideModal());
-  }, [dispatch]);
+
+    getListProductByPageHandler();
+  }, [dispatch, getListProductByPageHandler]);
 
   useEffect(() => {
     document.title = 'Product Admin';
@@ -322,9 +338,11 @@ const ProductManager = (props) => {
               </NativeSelect>
             </div>
             <div className={classes.addButton}>
-              <Button variant="contained" color="primary" onClick={handleOpen} startIcon={<Add />}>
-                Add
-              </Button>
+              <Link to="/admin/add-product" style={{ textDecoration: 'none' }}>
+                <Button startIcon={<Add />} variant="contained" color="primary">
+                  Add
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -385,9 +403,7 @@ const ProductManager = (props) => {
         BackdropProps={{
           timeout: 500,
         }}>
-        <Fade in={open}>
-          <AddComponent />
-        </Fade>
+        <Fade in={open}></Fade>
       </Modal>
     </>
   );

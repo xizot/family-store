@@ -28,6 +28,10 @@ const options = [
         title: 'Product List',
         link: '/admin/products',
       },
+      {
+        title: 'Add Product',
+        link: '/admin/add-product',
+      },
     ],
   },
   {
