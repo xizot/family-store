@@ -1,11 +1,22 @@
 import ProductModal from './ProductModal';
-import { Box, Button, IconButton, makeStyles, TextField, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  ListSubheader,
+  makeStyles,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
-    marginTop: '20vh',
+    marginTop: '10vh',
   },
   content: {
     background: '#fff',
@@ -35,9 +46,14 @@ const useStyles = makeStyles((theme) => ({
   iconAdd: {
     marginBottom: theme.spacing(1),
     background: '#f1f4fb',
+    width: 20,
+    height: 20,
+    '& >label': {
+      display: 'flex',
+    },
   },
   textField: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
 
     '& > p': {
       width: 300,
@@ -56,9 +72,12 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
     },
   },
+  menuPaper: {
+    maxHeight: 300,
+  },
 }));
 
-const UpdateProduct = ({ item, isOpen, onClose }) => {
+const UpdateProduct = ({ isOpen, onClose }) => {
   const classes = useStyles();
 
   return (
@@ -67,7 +86,7 @@ const UpdateProduct = ({ item, isOpen, onClose }) => {
         <Box borderRadius={6} className={classes.content}>
           <Box marginBottom={4} marginTop={2}>
             <Typography variant="h5" className={classes.title}>
-              UPDATE PRODUCTS
+              ADD PRODUCTS
             </Typography>
             <Typography variant="caption" className={classes.subTitle}>
               Family Admin Panel
@@ -90,16 +109,24 @@ const UpdateProduct = ({ item, isOpen, onClose }) => {
                   </label>
                 </IconButton>
                 <IconButton color="primary" className={classes.iconAdd}>
-                  <Add />
+                  <label htmlFor="img2">
+                    <Add />
+                  </label>
                 </IconButton>
                 <IconButton color="primary" className={classes.iconAdd}>
-                  <Add />
+                  <label htmlFor="img3">
+                    <Add />
+                  </label>
                 </IconButton>
                 <IconButton color="primary" className={classes.iconAdd}>
-                  <Add />
+                  <label htmlFor="img4">
+                    <Add />
+                  </label>
                 </IconButton>
                 <IconButton color="primary" className={classes.iconAdd}>
-                  <Add />
+                  <label htmlFor="img5">
+                    <Add />
+                  </label>
                 </IconButton>
               </div>
             </Box>
@@ -109,6 +136,25 @@ const UpdateProduct = ({ item, isOpen, onClose }) => {
                   Title
                 </Typography>
                 <TextField variant="outlined" size="small" fullWidth />
+              </div>
+
+              <div className={classes.textField}>
+                <Typography variant="body1" component="p">
+                  Category
+                </Typography>
+                <FormControl variant="outlined" size="small" fullWidth>
+                  <Select defaultValue="" MenuProps={{ classes: { paper: classes.menuPaper } }}>
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <ListSubheader>Category 1</ListSubheader>
+                    <MenuItem value={1}>Option 1</MenuItem>
+                    <MenuItem value={2}>Option 2</MenuItem>
+                    <ListSubheader>Category 2</ListSubheader>
+                    <MenuItem value={3}>Option 3</MenuItem>
+                    <MenuItem value={4}>Option 4</MenuItem>
+                  </Select>
+                </FormControl>
               </div>
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">

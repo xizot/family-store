@@ -8,15 +8,12 @@ import {
   TableRow,
   Paper,
   Typography,
-  NativeSelect,
-  InputBase,
-  withStyles,
   Button,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Pagination from '@material-ui/lab/Pagination';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
 import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -25,6 +22,8 @@ import { Add } from '@material-ui/icons';
 import { getListProductByPage } from '../../../../reducers/product';
 import AddProduct from './AddProduct';
 import UpdateProduct from './UpdateProduct';
+import TableError from '../../../../components/TableError/TableError';
+import TableLoading from '../../../../components/TableLoading/TableLoading';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -123,128 +122,19 @@ const useStyles = makeStyles((theme) => ({
     color: 'red',
   },
 }));
-const BootstrapInput = withStyles((theme) => ({
-  root: {
-    'label + &': {
-      marginTop: theme.spacing(2),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: 'relative',
-    border: '1px solid #ced4da',
-    fontSize: 14,
-    color: '#FFF',
-    height: 17,
-    width: 75,
-    padding: '10px 26px 7px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    fontFamily: ['Arial'].join(','),
-    '&:focus': {
-      borderRadius: 4,
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
-    [theme.breakpoints.down('sm')]: {},
-    [theme.breakpoints.down('xs')]: {},
-  },
-}))(InputBase);
-const rows = [
-  {
-    id: 1,
-    name: 'Mì trứng',
-    subCate: 'Thực phẩm',
-    quantity: '200',
-    price: '31800',
-    description: 'Mì trứng cao cấp Meizan gói 500g',
-    lastModi: '01-02-2010',
-  },
-  {
-    id: 2,
-    name: 'Bột giặt Detech',
-    subCate: 'Đồ tiện dụng',
-    quantity: '2002',
-    price: '318000 ',
-    description: 'Bột giặc Detech 400g Mỹ',
-    lastModi: '01-01-2021',
-  },
-  {
-    id: 3,
-    name: 'Hành lá ',
-    subCate: 'Rau củ',
-    quantity: '400',
-    price: '10000',
-    description: 'Hành lá 1kg Thượng Hải',
-    lastModi: '01-01-2021',
-  },
-  {
-    id: 4,
-    name: 'Hành Tây',
-    subCate: 'Rau củ',
-    quantity: '1000',
-    price: '21000',
-    description: 'Hành Tây Long An 500g',
-    lastModi: '01-01-2021',
-  },
-  {
-    id: 5,
-    name: 'Bột xã Omo',
-    subCate: 'Đồ tiện dụng',
-    quantity: '2000',
-    price: '3180000',
-    description: 'Bột giặc Oma 500g',
-    lastModi: '22-01-2021',
-  },
-  {
-    id: 6,
-    name: 'Bánh mì Bơ ',
-    subCate: 'Lương thực',
-    quantity: '400',
-    price: '28000',
-    description: 'Bánh mì bơ Tewan',
-    lastModi: '11-12-2021',
-  },
-  {
-    id: 7,
-    name: 'Rau cần tây',
-    subCate: 'Rau củ',
-    quantity: '4000',
-    price: '48000',
-    description: 'Rau cần Đà Lạt',
-    lastModi: '25-08-2021',
-  },
-  {
-    id: 8,
-    name: 'Sữa tươi Vina milk',
-    subCate: 'Sữa, nước ngọt',
-    quantity: '1000',
-    price: '58000',
-    description: 'Sữa thùng Vina milk socola',
-    lastModi: '12-01-2021',
-  },
-  {
-    id: 9,
-    name: 'Bánh tầm 500g',
-    subCate: 'Lương thực',
-    quantity: '2000',
-    price: '8000',
-    description: 'Bánh tầm Long An',
-    lastModi: '22-02-2021',
-  },
-];
 
 const ProductManager = (props) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [productInfo, setProductInfo] = useState({});
+  const [error, setError] = useState('');
+  const loading = useSelector((state) => state.product.loading);
 
   const dispatch = useDispatch();
-  const [optionPrice, setOptionPrice] = useState('Price');
-  const [optionType, setOptionType] = useState('Ascending');
-  const priceChangeHandler = (event) => {
-    setOptionPrice(event.target.value);
-  };
+  // const [optionPrice, setOptionPrice] = useState('Price');
+  // const [optionType, setOptionType] = useState('Ascending');
 
   const openAddModalHandler = () => {
     setOpenAddModal(true);
@@ -260,18 +150,21 @@ const ProductManager = (props) => {
     setOpenUpdateModal(false);
     setOpenAddModal(false);
   };
-  const typeChangeHandler = (event) => {
-    setOptionType(event.target.value);
-  };
+  // const typeChangeHandler = (event) => {
+  //   setOptionType(event.target.value);
+  // };
+  // const priceChangeHandler = (event) => {
+  //   setOptionPrice(event.target.value);
+  // };
 
   const getListProductByPageHandler = useCallback(
-    async (page = 0) => {
+    async (page = 1) => {
       try {
-        await dispatch(getListProductByPage(page)).unwrap();
+        const response = await dispatch(getListProductByPage(page)).unwrap();
+        setProductInfo(response);
+        console.log(response);
       } catch (err) {
-        console.log('🚀 ~ file: Product.js ~ line 265 ~ getListProductByPageHandler ~ err', err);
-        // alert(err);
-        // setError(err);
+        setError(err);
       }
     },
     [dispatch]
@@ -290,7 +183,7 @@ const ProductManager = (props) => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
+  console.log(productInfo);
   return (
     <>
       <div className={classes.root}>
@@ -359,47 +252,69 @@ const ProductManager = (props) => {
             </div>
           </div>
         </div>
-        <TableContainer component={Paper} className={classes.section}>
-          <Table aria-label="a dense table">
-            <TableHead>
-              <TableRow className={classes.tableHead}>
-                <TableCell>Index</TableCell>
-                <TableCell>Product Name</TableCell>
-                <TableCell>Sub Category</TableCell>
-                <TableCell>Quantity</TableCell>
-                <TableCell>Price</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell>Last Modified</TableCell>
-                <TableCell align="center">Options</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
-                    {row.id}
-                  </TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.subCate}</TableCell>
-                  <TableCell>{row.quantity}</TableCell>
-                  <TableCell>{row.price}</TableCell>
-                  <TableCell>{row.description}</TableCell>
-                  <TableCell>{row.lastModi}</TableCell>
-                  <TableCell align="center" style={{ minWidth: 150 }}>
-                    <EditIcon
-                      onClick={openUpdateModalHandler}
-                      fontSize="small"
-                      style={{ marginRight: 5, cursor: 'pointer' }}
-                    />
-                    <DeleteIcon fontSize="small" style={{ cursor: 'pointer' }} />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <div className={`${classes.pagination} ${classes.section}`}>
-          <Pagination count={rows.length} color="primary" variant="outlined" shape="rounded" />
+
+        <div className={`${classes.tableSection} `}>
+          {loading ? (
+            <TableLoading />
+          ) : error?.length > 0 ? (
+            <TableError message={error} onTryAgain={getListProductByPageHandler} />
+          ) : productInfo?.listProduct?.length > 0 ? (
+            <>
+              <TableContainer component={Paper} className={classes.section}>
+                <Table aria-label="a dense table">
+                  <TableHead>
+                    <TableRow className={classes.tableHead}>
+                      <TableCell>Index</TableCell>
+                      <TableCell>Product Name</TableCell>
+                      <TableCell>Image</TableCell>
+                      <TableCell>Category</TableCell>
+                      <TableCell>Quantity</TableCell>
+                      <TableCell>Price</TableCell>
+                      <TableCell>Description</TableCell>
+                      <TableCell>Last Modified</TableCell>
+                      <TableCell align="center">Options</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {productInfo?.listProduct &&
+                      productInfo.listProduct.map((row, index) => (
+                        <TableRow key={index}>
+                          <TableCell component="th" scope="row">
+                            {index + 1}
+                          </TableCell>
+                          <TableCell>{row.prod_name}</TableCell>
+                          <TableCell>
+                            <img
+                              src={row.images[0]}
+                              alt={row.prod_name}
+                              style={{ width: 100, height: 80 }}
+                            />
+                          </TableCell>
+                          <TableCell>{row.prod_category_id}</TableCell>
+                          <TableCell>{row.prod_amount}</TableCell>
+                          <TableCell>{row.prod_price}</TableCell>
+                          <TableCell>{row.prod_description}</TableCell>
+                          <TableCell>{row.prod_updated_date}</TableCell>
+                          <TableCell align="center" style={{ minWidth: 150 }}>
+                            <EditIcon
+                              onClick={openUpdateModalHandler}
+                              fontSize="small"
+                              style={{ marginRight: 5, cursor: 'pointer' }}
+                            />
+                            <DeleteIcon fontSize="small" style={{ cursor: 'pointer' }} />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <div className={`${classes.pagination} ${classes.section}`}>
+                <Pagination count={10} color="primary" variant="outlined" shape="rounded" />
+              </div>
+            </>
+          ) : (
+            <TableError message="No data in database" onTryAgain={getListProductByPageHandler} />
+          )}
         </div>
       </div>
     </>

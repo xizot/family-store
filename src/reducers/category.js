@@ -51,7 +51,6 @@ const adminCategorySlice = createSlice({
     [getListCategory.fulfilled]: (state, action) => {
       state.loading = false;
       state.data = action.payload.listCategories;
-      console.log('🚀 ~ file: admin-category.js ~ line 53 ~ action.payload', action.payload);
     },
   },
 });

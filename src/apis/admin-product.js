@@ -3,7 +3,7 @@ import axios from '../axios/index';
 const getAll = () => {
   return axios.get('/api/product/list');
 };
-const getByPage = (page = 0, limit = 10) => {
+const getByPage = (page = 1, limit = 10) => {
   // return axios.post(`/api/product/list?page=${page}&limit=${limit}`);
   return axios.post('/api/product/list', { page, limit });
 };
@@ -19,7 +19,9 @@ const getByPage = (page = 0, limit = 10) => {
  */
 const addNew = (data) => {
   // {prodName, prodCategoryID, prodPrice, prodAmount,prodDescription, image}
-  return axios.post('/api/product/add', data);
+  return axios.post('/api/product/add', data, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 };
 
 const deleteById = (id) => {

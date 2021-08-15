@@ -5,10 +5,22 @@ import { getResponseError } from '../helpers';
 const initialState = {
   data: [],
   loading: false,
+  modifyLoading: false,
 };
 
+export const addNewProduct = createAsyncThunk(
+  'product/GetList',
+  async (formData, { rejectWithValue }) => {
+    console.log('Form data', formData);
+    try {
+      return (await adminProductApis.addNew(formData)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
 export const getListProductByPage = createAsyncThunk(
-  'product/Add',
+  'product/GetList',
   async (page, { rejectWithValue }) => {
     try {
       return (await adminProductApis.getByPage(page)).data;
@@ -32,7 +44,15 @@ const adminProductSlice = createSlice({
     [getListProductByPage.fulfilled]: (state, action) => {
       state.loading = false;
       state.data = action.payload.listCategories;
-      console.log('🚀 lít product', action.payload);
+    },
+    [addNewProduct.pending]: (state) => {
+      state.modifyLoading = true;
+    },
+    [addNewProduct.rejected]: (state) => {
+      state.modifyLoading = false;
+    },
+    [addNewProduct.fulfilled]: (state) => {
+      state.modifyLoading = false;
     },
   },
 });
