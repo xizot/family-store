@@ -4,6 +4,7 @@ import authSlice from '../reducers/auth';
 import cartSlice from '../reducers/cart';
 import langSlice from '../reducers/lang';
 import uiSlice from '../reducers/ui';
+import subcategorySlice from '../reducers/sub-category';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     cart: cartSlice.reducer,
     lang: langSlice.reducer,
     category: categorySlice.reducer,
+    subCategory: subcategorySlice.reducer,
   },
 });
 export default store;

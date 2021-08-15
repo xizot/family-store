@@ -18,14 +18,17 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Pagination from '@material-ui/lab/Pagination';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
 import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddComponent from './AddSubCategory';
 import { Add } from '@material-ui/icons';
+import { getListSubCategory } from '../../../../reducers/sub-category';
+import TableError from '../../../../components/TableError/TableError';
+import TableLoading from '../../../../components/TableLoading/TableLoading';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -144,78 +147,15 @@ const BootstrapInput = withStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {},
   },
 }))(InputBase);
-const rows = [
-  {
-    id: 1,
-    name: 'Mì trứng cao cấp Meizan gói 500g',
-    subCate: 'Thực phẩm',
-    quantity: '200',
-    lastModi: '01-02-2010',
-  },
-  {
-    id: 2,
-    name: 'Bột giặt 500g',
-    subCate: 'Đồ tiện dụng',
-    quantity: '2002',
-    lastModi: '01-01-2021',
-  },
-  {
-    id: 3,
-    name: 'Hành lá 1kg',
-    subCate: 'Rau củ',
-    quantity: '400',
-    lastModi: '01-01-2021',
-  },
-  {
-    id: 4,
-    name: 'Hành Tây 500g',
-    subCate: 'Rau củ',
-    quantity: '1000',
 
-    lastModi: '01-01-2021',
-  },
-  {
-    id: 5,
-    name: 'Bột xã Omo 500g',
-    subCate: 'Đồ tiện dụng',
-    quantity: '2000',
-    lastModi: '22-01-2021',
-  },
-  {
-    id: 6,
-    name: 'Bánh mì Bơ Tewan',
-    subCate: 'Lương thực',
-    quantity: '400',
-    lastModi: '11-12-2021',
-  },
-  {
-    id: 7,
-    name: 'Rau cần tây',
-    subCate: 'Rau củ',
-    quantity: '4000',
-    lastModi: '25-08-2021',
-  },
-  {
-    id: 8,
-    name: 'Sữa tươi Vina milk',
-    subCate: 'Sữa, nước ngọt',
-    quantity: '1000',
-    lastModi: '12-01-2021',
-  },
-  {
-    id: 9,
-    name: 'Bánh tầm 500g',
-    subCate: 'Lương thực',
-    quantity: '2000',
-    lastModi: '22-02-2021',
-  },
-];
 
 const SubCateManager = (props) => {
   const { t } = useTranslation();
   const classes = useStyles();
+  const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
-
+  const data = useSelector((state) => state.subCategory.data);
+  const loading = useSelector((state) => state.subCategory.loading);
   const dispatch = useDispatch();
   const [optionPrice, setOptionPrice] = useState('Price');
 
@@ -230,9 +170,21 @@ const SubCateManager = (props) => {
     setOpen(false);
   };
 
+  const getListSubCategoryHandler = useCallback(
+    async () => {
+      try {
+        await dispatch(getListSubCategory()).unwrap();
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     dispatch(uiActions.hideModal());
-  }, [dispatch]);
+    getListSubCategoryHandler();
+  }, [dispatch,getListSubCategoryHandler]);
 
   useEffect(() => {
     document.title = 'Sub Category Admin';
@@ -277,43 +229,54 @@ const SubCateManager = (props) => {
         </div>
       </div>
 
-      <TableContainer component={Paper} className={classes.section}>
-        <Table aria-label="a dense table">
-          <TableHead>
-            <TableRow className={classes.tableHead}>
-              <TableCell>Index</TableCell>
-              <TableCell>Sub Category Name</TableCell>
-              <TableCell>Father Category</TableCell>
-              <TableCell>Quantity</TableCell>
-              <TableCell>Last Modified</TableCell>
-              <TableCell align="center">Options</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  {row.id}
-                </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.subCate}</TableCell>
-                <TableCell>{row.quantity}</TableCell>
-                <TableCell>{row.lastModi}</TableCell>
-                <TableCell align="center">
-                  <Button
-                    size="small"
-                    startIcon={<EditIcon />}
-                    style={{ padding: '0' }}
-                    onClick={handleOpen}></Button>
-                  <Button size="small" startIcon={<DeleteIcon />} style={{ padding: '0' }}></Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <div className={`${classes.pagination} ${classes.section}`}>
-        <Pagination count={rows.length} color="primary" variant="outlined" shape="rounded" />
+      <div className={`${classes.tableSection} `}>
+        {loading ? (
+          <TableLoading />
+        ) : error?.length > 0 ? (
+          <TableError message={error} onTryAgain={getListSubCategoryHandler} />
+        ) : data?.length > 0 ? (
+          <>
+            <TableContainer component={Paper} className={classes.section}>
+              <Table aria-label="a dense table">
+                <TableHead>
+                  <TableRow className={classes.tableHead}>
+                    <TableCell>Index</TableCell>
+                    <TableCell>Sub Category Name</TableCell>
+                    <TableCell>Father Category</TableCell>
+                    <TableCell>Last Modified</TableCell>
+                    <TableCell align="center">Options</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                {data?.length > 0 &&
+                  data.map((row) => (
+                    <TableRow key={row.id}>
+                      <TableCell component="th" scope="row">
+                        {row.cateId}
+                      </TableCell>
+                      <TableCell>{row.cateName}</TableCell>
+                      <TableCell>Thực phẩm</TableCell>
+                      <TableCell>01-02-2021</TableCell>
+                      <TableCell align="center">
+                        <Button
+                          size="small"
+                          startIcon={<EditIcon />}
+                          style={{ padding: '0' }}
+                          onClick={handleOpen}></Button>
+                        <Button size="small" startIcon={<DeleteIcon />} style={{ padding: '0' }}></Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <div className={`${classes.pagination} ${classes.section}`}>
+              <Pagination count={data.length} color="primary" variant="outlined" shape="rounded" />
+            </div>
+          </>
+        ) : (
+          <TableError message="No data in database" onTryAgain={getListSubCategoryHandler} />
+        )}
       </div>
       <Modal
         open={open}

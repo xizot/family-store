@@ -8,11 +8,8 @@ import axios from '../axios/index';
 const addCategory = (data) => {
   return axios.post('/api/categories/add-father', data);
 };
-const getListCategory = (page, limit = 10) => {
+const getListCategory = () => {
   let query = '/api/categories/list';
-  if (!isNaN(page)) {
-    query += `?page=${page}&limit=${limit}`;
-  }
   return axios.get(query);
 };
 const adminCategoryApi = {

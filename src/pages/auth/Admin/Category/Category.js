@@ -113,72 +113,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const rows = [
-  {
-    id: 1,
-    name: 'Mì',
-    subCate: 5,
-    quantity: '200',
-    lastModi: '01-02-2010',
-  },
-  {
-    id: 2,
-    name: 'Bia & Rượu',
-    subCate: 6,
-    quantity: '202',
-    lastModi: '01-01-2021',
-  },
-  {
-    id: 3,
-    name: 'Nguyên liệu',
-    subCate: 4,
-    quantity: '400',
-    lastModi: '01-01-2021',
-  },
-  {
-    id: 4,
-    name: 'Mỹ phẩm & làm đẹp',
-    subCate: 3,
-    quantity: '1000',
-
-    lastModi: '01-01-2021',
-  },
-  {
-    id: 5,
-    name: 'Đồ gia dụng',
-    subCate: 10,
-    quantity: '2000',
-    lastModi: '22-01-2021',
-  },
-  {
-    id: 6,
-    name: 'Bánh snack',
-    subCate: 5,
-    quantity: '400',
-    lastModi: '11-12-2021',
-  },
-  {
-    id: 7,
-    name: 'Rau củ',
-    subCate: 1,
-    quantity: '4000',
-    lastModi: '25-08-2021',
-  },
-  {
-    id: 8,
-    name: 'Gạo & Bánh mì',
-    subCate: 2,
-    quantity: '1000',
-    lastModi: '12-01-2021',
-  },
-  {
-    id: 9,
-    name: 'Sữa & Cá',
-    subCate: 4,
-    quantity: '500',
-    lastModi: '22-02-2021',
-  },
-];
 
 const SubCateManager = (props) => {
   const { t } = useTranslation();
@@ -198,9 +132,9 @@ const SubCateManager = (props) => {
   };
 
   const getListCategoryHandler = useCallback(
-    async (page) => {
+    async () => {
       try {
-        await dispatch(getListCategory(page)).unwrap();
+        await dispatch(getListCategory()).unwrap();
       } catch (err) {
         setError(err);
       }
@@ -248,11 +182,9 @@ const SubCateManager = (props) => {
                 <TableHead>
                   <TableRow className={classes.tableHead}>
                     <TableCell style={{ width: 20, textAlign: 'center' }}>Index</TableCell>
-                    <TableCell>Category ID</TableCell>
-                    <TableCell>Category Name</TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>Category Name</TableCell>
                     <TableCell style={{ textAlign: 'center' }}>Sub Category Inside</TableCell>
-                    {/* <TableCell>Total Product</TableCell>
-              <TableCell>Last Modified</TableCell> */}
+                    <TableCell>Last Modified</TableCell>
                     <TableCell align="center">Options</TableCell>
                   </TableRow>
                 </TableHead>
@@ -266,13 +198,11 @@ const SubCateManager = (props) => {
                           style={{ width: 20, textAlign: 'center' }}>
                           {index + 1}
                         </TableCell>
-                        <TableCell>{row.cateId}</TableCell>
-                        <TableCell>{row.cateName}</TableCell>
+                        <TableCell style={{ textAlign: 'center' }}>{row.cateName}</TableCell>
                         <TableCell style={{ textAlign: 'center' }}>
                           {row.subCategories.length}
                         </TableCell>
-                        {/* <TableCell>{row.quantity}</TableCell>
-                <TableCell>{row.lastModi}</TableCell> */}
+                        <TableCell>01-01-2021</TableCell>
                         <TableCell align="center">
                           <Button
                             size="small"
@@ -290,7 +220,7 @@ const SubCateManager = (props) => {
               </Table>
             </TableContainer>
             <div className={`${classes.pagination} ${classes.section}`}>
-              <Pagination count={rows.length} color="primary" variant="outlined" shape="rounded" />
+              <Pagination count={data.length} color="primary" variant="outlined" shape="rounded" />
             </div>
           </>
         ) : (

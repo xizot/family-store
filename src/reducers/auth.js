@@ -99,15 +99,16 @@ const authSlice = createSlice({
       state.loading = false;
     },
     [login.fulfilled]: (state, action) => {
-      const { user, token } = action.payload;
+      const { user, accessToken,refreshToken } = action.payload;
       state.loading = false;
       if (user.accStatus === 0) {
         state.user = user;
-
-        state.accessToken = token;
+        state.refreshToken = refreshToken;
+        state.accessToken = accessToken;
         state.isAuthenticated = true;
 
-        localStorage.setItem('accessToken', token);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken',refreshToken);
         localStorage.setItem('user', JSON.stringify(user));
       }
     },
