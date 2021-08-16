@@ -9,9 +9,6 @@ import {
   Paper,
   Typography,
   Button,
-  Backdrop,
-  Fade,
-  Modal,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Pagination from '@material-ui/lab/Pagination';
@@ -21,13 +18,13 @@ import { uiActions } from '../../../../reducers/ui';
 import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import AddComponent from './AddCategory';
 import { Add } from '@material-ui/icons';
-import { getListCategory,deleteCategory } from '../../../../reducers/category';
+import { getListCategory, deleteCategory } from '../../../../reducers/category';
 import TableError from '../../../../components/TableError/TableError';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
-import DeleteModal from "../DeleteModal";
 import { toast } from 'react-toastify';
+import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
+import CategoryModal from './CategoryModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -118,45 +115,50 @@ const useStyles = makeStyles((theme) => ({
 const SubCateManager = (props) => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
   const [error, setError] = useState('');
-  const [close, setClose] = useState(false);
-  const [detail, setDetail] = useState({})
-  const [action, setAction] = useState('insert')
   const data = useSelector((state) => state.category.data);
   const loading = useSelector((state) => state.category.loading);
   const dispatch = useDispatch();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
-  const handleOpen = () => {
-    setAction('insert');
-    setOpen(true);
-  
+  const [openModal, setOpenModal] = useState(false);
+  const [type, setType] = useState('UPDATE');
+  const [itemSelected, setItemSelected] = useState(null);
+
+  const openModalHandler = (type, item = null) => {
+    setType(type);
+    setOpenModal(true);
+    setOpenDeleteModal(false);
+    if (item) {
+      setItemSelected(item);
+    }
   };
- 
+
   const handleClose = () => {
-    setOpen(false);
+    setOpenDeleteModal(false);
+    setOpenModal(false);
+
+    setSelectedId(null);
+    setItemSelected(null);
   };
 
-  const DeleteHandler = (item) => {
-    setClose(true);
-    setDetail(item)
-  }
-  const DeleteConfirm = () => {
-      dispatch(deleteCategory(detail.cateId));
-      setClose(false);
-      dispatch(getListCategory());
-      toast.success('Xóa thành công');
-  }
+  const openDeleteModalHandler = (id) => {
+    setSelectedId(id);
+    setOpenDeleteModal(true);
+  };
 
-  const DeleteClose = () => {
-    setClose(false);
-  }
+  const DeleteConfirm = async () => {
+    try {
+      await dispatch(deleteCategory(selectedId)).unwrap();
 
-  const editCateHandler = (item) => {
-    setAction('update');
-    setDetail(item);
-    setOpen(true);
-  }
+      toast.success(`Delete category id ${selectedId} successfully`);
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    }
+    setOpenDeleteModal(false);
+  };
 
   const getListCategoryHandler = useCallback(async () => {
     try {
@@ -179,6 +181,21 @@ const SubCateManager = (props) => {
 
   return (
     <div className={classes.root}>
+      <CategoryModal
+        title={type === 'UPDATE' ? 'UPDATE CATEGORY' : 'ADD NEW CATEGORY'}
+        isOpen={openModal}
+        onClose={handleClose}
+        item={itemSelected}
+        type={type}
+        getList={getListCategoryHandler}
+      />
+
+      <ModalConfirm
+        title="Delete Category"
+        isOpen={openDeleteModal}
+        onClose={handleClose}
+        onConfirm={DeleteConfirm}
+      />
       <div className={classes.section}>
         <Typography variant="h5" className={classes.title}>
           CATEGORY MANAGER
@@ -188,7 +205,11 @@ const SubCateManager = (props) => {
             <SearchInput />
           </div>
           <div className={classes.addButton}>
-            <Button variant="contained" color="primary"  startIcon={<Add />} onClick={handleOpen}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<Add />}
+              onClick={() => openModalHandler('ADD')}>
               Add
             </Button>
           </div>
@@ -233,11 +254,12 @@ const SubCateManager = (props) => {
                             size="small"
                             startIcon={<EditIcon />}
                             style={{ padding: '0' }}
-                            onClick={()=>editCateHandler(row)}></Button>
+                            onClick={() => openModalHandler('UPDATE', row)}></Button>
                           <Button
                             size="small"
                             startIcon={<DeleteIcon />}
-                            style={{ padding: '0' }} onClick={() => DeleteHandler(row)}></Button>
+                            style={{ padding: '0' }}
+                            onClick={() => openDeleteModalHandler(row.cateId)}></Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -252,44 +274,6 @@ const SubCateManager = (props) => {
           <TableError message="No data in database" onTryAgain={getListCategoryHandler} />
         )}
       </div>
-
-      <Modal
-        open={open}
-        onClose={handleClose}
-        className={classes.modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}>
-        <Fade in={open}>
-          <AddComponent 
-            action={action}
-            cate={detail}
-            parentHandleClose={handleClose}
-          />
-        </Fade>
-      </Modal>
-      <Modal
-        open={close}
-        onClose={handleClose}
-        className={classes.modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}>
-        <Fade in={open}>
-          <DeleteModal
-            parentHandleConfirm={DeleteConfirm}
-            parentHandleClose={DeleteClose}
-          />
-        </Fade>
-      </Modal>
     </div>
   );
 };

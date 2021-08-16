@@ -72,6 +72,11 @@ const useStyles = makeStyles((theme) => ({
   menuPaper: {
     maxHeight: 300,
   },
+  section: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
 }));
 
 const AddProduct = ({ isOpen, onClose }) => {
@@ -111,7 +116,8 @@ const AddProduct = ({ isOpen, onClose }) => {
 
   const getListCategoryHandler = useCallback(async () => {
     try {
-      await dispatch(getListCategory()).unwrap();
+      const repsone = await dispatch(getListCategory()).unwrap();
+      console.log('category', repsone);
     } catch (err) {
       console.log('🚀 ~ file: Product.js ~ line 166 ~ getListCategoryHandler ~ err', err);
     }
@@ -152,7 +158,6 @@ const AddProduct = ({ isOpen, onClose }) => {
     formData.append('prodPrice', enteredPrice);
     formData.append('prodAmount', enteredAmount);
     formData.append('prodDescription', enteredDescription);
-    formData.append('prodName', enteredTitle);
     try {
       await dispatch(addNewProduct(formData)).unwrap();
       toast.success('Add new product success');
@@ -184,11 +189,7 @@ const AddProduct = ({ isOpen, onClose }) => {
               Family Admin Panel
             </Typography>
           </Box>
-          <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            className={classes.section}>
+          <form encType="multipart/form-data" className={classes.section}>
             <Box marginBottom={2} className={classes.image}>
               <div className={classes.mainImage}>
                 <img
@@ -320,7 +321,7 @@ const AddProduct = ({ isOpen, onClose }) => {
                 </Button>
               </Box>
             </Box>
-          </Box>
+          </form>
         </Box>
       </div>
     </ProductModal>

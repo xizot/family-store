@@ -1,36 +1,22 @@
-import { makeStyles, TextField, Typography, Button, FormControl } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { makeStyles, TextField, Typography, Button, FormControl, Modal } from '@material-ui/core';
+import { useEffect } from 'react';
 import { useInput } from '../../../../hooks/use-input';
 import * as Validate from '../../../../helpers/validate';
-import { FormHelperText } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { addCategory } from '../../../../reducers/category';
 import { getListSubCategory } from '../../../../reducers/sub-category';
+import { addCategory, updateSubCategory } from '../../../../reducers/category';
+import { toast } from 'react-toastify';
+
 const useStyles = makeStyles((theme) => ({
   paper: {
-    minWidth: '60vh',
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    width: '30rem',
+    margin: '20vh auto 0',
+    backgroundColor: '#fff',
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(5),
   },
   form: {
     marginTop: '9px',
-    minWidth: '60vh',
-  },
-  native: {
-    marginTop: '9px',
-    minWidth: '60vh',
-  },
-  select: {
-    position: 'absolute',
-    right: '0px',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: '#F39148',
-    marginLeft: theme.spacing(1),
-    '& svg': {
-      color: theme.palette.common.white,
-    },
   },
   label: {
     marginTop: theme.spacing(1),
@@ -61,37 +47,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddSubCate = ({ action, detail, parentHandleClose }) => {
+const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
   const dispatch = useDispatch();
-
   const classes = useStyles();
-  const [error, setError] = useState('');
-
   const {
     enteredInput: cateName,
     hasError: cateNameHasError,
     inputBlurHandler: cateNameBlurHandler,
     inputChangeHandler: cateNameChangeHandler,
     inputIsValid: cateNameIsValid,
-    inputReset: cateNameReset,
-  } = useInput(Validate.isNotEmpty);
+  } = useInput(Validate.isNotEmpty, item?.cateName || '');
 
   const formSubmitHandler = async (event) => {
     event.preventDefault();
     if (!cateNameIsValid) return;
-    setError('');
-    cateNameReset();
-  };
 
-  const addCategoryHandler = async () => {
-    try {
-      await dispatch(
-        addCategory({
-          cateName: cateName,
-        })
-      ).unwrap();
-    } catch (error) {
-      console.log(error);
+    if (type === 'UPDATE') {
+      try {
+        await dispatch(updateSubCategory({ cateName, cateId: item?.cateId })).unwrap();
+        toast.success(`Update category id ${item?.cateId} successfully`);
+        getList();
+        onClose();
+      } catch (error) {
+        toast.error(error);
+      }
+    } else {
+      try {
+        await dispatch(addCategory({ cateName })).unwrap();
+        toast.success('Add new category successfully');
+        getList();
+        onClose();
+      } catch (error) {
+        toast.error(error);
+      }
     }
   };
 
@@ -100,39 +88,38 @@ const AddSubCate = ({ action, detail, parentHandleClose }) => {
   }, [dispatch]);
 
   return (
-    <>
+    <Modal
+      open={isOpen}
+      onClose={onClose}
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description">
       <div className={classes.paper}>
         <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
-          CATEGORY
+          {title}
         </Typography>
         <form noValidate autoComplete="off" onSubmit={formSubmitHandler}>
-          <FormControl className={classes.form}>
+          <FormControl className={classes.form} fullWidth size="small">
             <TextField
-              placeholder="Name"
-              fullWidth
+              label="Category Name"
               variant="outlined"
               value={cateName}
-              helperText={cateNameHasError && 'Name invalid'}
+              helperText={cateNameHasError && 'Category name invalid'}
               onBlur={cateNameBlurHandler}
               onChange={cateNameChangeHandler}
+              size="small"
             />
             <Button
               className={classes.save}
               variant="contained"
               fullWidth
               component="label"
-              onClick={addCategoryHandler}>
+              onClick={formSubmitHandler}>
               Save
             </Button>
           </FormControl>
-          {error?.length > 0 && (
-            <FormHelperText error style={{ marginBottom: 10 }}>
-              {error}
-            </FormHelperText>
-          )}
         </form>
       </div>
-    </>
+    </Modal>
   );
 };
-export default AddSubCate;
+export default CategoryModal;

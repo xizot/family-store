@@ -28,5 +28,6 @@ export const useInput = (validateFn, initialState = '') => {
     inputChangeHandler,
     inputBlurHandler,
     inputReset,
+    setEnteredInput,
   };
 };

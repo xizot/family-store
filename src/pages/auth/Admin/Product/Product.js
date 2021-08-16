@@ -132,6 +132,7 @@ const ProductManager = (props) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [productInfo, setProductInfo] = useState({});
   const [selectedId, setSelectedId] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [error, setError] = useState('');
   const [page, setPage] = useState(1);
 
@@ -147,7 +148,8 @@ const ProductManager = (props) => {
     setOpenDeleteModal(false);
   };
 
-  const openUpdateModalHandler = () => {
+  const openUpdateModalHandler = (item) => {
+    setSelectedItem(item);
     setOpenUpdateModal(true);
     setOpenAddModal(false);
     setOpenDeleteModal(false);
@@ -212,7 +214,11 @@ const ProductManager = (props) => {
     <>
       <div className={classes.root}>
         <AddProduct isOpen={openAddModal} onClose={closeModalHandler} />
-        <UpdateProduct isOpen={openUpdateModal} onClose={closeModalHandler} />
+        <UpdateProduct
+          itemInfo={selectedItem}
+          isOpen={openUpdateModal}
+          onClose={closeModalHandler}
+        />
         <ModalConfirm
           title="Delete Product"
           isOpen={openDeleteModal}
@@ -275,17 +281,17 @@ const ProductManager = (props) => {
                           <img
                             src={row.images[0]}
                             alt={row.prod_name}
-                            style={{ width: 100, height: 80 }}
+                            style={{ width: 100, height: 80, objectFit: 'cover' }}
                           />
                         </TableCell>
-                        <TableCell>{row.prod_category_id}</TableCell>
+                        <TableCell>{row.prod_category_name}</TableCell>
                         <TableCell>{row.prod_amount}</TableCell>
                         <TableCell>{row.prod_price}</TableCell>
                         <TableCell>{row.prod_description}</TableCell>
                         <TableCell>{row.prod_updated_date}</TableCell>
                         <TableCell align="center" style={{ minWidth: 150 }}>
                           <EditIcon
-                            onClick={openUpdateModalHandler}
+                            onClick={() => openUpdateModalHandler(row)}
                             fontSize="small"
                             style={{ marginRight: 5, cursor: 'pointer' }}
                           />

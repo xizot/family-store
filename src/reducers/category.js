@@ -9,7 +9,7 @@ const initialState = {
 
 export const addCategory = createAsyncThunk(
   'category/Add',
-  async ({  cateName }, { rejectWithValue }) => {
+  async ({ cateName }, { rejectWithValue }) => {
     try {
       return (await adminCategoryApi.addCategory({ cateName })).data;
     } catch (error) {
@@ -17,22 +17,20 @@ export const addCategory = createAsyncThunk(
     }
   }
 );
-export const getListCategory = createAsyncThunk(
-  'category/Get',
-  async (page, { rejectWithValue }) => {
-    try {
-      return (await adminCategoryApi.getListCategory(page)).data;
-    } catch (error) {
-      return rejectWithValue(getResponseError(error));
-    }
+export const getListCategory = createAsyncThunk('category/Get', async (_, { rejectWithValue }) => {
+  try {
+    return (await adminCategoryApi.getListCategory()).data;
+  } catch (error) {
+    return rejectWithValue(getResponseError(error));
   }
-);
+});
 
 export const deleteCategory = createAsyncThunk(
   'subcategory/Delete',
   async (id, { rejectWithValue }) => {
     try {
-      return (await adminCategoryApi.deleteCategory(id)).data;
+      await adminCategoryApi.deleteCategory(id);
+      return id;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }
@@ -43,7 +41,7 @@ export const updateSubCategory = createAsyncThunk(
   'subcategory/Update',
   async ({ cateId, cateName }, { rejectWithValue }) => {
     try {
-      return (await adminCategoryApi.updateSubCategory( cateId, cateName)).data;
+      return (await adminCategoryApi.updateCategory(cateId, cateName)).data;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }
@@ -55,15 +53,6 @@ const adminCategorySlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [addCategory.pending]: (state) => {
-      state.loading = true;
-    },
-    [addCategory.rejected]: (state) => {
-      state.loading = false;
-    },
-    [addCategory.fulfilled]: (state) => {
-      state.loading = false;
-    },
     [getListCategory.pending]: (state) => {
       state.loading = true;
     },
@@ -73,6 +62,9 @@ const adminCategorySlice = createSlice({
     [getListCategory.fulfilled]: (state, action) => {
       state.loading = false;
       state.data = action.payload.listCategories;
+    },
+    [deleteCategory.fulfilled]: (state, action) => {
+      state.data = state.data.filter((item) => item.cateId !== action.payload);
     },
   },
 });
