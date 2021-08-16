@@ -18,12 +18,12 @@ import { addNewProduct } from '../../../../reducers/product';
 import { toast } from 'react-toastify';
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(2),
     marginTop: '10vh',
+    marginBottom: '10vh',
   },
   content: {
     background: '#fff',
-    padding: theme.spacing(2),
+    padding: theme.spacing(2, 5),
   },
   title: {
     fontWeight: 'bold',
@@ -124,6 +124,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
   }, [dispatch]);
 
   const closeModalHandler = () => {
+    setImages([]);
     setError('');
     onClose();
   };
@@ -164,7 +165,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
     try {
       await dispatch(addNewProduct(formData)).unwrap();
       toast.success('Add new product success');
-      setImages([]);
+      closeModalHandler();
       getList();
       onClose();
     } catch (err) {

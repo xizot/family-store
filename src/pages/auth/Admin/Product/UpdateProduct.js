@@ -22,6 +22,7 @@ import { getBaseImage } from '../../../../helpers/getBaseImage';
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: '10vh',
+    marginBottom: '10vh',
   },
   content: {
     background: '#fff',
