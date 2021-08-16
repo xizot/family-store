@@ -166,9 +166,13 @@ const SubCateManager = (props) => {
 
   const [optionFather, setOptionFather] = useState(3);
 
-  const fatherChangeHandler = (event) => {
+  const fatherChangeHandler = async (event) => {
     setOptionFather(event.target.value);
-    dispatch(getListSubCategory(event.target.value));
+    try {
+      await dispatch(getListSubCategory(event.target.value)).unwrap();
+    } catch (error) {
+      console.log('🚀 ~ file: SubCategory.js ~ line 175 ~ fatherChangeHandler ~ error', error);
+    }
   };
 
   const editSubCategory = (item) => {
@@ -209,6 +213,17 @@ const SubCateManager = (props) => {
     }
   }, [dispatch]);
 
+  const getChildCategoryHandler = useCallback(
+    async (cateFather) => {
+      try {
+        await dispatch(getListSubCategory(cateFather)).unwrap();
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     dispatch(uiActions.hideModal());
     getListSubCategoryHandler();
@@ -239,8 +254,8 @@ const SubCateManager = (props) => {
               onChange={fatherChangeHandler}
               name="price"
               input={<BootstrapInput />}>
-              {data.map((row) => (
-                <option style={{ color: '#F39148' }} value={row.cateId}>
+              {data.map((row, index) => (
+                <option style={{ color: '#F39148' }} value={row.cateId} key={index}>
                   {row.cateName}
                 </option>
               ))}
@@ -326,6 +341,7 @@ const SubCateManager = (props) => {
             cate={detail}
             father={data}
             parentHandleClose={handleClose}
+            getList={getChildCategoryHandler.bind(null, optionFather)}
           />
         </Fade>
       </Modal>

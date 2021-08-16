@@ -9,6 +9,7 @@ import {
   Paper,
   Typography,
   Button,
+  Box,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Pagination from '@material-ui/lab/Pagination';
@@ -122,6 +123,20 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     color: 'red',
   },
+  longTextStyle: {
+    wordWrap: 'break-word',
+    maxWidth: 500,
+    display: '-webkit-box',
+    '-webkit-line-clamp': 4,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
+  },
+  tableRow: {
+    '&:hover': {
+      background: '#dedede !important ',
+      cursor: 'pointer',
+    },
+  },
 }));
 
 const ProductManager = (props) => {
@@ -153,7 +168,8 @@ const ProductManager = (props) => {
     setOpenAddModal(false);
     setOpenDeleteModal(false);
   };
-  const openDeleteModalHandler = (id) => {
+  const openDeleteModalHandler = (e, id) => {
+    e.stopPropagation();
     setSelectedId(id);
     setOpenUpdateModal(false);
     setOpenAddModal(false);
@@ -260,7 +276,7 @@ const ProductManager = (props) => {
           ) : listProduct?.length > 0 ? (
             <>
               <TableContainer component={Paper} className={classes.section}>
-                <Table aria-label="a dense table">
+                <Table aria-label="a dense table" style={{ width: '1200px' }}>
                   <TableHead>
                     <TableRow className={classes.tableHead}>
                       <TableCell>ID</TableCell>
@@ -269,14 +285,17 @@ const ProductManager = (props) => {
                       <TableCell>Category</TableCell>
                       <TableCell>Quantity</TableCell>
                       <TableCell>Price</TableCell>
-                      <TableCell>Description</TableCell>
+                      <TableCell width={500}>Description</TableCell>
                       <TableCell>Last Modified</TableCell>
                       <TableCell align="center">Options</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {listProduct.map((row, index) => (
-                      <TableRow key={index}>
+                      <TableRow
+                        key={index}
+                        onClick={() => openUpdateModalHandler(row)}
+                        className={classes.tableRow}>
                         <TableCell component="th" scope="row">
                           {row.prod_id}
                         </TableCell>
@@ -291,7 +310,9 @@ const ProductManager = (props) => {
                         <TableCell>{row.prod_category_name}</TableCell>
                         <TableCell>{row.prod_amount}</TableCell>
                         <TableCell>{row.prod_price}</TableCell>
-                        <TableCell>{row.prod_description}</TableCell>
+                        <TableCell>
+                          <Box className={classes.longTextStyle}>{row.prod_description}</Box>
+                        </TableCell>
                         <TableCell>{row.prod_updated_date}</TableCell>
                         <TableCell align="center" style={{ minWidth: 150 }}>
                           <EditIcon
@@ -302,7 +323,7 @@ const ProductManager = (props) => {
                           <DeleteIcon
                             fontSize="small"
                             style={{ cursor: 'pointer' }}
-                            onClick={() => openDeleteModalHandler(row.prod_id)}
+                            onClick={(e) => openDeleteModalHandler(e, row.prod_id)}
                           />
                         </TableCell>
                       </TableRow>

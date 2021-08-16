@@ -139,9 +139,12 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
 
     if (
       enteredTitle?.length > 0 &&
+      enteredTitle.length < 60 &&
       enteredCategory?.length > 0 &&
       enteredPrice?.length > 0 &&
-      enteredAmount?.length > 0
+      enteredPrice > 0 &&
+      enteredAmount?.length > 0 &&
+      enteredAmount > 0
     ) {
       setSubmitIsValid(true);
     } else {
@@ -161,6 +164,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
     try {
       await dispatch(addNewProduct(formData)).unwrap();
       toast.success('Add new product success');
+      setImages([]);
       getList();
       onClose();
     } catch (err) {
@@ -304,7 +308,9 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
               </div>
               {!submitIsValid && (
                 <FormHelperText error style={{ marginBottom: 8 }}>
-                  All textfield must not be null or empty
+                  All text field must not be null or empty. <br /> Title must be less than 60
+                  characters. <br />
+                  Price, Amount must be greater 0.
                 </FormHelperText>
               )}
               {error.length > 0 && (

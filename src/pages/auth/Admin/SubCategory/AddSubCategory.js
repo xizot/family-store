@@ -92,7 +92,7 @@ const BootstrapInput = withStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {},
   },
 }))(InputBase);
-const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father }) => {
+const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getList }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [error, setError] = useState('');
@@ -111,29 +111,41 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father }) => 
     setCateIdFather(event.target.value);
   };
 
-  const addCategoryHandler = () => {
+  const addCategoryHandler = async () => {
+    setError('');
     if (action === 'insert') {
-      dispatch(
-        addSubCategory({
-          cateName: subCateName,
-          cateFather: cateIdFather,
-        })
-      ).unwrap();
-
-      toast.success('Add successfully');
-      setError('');
+      try {
+        await dispatch(
+          addSubCategory({
+            cateName: subCateName,
+            cateFather: cateIdFather,
+          })
+        ).unwrap();
+        getList();
+        parentHandleClose();
+        toast.success('Add successfully');
+      } catch (error) {
+        setError(error);
+        toast.error(error);
+      }
     }
     if (action === 'update') {
-      dispatch(
-        updateSubCategory({
-          cateFather: cateIdFather,
-          cateId: cate.cateId,
-          cateName: subCateName,
-        })
-      ).unwrap();
-      toast.success('Update successfully');
+      try {
+        await dispatch(
+          updateSubCategory({
+            cateFather: cateIdFather,
+            cateId: cate.cateId,
+            cateName: subCateName,
+          })
+        ).unwrap();
+        toast.success('Update successfully');
+        getList();
+        parentHandleClose();
+      } catch (error) {
+        setError(error);
+        toast.error(error);
+      }
     }
-    parentHandleClose();
   };
 
   return (
