@@ -323,7 +323,10 @@ const ProductManager = (props) => {
               </div>
             </>
           ) : (
-            <TableError message="No data in database" onTryAgain={getListProductByPageHandler} />
+            <TableError
+              message="No data available in database"
+              onTryAgain={getListProductByPageHandler}
+            />
           )}
         </div>
       </div>

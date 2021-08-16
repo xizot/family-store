@@ -10,7 +10,7 @@ const options = [
   {
     icon: Menu,
     title: 'Dashboard',
-    link: '/admin/dashboard',
+    link: '/admin/',
   },
   {
     icon: Loyalty,

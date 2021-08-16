@@ -7,7 +7,7 @@ import {
   Grid,
   NativeSelect,
   InputBase,
-  withStyles
+  withStyles,
 } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { FormHelperText } from '@material-ui/core';
@@ -96,43 +96,42 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father }) => 
   const classes = useStyles();
   const dispatch = useDispatch();
   const [error, setError] = useState('');
-  const [subCateName, setSubCateName] = useState(cate?.cateName || '')
+  const [subCateName, setSubCateName] = useState(cate?.cateName || '');
   const [cateIdFather, setCateIdFather] = useState(cateFather);
 
-  useEffect (() => {
-    if (action === "insert") {
-      setSubCateName("")
+  useEffect(() => {
+    if (action === 'insert') {
+      setSubCateName('');
     }
-  }, [action])
+  }, [action]);
   const subCateNameChangeHandler = (e) => {
     setSubCateName(e.target.value);
-  }
+  };
   const fatherCateChangeHandler = (event) => {
     setCateIdFather(event.target.value);
-  }
+  };
 
   const addCategoryHandler = () => {
-    if (action === "insert") {
+    if (action === 'insert') {
       dispatch(
         addSubCategory({
           cateName: subCateName,
-          cateFather: cateIdFather
+          cateFather: cateIdFather,
         })
       ).unwrap();
 
-      toast.success('Thêm thành công');
+      toast.success('Add successfully');
       setError('');
-
     }
-    if (action === "update") {
+    if (action === 'update') {
       dispatch(
         updateSubCategory({
           cateFather: cateIdFather,
           cateId: cate.cateId,
-          cateName: subCateName
+          cateName: subCateName,
         })
       ).unwrap();
-      toast.success('Sửa thành công');
+      toast.success('Update successfully');
     }
     parentHandleClose();
   };
@@ -144,9 +143,12 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father }) => 
           MODAL SUB CATEGORY
         </Typography>
         <FormControl className={classes.form}>
-          <TextField fullWidth variant="outlined"
+          <TextField
+            fullWidth
+            variant="outlined"
             value={subCateName}
-            onChange={subCateNameChangeHandler} />
+            onChange={subCateNameChangeHandler}
+          />
           <Grid container spacing={2} className={classes.native}>
             <Grid item xs={12} sm={6}>
               <Typography variant="subtitle2" className={classes.label} />
@@ -167,7 +169,12 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father }) => 
               </NativeSelect>
             </Grid>
           </Grid>
-          <Button className={classes.save} variant="contained" fullWidth component="label" onClick={addCategoryHandler}>
+          <Button
+            className={classes.save}
+            variant="contained"
+            fullWidth
+            component="label"
+            onClick={addCategoryHandler}>
             Save
           </Button>
         </FormControl>
@@ -176,7 +183,6 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father }) => 
             {error}
           </FormHelperText>
         )}
-
       </div>
     </>
   );

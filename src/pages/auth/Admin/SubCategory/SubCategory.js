@@ -31,7 +31,7 @@ import TableError from '../../../../components/TableError/TableError';
 import { toast } from 'react-toastify';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
 import { getListSubCategory, deleteCategory } from '../../../../reducers/sub-category';
-import DeleteModal from "../DeleteModal";
+import DeleteModal from '../DeleteModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -151,16 +151,15 @@ const BootstrapInput = withStyles((theme) => ({
   },
 }))(InputBase);
 
-
 const SubCateManager = (props) => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
-  const [detail, setDetail] = useState({})
-  const [action, setAction] = useState('insert')
+  const [detail, setDetail] = useState({});
+  const [action, setAction] = useState('insert');
   const data = useSelector((state) => state.category.data);
   const sub = useSelector((state) => state.subCategory.data);
   const loading = useSelector((state) => state.category.loading);
@@ -176,7 +175,7 @@ const SubCateManager = (props) => {
     setAction('update');
     setDetail(item);
     setOpen(true);
-  }
+  };
 
   const handleOpen = () => {
     setAction('insert');
@@ -189,29 +188,26 @@ const SubCateManager = (props) => {
 
   const subCateDeleteHandler = (item) => {
     setClose(true);
-    setDetail(item)
-  }
+    setDetail(item);
+  };
   const subCateDeleteConfirm = () => {
-      dispatch(deleteCategory(detail.cateId));
-      setClose(false);
-      dispatch(getListSubCategory(optionFather));
-      toast.success('Xóa thành công');
-  }
+    dispatch(deleteCategory(detail.cateId));
+    setClose(false);
+    dispatch(getListSubCategory(optionFather));
+    toast.success('Delete successfully');
+  };
 
   const subCateDeleteClose = () => {
     setClose(false);
-  }
+  };
 
-  const getListSubCategoryHandler = useCallback(
-    async () => {
-      try {
-        await dispatch(getListCategory()).unwrap();
-      } catch (err) {
-        setError(err);
-      }
-    },
-    [dispatch]
-  );
+  const getListSubCategoryHandler = useCallback(async () => {
+    try {
+      await dispatch(getListCategory()).unwrap();
+    } catch (err) {
+      setError(err);
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(uiActions.hideModal());
@@ -221,7 +217,7 @@ const SubCateManager = (props) => {
   useEffect(() => {
     document.title = 'Sub Category Admin';
     dispatch(getListSubCategory(optionFather));
-  }, [t, optionFather, dispatch,data]);
+  }, [t, optionFather, dispatch, data]);
 
   return (
     <div className={classes.root}>
@@ -290,7 +286,11 @@ const SubCateManager = (props) => {
                             startIcon={<EditIcon />}
                             style={{ padding: '0' }}
                             onClick={() => editSubCategory(row)}></Button>
-                          <Button size="small" startIcon={<DeleteIcon />} style={{ padding: '0' }} onClick={() => subCateDeleteHandler(row)}></Button>
+                          <Button
+                            size="small"
+                            startIcon={<DeleteIcon />}
+                            style={{ padding: '0' }}
+                            onClick={() => subCateDeleteHandler(row)}></Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -302,7 +302,10 @@ const SubCateManager = (props) => {
             </div>
           </>
         ) : (
-          <TableError message="No data in database" onTryAgain={getListSubCategoryHandler} />
+          <TableError
+            message="No data available in database"
+            onTryAgain={getListSubCategoryHandler}
+          />
         )}
       </div>
       <Modal

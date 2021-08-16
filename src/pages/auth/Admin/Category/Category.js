@@ -270,7 +270,7 @@ const SubCateManager = (props) => {
             </div>
           </>
         ) : (
-          <TableError message="No data in database" onTryAgain={getListCategoryHandler} />
+          <TableError message="No data available in database" onTryAgain={getListCategoryHandler} />
         )}
       </div>
     </div>
