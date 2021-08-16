@@ -217,7 +217,9 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
                   {images?.length > 0 &&
                     images.map((item, index) => (
                       <Box display="flex" alignItems="center" key={index}>
-                        <Typography variant="body2">{item.name}</Typography>
+                        <Typography variant="body2" style={{ wordBreak: 'break-word' }}>
+                          {item.name}
+                        </Typography>
                         <Delete onClick={() => removeFile(item)} />
                       </Box>
                     ))}
