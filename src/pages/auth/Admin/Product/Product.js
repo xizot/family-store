@@ -135,7 +135,6 @@ const ProductManager = (props) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [error, setError] = useState('');
   const [page, setPage] = useState(1);
-
   const loading = useSelector((state) => state.product.loading);
   let { listProduct, numberOfPage } = productInfo;
   const dispatch = useDispatch();
@@ -185,12 +184,12 @@ const ProductManager = (props) => {
   };
 
   const getListProductByPageHandler = useCallback(
-    async (page = 1) => {
+    async (selectPage = 1) => {
       try {
-        const response = await dispatch(getListProductByPage(page)).unwrap();
+        const response = await dispatch(getListProductByPage(selectPage)).unwrap();
         setProductInfo(response);
-        console.log(response);
       } catch (err) {
+        console.log('🚀 ~ file: Product.js ~ line 194 ~ err', err);
         setError(err);
       }
     },
@@ -216,13 +215,13 @@ const ProductManager = (props) => {
         <AddProduct
           isOpen={openAddModal}
           onClose={closeModalHandler}
-          getList={getListProductByPageHandler.bind(page)}
+          getList={getListProductByPageHandler.bind(null, page)}
         />
         <UpdateProduct
           itemInfo={selectedItem}
           isOpen={openUpdateModal}
           onClose={closeModalHandler}
-          getList={getListProductByPageHandler.bind(page)}
+          getList={getListProductByPageHandler.bind(null, page)}
         />
         <ModalConfirm
           title="Delete Product"
@@ -257,7 +256,7 @@ const ProductManager = (props) => {
           {loading ? (
             <TableLoading />
           ) : error?.length > 0 ? (
-            <TableError message={error} onTryAgain={getListProductByPageHandler} />
+            <TableError message={error} onTryAgain={getListProductByPageHandler.bind(null, page)} />
           ) : listProduct?.length > 0 ? (
             <>
               <TableContainer component={Paper} className={classes.section}>
@@ -325,7 +324,7 @@ const ProductManager = (props) => {
           ) : (
             <TableError
               message="No data available in database"
-              onTryAgain={getListProductByPageHandler}
+              onTryAgain={getListProductByPageHandler.bind(null, page)}
             />
           )}
         </div>

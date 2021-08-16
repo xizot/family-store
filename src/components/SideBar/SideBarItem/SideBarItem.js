@@ -89,31 +89,29 @@ export const SideBarItem = ({ IconComponent, title, link, subItems }) => {
   };
   return (
     <li className={classes.root}>
-      {link ? (
-        <NavLink to={link} className={classes.navLink} activeClassName={classes.itemActive}>
-          <IconComponent className={classes.icon} />
-          <Typography variant="subtitle1" className={classes.title}>
-            {title}
-          </Typography>
-        </NavLink>
-      ) : (
-        <div className={classes.navLink}>
-          <IconComponent className={classes.icon} />
-          <Typography
-            variant="subtitle1"
-            className={classes.title}
-            style={{ fontWeight: '500' }}
-            onClick={toggleListHandler}>
-            {title}
-          </Typography>
-          {subItems?.length > 0 && (
-            <>
-              {toggleList && <ExpandMore className={classes.arrowIcon} />}
-              {!toggleList && <ChevronRight className={classes.arrowIcon} />}
-            </>
-          )}
-        </div>
-      )}
+      <div>
+        {link ? (
+          <NavLink to={link} className={classes.navLink} activeClassName={classes.itemActive}>
+            <IconComponent className={classes.icon} />
+            <Typography variant="subtitle1" className={classes.title}>
+              {title}
+            </Typography>
+          </NavLink>
+        ) : (
+          <div className={classes.navLink} onClick={toggleListHandler}>
+            <IconComponent className={classes.icon} />
+            <Typography variant="subtitle1" className={classes.title} style={{ fontWeight: '500' }}>
+              {title}
+            </Typography>
+            {subItems?.length > 0 && (
+              <>
+                {toggleList && <ExpandMore className={classes.arrowIcon} />}
+                {!toggleList && <ChevronRight className={classes.arrowIcon} />}
+              </>
+            )}
+          </div>
+        )}
+      </div>
 
       {toggleList && subItems?.length > 0 && (
         <ul className={classes.items}>
