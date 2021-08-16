@@ -14,14 +14,17 @@ import { Add, Close } from '@material-ui/icons';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getListCategory } from '../../../../reducers/category';
+import { useInput } from '../../../../hooks/use-input';
+import { Validate } from '../../../../helpers';
+import { updateProductImage, updateProductInformation } from '../../../../reducers/product';
+import { toast } from 'react-toastify';
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(2),
     marginTop: '10vh',
   },
   content: {
     background: '#fff',
-    padding: theme.spacing(2),
+    padding: theme.spacing(2, 5),
   },
   title: {
     fontWeight: 'bold',
@@ -43,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   listUpload: {},
   iconAdd: {
-    marginBottom: theme.spacing(1),
+    marginRight: theme.spacing(1),
     background: '#f1f4fb',
   },
   textField: {
@@ -89,47 +92,63 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
+const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.data);
-  // const [mainImageSrc, setMainImageSrc] = useState(null);
-  // const [submitIsValid, setSubmitIsValid] = useState(true);
   const [error, setError] = useState('');
 
-  const [currentTitle, setCurrentTitle] = useState('');
-  const [currentcategoryId, setCurrentCategoryId] = useState('');
-  const [currentPrice, setCurrentPrice] = useState('');
-  const [currentAmount, setCurrentAmount] = useState('');
-  const [currentDescription, setCurrentDescription] = useState('');
+  const { enteredInput: title, inputChangeHandler: titleChangeHandler } = useInput(
+    Validate.isNotEmpty,
+    itemInfo?.prod_name || ''
+  );
+
+  const { enteredInput: price, inputChangeHandler: priceChangeHandler } = useInput(
+    Validate.isNotEmpty,
+    itemInfo?.prod_price || ''
+  );
+  const { enteredInput: amount, inputChangeHandler: amountChangeHandler } = useInput(
+    Validate.isNotEmpty,
+    itemInfo?.prod_amount || ''
+  );
+  const { enteredInput: description, inputChangeHandler: descriptionChangeHandler } = useInput(
+    Validate.isNotEmpty,
+    itemInfo?.prod_description || ''
+  );
+
+  const [categoryId, setCategoryId] = useState('');
   const [images, setImages] = useState([]);
   const [listRemoveImage, setListRemoveImage] = useState([]);
   const [listNewImage, setListNewImage] = useState([]);
-  const [listNewImageRender, setListNewImageRender] = useState([]);
+  const [listNewRender, setListNewRender] = useState([]);
 
   const fileChangeHandler = (file) => {
     if (file) {
       setListNewImage((prevState) => [...prevState, file]);
-      getBase64(file);
     }
   };
 
   const getBase64 = (file) => {
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setListNewImageRender((prevSate) => [...prevSate, { file, image: reader.result }]);
-    };
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.onerror = (error) => {
+        console.log(error);
+        reject(null);
+      };
+    });
   };
 
-  const removeFile = (item) => {
-    console.log(item);
-    if (images.includes(item)) {
-      setImages((prevState) => prevState.filter((image) => image !== item));
-      setListRemoveImage((prevState) => [...prevState, item]);
-    }
-    setListNewImage((prevState) => prevState.filter((image) => image !== item?.file));
-    setListNewImageRender((prevState) => prevState.filter((image) => image !== item));
+  const removeOldImage = (item) => {
+    setImages((prevState) => prevState.filter((image) => image !== item));
+    setListRemoveImage((prevState) => [...prevState, item]);
+  };
+
+  const removeNewImage = (item) => {
+    setListNewImage((prevState) => prevState.filter((file) => file !== item));
   };
 
   const getListCategoryHandler = useCallback(async () => {
@@ -140,11 +159,6 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
 
   const closeModalHandler = () => {
     if (itemInfo) {
-      setCurrentTitle(itemInfo?.prod_name);
-      setCurrentCategoryId(itemInfo?.prod_category_id);
-      setCurrentPrice(itemInfo?.prod_price);
-      setCurrentAmount(itemInfo?.prod_amount);
-      setCurrentDescription(itemInfo?.prod_description);
       setImages(itemInfo?.images || []);
     }
 
@@ -152,54 +166,74 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
     setListRemoveImage([]);
     onClose();
   };
-  const addNewProductHandler = async () => {
-    setError('');
 
+  const updateImageHandler = async () => {
     let formData = new FormData();
-
-    // if (
-    //   enteredTitle?.length > 0 &&
-    //   enteredCategory?.length > 0 &&
-    //   enteredPrice?.length > 0 &&
-    //   enteredAmount?.length > 0
-    // ) {
-    //   setSubmitIsValid(true);
-    // } else {
-    //   setSubmitIsValid(false);
-    //   return;
-    // }
-
-    for (let i = 0; i < images.length; i++) {
-      formData.append('image', images[i]);
+    for (let i = 0; i < listNewImage.length; i++) {
+      formData.append('image', listNewImage[i]);
     }
-
-    // formData.append('prodName', enteredTitle);
-    // formData.append('prodCategoryID', enteredCategory);
-    // formData.append('prodPrice', enteredPrice);
-    // formData.append('prodAmount', enteredAmount);
-    // formData.append('prodDescription', enteredDescription);
-    // try {
-    //   await dispatch(addNewProduct(formData)).unwrap();
-    //   toast.success('Add new product success');
-    // } catch (err) {
-    //   setError(err);
-    //   console.log('🚀 ~ file: AddProduct.js ~ line 140 ~ addNewProductHandler ~ error', error);
-    // }
+    formData.append('imageName', listRemoveImage.join(','));
+    try {
+      await dispatch(
+        updateProductImage({
+          id: itemInfo.prod_id,
+          data: formData,
+        })
+      ).unwrap();
+      toast.success(`Update images for product id ${itemInfo.prod_id} sucessfully`);
+      getList();
+      onClose();
+    } catch (error) {
+      toast.error(error);
+    }
   };
+
+  const updateInformation = async () => {
+    try {
+      await dispatch(
+        updateProductInformation({
+          id: itemInfo.prod_id,
+          data: {
+            prodName: title,
+            prodCategoryID: +categoryId,
+            prodPrice: +price,
+            prodAmount: +amount,
+            prodDescription: description,
+          },
+        })
+      ).unwrap();
+      toast.success(`Update product id ${itemInfo.prod_id} sucessfully`);
+      getList();
+      onClose();
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
   useEffect(() => {
     getListCategoryHandler();
   }, [dispatch, getListCategoryHandler]);
-
   useEffect(() => {
     if (itemInfo) {
-      setCurrentTitle(itemInfo?.prod_name);
-      setCurrentCategoryId(itemInfo?.prod_category_id);
-      setCurrentPrice(itemInfo?.prod_price);
-      setCurrentAmount(itemInfo?.prod_amount);
-      setCurrentDescription(itemInfo?.prod_description);
-      setImages(itemInfo?.images || []);
+      console.log(itemInfo);
+      setCategoryId(itemInfo.prod_category_id);
+      setImages(itemInfo.images);
     }
   }, [itemInfo]);
+
+  useEffect(() => {
+    setListNewRender([]);
+    if (listNewImage?.length > 0) {
+      listNewImage.forEach(async (item) => {
+        const newImage = await getBase64(item);
+        if (newImage) {
+          setListNewRender((prevState) => [...prevState, { file: item, image: newImage }]);
+        }
+      });
+    }
+  }, [listNewImage]);
+
+  console.log(listNewRender);
   return (
     <ProductModal isOpen={isOpen} onClose={closeModalHandler}>
       <div className={classes.root}>
@@ -217,6 +251,11 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
               <div className={classes.mainImage}>
                 <img
                   alt=""
+                  src={
+                    (images?.length > 0 && images[0]) ||
+                    (listNewRender?.length > 0 && listNewRender[0].image) ||
+                    null
+                  }
                   style={{
                     width: '100%',
                     height: '100%',
@@ -239,7 +278,8 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                         display="flex"
                         alignItems="center"
                         key={index}
-                        marginRight={2}
+                        marginRight={1}
+                        marginBottom={1}
                         className={classes.miniImage}>
                         <img
                           src={item}
@@ -252,7 +292,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                         />
                         <IconButton
                           color="primary"
-                          onClick={() => removeFile(item)}
+                          onClick={() => removeOldImage(item)}
                           className={classes.iconDel}
                           size="small">
                           <Close
@@ -265,16 +305,17 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                         </IconButton>
                       </Box>
                     ))}
-                  {listNewImageRender?.length > 0 &&
-                    listNewImageRender.map((item, index) => (
+                  {listNewRender?.length > 0 &&
+                    listNewRender.map((item, index) => (
                       <Box
                         display="flex"
                         alignItems="center"
                         key={index}
-                        marginRight={2}
+                        marginRight={1}
+                        marginBottom={1}
                         className={classes.miniImage}>
                         <img
-                          src={item.image}
+                          src={item?.image}
                           alt=""
                           style={{
                             width: '100%',
@@ -284,7 +325,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                         />
                         <IconButton
                           color="primary"
-                          onClick={() => removeFile(item)}
+                          onClick={() => removeNewImage(item?.file)}
                           className={classes.iconDel}
                           size="small">
                           <Close
@@ -299,11 +340,20 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                     ))}
                 </Box>
 
-                <IconButton color="primary" className={classes.iconAdd}>
-                  <label htmlFor="img1" style={{ display: 'flex' }}>
-                    <Add />
-                  </label>
-                </IconButton>
+                <Box display="flex" alignItems="center">
+                  <IconButton color="primary" className={classes.iconAdd}>
+                    <label htmlFor="img1" style={{ display: 'flex' }}>
+                      <Add />
+                    </label>
+                  </IconButton>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    style={{ marginRight: 16 }}
+                    onClick={updateImageHandler}>
+                    UPDATE IMAGES
+                  </Button>
+                </Box>
               </div>
             </Box>
             <Box className={classes.productInformation}>
@@ -311,7 +361,13 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                 <Typography variant="body1" component="p">
                   Title
                 </Typography>
-                <TextField variant="outlined" size="small" fullWidth value={currentTitle} />
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  value={title}
+                  onChange={titleChangeHandler}
+                />
               </div>
 
               <div className={classes.textField}>
@@ -321,9 +377,9 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                 <FormControl variant="outlined" size="small" fullWidth>
                   <Select
                     native
-                    defaultValue=""
                     MenuProps={{ classes: { paper: classes.menuPaper } }}
-                    value={currentcategoryId}>
+                    value={categoryId}
+                    onChange={(e) => setCategoryId(e.target.value)}>
                     <option aria-label="None" value="" />
                     {categories?.length > 0 &&
                       categories.map((cate, index) => (
@@ -348,7 +404,8 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                   size="small"
                   inputProps={{ type: 'number' }}
                   fullWidth
-                  value={currentPrice}
+                  value={price}
+                  onChange={priceChangeHandler}
                 />
               </div>
               <div className={classes.textField}>
@@ -360,7 +417,8 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                   size="small"
                   inputProps={{ type: 'number' }}
                   fullWidth
-                  value={currentAmount}
+                  value={amount}
+                  onChange={amountChangeHandler}
                 />
               </div>
               <div className={classes.textField}>
@@ -373,7 +431,8 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                   multiline
                   rows={4}
                   fullWidth
-                  value={currentDescription}
+                  value={description}
+                  onChange={descriptionChangeHandler}
                 />
               </div>
               {/* {!submitIsValid && (
@@ -392,8 +451,8 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose }) => {
                   color="primary"
                   variant="contained"
                   style={{ marginRight: 16 }}
-                  onClick={addNewProductHandler}>
-                  UPDATE
+                  onClick={updateInformation}>
+                  UPDATE INFORMATION
                 </Button>
                 <Button variant="contained" onClick={onClose}>
                   Discard

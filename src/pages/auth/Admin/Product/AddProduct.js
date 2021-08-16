@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddProduct = ({ isOpen, onClose }) => {
+const AddProduct = ({ isOpen, onClose, getList }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.data);
@@ -161,6 +161,8 @@ const AddProduct = ({ isOpen, onClose }) => {
     try {
       await dispatch(addNewProduct(formData)).unwrap();
       toast.success('Add new product success');
+      getList();
+      onClose();
     } catch (err) {
       setError(err);
       console.log('🚀 ~ file: AddProduct.js ~ line 140 ~ addNewProductHandler ~ error', error);

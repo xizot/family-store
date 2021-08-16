@@ -1,9 +1,7 @@
 import { makeStyles, TextField, Typography, Button, FormControl, Modal } from '@material-ui/core';
-import { useEffect } from 'react';
 import { useInput } from '../../../../hooks/use-input';
 import * as Validate from '../../../../helpers/validate';
 import { useDispatch } from 'react-redux';
-import { getListSubCategory } from '../../../../reducers/sub-category';
 import { addCategory, updateSubCategory } from '../../../../reducers/category';
 import { toast } from 'react-toastify';
 
@@ -82,10 +80,6 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
       }
     }
   };
-
-  useEffect(() => {
-    dispatch(getListSubCategory()).unwrap();
-  }, [dispatch]);
 
   return (
     <Modal

@@ -164,7 +164,6 @@ const SubCateManager = (props) => {
     try {
       await dispatch(getListCategory()).unwrap();
     } catch (err) {
-      alert(err);
       setError(err);
     }
   }, [dispatch]);

@@ -28,11 +28,23 @@ const deleteById = (id) => {
   return axios.post(`/api/product/delete/${id}`);
 };
 
+const updateImages = (id, data) => {
+  return axios.post(`/api/product/update-image/${id}`, data, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+
+const updateInformation = (id, data) => {
+  return axios.post(`/api/product/update/${id}`, data);
+};
+
 const adminProductApis = {
   getAll,
   getByPage,
   addNew,
   deleteById,
+  updateImages,
+  updateInformation,
 };
 
 export default adminProductApis;

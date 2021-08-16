@@ -213,11 +213,16 @@ const ProductManager = (props) => {
   return (
     <>
       <div className={classes.root}>
-        <AddProduct isOpen={openAddModal} onClose={closeModalHandler} />
+        <AddProduct
+          isOpen={openAddModal}
+          onClose={closeModalHandler}
+          getList={getListProductByPageHandler.bind(page)}
+        />
         <UpdateProduct
           itemInfo={selectedItem}
           isOpen={openUpdateModal}
           onClose={closeModalHandler}
+          getList={getListProductByPageHandler.bind(page)}
         />
         <ModalConfirm
           title="Delete Product"

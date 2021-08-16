@@ -18,6 +18,26 @@ export const deleteProduct = createAsyncThunk(
     }
   }
 );
+export const updateProductImage = createAsyncThunk(
+  'product/UpdateImage',
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      return (await adminProductApis.updateImages(id, data)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
+export const updateProductInformation = createAsyncThunk(
+  'product/UpdateInformation',
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      return (await adminProductApis.updateInformation(id, data)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
 export const addNewProduct = createAsyncThunk(
   'product/AddNewProduct',
   async (formData, { rejectWithValue }) => {
