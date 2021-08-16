@@ -171,6 +171,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
   useEffect(() => {
     getListCategoryHandler();
   }, [dispatch, getListCategoryHandler]);
+
   useEffect(() => {
     if (images.length > 0) {
       getBase64(images[0]);

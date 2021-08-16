@@ -18,6 +18,7 @@ import { useInput } from '../../../../hooks/use-input';
 import { Validate } from '../../../../helpers';
 import { updateProductImage, updateProductInformation } from '../../../../reducers/product';
 import { toast } from 'react-toastify';
+import { getBaseImage } from '../../../../helpers/getBaseImage';
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: '10vh',
@@ -128,20 +129,6 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
     }
   };
 
-  const getBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-      reader.onerror = (error) => {
-        console.log(error);
-        reject(null);
-      };
-    });
-  };
-
   const removeOldImage = (item) => {
     setImages((prevState) => prevState.filter((image) => image !== item));
     setListRemoveImage((prevState) => [...prevState, item]);
@@ -225,7 +212,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
     setListNewRender([]);
     if (listNewImage?.length > 0) {
       listNewImage.forEach(async (item) => {
-        const newImage = await getBase64(item);
+        const newImage = await getBaseImage(item);
         if (newImage) {
           setListNewRender((prevState) => [...prevState, { file: item, image: newImage }]);
         }
