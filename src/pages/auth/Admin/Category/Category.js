@@ -11,7 +11,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import Pagination from '@material-ui/lab/Pagination';
+// import Pagination from '@material-ui/lab/Pagination';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
@@ -265,9 +265,9 @@ const SubCateManager = (props) => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <div className={`${classes.pagination} ${classes.section}`}>
+            {/* <div className={`${classes.pagination} ${classes.section}`}>
               <Pagination count={data.length} color="primary" variant="outlined" shape="rounded" />
-            </div>
+            </div> */}
           </>
         ) : (
           <TableError message="No data available in database" onTryAgain={getListCategoryHandler} />

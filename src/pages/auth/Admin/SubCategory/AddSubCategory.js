@@ -118,7 +118,7 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
         await dispatch(
           addSubCategory({
             cateName: subCateName,
-            cateFather: cateIdFather,
+            cateFather: +cateIdFather,
           })
         ).unwrap();
         getList();
@@ -133,7 +133,7 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
       try {
         await dispatch(
           updateSubCategory({
-            cateFather: cateIdFather,
+            cateFather: +cateIdFather,
             cateId: cate.cateId,
             cateName: subCateName,
           })

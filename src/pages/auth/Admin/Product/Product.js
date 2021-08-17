@@ -316,17 +316,21 @@ const ProductManager = (props) => {
                           <Box className={classes.longTextStyle}>{row.prod_description}</Box>
                         </TableCell>
                         <TableCell>{row.prod_updated_date}</TableCell>
-                        <TableCell align="center" style={{ minWidth: 150 }}>
-                          <EditIcon
-                            onClick={() => openUpdateModalHandler(row)}
-                            fontSize="small"
-                            style={{ marginRight: 5, cursor: 'pointer' }}
-                          />
-                          <DeleteIcon
-                            fontSize="small"
-                            style={{ cursor: 'pointer' }}
-                            onClick={(e) => openDeleteModalHandler(e, row.prod_id)}
-                          />
+                        <TableCell align="center">
+                          <Box style={{ width: 150 }}>
+                            <Button
+                              size="small"
+                              startIcon={<EditIcon />}
+                              style={{ padding: '0' }}
+                              onClick={() => openUpdateModalHandler(row)}
+                            />
+                            <Button
+                              size="small"
+                              startIcon={<DeleteIcon />}
+                              style={{ padding: '0' }}
+                              onClick={(e) => openDeleteModalHandler(e, row.prod_id)}
+                            />
+                          </Box>
                         </TableCell>
                       </TableRow>
                     ))}

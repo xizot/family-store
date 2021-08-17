@@ -61,7 +61,8 @@ const adminCategorySlice = createSlice({
     },
     [getListCategory.fulfilled]: (state, action) => {
       state.loading = false;
-      state.data = action.payload.listCategories;
+      state.data = action.payload.paginationResult;
+      console.log(action.payload.paginationResult);
     },
     [deleteCategory.fulfilled]: (state, action) => {
       state.data = state.data.filter((item) => item.cateId !== action.payload);

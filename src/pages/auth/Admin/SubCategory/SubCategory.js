@@ -17,7 +17,7 @@ import {
   Modal,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import Pagination from '@material-ui/lab/Pagination';
+// import Pagination from '@material-ui/lab/Pagination';
 import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
@@ -164,12 +164,13 @@ const SubCateManager = (props) => {
   const sub = useSelector((state) => state.subCategory.data);
   const loading = useSelector((state) => state.category.loading);
 
-  const [optionFather, setOptionFather] = useState(3);
+  const [optionFather, setOptionFather] = useState(1);
 
   const fatherChangeHandler = async (event) => {
-    setOptionFather(event.target.value);
+    const cateFatherSelected = +event.target.value;
+    setOptionFather(cateFatherSelected);
     try {
-      await dispatch(getListSubCategory(event.target.value)).unwrap();
+      await dispatch(getListSubCategory(cateFatherSelected)).unwrap();
     } catch (error) {
       console.log('🚀 ~ file: SubCategory.js ~ line 175 ~ fatherChangeHandler ~ error', error);
     }
@@ -197,7 +198,7 @@ const SubCateManager = (props) => {
   const subCateDeleteConfirm = () => {
     dispatch(deleteCategory(detail.cateId));
     setClose(false);
-    dispatch(getListSubCategory(optionFather));
+    dispatch(getListSubCategory(+optionFather));
     toast.success('Delete successfully');
   };
 
@@ -216,7 +217,7 @@ const SubCateManager = (props) => {
   const getChildCategoryHandler = useCallback(
     async (cateFather) => {
       try {
-        await dispatch(getListSubCategory(cateFather)).unwrap();
+        await dispatch(getListSubCategory(+cateFather)).unwrap();
       } catch (err) {
         setError(err);
       }
@@ -231,8 +232,7 @@ const SubCateManager = (props) => {
 
   useEffect(() => {
     document.title = 'Sub Category Admin';
-    dispatch(getListSubCategory(optionFather));
-  }, [t, optionFather, dispatch, data]);
+  }, [t, optionFather, dispatch]);
 
   return (
     <div className={classes.root}>
@@ -312,9 +312,9 @@ const SubCateManager = (props) => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <div className={`${classes.pagination} ${classes.section}`}>
+            {/* <div className={`${classes.pagination} ${classes.section}`}>
               <Pagination count={data.length} color="primary" variant="outlined" shape="rounded" />
-            </div>
+            </div> */}
           </>
         ) : (
           <TableError
