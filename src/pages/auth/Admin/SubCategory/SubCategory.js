@@ -32,6 +32,7 @@ import { toast } from 'react-toastify';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
 import { getListSubCategory, deleteCategory } from '../../../../reducers/sub-category';
 import DeleteModal from '../DeleteModal';
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,14 +67,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '12px',
     display: 'flex',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   filterItem: {
     display: 'flex',
     alignItems: 'center',
-    '&:not(:last-child)': {
-      marginRight: theme.spacing(3),
-    },
     [theme.breakpoints.down('xs')]: {
       '&:not(:last-child)': {
         marginBottom: theme.spacing(1),
@@ -94,7 +93,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   addButton: {
-    marginLeft: 'auto',
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
     },
@@ -103,7 +101,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   search: {
-    marginRight: theme.spacing(2),
     borderRadius: theme.shape.borderRadius,
     border: '1px solid #ddd',
     [theme.breakpoints.down('xs')]: {
@@ -139,7 +136,6 @@ const BootstrapInput = withStyles((theme) => ({
     height: 17,
     width: 75,
     padding: '10px 26px 7px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
     fontFamily: ['Arial'].join(','),
     '&:focus': {
       borderRadius: 4,
@@ -161,19 +157,19 @@ const SubCateManager = (props) => {
   const [detail, setDetail] = useState({});
   const [action, setAction] = useState('insert');
   const data = useSelector((state) => state.category.data);
+  const totalPage = useSelector((state) => state.subCategory.totalPage);
   const sub = useSelector((state) => state.subCategory.data);
-  const loading = useSelector((state) => state.category.loading);
-
+  const loading = useSelector((state) => state.subCategory.loading);
+  const [page, setPage] = useState(1);
   const [optionFather, setOptionFather] = useState(1);
+
+  const pageChangeHandler = (event, value) => {
+    setPage(value);
+  };
 
   const fatherChangeHandler = async (event) => {
     const cateFatherSelected = +event.target.value;
     setOptionFather(cateFatherSelected);
-    try {
-      await dispatch(getListSubCategory(cateFatherSelected)).unwrap();
-    } catch (error) {
-      console.log('🚀 ~ file: SubCategory.js ~ line 175 ~ fatherChangeHandler ~ error', error);
-    }
   };
 
   const editSubCategory = (item) => {
@@ -198,7 +194,7 @@ const SubCateManager = (props) => {
   const subCateDeleteConfirm = () => {
     dispatch(deleteCategory(detail.cateId));
     setClose(false);
-    dispatch(getListSubCategory(+optionFather));
+    getListSubCategoryHandler(optionFather, page);
     toast.success('Delete successfully');
   };
 
@@ -215,20 +211,23 @@ const SubCateManager = (props) => {
   }, [dispatch]);
 
   const getChildCategoryHandler = useCallback(
-    async (cateFather) => {
+    async (cateFather, page) => {
       try {
-        await dispatch(getListSubCategory(+cateFather)).unwrap();
+        await dispatch(getListSubCategory({ cateFather: +cateFather, page })).unwrap();
       } catch (err) {
         setError(err);
       }
     },
     [dispatch]
   );
-
   useEffect(() => {
     dispatch(uiActions.hideModal());
     getListSubCategoryHandler();
-  }, [dispatch, getListSubCategoryHandler]);
+  }, [dispatch, getListSubCategoryHandler, data]);
+
+  useEffect(() => {
+    getChildCategoryHandler(optionFather, page);
+  }, [optionFather, page, getChildCategoryHandler]);
 
   useEffect(() => {
     document.title = 'Sub Category Admin';
@@ -273,8 +272,11 @@ const SubCateManager = (props) => {
         {loading ? (
           <TableLoading />
         ) : error?.length > 0 ? (
-          <TableError message={error} onTryAgain={getListSubCategoryHandler} />
-        ) : data?.length > 0 ? (
+          <TableError
+            message={error}
+            onTryAgain={getChildCategoryHandler.bind(null, optionFather, page)}
+          />
+        ) : sub?.length > 0 ? (
           <>
             <TableContainer component={Paper} className={classes.section}>
               <Table aria-label="a dense table">
@@ -294,32 +296,41 @@ const SubCateManager = (props) => {
                           {index}
                         </TableCell>
                         <TableCell>{row.cateName}</TableCell>
-                        <TableCell>01-02-2021</TableCell>
+                        <TableCell>{row.createDate}</TableCell>
                         <TableCell align="center">
                           <Button
                             size="small"
                             startIcon={<EditIcon />}
                             style={{ padding: '0' }}
-                            onClick={() => editSubCategory(row)}></Button>
+                            onClick={() => editSubCategory(row)}
+                          />
                           <Button
                             size="small"
                             startIcon={<DeleteIcon />}
                             style={{ padding: '0' }}
-                            onClick={() => subCateDeleteHandler(row)}></Button>
+                            onClick={() => subCateDeleteHandler(row)}
+                          />
                         </TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            {/* <div className={`${classes.pagination} ${classes.section}`}>
-              <Pagination count={data.length} color="primary" variant="outlined" shape="rounded" />
-            </div> */}
+            <div className={`${classes.pagination} ${classes.section}`}>
+              <Pagination
+                count={totalPage}
+                page={page}
+                onChange={pageChangeHandler}
+                color="primary"
+                variant="outlined"
+                shape="rounded"
+              />
+            </div>
           </>
         ) : (
           <TableError
             message="No data available in database"
-            onTryAgain={getListSubCategoryHandler}
+            onTryAgain={getChildCategoryHandler.bind(null, optionFather, page)}
           />
         )}
       </div>
@@ -329,20 +340,21 @@ const SubCateManager = (props) => {
         className={classes.modal}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}>
         <Fade in={open}>
-          <AddComponent
-            cateFather={optionFather}
-            action={action}
-            cate={detail}
-            father={data}
-            parentHandleClose={handleClose}
-            getList={getChildCategoryHandler.bind(null, optionFather)}
-          />
+          <div>
+            <AddComponent
+              cateFather={optionFather}
+              action={action}
+              cate={detail}
+              father={data}
+              parentHandleClose={handleClose}
+              getList={getChildCategoryHandler.bind(null, optionFather, page)}
+            />
+          </div>
         </Fade>
       </Modal>
       <Modal
@@ -351,8 +363,8 @@ const SubCateManager = (props) => {
         className={classes.modal}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        closeAfterTransition
         BackdropComponent={Backdrop}
+        closeAfterTransition
         BackdropProps={{
           timeout: 500,
         }}>

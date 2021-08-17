@@ -5,6 +5,7 @@ import { getResponseError } from '../helpers';
 const initialState = {
   data: [],
   loading: false,
+  totalPage: 0,
 };
 
 export const addCategory = createAsyncThunk(
@@ -17,13 +18,16 @@ export const addCategory = createAsyncThunk(
     }
   }
 );
-export const getListCategory = createAsyncThunk('category/Get', async (_, { rejectWithValue }) => {
-  try {
-    return (await adminCategoryApi.getListCategory()).data;
-  } catch (error) {
-    return rejectWithValue(getResponseError(error));
+export const getListCategory = createAsyncThunk(
+  'category/Get',
+  async (page = null, { rejectWithValue }) => {
+    try {
+      return (await adminCategoryApi.getListCategory(page)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
   }
-});
+);
 
 export const deleteCategory = createAsyncThunk(
   'subcategory/Delete',
@@ -62,10 +66,12 @@ const adminCategorySlice = createSlice({
     [getListCategory.fulfilled]: (state, action) => {
       state.loading = false;
       state.data = action.payload.paginationResult;
-      console.log(action.payload.paginationResult);
+
+      state.totalPage = action.payload.totalPage || 0;
     },
     [deleteCategory.fulfilled]: (state, action) => {
       state.data = state.data.filter((item) => item.cateId !== action.payload);
+      state.totalPage = Math.floor(state.data / 10) + state.data / 10 > 0 ? 1 : 0 + 1;
     },
   },
 });

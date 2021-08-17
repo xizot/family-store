@@ -1,4 +1,7 @@
 import axios from '../axios/index';
+
+const CATEGORY_LIMIT = 10;
+
 // import { updateSubCategory } from '../reducers/sub-category';
 
 /**
@@ -9,10 +12,15 @@ import axios from '../axios/index';
 const addCategory = (data) => {
   return axios.post('/api/categories/add-father', data);
 };
-const getListCategory = () => {
+
+const getListCategory = (page = null) => {
   let query = '/api/categories/list';
+  if (page) {
+    query = `/api/categories/list?page=${page}&limit=${CATEGORY_LIMIT}`;
+  }
   return axios.get(query);
 };
+
 const updateCategory = (cateId, cateName) => {
   return axios.post('/api/categories/update', { cateId, cateName });
 };

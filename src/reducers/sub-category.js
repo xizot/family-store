@@ -4,14 +4,15 @@ import { getResponseError } from '../helpers';
 
 const initialState = {
   data: [],
+  totalPage: 0,
   loading: false,
 };
 
 export const getListSubCategory = createAsyncThunk(
   'subcategory/Get',
-  async (page, { rejectWithValue }) => {
+  async ({ cateFather, page }, { rejectWithValue }) => {
     try {
-      return (await adminSubCategoryApi.getListSubCategory(page)).data;
+      return (await adminSubCategoryApi.getListSubCategory(cateFather, page)).data;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }
@@ -22,7 +23,8 @@ export const deleteCategory = createAsyncThunk(
   'subcategory/Delete',
   async (id, { rejectWithValue }) => {
     try {
-      return (await adminSubCategoryApi.deleteCategory(id)).data;
+      await adminSubCategoryApi.deleteCategory(id);
+      return id;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }
@@ -63,35 +65,11 @@ const adminSubCategorySlice = createSlice({
     },
     [getListSubCategory.fulfilled]: (state, action) => {
       state.loading = false;
-      state.data = action.payload.listCategories.subCategories;
-      console.log('🚀 ~ file: admin-subcategory.js ~ line 53 ~ action.payload', action.payload);
+      state.data = action.payload.subCategories;
+      state.totalPage = action.payload.totalPage || 0;
     },
-    [addSubCategory.pending]: (state) => {
-      state.loading = true;
-    },
-    [addSubCategory.rejected]: (state) => {
-      state.loading = false;
-    },
-    [addSubCategory.fulfilled]: (state) => {
-      state.loading = false;
-    },
-    [updateSubCategory.pending]: (state) => {
-      state.loading = true;
-    },
-    [updateSubCategory.rejected]: (state) => {
-      state.loading = false;
-    },
-    [updateSubCategory.fulfilled]: (state) => {
-      state.loading = false;
-    },
-    [deleteCategory.pending]: (state) => {
-      state.loading = true;
-    },
-    [deleteCategory.rejected]: (state) => {
-      state.loading = false;
-    },
-    [deleteCategory.fulfilled]: (state) => {
-      state.loading = false;
+    [deleteCategory.fulfilled]: (state, action) => {
+      state.data = state.data.filter((item) => item.cateId !== action.payload);
     },
   },
 });

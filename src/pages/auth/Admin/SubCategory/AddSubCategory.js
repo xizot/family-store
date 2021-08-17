@@ -17,19 +17,18 @@ import { addSubCategory, updateSubCategory } from '../../../../reducers/sub-cate
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    minWidth: '60vh',
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    width: '30rem',
+    maxWidth: '90%',
+    margin: '20vh auto 0',
+    backgroundColor: '#fff',
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(5),
   },
   form: {
     marginTop: '9px',
-    minWidth: '60vh',
   },
   native: {
     marginTop: '9px',
-    minWidth: '60vh',
   },
   select: {
     position: 'absolute',
@@ -81,7 +80,6 @@ const BootstrapInput = withStyles((theme) => ({
     height: 17,
     width: 75,
     padding: '10px 26px 7px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
     fontFamily: ['Arial'].join(','),
     '&:focus': {
       borderRadius: 4,
@@ -97,7 +95,7 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
   const dispatch = useDispatch();
   const [error, setError] = useState('');
   const [subCateName, setSubCateName] = useState(cate?.cateName || '');
-  const [cateIdFather, setCateIdFather] = useState(cateFather);
+  const [cateIdFather, setCateIdFather] = useState(cateFather || '');
 
   useEffect(() => {
     if (action === 'insert') {
@@ -113,6 +111,12 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
 
   const addCategoryHandler = async () => {
     setError('');
+
+    if (subCateName.trim().length <= 0) {
+      setError('Category name must be not null or empty!');
+      return;
+    }
+
     if (action === 'insert') {
       try {
         await dispatch(
@@ -149,54 +153,52 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
   };
 
   return (
-    <>
-      <div className={classes.paper}>
-        <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
-          MODAL SUB CATEGORY
-        </Typography>
-        <FormControl className={classes.form}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            value={subCateName}
-            onChange={subCateNameChangeHandler}
-          />
-          <Grid container spacing={2} className={classes.native}>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" className={classes.label} />
-              Father Category Name
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <NativeSelect
-                className={classes.select}
-                value={cateIdFather}
-                onChange={fatherCateChangeHandler}
-                name="price"
-                input={<BootstrapInput />}>
-                {father.map((row) => (
-                  <option style={{ color: '#F39148' }} value={row.cateId}>
-                    {row.cateName}
-                  </option>
-                ))}
-              </NativeSelect>
-            </Grid>
+    <div className={classes.paper}>
+      <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
+        MODAL SUB CATEGORY
+      </Typography>
+      <FormControl className={classes.form} fullWidth>
+        <TextField
+          fullWidth
+          variant="outlined"
+          value={subCateName}
+          onChange={subCateNameChangeHandler}
+        />
+        <Grid container spacing={2} className={classes.native}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subtitle2" className={classes.label} />
+            Father Category Name
           </Grid>
-          <Button
-            className={classes.save}
-            variant="contained"
-            fullWidth
-            component="label"
-            onClick={addCategoryHandler}>
-            Save
-          </Button>
-        </FormControl>
-        {error?.length > 0 && (
-          <FormHelperText error style={{ marginBottom: 10 }}>
-            {error}
-          </FormHelperText>
-        )}
-      </div>
-    </>
+          <Grid item xs={12} sm={6}>
+            <NativeSelect
+              className={classes.select}
+              value={cateIdFather}
+              onChange={fatherCateChangeHandler}
+              name="price"
+              input={<BootstrapInput />}>
+              {father.map((row, index) => (
+                <option style={{ color: '#F39148' }} value={row.cateId} key={index}>
+                  {row.cateName}
+                </option>
+              ))}
+            </NativeSelect>
+          </Grid>
+        </Grid>
+        <Button
+          className={classes.save}
+          variant="contained"
+          fullWidth
+          component="label"
+          onClick={addCategoryHandler}>
+          Save
+        </Button>
+      </FormControl>
+      {error?.length > 0 && (
+        <FormHelperText error style={{ marginBottom: 10 }}>
+          {error}
+        </FormHelperText>
+      )}
+    </div>
   );
 };
 export default AddSubCate;

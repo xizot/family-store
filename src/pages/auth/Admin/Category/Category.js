@@ -25,6 +25,7 @@ import TableLoading from '../../../../components/TableLoading/TableLoading';
 import { toast } from 'react-toastify';
 import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 import CategoryModal from './CategoryModal';
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,18 +115,23 @@ const useStyles = makeStyles((theme) => ({
 
 const SubCateManager = (props) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [error, setError] = useState('');
   const data = useSelector((state) => state.category.data);
+  const totalPage = useSelector((state) => state.category.totalPage);
   const loading = useSelector((state) => state.category.loading);
-  const dispatch = useDispatch();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [page, setPage] = useState(1);
 
   const [openModal, setOpenModal] = useState(false);
   const [type, setType] = useState('UPDATE');
   const [itemSelected, setItemSelected] = useState(null);
 
+  const pageChangeHandler = (event, value) => {
+    setPage(value);
+  };
   const openModalHandler = (type, item = null) => {
     setType(type);
     setOpenModal(true);
@@ -160,19 +166,22 @@ const SubCateManager = (props) => {
     setOpenDeleteModal(false);
   };
 
-  const getListCategoryHandler = useCallback(async () => {
-    try {
-      await dispatch(getListCategory()).unwrap();
-    } catch (err) {
-      setError(err);
-    }
-  }, [dispatch]);
+  const getListCategoryHandler = useCallback(
+    async (selectedPage) => {
+      try {
+        await dispatch(getListCategory(selectedPage)).unwrap();
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     dispatch(uiActions.hideModal());
 
-    getListCategoryHandler();
-  }, [dispatch, getListCategoryHandler]);
+    getListCategoryHandler(page);
+  }, [dispatch, getListCategoryHandler, page]);
 
   useEffect(() => {
     document.title = 'Category Admin';
@@ -186,7 +195,7 @@ const SubCateManager = (props) => {
         onClose={handleClose}
         item={itemSelected}
         type={type}
-        getList={getListCategoryHandler}
+        getList={getListCategoryHandler.bind(null, page)}
       />
 
       <ModalConfirm
@@ -219,7 +228,7 @@ const SubCateManager = (props) => {
         {loading ? (
           <TableLoading />
         ) : error?.length > 0 ? (
-          <TableError message={error} onTryAgain={getListCategoryHandler} />
+          <TableError message={error} onTryAgain={getListCategoryHandler.bind(null, page)} />
         ) : data?.length > 0 ? (
           <>
             <TableContainer component={Paper} className={classes.section}>
@@ -247,30 +256,42 @@ const SubCateManager = (props) => {
                         <TableCell style={{ textAlign: 'center' }}>
                           {row.subCategories.length}
                         </TableCell>
-                        <TableCell>01-01-2021</TableCell>
+                        <TableCell>{row.createDate}</TableCell>
                         <TableCell align="center">
                           <Button
                             size="small"
                             startIcon={<EditIcon />}
                             style={{ padding: '0' }}
-                            onClick={() => openModalHandler('UPDATE', row)}></Button>
+                            onClick={() => openModalHandler('UPDATE', row)}
+                          />
                           <Button
                             size="small"
                             startIcon={<DeleteIcon />}
                             style={{ padding: '0' }}
-                            onClick={() => openDeleteModalHandler(row.cateId)}></Button>
+                            onClick={() => openDeleteModalHandler(row.cateId)}
+                          />
                         </TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            {/* <div className={`${classes.pagination} ${classes.section}`}>
-              <Pagination count={data.length} color="primary" variant="outlined" shape="rounded" />
-            </div> */}
+            <div className={`${classes.pagination} ${classes.section}`}>
+              <Pagination
+                count={totalPage || 1}
+                page={page}
+                onChange={pageChangeHandler}
+                color="primary"
+                variant="outlined"
+                shape="rounded"
+              />
+            </div>
           </>
         ) : (
-          <TableError message="No data available in database" onTryAgain={getListCategoryHandler} />
+          <TableError
+            message="No data available in database"
+            onTryAgain={getListCategoryHandler.bind(null, page)}
+          />
         )}
       </div>
     </div>

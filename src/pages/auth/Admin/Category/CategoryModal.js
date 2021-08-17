@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 const useStyles = makeStyles((theme) => ({
   paper: {
     width: '30rem',
+    maxWidth: '90%',
     margin: '20vh auto 0',
     backgroundColor: '#fff',
     borderRadius: theme.shape.borderRadius,
@@ -54,10 +55,12 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
     inputBlurHandler: cateNameBlurHandler,
     inputChangeHandler: cateNameChangeHandler,
     inputIsValid: cateNameIsValid,
+    inputReset: cateReset,
   } = useInput(Validate.isNotEmpty, item?.cateName || '');
 
   const formSubmitHandler = async (event) => {
     event.preventDefault();
+
     if (!cateNameIsValid) return;
 
     if (type === 'UPDATE') {
@@ -81,10 +84,15 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
     }
   };
 
+  const closeHandler = () => {
+    onClose();
+    cateReset();
+  };
+
   return (
     <Modal
       open={isOpen}
-      onClose={onClose}
+      onClose={closeHandler}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description">
       <div className={classes.paper}>
@@ -97,7 +105,8 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
               label="Category Name"
               variant="outlined"
               value={cateName}
-              helperText={cateNameHasError && 'Category name invalid'}
+              error={cateNameHasError}
+              helperText={cateNameHasError && 'Category name must be not null or empty!'}
               onBlur={cateNameBlurHandler}
               onChange={cateNameChangeHandler}
               size="small"
