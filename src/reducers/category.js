@@ -70,7 +70,7 @@ const adminCategorySlice = createSlice({
     },
     [deleteCategory.fulfilled]: (state, action) => {
       state.data = state.data.filter((item) => item.cateId !== action.payload);
-      state.totalPage = Math.floor(state.data / 10) + state.data / 10 > 0 ? 1 : 0 + 1;
+      state.totalPage = Math.floor(state.data.length / 10) + state.data.length % 10 > 0 ? 1 : 0 ;
     },
   },
 });
