@@ -100,26 +100,30 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
   const categories = useSelector((state) => state.category.data);
   const [error, setError] = useState('');
 
-  const { enteredInput: title, inputChangeHandler: titleChangeHandler } = useInput(
-    Validate.isNotEmpty,
-    itemInfo?.prod_name || ''
-  );
+  const {
+    enteredInput: title,
+    inputChangeHandler: titleChangeHandler,
+    inputReset: titleReset,
+  } = useInput(Validate.isNotEmpty, itemInfo?.prod_name || '');
 
-  const { enteredInput: price, inputChangeHandler: priceChangeHandler } = useInput(
-    Validate.isNotEmpty,
-    itemInfo?.prod_price || ''
-  );
-  const { enteredInput: amount, inputChangeHandler: amountChangeHandler } = useInput(
-    Validate.isNotEmpty,
-    itemInfo?.prod_amount || ''
-  );
-  const { enteredInput: description, inputChangeHandler: descriptionChangeHandler } = useInput(
-    Validate.isNotEmpty,
-    itemInfo?.prod_description || ''
-  );
+  const {
+    enteredInput: price,
+    inputChangeHandler: priceChangeHandler,
+    inputReset: priceReset,
+  } = useInput(Validate.isNotEmpty, itemInfo?.prod_price || '');
+  const {
+    enteredInput: amount,
+    inputChangeHandler: amountChangeHandler,
+    inputReset: amountReset,
+  } = useInput(Validate.isNotEmpty, itemInfo?.prod_amount || '');
+  const {
+    enteredInput: description,
+    inputChangeHandler: descriptionChangeHandler,
+    inputReset: descriptionReset,
+  } = useInput(Validate.isNotEmpty, itemInfo?.prod_description || '');
 
   const [categoryId, setCategoryId] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(itemInfo?.images || []);
   const [listRemoveImage, setListRemoveImage] = useState([]);
   const [listNewImage, setListNewImage] = useState([]);
   const [listNewRender, setListNewRender] = useState([]);
@@ -146,13 +150,15 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
   }, [dispatch]);
 
   const closeModalHandler = () => {
-    if (itemInfo) {
-      setImages(itemInfo?.images || []);
-    }
-
     setError('');
-    setListRemoveImage([]);
     onClose();
+    setImages([]);
+    setListRemoveImage([]);
+    setListNewRender([]);
+    descriptionReset();
+    titleReset();
+    priceReset();
+    amountReset();
   };
 
   const updateImageHandler = async () => {
@@ -170,7 +176,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
       ).unwrap();
       toast.success(`Update images for product id ${itemInfo.prod_id} sucessfully`);
       getList();
-      onClose();
+      closeModalHandler();
     } catch (error) {
       toast.error(error);
     }
@@ -192,7 +198,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
       ).unwrap();
       toast.success(`Update product id ${itemInfo.prod_id} sucessfully`);
       getList();
-      onClose();
+      closeModalHandler();
     } catch (error) {
       toast.error(error);
     }
@@ -201,13 +207,6 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
   useEffect(() => {
     getListCategoryHandler();
   }, [dispatch, getListCategoryHandler]);
-  useEffect(() => {
-    if (itemInfo) {
-      console.log(itemInfo);
-      setCategoryId(itemInfo.prod_category_id);
-      setImages(itemInfo.images);
-    }
-  }, [itemInfo]);
 
   useEffect(() => {
     setListNewRender([]);
@@ -221,7 +220,13 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
     }
   }, [listNewImage]);
 
-  console.log(listNewRender);
+  useEffect(() => {
+    if (itemInfo) {
+      setImages(itemInfo.images);
+      setCategoryId(itemInfo.prod_category_id);
+    }
+  }, [itemInfo]);
+
   return (
     <ProductModal isOpen={isOpen} onClose={closeModalHandler}>
       <div className={classes.root}>

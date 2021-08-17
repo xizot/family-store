@@ -180,6 +180,8 @@ const ProductManager = (props) => {
     setOpenUpdateModal(false);
     setOpenAddModal(false);
     setOpenDeleteModal(false);
+    setSelectedItem(null);
+    setSelectedId(null);
   };
 
   const pageChangeHandler = (event, value) => {
