@@ -155,6 +155,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
     setImages([]);
     setListRemoveImage([]);
     setListNewRender([]);
+    setListNewImage([]);
     descriptionReset();
     titleReset();
     priceReset();
@@ -447,7 +448,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
                   onClick={updateInformation}>
                   UPDATE INFORMATION
                 </Button>
-                <Button variant="contained" onClick={onClose}>
+                <Button variant="contained" onClick={closeModalHandler}>
                   Discard
                 </Button>
               </Box>
