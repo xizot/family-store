@@ -381,7 +381,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
                           {cate.subCategories?.length > 0 &&
                             cate.subCategories.map((subCate, index) => (
                               <option value={subCate.cateId} key={index}>
-                                {subCate.CateName}
+                                {subCate.cateName}
                               </option>
                             ))}
                         </optgroup>

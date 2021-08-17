@@ -226,7 +226,6 @@ const ProductManager = (props) => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  console.log(productInfo);
   return (
     <>
       <div className={classes.root}>

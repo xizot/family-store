@@ -116,8 +116,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
 
   const getListCategoryHandler = useCallback(async () => {
     try {
-      const repsone = await dispatch(getListCategory()).unwrap();
-      console.log('category', repsone);
+      await dispatch(getListCategory()).unwrap();
     } catch (err) {
       console.log('🚀 ~ file: Product.js ~ line 166 ~ getListCategoryHandler ~ err', err);
     }
@@ -262,7 +261,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
                           {cate.subCategories?.length > 0 &&
                             cate.subCategories.map((subCate, index) => (
                               <option value={subCate.cateId} key={index}>
-                                {subCate.CateName}
+                                {subCate.cateName}
                               </option>
                             ))}
                         </optgroup>
