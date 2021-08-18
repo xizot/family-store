@@ -67,6 +67,7 @@ const adminSubCategorySlice = createSlice({
       state.loading = false;
       state.data = action.payload.subCategories;
       state.totalPage = action.payload.totalPage || 0;
+      console.log(action.payload);
     },
   },
 });

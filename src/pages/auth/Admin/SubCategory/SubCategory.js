@@ -206,7 +206,7 @@ const SubCateManager = (props) => {
   const getListSubCategoryHandler = useCallback(async () => {
     try {
       const response = await dispatch(getListCategory()).unwrap();
-      if (response?.paginationResult.length > 0) {
+      if (response?.paginationResult) {
         setOptionFather(response.paginationResult[0].cateId);
       }
     } catch (err) {
@@ -216,15 +216,7 @@ const SubCateManager = (props) => {
 
   const getChildCategoryHandler = useCallback(
     async (cateFather, selectedPage) => {
-      if (cateFather && cateFather.length) {
-        try {
-          await dispatch(
-            getListSubCategory({ cateFather: +cateFather, page: selectedPage })
-          ).unwrap();
-        } catch (err) {
-          setError(err);
-        }
-      }
+      await dispatch(getListSubCategory({ cateFather: +cateFather, page: selectedPage })).unwrap();
     },
     [dispatch]
   );
@@ -240,6 +232,7 @@ const SubCateManager = (props) => {
   useEffect(() => {
     document.title = 'Sub Category Admin';
   }, [t, optionFather, dispatch]);
+
   useEffect(() => {
     if (page > totalPage) {
       setPage(totalPage || 1);
