@@ -19,7 +19,7 @@ const register = ({ username, password, email, fullName, phoneNumber }) => {
 
 const verifyEmail = ({ userId, accessToken }) => {
   return axios.post('/api/authentication/verification-email', {
-    accId: userId,
+    accId: +userId,
     accToken: accessToken,
   });
 };
@@ -32,7 +32,7 @@ const forgotPassword = (email) => {
 
 const resetPassword = ({ userId, newPassword, code }) => {
   return axios.post('/api/authentication/new-password', {
-    accId: userId,
+    accId: +userId,
     accPassword: newPassword,
     tokenChangePass: code,
   });
