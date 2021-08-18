@@ -161,7 +161,7 @@ const SubCateManager = (props) => {
   const sub = useSelector((state) => state.subCategory.data);
   const loading = useSelector((state) => state.subCategory.loading);
   const [page, setPage] = useState(1);
-  const [optionFather, setOptionFather] = useState(1);
+  const [optionFather, setOptionFather] = useState('');
 
   const pageChangeHandler = (event, value) => {
     setPage(value);
@@ -205,18 +205,25 @@ const SubCateManager = (props) => {
   };
   const getListSubCategoryHandler = useCallback(async () => {
     try {
-      await dispatch(getListCategory()).unwrap();
+      const response = await dispatch(getListCategory()).unwrap();
+      if (response?.paginationResult.length > 0) {
+        setOptionFather(response.paginationResult[0].cateId);
+      }
     } catch (err) {
       setError(err);
     }
   }, [dispatch]);
 
   const getChildCategoryHandler = useCallback(
-    async (cateFather, page) => {
-      try {
-        await dispatch(getListSubCategory({ cateFather: +cateFather, page })).unwrap();
-      } catch (err) {
-        setError(err);
+    async (cateFather, selectedPage) => {
+      if (cateFather && cateFather.length) {
+        try {
+          await dispatch(
+            getListSubCategory({ cateFather: +cateFather, page: selectedPage })
+          ).unwrap();
+        } catch (err) {
+          setError(err);
+        }
       }
     },
     [dispatch]
