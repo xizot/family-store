@@ -192,9 +192,8 @@ const ProductManager = (props) => {
     try {
       await dispatch(deleteProduct(selectedId)).unwrap();
       toast.success(`Delete product id ${selectedId} successfully`);
-      productInfo.listProduct = productInfo.listProduct.filter(
-        (product) => product.prod_id !== selectedId
-      );
+
+      getListProductByPageHandler(page);
     } catch (err) {
       toast.error(err);
     }
@@ -205,6 +204,7 @@ const ProductManager = (props) => {
     async (selectPage = 1) => {
       try {
         const response = await dispatch(getListProductByPage(selectPage)).unwrap();
+
         setProductInfo(response);
       } catch (err) {
         console.log('🚀 ~ file: Product.js ~ line 194 ~ err', err);
@@ -214,6 +214,11 @@ const ProductManager = (props) => {
     [dispatch]
   );
 
+  useEffect(() => {
+    if (page > numberOfPage) {
+      setPage(numberOfPage || 1);
+    }
+  }, [page, numberOfPage]);
   useEffect(() => {
     dispatch(uiActions.hideModal());
     getListProductByPageHandler(page);

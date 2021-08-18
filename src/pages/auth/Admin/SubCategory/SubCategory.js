@@ -31,8 +31,8 @@ import TableError from '../../../../components/TableError/TableError';
 import { toast } from 'react-toastify';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
 import { getListSubCategory, deleteCategory } from '../../../../reducers/sub-category';
-import DeleteModal from '../DeleteModal';
 import Pagination from '@material-ui/lab/Pagination';
+import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -185,23 +185,24 @@ const SubCateManager = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+    setClose(false);
   };
 
   const subCateDeleteHandler = (item) => {
     setClose(true);
     setDetail(item);
   };
-  const subCateDeleteConfirm = () => {
-    dispatch(deleteCategory(detail.cateId));
-    setClose(false);
-    getListSubCategoryHandler(optionFather, page);
-    toast.success('Delete successfully');
+  const subCateDeleteConfirm = async () => {
+    try {
+      setClose(false);
+      await dispatch(deleteCategory(detail.cateId));
+      await getChildCategoryHandler(optionFather, page);
+      toast.success('Delete successfully');
+    } catch (err) {
+      toast.error(err);
+      console.log('🚀 ~ file: SubCategory.js ~ line 199 ~ subCateDeleteConfirm ~ err', err);
+    }
   };
-
-  const subCateDeleteClose = () => {
-    setClose(false);
-  };
-
   const getListSubCategoryHandler = useCallback(async () => {
     try {
       await dispatch(getListCategory()).unwrap();
@@ -223,7 +224,7 @@ const SubCateManager = (props) => {
   useEffect(() => {
     dispatch(uiActions.hideModal());
     getListSubCategoryHandler();
-  }, [dispatch, getListSubCategoryHandler, data]);
+  }, [dispatch, getListSubCategoryHandler]);
 
   useEffect(() => {
     getChildCategoryHandler(optionFather, page);
@@ -232,7 +233,11 @@ const SubCateManager = (props) => {
   useEffect(() => {
     document.title = 'Sub Category Admin';
   }, [t, optionFather, dispatch]);
-
+  useEffect(() => {
+    if (page > totalPage) {
+      setPage(totalPage || 1);
+    }
+  }, [page, totalPage]);
   return (
     <div className={classes.root}>
       <div className={classes.section}>
@@ -291,9 +296,9 @@ const SubCateManager = (props) => {
                 <TableBody>
                   {sub?.length > 0 &&
                     sub.map((row, index) => (
-                      <TableRow key={index + 1}>
+                      <TableRow key={index}>
                         <TableCell component="th" scope="row">
-                          {index}
+                          {index + 1}
                         </TableCell>
                         <TableCell>{row.cateName}</TableCell>
                         <TableCell>{row.createDate}</TableCell>
@@ -357,24 +362,13 @@ const SubCateManager = (props) => {
           </div>
         </Fade>
       </Modal>
-      <Modal
-        open={close}
+
+      <ModalConfirm
+        isOpen={close}
+        onConfirm={subCateDeleteConfirm}
         onClose={handleClose}
-        className={classes.modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        BackdropComponent={Backdrop}
-        closeAfterTransition
-        BackdropProps={{
-          timeout: 500,
-        }}>
-        <Fade in={open}>
-          <DeleteModal
-            parentHandleConfirm={subCateDeleteConfirm}
-            parentHandleClose={subCateDeleteClose}
-          />
-        </Fade>
-      </Modal>
+        title="DELETE SUB CATEGORY"
+      />
     </div>
   );
 };

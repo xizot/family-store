@@ -68,10 +68,6 @@ const adminCategorySlice = createSlice({
       state.data = action.payload.paginationResult;
       state.totalPage = action.payload.totalPage || 0;
     },
-    [deleteCategory.fulfilled]: (state, action) => {
-      state.data = state.data.filter((item) => item.cateId !== action.payload);
-      state.totalPage = Math.floor(state.data.length / 10) + state.data.length % 10 > 0 ? 1 : 0 ;
-    },
   },
 });
 

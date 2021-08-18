@@ -68,9 +68,6 @@ const adminSubCategorySlice = createSlice({
       state.data = action.payload.subCategories;
       state.totalPage = action.payload.totalPage || 0;
     },
-    [deleteCategory.fulfilled]: (state, action) => {
-      state.data = state.data.filter((item) => item.cateId !== action.payload);
-    },
   },
 });
 

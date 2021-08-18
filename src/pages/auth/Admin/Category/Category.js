@@ -157,7 +157,7 @@ const SubCateManager = (props) => {
   const DeleteConfirm = async () => {
     try {
       await dispatch(deleteCategory(selectedId)).unwrap();
-
+      await getListCategoryHandler(page);
       toast.success(`Delete category id ${selectedId} successfully`);
     } catch (error) {
       console.log(error);
@@ -186,7 +186,11 @@ const SubCateManager = (props) => {
   useEffect(() => {
     document.title = 'Category Admin';
   }, [t]);
-
+  useEffect(() => {
+    if (page > totalPage) {
+      setPage(totalPage || 1);
+    }
+  }, [page, totalPage]);
   return (
     <div className={classes.root}>
       <CategoryModal
