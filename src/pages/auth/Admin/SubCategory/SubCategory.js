@@ -195,7 +195,8 @@ const SubCateManager = (props) => {
   const subCateDeleteConfirm = async () => {
     try {
       setClose(false);
-      await dispatch(deleteCategory(detail.cateId));
+      await dispatch(deleteCategory(detail.cateId)).unwrap();
+
       await getChildCategoryHandler(optionFather, page);
       toast.success('Delete successfully');
     } catch (err) {
