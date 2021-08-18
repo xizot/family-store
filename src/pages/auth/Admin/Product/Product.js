@@ -308,7 +308,7 @@ const ProductManager = (props) => {
                         <TableCell>{row.prod_name}</TableCell>
                         <TableCell>
                           <img
-                            src={row.images[0]}
+                            src={row.images[0] || "/img/store-icon.png"}
                             alt={row.prod_name}
                             style={{ width: 100, height: 80, objectFit: 'cover' }}
                           />
@@ -319,7 +319,7 @@ const ProductManager = (props) => {
                         <TableCell>
                           <Box className={classes.longTextStyle}>{row.prod_description}</Box>
                         </TableCell>
-                        <TableCell>{row.prod_updated_date}</TableCell>
+                        <TableCell>{row.prod_updated_date || row.prod_created_date || ""}</TableCell>
                         <TableCell align="center">
                           <Box style={{ width: 150 }}>
                             <Button
