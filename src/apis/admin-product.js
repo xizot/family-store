@@ -19,23 +19,23 @@ const getByPage = (page = 1, limit = 10) => {
  */
 const addNew = (data) => {
   // {prodName, prodCategoryID, prodPrice, prodAmount,prodDescription, image}
-  return axios.post('/api/product/add', data, {
+  return axios.post('/api/auth-product/add', data, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
 
 const deleteById = (id) => {
-  return axios.post(`/api/product/delete/${id}`);
+  return axios.post(`/api/auth-product/delete/${id}`);
 };
 
 const updateImages = (id, data) => {
-  return axios.post(`/api/product/update-image/${id}`, data, {
+  return axios.post(`/api/auth-product/update-image/${id}`, data, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
 
 const updateInformation = (id, data) => {
-  return axios.post(`/api/product/update/${id}`, data);
+  return axios.post(`/api/auth-product/update/${id}`, data);
 };
 
 const adminProductApis = {

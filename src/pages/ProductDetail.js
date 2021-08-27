@@ -8,7 +8,7 @@ import {
   FormControl,
   MenuItem,
 } from '@material-ui/core';
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
@@ -27,6 +27,7 @@ import ReviewItem from '../components/ReviewItem/ReviewItem';
 import { Pagination } from '@material-ui/lab';
 import GenerateStar from '../components/GenerateStar/GenerateStar';
 import CategoryMenu from '../components/CategoriesMenu/CategoriesMenu';
+import { getProductDetail } from '../reducers/user-product.reducer';
 
 const productItem = {
   id: 'it1',
@@ -552,6 +553,22 @@ const ProductDetail = (props) => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    const getProductDetailHandler = async (productId) => {
+      try {
+        const response = await dispatch(getProductDetail({ id: +productId })).unwrap();
+        console.log('sarn pham', response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (productId) {
+      getProductDetailHandler(productId);
+      console.log('id:', productId);
+    }
+  }, [dispatch, productId]);
+
   return (
     <>
       <div className={classes.root}>

@@ -6,6 +6,8 @@ import langSlice from '../reducers/lang';
 import uiSlice from '../reducers/ui';
 import subcategorySlice from '../reducers/sub-category';
 import adminProductSlice from '../reducers/product';
+import userCategorySlice from '../reducers/user-category.reducer';
+import userProductSlice from '../reducers/user-product.reducer';
 
 const store = configureStore({
   reducer: {
@@ -16,6 +18,8 @@ const store = configureStore({
     category: categorySlice.reducer,
     subCategory: subcategorySlice.reducer,
     product: adminProductSlice.reducer,
+    userCategory: userCategorySlice.reducer,
+    userProduct: userProductSlice.reducer,
   },
 });
 export default store;
