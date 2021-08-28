@@ -11,6 +11,7 @@ import { uiActions } from '../reducers/ui';
 import CategoryMenu from '../components/CategoriesMenu/CategoriesMenu';
 import Pagination from '@material-ui/lab/Pagination';
 import { getListProductByCateAndPage } from '../reducers/user-product.reducer';
+import RequestLoading from '../components/RequestLoading/RequestLoading';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
@@ -87,6 +88,7 @@ const Collections = (props) => {
   const classes = useStyles();
   const { categoryId: cateID } = useParams();
   const [page, setPage] = useState(1);
+  const loading = useSelector((state) => state.userProduct.loading);
   const products = useSelector((state) => state.userProduct.products);
   const totalPage = useSelector((state) => state.userProduct.totalPage);
   const dispatch = useDispatch();
@@ -159,33 +161,38 @@ const Collections = (props) => {
               </div>
             )}
             <div className={classes.section}>
-              <Grid container spacing={2}>
-                {products?.length > 0 &&
-                  products.map((item, index) => (
-                    <Grid item key={index} xs={12} sm={4} md={3}>
-                      <ProductItem
-                        id={item.prod_id}
-                        title={item.prod_name}
-                        description={item.prod_description}
-                        image={item.images}
-                        price={item.prod_price}
-                        salePrice={item.salePrice}
-                        onAddToCart={itemAddToCartHandler.bind(null, item)}
-                      />
-                    </Grid>
-                  ))}
-              </Grid>
+              {loading && <RequestLoading />}
+              {!loading && (
+                <Grid container spacing={2}>
+                  {products?.length > 0 &&
+                    products.map((item, index) => (
+                      <Grid item key={index} xs={12} sm={4} md={3}>
+                        <ProductItem
+                          id={item.prod_id}
+                          title={item.prod_name}
+                          description={item.prod_description}
+                          image={item.images}
+                          price={item.prod_price}
+                          salePrice={item.salePrice}
+                          onAddToCart={itemAddToCartHandler.bind(null, item)}
+                        />
+                      </Grid>
+                    ))}
+                </Grid>
+              )}
             </div>
-            <Box display="flex" padding={5} justifyContent="center" className={classes.section}>
-              <Pagination
-                count={totalPage}
-                page={page}
-                onChange={pageChangeHandler}
-                color="primary"
-                variant="outlined"
-                shape="rounded"
-              />
-            </Box>
+            {(products.length > 0 || page > 1) && (
+              <Box display="flex" padding={5} justifyContent="center" className={classes.section}>
+                <Pagination
+                  count={totalPage}
+                  page={page}
+                  onChange={pageChangeHandler}
+                  color="primary"
+                  variant="outlined"
+                  shape="rounded"
+                />
+              </Box>
+            )}
           </div>
         </div>
       </div>

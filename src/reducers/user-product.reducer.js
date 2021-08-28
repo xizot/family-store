@@ -12,6 +12,18 @@ export const getListProductByCateAndPage = createAsyncThunk(
     }
   }
 );
+
+export const getListProductSuggestion = createAsyncThunk(
+  'userProduct/GetListSuggest',
+  async ({ catID, page }, { rejectWithValue }) => {
+    try {
+      return (await userProductApi.getListSuggest({ catID, page })).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
+
 export const getProductDetail = createAsyncThunk(
   'userProduct/GetDetail',
   async ({ id }, { rejectWithValue }) => {
@@ -41,6 +53,15 @@ const userProductSlice = createSlice({
       state.loading = false;
       state.products = action.payload.listProduct;
       state.totalPage = action.payload.numberOfPage;
+    },
+    [getProductDetail.pending]: (state) => {
+      state.loading = true;
+    },
+    [getProductDetail.rejected]: (state) => {
+      state.loading = false;
+    },
+    [getProductDetail.fulfilled]: (state, action) => {
+      state.loading = false;
     },
   },
 });

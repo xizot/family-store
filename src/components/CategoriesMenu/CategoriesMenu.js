@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { userGetListCategory } from '../../reducers/user-category.reducer';
+import RequestLoading from '../RequestLoading/RequestLoading';
 import CategoryItem from './CategoryItem/CategoryItem';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +33,7 @@ const CategoriesMenu = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.userCategory.categories);
+  const loading = useSelector((state) => state.userCategory.loading);
 
   useEffect(() => {
     const getListCategoryHandler = async () => {
@@ -41,8 +43,10 @@ const CategoriesMenu = () => {
         toast.error(error);
       }
     };
-    getListCategoryHandler();
-  }, [dispatch]);
+    if (categories.length === 0) {
+      getListCategoryHandler();
+    }
+  }, [dispatch, categories]);
   // const
 
   return (
@@ -51,17 +55,20 @@ const CategoriesMenu = () => {
         {t('sideBar.categories')}
       </Typography>
       <span className={classes.line}></span>
-      <ul>
-        {categories?.length > 0 &&
-          categories.map((category, index) => (
-            <CategoryItem
-              key={index}
-              id={category.cateId}
-              title={category.cateName}
-              items={category.subCategories}
-            />
-          ))}
-      </ul>
+      {loading && <RequestLoading />}
+      {!loading && (
+        <ul>
+          {categories?.length > 0 &&
+            categories.map((category, index) => (
+              <CategoryItem
+                key={index}
+                id={category.cateId}
+                title={category.cateName}
+                items={category.subCategories}
+              />
+            ))}
+        </ul>
+      )}
     </div>
   );
 };

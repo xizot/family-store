@@ -8,6 +8,7 @@ import subcategorySlice from '../reducers/sub-category';
 import adminProductSlice from '../reducers/product';
 import userCategorySlice from '../reducers/user-category.reducer';
 import userProductSlice from '../reducers/user-product.reducer';
+import userCommentSlice from '../reducers/user-comment.reducer';
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     product: adminProductSlice.reducer,
     userCategory: userCategorySlice.reducer,
     userProduct: userProductSlice.reducer,
+    userComment: userCommentSlice.reducer,
   },
 });
 export default store;
