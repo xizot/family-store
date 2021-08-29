@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from '@material-ui/core';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useCallback, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,8 +13,8 @@ import Loading from './components/Loading/Loading';
 import Cart from './components/Cart/Cart';
 import { AdminTemplate } from './components/Templates/Admin/AdminTemplate';
 import { CheckRole } from './components/Common/CheckRole';
+import { userGetListCart } from './reducers/cart';
 const PageNotFound = lazy(() => import('./pages/404NotFound'));
-
 
 const theme = createTheme({
   palette: {
@@ -28,6 +28,21 @@ function App() {
   const dispatch = useDispatch();
   const { i18n } = useTranslation();
   const isOpenCart = useSelector((state) => state.ui.isOpenCart);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const getListCart = useCallback(async () => {
+    if (isAuthenticated) {
+      try {
+        await dispatch(userGetListCart()).unwrap();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [dispatch, isAuthenticated]);
+
+  useEffect(() => {
+    getListCart();
+  }, [getListCart]);
 
   useEffect(() => {
     const existingLang = localStorage.getItem('lang');
@@ -49,16 +64,12 @@ function App() {
           accessToken,
         })
       );
-    } catch (err) { }
+    } catch (err) {}
   }, [dispatch]);
 
   return (
     <ThemeProvider theme={theme}>
-      <ToastContainer
-        autoClose={5000}
-        closeOnClick
-        position="top-right"
-      />
+      <ToastContainer autoClose={5000} closeOnClick position="top-right" />
       {isOpenCart && <Cart />}
       <Suspense fallback={<Loading />}>
         <Switch>

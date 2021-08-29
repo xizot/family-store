@@ -9,6 +9,7 @@ import adminProductSlice from '../reducers/product';
 import userCategorySlice from '../reducers/user-category.reducer';
 import userProductSlice from '../reducers/user-product.reducer';
 import userCommentSlice from '../reducers/user-comment.reducer';
+// import userCartSlice from '../reducers/user-cart.reducer';
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     userCategory: userCategorySlice.reducer,
     userProduct: userProductSlice.reducer,
     userComment: userCommentSlice.reducer,
+    // userCart: userCartSlice.reducer,
   },
 });
 export default store;

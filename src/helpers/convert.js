@@ -1,5 +1,6 @@
 export const moneyFormat = (value) => {
-  var parts = value.toString().split('.');
+  const newMoney = Number(value).toFixed(2);
+  var parts = newMoney.toString().split('.');
   return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (parts[1] ? '.' + parts[1] : '');
 };
 

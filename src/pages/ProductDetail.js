@@ -7,7 +7,6 @@ import CustomArrowNext from '../components/CustomArrow/CustomArrowNext';
 import CustomArrowPrev from '../components/CustomArrow/CustomArrowPrev';
 import Header from '../components/Layout/Header';
 import SideBar from '../components/SideBar/SideBar';
-import { cartActions } from '../reducers/cart';
 import NumericUpDown from '../components/UI/NumericUpDown';
 import { moneyFormat } from '../helpers';
 import Footer from '../components/Layout/Footer';
@@ -19,6 +18,7 @@ import useStyles from './ProductDetail.styles';
 import ProductReview from '../components/ProductReview/ProductReview';
 import SuggestionList from '../components/SuggestionList/SuggestionList';
 import RequestLoading from '../components/RequestLoading/RequestLoading';
+import { useCart } from '../hooks/use-cart';
 
 const districts = [
   {
@@ -64,11 +64,10 @@ const ProductDetail = (props) => {
   const [selectedDistrict, setSelectedDistrict] = useState('QBT');
   const [productDetails, setProductDetails] = useState({});
   const [commentPage, setCommentPage] = useState(1);
-
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const loading = useSelector((state) => state.userProduct.loading);
   const classes = useStyles();
-
+  const { addNew } = useCart();
   const settings1 = useMemo(
     () => ({
       dots: false,
@@ -102,18 +101,6 @@ const ProductDetail = (props) => {
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : prevQuantity));
   };
 
-  const itemAddToCartHandler = (item, quantity) => {
-    dispatch(
-      cartActions.addItem({
-        id: item.prod_id,
-        title: item.prod_name,
-        image: item.prod_img[0],
-        price: item.prod_price,
-        quantity,
-      })
-    );
-  };
-
   const descriptionToggleHandler = () => {
     setToggleDescription((prevState) => !prevState);
   };
@@ -127,9 +114,9 @@ const ProductDetail = (props) => {
   };
 
   const getListCommentHandler = useCallback(
-    async (productId) => {
+    async ({ productId, page }) => {
       try {
-        await dispatch(getListCommentByProductID({ productId: +productId })).unwrap();
+        await dispatch(getListCommentByProductID({ productID: productId, page })).unwrap();
       } catch (error) {
         console.log(error);
       }
@@ -142,7 +129,7 @@ const ProductDetail = (props) => {
   }, []);
 
   useEffect(() => {
-    setCommentPage(0);
+    setCommentPage(1);
     const getProductDetailHandler = async (productId) => {
       try {
         const response = await dispatch(getProductDetail({ id: +productId })).unwrap();
@@ -173,7 +160,6 @@ const ProductDetail = (props) => {
         <div className={classes.main}>
           <div className={classes.mainContent}>
             <div className={`${classes.section} ${classes.top}`}>
-              {loading && <RequestLoading />}
               <div className={classes.productImage}>
                 <Slider
                   asNavFor={nav2}
@@ -202,71 +188,73 @@ const ProductDetail = (props) => {
                     ))}
                 </Slider>
               </div>
-              <div className={classes.productInfo}>
-                {loading && <RequestLoading />}
-                <Typography variant="h6" component="p">
-                  {productDetails.prod_name} {productId}
-                </Typography>
+              {loading && <RequestLoading />}
+              {!loading && (
+                <div className={classes.productInfo}>
+                  <Typography variant="h6" component="p">
+                    {productDetails.prod_name}
+                  </Typography>
 
-                <Typography variant="h6" component="p" className={classes.price}>
-                  {productDetails.prod_price && moneyFormat(productDetails.prod_price)} VND
-                </Typography>
-                <div className={classes.shipPredict}>
-                  <div className={classes.shipPredictInfo}>
-                    <Typography variant="body2" className={classes.shipPredictLabel}>
-                      {t('productDetailPage.estimatedDeliveryFee')}
-                    </Typography>
+                  <Typography variant="h6" component="p" className={classes.price}>
+                    {productDetails.prod_price && moneyFormat(productDetails.prod_price)} VND
+                  </Typography>
+                  <div className={classes.shipPredict}>
+                    <div className={classes.shipPredictInfo}>
+                      <Typography variant="body2" className={classes.shipPredictLabel}>
+                        {t('productDetailPage.estimatedDeliveryFee')}
+                      </Typography>
 
-                    <Typography variant="body2">20.000 VND</Typography>
+                      <Typography variant="body2">20.000 VND</Typography>
+                    </div>
+                    <div className={classes.shipPredictInfo}>
+                      <Typography variant="body2" className={classes.shipPredictLabel}>
+                        {t('productDetailPage.districtOrWard')}
+                      </Typography>
+                      <FormControl>
+                        <Select
+                          value={selectedDistrict}
+                          onChange={districtChangeHandler}
+                          className={classes.districtSelector}
+                          MenuProps={{
+                            classes: {
+                              paper: classes.menuPaper,
+                            },
+                          }}>
+                          {districts?.length > 0 &&
+                            districts.map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.title}
+                              </MenuItem>
+                            ))}
+                        </Select>
+                      </FormControl>
+                    </div>
                   </div>
-                  <div className={classes.shipPredictInfo}>
-                    <Typography variant="body2" className={classes.shipPredictLabel}>
-                      {t('productDetailPage.districtOrWard')}
-                    </Typography>
-                    <FormControl>
-                      <Select
-                        value={selectedDistrict}
-                        onChange={districtChangeHandler}
-                        className={classes.districtSelector}
-                        MenuProps={{
-                          classes: {
-                            paper: classes.menuPaper,
+                  <div className={classes.addToCart}>
+                    <NumericUpDown
+                      quantity={quantity}
+                      onAdd={quantityAddHandler}
+                      onRemove={quantityRemoveHandler}
+                      height="36px"
+                    />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.btnAddToCart}
+                      onClick={() =>
+                        addNew(
+                          {
+                            ...productDetails,
+                            images: productDetails?.prod_img[0],
                           },
-                        }}>
-                        {districts?.length > 0 &&
-                          districts.map((item, index) => (
-                            <MenuItem key={index} value={item.id}>
-                              {item.title}
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    </FormControl>
+                          quantity
+                        )
+                      }>
+                      {t('productDetailPage.addToCart')}
+                    </Button>
                   </div>
                 </div>
-                <div className={classes.addToCart}>
-                  <NumericUpDown
-                    quantity={quantity}
-                    onAdd={quantityAddHandler}
-                    onRemove={quantityRemoveHandler}
-                    height="36px"
-                  />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.btnAddToCart}
-                    onClick={() =>
-                      itemAddToCartHandler(
-                        {
-                          ...productDetails,
-                          image: productDetails?.prod_name[0],
-                        },
-                        quantity
-                      )
-                    }>
-                    {t('productDetailPage.addToCart')}
-                  </Button>
-                </div>
-              </div>
+              )}
             </div>
             <div className={classes.section}>
               <Typography variant="h5" component="h3" className={classes.title}>

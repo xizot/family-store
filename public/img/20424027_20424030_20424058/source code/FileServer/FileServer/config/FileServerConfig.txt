@@ -1,0 +1,5 @@
+Port:9999
+File name`File path
+demo1`./data/demo.txt
+tool`./data/OKTW_chothuesub_1305.rar
+demo3`./data/demo.txt

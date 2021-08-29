@@ -5,12 +5,13 @@ import './i18n';
 import App from './App';
 import { Provider } from 'react-redux';
 import store from './store';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
+import { history } from './helpers';
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <Router history={history}>
       <App />
-    </BrowserRouter>
+    </Router>
   </Provider>,
   document.getElementById('root')
 );

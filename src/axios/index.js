@@ -25,9 +25,13 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 401 || error.response.status === 403) {
-      console.log('Your access token is expired. Please log in again');
-      history.push('/login');
+    const statusCode = error.response?.data?.statusCode;
+
+    if (statusCode && statusCode === 3) {
+      history.push({
+        pathname: '/login',
+        state: { from: history.location },
+      });
     }
 
     return Promise.reject(error);
