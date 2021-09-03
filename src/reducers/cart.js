@@ -17,12 +17,13 @@ export const userAddToCart = createAsyncThunk(
   'userCart/AddNew',
   async ({ quantity, prodId, item }, { rejectWithValue }) => {
     try {
-      await userCartApi.addToCart({ cartAmount: +quantity, prodId });
+      const reponse = (await userCartApi.addToCart({ cartAmount: +quantity, prodId })).data;
       const formatItem = {
         prodId: item.prod_id || item.prodId,
         prodName: item.prod_name || item.prodName,
         prodPrice: item.prod_price || item.prodPrice,
         prodImage: item.prod_img?.length > 0 ? item.prod_img[0] : item?.images || item.prodImage,
+        cartId: reponse.cartId,
       };
       return { formatItem, quantity };
     } catch (error) {
@@ -36,7 +37,8 @@ export const userUpdateCartAmount = createAsyncThunk(
   'userCart/UpdateAmount',
   async ({ cartAmount, cartId }, { rejectWithValue }) => {
     try {
-      return (await userCartApi.updateAmount({ cartAmount, cartId })).data;
+      await userCartApi.updateAmount({ cartAmount, cartId });
+      return { cartAmount, cartId };
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }
@@ -59,45 +61,40 @@ const cartSlice = createSlice({
     data: [],
     totalAmount: 0,
   },
-  reducers: {
-    removeItem(state, action) {
-      const existingItemIndex = state.data.findIndex((item) => item.id === action.payload);
+  reducers: {},
+  extraReducers: {
+    [userGetListCart.fulfilled]: (state, action) => {
+      if (!action.payload.errorMessage) {
+        state.data = action.payload.listCart;
+        state.totalAmount = action.payload.totalPrice;
+      } else {
+        state.data = [];
+        state.totalAmount = 0;
+      }
+    },
 
+    [userUpdateCartAmount.fulfilled]: (state, action) => {
+      const { cartAmount, cartId } = action.payload;
+      const existingItemIndex = state.data.findIndex((item) => item.cartId === cartId);
       const existingItem = state.data[existingItemIndex];
+      const newItemTotalPrice = cartAmount * +existingItem.prodPrice;
 
-      const existingItemPrice = existingItem?.salePrice || existingItem.price;
+      const newTotalAmount = +state.totalAmount - +existingItem.totalPrice + newItemTotalPrice;
 
-      const newTotalAmount = Number(state.totalAmount) - Number(existingItemPrice);
-
-      if (existingItem.quantity === 1) {
+      if (existingItem.cartAmount === 1) {
         state.data.splice(existingItemIndex, 1);
       } else {
         const updatedItem = {
           ...existingItem,
-          quantity: existingItem.quantity - 1,
+          cartAmount: cartAmount,
         };
 
-        updatedItem.totalPrice = Number.parseFloat(
-          updatedItem.quantity * existingItemPrice
-        ).toFixed(2);
+        updatedItem.totalPrice = newItemTotalPrice;
 
         state.data[existingItemIndex] = updatedItem;
       }
 
-      state.totalAmount = Number.parseFloat(newTotalAmount).toFixed(2);
-    },
-  },
-  extraReducers: {
-    [userGetListCart.fulfilled]: (state, action) => {
-      console.log('🚀 ~ file: cart.js ~ line 114 ~ action', action);
-
-      if (!action.payload.errorMessage) {
-        state.data = action.payload.listCart;
-        state.totalAmount = action.payload.totalPrice;
-      }
-    },
-    [userAddToCart.error]: (state, action) => {
-      console.log(action.payload);
+      state.totalAmount = newTotalAmount;
     },
     [userAddToCart.fulfilled]: (state, action) => {
       const { quantity, formatItem: newItem } = action.payload;
@@ -124,7 +121,7 @@ const cartSlice = createSlice({
       state.totalAmount = newTotalAmount;
     },
     [userDeleteCart.fulfilled]: (state, action) => {
-      state.data = state.data.filter((item) => item.id !== action.payload.cartId);
+      state.data = state.data.filter((item) => item.cartId !== action.payload);
       const newTotalAmount = state.data.reduce((totalAmount, item) => {
         return totalAmount + item.totalPrice;
       }, 0);
