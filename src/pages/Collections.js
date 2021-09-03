@@ -6,12 +6,12 @@ import Footer from '../components/Layout/Footer';
 import Header from '../components/Layout/Header';
 import ProductItem from '../components/ProductItem/ProductItem';
 import SideBar from '../components/SideBar/SideBar';
-import { cartActions } from '../reducers/cart';
 import { uiActions } from '../reducers/ui';
 import CategoryMenu from '../components/CategoriesMenu/CategoriesMenu';
 import Pagination from '@material-ui/lab/Pagination';
 import { getListProductByCateAndPage } from '../reducers/user-product.reducer';
 import RequestLoading from '../components/RequestLoading/RequestLoading';
+import { useCart } from '../hooks/use-cart';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
@@ -92,9 +92,8 @@ const Collections = (props) => {
   const products = useSelector((state) => state.userProduct.products);
   const totalPage = useSelector((state) => state.userProduct.totalPage);
   const dispatch = useDispatch();
-  const itemAddToCartHandler = (item) => {
-    dispatch(cartActions.addItem({ ...item, amount: 1 }));
-  };
+  const { addNew } = useCart();
+
   const pageChangeHandler = (event, value) => {
     setPage(value);
   };
@@ -174,7 +173,7 @@ const Collections = (props) => {
                           image={item.images}
                           price={item.prod_price}
                           salePrice={item.salePrice}
-                          onAddToCart={itemAddToCartHandler.bind(null, item)}
+                          onAddToCart={addNew.bind(null, item, 1)}
                         />
                       </Grid>
                     ))}

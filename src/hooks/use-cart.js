@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { userAddToCart } from '../reducers/cart';
+import { userAddToCart, userDeleteCart, userUpdateCartAmount } from '../reducers/cart';
 
 export const useCart = () => {
   const history = useHistory();
@@ -26,8 +26,33 @@ export const useCart = () => {
     }
   };
 
-  const updateAmount = (cartId, cartAmount) => {};
-  const removeItem = (cartId) => {};
+  const updateAmount = async (cartId, cartAmount) => {
+    if (!isAuthenticated) {
+      history.push({
+        pathname: '/login',
+        state: { from: history.location.pathname },
+      });
+    }
+    try {
+      dispatch(userUpdateCartAmount({ cartId: +cartId, cartAmount: +cartAmount }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const removeItem = (cartId) => {
+    console.log(cartId);
+    if (!isAuthenticated) {
+      history.push({
+        pathname: '/login',
+        state: { from: history.location.pathname },
+      });
+    }
+    try {
+      dispatch(userDeleteCart({ cartId: +cartId }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return {
     addNew,
     updateAmount,

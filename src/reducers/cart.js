@@ -46,7 +46,8 @@ export const userDeleteCart = createAsyncThunk(
   'userCart/DeleteAmount',
   async ({ cartId }, { rejectWithValue }) => {
     try {
-      return (await userCartApi.deleteItem({ cartId })).data;
+      await userCartApi.deleteItem(cartId);
+      return cartId;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }
@@ -85,14 +86,6 @@ const cartSlice = createSlice({
 
       state.totalAmount = Number.parseFloat(newTotalAmount).toFixed(2);
     },
-    clearItem(state, action) {
-      state.data = state.data.filter((item) => item.id !== action.payload);
-      const newTotalAmount = state.data.reduce((totalAmount, item) => {
-        return totalAmount + item.totalPrice;
-      }, 0);
-
-      state.totalAmount = Number.parseFloat(newTotalAmount).toFixed(2);
-    },
   },
   extraReducers: {
     [userGetListCart.fulfilled]: (state, action) => {
@@ -128,6 +121,14 @@ const cartSlice = createSlice({
 
         state.data[existingItemIndex] = updatedItem;
       }
+      state.totalAmount = newTotalAmount;
+    },
+    [userDeleteCart.fulfilled]: (state, action) => {
+      state.data = state.data.filter((item) => item.id !== action.payload.cartId);
+      const newTotalAmount = state.data.reduce((totalAmount, item) => {
+        return totalAmount + item.totalPrice;
+      }, 0);
+
       state.totalAmount = newTotalAmount;
     },
   },

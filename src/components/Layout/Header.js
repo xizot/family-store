@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { LocalMall, Person, Menu, ExitToApp, Translate } from '@material-ui/icons';
+import { LocalMall, Person, Menu, Translate } from '@material-ui/icons';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
@@ -17,6 +17,12 @@ import { authActions } from '../../reducers/auth';
 import { uiActions } from '../../reducers/ui';
 import SearchInput from '../UI/SearchInput';
 import { langActions } from '../../reducers/lang';
+import {
+  AiOutlineLogin,
+  AiOutlineProfile,
+  AiOutlineOrderedList,
+  AiOutlineLogout,
+} from 'react-icons/ai';
 const useStyles = makeStyles((theme) => ({
   root: {},
   toolBar: {
@@ -118,23 +124,29 @@ const useStyles = makeStyles((theme) => ({
     right: -5,
     transform: 'translateY(100%)',
     color: '#333',
-    padding: `${theme.spacing(1.5)}px ${theme.spacing(2)}px`,
+    padding: theme.spacing(0.5, 0),
     background: theme.palette.common.white,
     borderRadius: theme.shape.borderRadius,
     opacity: 0,
     pointerEvents: 'none',
     transition: 'opacity .3s',
     boxShadow: '0px 1px 3px rgba(0,0,0,.3)',
-    minWidth: 'max-content',
+    width: 'max-content',
+    minWidth: 180,
     listStyle: 'none',
+    '& li': {
+      display: 'flex',
+      alignItems: 'center',
+      padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,
+    },
     '& li:not(:last-child)': {
-      display: 'block',
-      marginBottom: theme.spacing(1),
+      borderBottom: '1px solid #ddd',
     },
     '& a': {
       fontSize: theme.typography.fontSize,
       textAlign: 'left',
       display: 'block',
+      paddingLeft: 5,
       textDecoration: 'none',
       color: '#333',
       '&:hover': {
@@ -204,7 +216,8 @@ const Header = ({ showMenu, showCart }) => {
     dispatch(uiActions.toggleSideBar());
   };
 
-  const logoutHandler = () => {
+  const logoutHandler = (e) => {
+    e.preventDefault();
     dispatch(authActions.logout());
     history.push('/login');
   };
@@ -277,26 +290,33 @@ const Header = ({ showMenu, showCart }) => {
             <Person />
             <ul
               className={`${classes.dropDown} ${toggleUserDropdown ? classes.dropDownActive : ''}`}>
-              <li>
-                <Link to="/profile">My account</Link>
-              </li>
-              <li>
-                <Link to="/orders">My orders</Link>
-              </li>
+              {!isAuthenticated && (
+                <li>
+                  <AiOutlineLogin fontSize={20} />
+                  <Link to="/login">Log In</Link>
+                </li>
+              )}
+              {isAuthenticated && (
+                <>
+                  <li>
+                    <AiOutlineProfile fontSize={20} />
+                    <Link to="/profile">My Account</Link>
+                  </li>
+                  <li>
+                    <AiOutlineOrderedList fontSize={20} />
+                    <Link to="/orders">My Orders</Link>
+                  </li>
+                  <li>
+                    <AiOutlineLogout fontSize={20} />
+                    <Link to="" onClick={(e) => logoutHandler(e)}>
+                      Log Out
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </IconButton>
-          {isAuthenticated && (
-            <IconButton
-              aria-label="My profile"
-              color="inherit"
-              className={classes.iconButton}
-              onClick={logoutHandler}>
-              <ExitToApp />
-              <Typography variant="caption" className={classes.iconButtonCaption}>
-                Log out
-              </Typography>
-            </IconButton>
-          )}
+
           {showCart && (
             <IconButton
               aria-label="show number products"
