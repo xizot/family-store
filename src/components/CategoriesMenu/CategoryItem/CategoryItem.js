@@ -19,20 +19,16 @@ export const CategoryItem = ({ id, title, items }) => {
         {toggleList && <ExpandMore className={classes.arrowIcon} />}
         {!toggleList && <ChevronRight className={classes.arrowIcon} />}
       </div>
-      {toggleList && (
-        <ul className={classes.items}>
-          {items?.length > 0 &&
-            items.map((item, index) => (
-              <li className={classes.item} key={index}>
-                <NavLink
-                  to={`/collections/${item.cateId}`}
-                  activeClassName={classes['item-active']}>
-                  {item.cateName}
-                </NavLink>
-              </li>
-            ))}
-        </ul>
-      )}
+      <ul className={`${classes.items} ${toggleList ? 'is-show' : 'is-hide'}`}>
+        {items?.length > 0 &&
+          items.map((item, index) => (
+            <li className={classes.item} key={index}>
+              <NavLink to={`/collections/${item.cateId}`} activeClassName={classes['item-active']}>
+                {item.cateName}
+              </NavLink>
+            </li>
+          ))}
+      </ul>
     </li>
   );
 };

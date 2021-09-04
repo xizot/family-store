@@ -21,12 +21,12 @@ export default makeStyles((theme) => ({
     justifySelf: 'flex-end',
   },
   items: {
-    maxHeight: 200,
+    height: 0,
     overflow: 'auto',
+    transition: 'height .5s',
     'scrollbar-width': 'none',
     '-ms-overflow-style': 'none',
     listStyle: 'none',
-    animation: '$toggle .5s ease-in-out',
     '&::-webkit-scrollbar': {
       display: 'none',
       width: 0,
@@ -37,6 +37,12 @@ export default makeStyles((theme) => ({
     },
     '& li:hover': {
       background: alpha(theme.palette.primary.main, 0.4),
+    },
+    '&.is-show': {
+      height: 200,
+    },
+    '&.is-hide': {
+      height: 0,
     },
   },
   item: {
@@ -49,13 +55,5 @@ export default makeStyles((theme) => ({
   },
   itemActive: {
     fontWeight: 'bold',
-  },
-  '@keyframes toggle': {
-    '0%': {
-      maxHeight: 0,
-    },
-    '100%': {
-      maxHeight: 200,
-    },
   },
 }));
