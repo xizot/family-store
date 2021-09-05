@@ -75,6 +75,9 @@ const Checkout = () => {
   useEffect(() => {
     dispatch(uiActions.hideModal());
   }, [dispatch]);
+  useEffect(() => {
+    document.title = 'Thanh toán';
+  }, []);
   return (
     <>
       <div className={classes.root}>
