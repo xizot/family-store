@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
-import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Add } from '@material-ui/icons';
@@ -26,6 +25,7 @@ import { toast } from 'react-toastify';
 import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 import CategoryModal from './CategoryModal';
 import Pagination from '@material-ui/lab/Pagination';
+import SearchInputV2 from '../../../../components/UI/SearchInputV2';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -124,14 +124,19 @@ const SubCateManager = (props) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [page, setPage] = useState(1);
-
+  const [search, setSearch] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [type, setType] = useState('UPDATE');
   const [itemSelected, setItemSelected] = useState(null);
 
+  const searchChangeHandler = (value) => {
+    setSearch(value);
+  };
+
   const pageChangeHandler = (event, value) => {
     setPage(value);
   };
+
   const openModalHandler = (type, item = null) => {
     setType(type);
     setOpenModal(true);
@@ -214,7 +219,7 @@ const SubCateManager = (props) => {
         </Typography>
         <div className={classes.filter}>
           <div className={classes.search}>
-            <SearchInput />
+            <SearchInputV2 initialValue={search} onChange={searchChangeHandler} />
           </div>
           <div className={classes.addButton}>
             <Button
@@ -239,7 +244,10 @@ const SubCateManager = (props) => {
               <Table aria-label="a dense table">
                 <TableHead>
                   <TableRow className={classes.tableHead}>
-                    <TableCell style={{ width: 20, textAlign: 'center' }}>Index</TableCell>
+                    <TableCell style={{ width: 20, textAlign: 'center', fontWeight: 'bold' }}>
+                      #
+                    </TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>Category ID</TableCell>
                     <TableCell style={{ textAlign: 'center' }}>Category Name</TableCell>
                     <TableCell style={{ textAlign: 'center' }}>Sub Category Inside</TableCell>
                     <TableCell>Last Modified</TableCell>
@@ -248,35 +256,40 @@ const SubCateManager = (props) => {
                 </TableHead>
                 <TableBody>
                   {data?.length > 0 &&
-                    data.map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          style={{ width: 20, textAlign: 'center' }}>
-                          {index + 1}
-                        </TableCell>
-                        <TableCell style={{ textAlign: 'center' }}>{row.cateName}</TableCell>
-                        <TableCell style={{ textAlign: 'center' }}>
-                          {row.subCategories.length}
-                        </TableCell>
-                        <TableCell>{row.createDate}</TableCell>
-                        <TableCell align="center">
-                          <Button
-                            size="small"
-                            startIcon={<EditIcon />}
-                            style={{ padding: '0' }}
-                            onClick={() => openModalHandler('UPDATE', row)}
-                          />
-                          <Button
-                            size="small"
-                            startIcon={<DeleteIcon />}
-                            style={{ padding: '0' }}
-                            onClick={() => openDeleteModalHandler(row.cateId)}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    data
+                      .filter((category) =>
+                        category.cateName.toLowerCase().includes(search.toLowerCase())
+                      )
+                      .map((row, index) => (
+                        <TableRow key={index}>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            style={{ width: 20, textAlign: 'center', fontWeight: 'bold' }}>
+                            {index + 1}
+                          </TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>{row.cateId}</TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>{row.cateName}</TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>
+                            {row.subCategories.length}
+                          </TableCell>
+                          <TableCell>{row.createDate}</TableCell>
+                          <TableCell align="center">
+                            <Button
+                              size="small"
+                              startIcon={<EditIcon />}
+                              style={{ padding: '0' }}
+                              onClick={() => openModalHandler('UPDATE', row)}
+                            />
+                            <Button
+                              size="small"
+                              startIcon={<DeleteIcon />}
+                              style={{ padding: '0' }}
+                              onClick={() => openDeleteModalHandler(row.cateId)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
                 </TableBody>
               </Table>
             </TableContainer>

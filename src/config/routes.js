@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import UserManager from '../pages/auth/Admin/UserManager/UserManager';
 import Checkout from '../pages/Checkout/Checkout';
+import CheckoutSuccess from '../pages/Checkout/CheckoutSuccess/CheckoutSuccess';
 import { Role } from './role';
 
 const ProductDetail = lazy(() => import('../pages/ProductDetail'));
@@ -117,6 +118,13 @@ export const routes = [
     protected: true,
     exact: true,
     component: Checkout,
+    roles: [Role.User],
+  },
+  {
+    path: '/checkout-success',
+    protected: false,
+    exact: true,
+    component: CheckoutSuccess,
     roles: [Role.User],
   },
 ];

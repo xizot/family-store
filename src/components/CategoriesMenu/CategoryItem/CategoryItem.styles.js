@@ -21,9 +21,9 @@ export default makeStyles((theme) => ({
     justifySelf: 'flex-end',
   },
   items: {
-    height: 0,
+    maxHeight: 0,
     overflow: 'auto',
-    transition: 'height .5s',
+    transition: 'all .5s',
     'scrollbar-width': 'none',
     '-ms-overflow-style': 'none',
     listStyle: 'none',
@@ -39,10 +39,10 @@ export default makeStyles((theme) => ({
       background: alpha(theme.palette.primary.main, 0.4),
     },
     '&.is-show': {
-      height: 200,
+      maxHeight: 200,
     },
     '&.is-hide': {
-      height: 0,
+      maxHeight: 0,
     },
   },
   item: {
@@ -51,6 +51,10 @@ export default makeStyles((theme) => ({
     '& a': {
       textDecoration: 'none',
       color: 'rgba(0,0,0,.8)',
+    },
+    '& a.active': {
+      fontWeight: 'bold',
+      color: theme.palette.primary.main,
     },
   },
   itemActive: {

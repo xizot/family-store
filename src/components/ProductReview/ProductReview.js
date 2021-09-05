@@ -70,7 +70,9 @@ function ProductReview({ page, onPageChange }) {
                     content={comment.content}
                   />
                 ))}
-              <p>There are no comments yet</p>
+              <Typography variant="body1" className={classes.noComment}>
+                There are no comments yet
+              </Typography>
             </ul>
           }
           {commentTotalPage > 0 && (

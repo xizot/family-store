@@ -125,6 +125,12 @@ export default makeStyles((theme) => ({
   descriptionText: {
     position: 'relative',
     marginBottom: theme.spacing(2),
+    '& img': {
+      maxWidth: '100%',
+      height: 'auto',
+      display: 'block',
+      margin: theme.spacing(1, 0),
+    },
   },
   isLess: {
     height: 100,

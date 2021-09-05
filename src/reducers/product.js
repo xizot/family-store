@@ -84,6 +84,15 @@ const adminProductSlice = createSlice({
     [addNewProduct.fulfilled]: (state) => {
       state.modifyLoading = false;
     },
+    [updateProductInformation.pending]: (state) => {
+      state.modifyLoading = true;
+    },
+    [updateProductInformation.rejected]: (state) => {
+      state.modifyLoading = false;
+    },
+    [updateProductInformation.fulfilled]: (state) => {
+      state.modifyLoading = false;
+    },
   },
 });
 

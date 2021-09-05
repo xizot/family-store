@@ -17,11 +17,9 @@ import {
   Modal,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-// import Pagination from '@material-ui/lab/Pagination';
 import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
-import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddComponent from './AddSubCategory';
@@ -33,6 +31,7 @@ import TableLoading from '../../../../components/TableLoading/TableLoading';
 import { getListSubCategory, deleteCategory } from '../../../../reducers/sub-category';
 import Pagination from '@material-ui/lab/Pagination';
 import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
+import SearchInputV2 from '../../../../components/UI/SearchInputV2';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
   filter: {
     marginTop: theme.spacing(2),
-    marginBottom: '12px',
+
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
@@ -73,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
   filterItem: {
     display: 'flex',
     alignItems: 'center',
+    marginBottom: '12px',
     [theme.breakpoints.down('xs')]: {
       '&:not(:last-child)': {
         marginBottom: theme.spacing(1),
@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   addButton: {
+    marginBottom: '12px',
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
     },
@@ -101,6 +102,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   search: {
+    marginBottom: '12px',
     borderRadius: theme.shape.borderRadius,
     border: '1px solid #ddd',
     [theme.breakpoints.down('xs')]: {
@@ -134,7 +136,6 @@ const BootstrapInput = withStyles((theme) => ({
     fontSize: 14,
     color: '#FFF',
     height: 17,
-    width: 75,
     padding: '10px 26px 7px 12px',
     fontFamily: ['Arial'].join(','),
     '&:focus': {
@@ -158,18 +159,28 @@ const SubCateManager = (props) => {
   const [action, setAction] = useState('insert');
   const data = useSelector((state) => state.category.data);
   const totalPage = useSelector((state) => state.subCategory.totalPage);
-  const sub = useSelector((state) => state.subCategory.data);
+  const [sub, setSub] = useState([]);
   const loading = useSelector((state) => state.subCategory.loading);
   const [page, setPage] = useState(1);
   const [optionFather, setOptionFather] = useState('');
+  const [search, setSearch] = useState('');
+
+  const searchChangeHandler = (value) => {
+    setSearch(value);
+  };
 
   const pageChangeHandler = (event, value) => {
     setPage(value);
   };
 
   const fatherChangeHandler = async (event) => {
-    const cateFatherSelected = +event.target.value;
-    setOptionFather(cateFatherSelected);
+    if (event.target.value.length > 0) {
+      const cateFatherSelected = +event.target.value;
+      setOptionFather(cateFatherSelected);
+      getChildCategoryHandler(cateFatherSelected, page);
+    } else {
+      setSub([]);
+    }
   };
 
   const editSubCategory = (item) => {
@@ -196,7 +207,6 @@ const SubCateManager = (props) => {
     try {
       setClose(false);
       await dispatch(deleteCategory(detail.cateId)).unwrap();
-
       await getChildCategoryHandler(optionFather, page);
       toast.success('Delete successfully');
     } catch (err) {
@@ -204,31 +214,43 @@ const SubCateManager = (props) => {
       console.log('🚀 ~ file: SubCategory.js ~ line 199 ~ subCateDeleteConfirm ~ err', err);
     }
   };
-  const getListSubCategoryHandler = useCallback(async () => {
+  const getChildCategoryHandler = useCallback(
+    async (cateFather, selectedPage) => {
+      const response = await dispatch(
+        getListSubCategory({ cateFather: +cateFather, page: selectedPage })
+      ).unwrap();
+      setSub(response.subCategories);
+    },
+    [dispatch]
+  );
+
+  const fatherChangeHandlerV2 = useCallback(
+    async (value) => {
+      if (value > 0) {
+        const cateFatherSelected = +value;
+        setOptionFather(cateFatherSelected);
+        getChildCategoryHandler(cateFatherSelected, page);
+      } else {
+        setSub([]);
+      }
+    },
+    [getChildCategoryHandler, page]
+  );
+  const getListCategoryHandler = useCallback(async () => {
     try {
       const response = await dispatch(getListCategory()).unwrap();
-      if (response?.paginationResult) {
-        setOptionFather(response.paginationResult[0].cateId);
+      if (response?.paginationResult?.length > 0) {
+        fatherChangeHandlerV2(response.paginationResult[0].cateId);
       }
     } catch (err) {
       setError(err);
     }
-  }, [dispatch]);
+  }, [dispatch, fatherChangeHandlerV2]);
 
-  const getChildCategoryHandler = useCallback(
-    async (cateFather, selectedPage) => {
-      await dispatch(getListSubCategory({ cateFather: +cateFather, page: selectedPage })).unwrap();
-    },
-    [dispatch]
-  );
   useEffect(() => {
     dispatch(uiActions.hideModal());
-    getListSubCategoryHandler();
-  }, [dispatch, getListSubCategoryHandler]);
-
-  useEffect(() => {
-    getChildCategoryHandler(optionFather, page);
-  }, [optionFather, page, getChildCategoryHandler]);
+    getListCategoryHandler();
+  }, [dispatch, getListCategoryHandler]);
 
   useEffect(() => {
     document.title = 'Sub Category Admin';
@@ -247,18 +269,19 @@ const SubCateManager = (props) => {
         </Typography>
         <div className={classes.filter}>
           <div className={classes.search}>
-            <SearchInput />
+            <SearchInputV2 initialValue={search} onChange={searchChangeHandler} />
           </div>
           <div className={classes.filterItem}>
             <Typography variant="subtitle2" className={classes.label}>
               FATHER CATEGORY
             </Typography>
             <NativeSelect
-              className={classes.select}
               value={optionFather}
+              className={classes.select}
               onChange={fatherChangeHandler}
               name="price"
               input={<BootstrapInput />}>
+              <option aria-label="None" value="" />
               {data.map((row, index) => (
                 <option style={{ color: '#F39148' }} value={row.cateId} key={index}>
                   {row.cateName}
@@ -288,37 +311,48 @@ const SubCateManager = (props) => {
               <Table aria-label="a dense table">
                 <TableHead>
                   <TableRow className={classes.tableHead}>
-                    <TableCell>Index</TableCell>
-                    <TableCell>Sub Category Name</TableCell>
+                    <TableCell style={{ width: 20, textAlign: 'center', fontWeight: 'bold' }}>
+                      #
+                    </TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>Sub Category ID</TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>Sub Category Name</TableCell>
                     <TableCell>Last Modified</TableCell>
                     <TableCell align="center">Options</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {sub?.length > 0 &&
-                    sub.map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell component="th" scope="row">
-                          {index + 1}
-                        </TableCell>
-                        <TableCell>{row.cateName}</TableCell>
-                        <TableCell>{row.createDate}</TableCell>
-                        <TableCell align="center">
-                          <Button
-                            size="small"
-                            startIcon={<EditIcon />}
-                            style={{ padding: '0' }}
-                            onClick={() => editSubCategory(row)}
-                          />
-                          <Button
-                            size="small"
-                            startIcon={<DeleteIcon />}
-                            style={{ padding: '0' }}
-                            onClick={() => subCateDeleteHandler(row)}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    sub
+                      .filter((subcategory) =>
+                        subcategory.cateName.toLowerCase().includes(search.toLowerCase())
+                      )
+                      .map((row, index) => (
+                        <TableRow key={index}>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            style={{ width: 20, textAlign: 'center', fontWeight: 'bold' }}>
+                            {index + 1}
+                          </TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>{row.cateId}</TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>{row.cateName}</TableCell>
+                          <TableCell>{row.createDate}</TableCell>
+                          <TableCell align="center">
+                            <Button
+                              size="small"
+                              startIcon={<EditIcon />}
+                              style={{ padding: '0' }}
+                              onClick={() => editSubCategory(row)}
+                            />
+                            <Button
+                              size="small"
+                              startIcon={<DeleteIcon />}
+                              style={{ padding: '0' }}
+                              onClick={() => subCateDeleteHandler(row)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -351,7 +385,7 @@ const SubCateManager = (props) => {
           timeout: 500,
         }}>
         <Fade in={open}>
-          <div>
+          <div style={{ maxWidth: '100%' }}>
             <AddComponent
               cateFather={optionFather}
               action={action}

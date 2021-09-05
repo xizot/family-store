@@ -24,7 +24,11 @@ const CartItem = ({
         <span onClick={onClear} className={classes.remove}>
           <Close style={{ color: '#fff' }} />
         </span>
-        <img src={image} alt={title} loading="lazy" />
+        <img
+          src={image || process.env.PUBLIC_URL + '/img/no-product.png'}
+          alt={title}
+          loading="lazy"
+        />
       </div>
       <div className={classes.description}>
         <div className={classes.detail}>

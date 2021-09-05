@@ -1,4 +1,4 @@
-import { AdminMenu } from '../../AdminMenu/AdminMenu';
+import AdminMenu from '../../AdminMenu/AdminMenu';
 import HeaderAdmin from '../../Layout/HeaderAdmin';
 import { Person, Menu, Loyalty, AttachMoney } from '@material-ui/icons';
 import SideBar from '../../SideBar/SideBar';

@@ -4,7 +4,6 @@ import {
   FormControl,
   Container,
   makeStyles,
-  Button,
   TextField,
   Typography,
   Box,
@@ -20,6 +19,7 @@ import Footer from '../components/Layout/Footer';
 import { useDispatch } from 'react-redux';
 import { resetPassword } from '../reducers/auth';
 import { useTimer } from '../hooks/user-timer';
+import ButtonWithLoading from '../components/UI/ButtonWithLoading/ButtonWithLoading';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -157,7 +157,6 @@ const LoginPage = () => {
                   <TextField
                     // error
                     label="Code"
-                    type="text"
                     helperText={t('recoverypasswordpage.checkEmail')}
                     fullWidth
                     size="small"
@@ -166,6 +165,12 @@ const LoginPage = () => {
                     onBlur={codeBlurHandler}
                     onChange={codeChangeHandler}
                     autoComplete="off"
+                    inputProps={{
+                      autoComplete: 'new-password',
+                      form: {
+                        autoComplete: 'off',
+                      },
+                    }}
                   />
                 </FormControl>
                 <FormControl className={classes.formControl}>
@@ -212,15 +217,13 @@ const LoginPage = () => {
                   </Typography>
                 )}
 
-                <Button
-                  variant="contained"
-                  color="primary"
+                <ButtonWithLoading
+                  // isLoading={loading}
                   fullWidth
-                  disabled={!formIsValid}
                   type="submit"
-                  className={classes.button}>
+                  disabled={!formIsValid}>
                   {t('recoverypasswordpage.buttonExecute')}
-                </Button>
+                </ButtonWithLoading>
               </form>
               <div className={classes.actions}>
                 <Link to="/forgot-password">

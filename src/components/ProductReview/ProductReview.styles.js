@@ -54,4 +54,9 @@ export default makeStyles((theme) => ({
   pagination: {
     '& ul': { justifyContent: 'flex-end' },
   },
+  noComment: {
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center',
+    },
+  },
 }));

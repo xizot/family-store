@@ -1,9 +1,10 @@
-import { makeStyles, TextField, Typography, Button, FormControl, Modal } from '@material-ui/core';
+import { makeStyles, TextField, Typography, FormControl, Modal } from '@material-ui/core';
 import { useInput } from '../../../../hooks/use-input';
 import * as Validate from '../../../../helpers/validate';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addCategory, updateSubCategory } from '../../../../reducers/category';
 import { toast } from 'react-toastify';
+import ButtonWithLoading from '../../../../components/UI/ButtonWithLoading/ButtonWithLoading';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     marginTop: '9px',
+    marginBottom: theme.spacing(2),
   },
   label: {
     marginTop: theme.spacing(1),
@@ -44,11 +46,16 @@ const useStyles = makeStyles((theme) => ({
   autoComplete: {
     marginTop: theme.spacing(2),
   },
+  modalTitle: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const modifyLoading = useSelector((state) => state.category.modifyLoading);
+
   const {
     enteredInput: cateName,
     hasError: cateNameHasError,
@@ -69,6 +76,7 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
         toast.success(`Update category id ${item?.cateId} successfully`);
         getList();
         onClose();
+        cateReset();
       } catch (error) {
         toast.error(error);
       }
@@ -78,6 +86,7 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
         toast.success('Add new category successfully');
         getList();
         onClose();
+        cateReset();
       } catch (error) {
         toast.error(error);
       }
@@ -96,7 +105,10 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description">
       <div className={classes.paper}>
-        <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
+        <Typography
+          variant="h5"
+          style={{ textAlign: 'center', color: '#F39148' }}
+          className={classes.modalTitle}>
           {title}
         </Typography>
         <form noValidate autoComplete="off" onSubmit={formSubmitHandler}>
@@ -111,15 +123,13 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
               onChange={cateNameChangeHandler}
               size="small"
             />
-            <Button
-              className={classes.save}
-              variant="contained"
-              fullWidth
-              component="label"
-              onClick={formSubmitHandler}>
-              Save
-            </Button>
           </FormControl>
+          <ButtonWithLoading
+            isLoading={modifyLoading}
+            onClick={formSubmitHandler}
+            disabled={!cateNameIsValid}>
+            Save
+          </ButtonWithLoading>
         </form>
       </div>
     </Modal>

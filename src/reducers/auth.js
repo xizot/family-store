@@ -107,6 +107,7 @@ const authSlice = createSlice({
         state.refreshToken = refreshToken;
         state.accessToken = accessToken;
         state.isAuthenticated = true;
+        state.user = user;
 
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);

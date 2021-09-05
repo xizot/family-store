@@ -4,12 +4,10 @@ import {
   FormControl,
   Container,
   makeStyles,
-  Button,
   TextField,
   Typography,
   Box,
   FormHelperText,
-  CircularProgress,
 } from '@material-ui/core';
 import { useInput } from '../hooks/use-input';
 import * as Validate from '../helpers/validate';
@@ -20,6 +18,7 @@ import Footer from '../components/Layout/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPassword } from '../reducers/auth';
 import { useTimer } from '../hooks/user-timer';
+import ButtonWithLoading from '../components/UI/ButtonWithLoading/ButtonWithLoading';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -161,27 +160,14 @@ const ForgotPasswordPage = () => {
                         {error}
                       </FormHelperText>
                     )}
-                    {loading ? (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        disabled={true}
-                        type="submit"
-                        className={classes.button}
-                        startIcon={<CircularProgress size={22} />}
-                      />
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        disabled={!formIsValid}
-                        type="submit"
-                        className={classes.button}>
-                        {t('forgotpasswordpage.buttonExecute')}
-                      </Button>
-                    )}
+
+                    <ButtonWithLoading
+                      isLoading={loading}
+                      fullWidth
+                      type="submit"
+                      disabled={!formIsValid}>
+                      {t('forgotpasswordpage.buttonExecute')}
+                    </ButtonWithLoading>
                   </form>
                   <div className={classes.actions}>
                     <Typography variant="body2">

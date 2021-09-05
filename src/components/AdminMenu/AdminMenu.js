@@ -1,3 +1,4 @@
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import SideBarItem from '../SideBar/SideBarItem/SideBarItem';
 
@@ -6,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     listStyle: 'none',
   },
 }));
-export const AdminMenu = ({ options }) => {
+const AdminMenu = ({ options }) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -22,3 +23,5 @@ export const AdminMenu = ({ options }) => {
     </div>
   );
 };
+
+export default React.memo(AdminMenu);

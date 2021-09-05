@@ -16,8 +16,12 @@ export const CategoryItem = ({ id, title, items }) => {
         <Typography variant="subtitle1" style={{ fontWeight: '500' }}>
           {title}
         </Typography>
-        {toggleList && <ExpandMore className={classes.arrowIcon} />}
-        {!toggleList && <ChevronRight className={classes.arrowIcon} />}
+        {items?.length > 0 && (
+          <>
+            {toggleList && <ExpandMore className={classes.arrowIcon} />}
+            {!toggleList && <ChevronRight className={classes.arrowIcon} />}
+          </>
+        )}
       </div>
       <ul className={`${classes.items} ${toggleList ? 'is-show' : 'is-hide'}`}>
         {items?.length > 0 &&

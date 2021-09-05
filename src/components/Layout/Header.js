@@ -135,6 +135,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 180,
     listStyle: 'none',
     '& li': {
+      cursor: 'default',
       display: 'flex',
       alignItems: 'center',
       padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,

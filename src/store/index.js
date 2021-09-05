@@ -9,6 +9,8 @@ import adminProductSlice from '../reducers/product';
 import userCategorySlice from '../reducers/user-category.reducer';
 import userProductSlice from '../reducers/user-product.reducer';
 import userCommentSlice from '../reducers/user-comment.reducer';
+import addressSlice from '../reducers/address.reducer';
+import checkoutSlice from '../reducers/checkout.reducer';
 // import userCartSlice from '../reducers/user-cart.reducer';
 
 const store = configureStore({
@@ -23,6 +25,8 @@ const store = configureStore({
     userCategory: userCategorySlice.reducer,
     userProduct: userProductSlice.reducer,
     userComment: userCommentSlice.reducer,
+    address: addressSlice.reducer,
+    checkout: checkoutSlice.reducer,
     // userCart: userCartSlice.reducer,
   },
 });

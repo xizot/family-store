@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   root: {
     display: 'block',
     '&.Mui-disabled': {
-      boxShadow: '0px 2px 8px rgba(0,0,0,.3)',
+      boxShadow: '0px 2px 4px rgba(0,0,0,.3)',
     },
   },
   buttonLoading: {
@@ -16,8 +16,8 @@ export default makeStyles((theme) => ({
     position: 'absolute',
     top: 0,
     left: 0,
-    right: 0,
-    bottom: 0,
+    width: '100%',
+    height: '100%',
     zIndex: 10,
   },
   isHide: {

@@ -91,6 +91,9 @@ const Collections = (props) => {
   const loading = useSelector((state) => state.userProduct.loading);
   const products = useSelector((state) => state.userProduct.products);
   const totalPage = useSelector((state) => state.userProduct.totalPage);
+  const categories = useSelector((state) => state.userCategory.categories);
+  const [catName, setCatName] = useState('');
+
   const dispatch = useDispatch();
   const { addNew } = useCart();
 
@@ -116,12 +119,23 @@ const Collections = (props) => {
   useEffect(() => {
     dispatch(uiActions.hideModal());
 
+    categories.forEach((category, index) => {
+      if (catName.length > 0) {
+        return;
+      }
+      category.subCategories.forEach((sub) => {
+        if (sub.cateId === +cateID) {
+          setCatName(sub.cateName);
+          return;
+        }
+      });
+    });
     setPage(1);
     getListProductByCateHandler({
       cateID,
       page: 1,
     });
-  }, [dispatch, cateID, getListProductByCateHandler]);
+  }, [dispatch, cateID, getListProductByCateHandler, categories, catName.length]);
   return (
     <>
       <div className={classes.root}>
@@ -135,18 +149,13 @@ const Collections = (props) => {
               <Link color="inherit" to="/">
                 Home
               </Link>
-              <Link
-                color="inherit"
-                to="/collections"
-                className={!cateID ? classes.currentLink : ''}>
-                Collections
-              </Link>
+
               {cateID && (
                 <Typography
                   color="textPrimary"
                   style={{ textTransform: 'capitalize' }}
                   className={classes.currentLink}>
-                  {cateID}
+                  {catName}
                 </Typography>
               )}
             </Breadcrumbs>
@@ -155,7 +164,7 @@ const Collections = (props) => {
               <div className={classes.banner}>
                 <span className={classes.bannerOverlay}></span>
                 <Typography variant="h3" className={classes.bannerTitle}>
-                  {cateID}
+                  {catName}
                 </Typography>
               </div>
             )}
@@ -163,7 +172,7 @@ const Collections = (props) => {
               {loading && <RequestLoading />}
               {!loading && (
                 <Grid container spacing={2}>
-                  {products?.length > 0 &&
+                  {products?.length > 0 ? (
                     products.map((item, index) => (
                       <Grid item key={index} xs={12} sm={4} md={3}>
                         <ProductItem
@@ -176,7 +185,12 @@ const Collections = (props) => {
                           onAddToCart={addNew.bind(null, item, 1)}
                         />
                       </Grid>
-                    ))}
+                    ))
+                  ) : (
+                    <Box padding={2} textAlign="center" width="100%">
+                      <Typography variant="body1">Không có sản phẩm nào</Typography>
+                    </Box>
+                  )}
                 </Grid>
               )}
             </div>

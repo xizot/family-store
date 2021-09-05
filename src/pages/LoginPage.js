@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  FormControl,
-  Container,
-  makeStyles,
-  Button,
-  TextField,
-  Typography,
-  Box,
-} from '@material-ui/core';
+import { FormControl, Container, makeStyles, TextField, Typography, Box } from '@material-ui/core';
 import { useInput } from '../hooks/use-input';
 import * as Validate from '../helpers/validate';
 import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
@@ -18,6 +10,8 @@ import Footer from '../components/Layout/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../reducers/auth';
 import { FormHelperText } from '@material-ui/core';
+import { uiActions } from '../reducers/ui';
+import ButtonWithLoading from '../components/UI/ButtonWithLoading/ButtonWithLoading';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -126,7 +120,9 @@ const LoginPage = () => {
   useEffect(() => {
     document.title = t('loginpage.title');
   }, [t]);
-
+  useEffect(() => {
+    dispatch(uiActions.hideModal());
+  }, [dispatch]);
   if (isAuthenticated) return <Redirect to={location.state?.from || '/'} />;
 
   return (
@@ -174,15 +170,14 @@ const LoginPage = () => {
                     {error}
                   </FormHelperText>
                 )}
-                <Button
-                  variant="contained"
-                  color="primary"
+
+                <ButtonWithLoading
+                  isLoading={loading}
                   fullWidth
-                  disabled={!formIsValid}
                   type="submit"
-                  className={classes.button}>
-                  {!loading ? t('loginpage.buttonLogin') : t('loginpage.buttonLoginPending')}
-                </Button>
+                  disabled={!formIsValid}>
+                  {t('loginpage.buttonLogin')}
+                </ButtonWithLoading>
               </form>
               <div className={classes.actions}>
                 <Typography variant="body2">

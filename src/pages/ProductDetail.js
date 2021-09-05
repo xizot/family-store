@@ -20,41 +20,6 @@ import SuggestionList from '../components/SuggestionList/SuggestionList';
 import RequestLoading from '../components/RequestLoading/RequestLoading';
 import { useCart } from '../hooks/use-cart';
 
-// const districts = [
-//   {
-//     id: 'QBT',
-//     title: 'Quận Bình Thạnh',
-//   },
-//   {
-//     id: 'Q1',
-//     title: 'Quận 1',
-//   },
-//   {
-//     id: 'Q2',
-//     title: 'Quận 2',
-//   },
-//   {
-//     id: 'Q3',
-//     title: 'Quận 3',
-//   },
-//   {
-//     id: 'Q4',
-//     title: 'Quận 4',
-//   },
-//   {
-//     id: 'Q5',
-//     title: 'Quận 5',
-//   },
-//   {
-//     id: 'Q9',
-//     title: 'Quận 9',
-//   },
-//   {
-//     id: 'Q10',
-//     title: 'Quận 10',
-//   },
-// ];
-
 const ProductDetail = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

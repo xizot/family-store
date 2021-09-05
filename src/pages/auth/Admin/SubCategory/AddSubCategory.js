@@ -4,10 +4,10 @@ import {
   Typography,
   Button,
   FormControl,
-  Grid,
   NativeSelect,
   InputBase,
   withStyles,
+  Box,
 } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { FormHelperText } from '@material-ui/core';
@@ -17,6 +17,7 @@ import { addSubCategory, updateSubCategory } from '../../../../reducers/sub-cate
 
 const useStyles = makeStyles((theme) => ({
   paper: {
+    position: 'relative',
     width: '30rem',
     maxWidth: '90%',
     margin: '20vh auto 0',
@@ -27,15 +28,15 @@ const useStyles = makeStyles((theme) => ({
   form: {
     marginTop: '9px',
   },
-  native: {
-    marginTop: '9px',
+  textField: {
+    marginBottom: theme.spacing(2),
+  },
+  modalTitle: {
+    marginBottom: theme.spacing(2),
   },
   select: {
-    position: 'absolute',
-    right: '0px',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: '#F39148',
-    marginLeft: theme.spacing(1),
     '& svg': {
       color: theme.palette.common.white,
     },
@@ -78,7 +79,6 @@ const BootstrapInput = withStyles((theme) => ({
     fontSize: 14,
     color: '#FFF',
     height: 17,
-    width: 75,
     padding: '10px 26px 7px 12px',
     fontFamily: ['Arial'].join(','),
     '&:focus': {
@@ -154,45 +154,49 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
 
   return (
     <div className={classes.paper}>
-      <Typography variant="h5" style={{ textAlign: 'center', color: '#F39148' }}>
+      <Typography
+        variant="h5"
+        style={{ textAlign: 'center', color: '#F39148' }}
+        className={classes.modalTitle}>
         MODAL SUB CATEGORY
       </Typography>
       <FormControl className={classes.form} fullWidth>
         <TextField
           fullWidth
           variant="outlined"
+          label="Category Name"
           value={subCateName}
           onChange={subCateNameChangeHandler}
+          size="small"
+          className={classes.textField}
+          focused
         />
-        <Grid container spacing={2} className={classes.native}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle2" className={classes.label} />
-            Father Category Name
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <NativeSelect
-              className={classes.select}
-              value={cateIdFather}
-              onChange={fatherCateChangeHandler}
-              name="price"
-              input={<BootstrapInput />}>
-              {father.map((row, index) => (
-                <option style={{ color: '#F39148' }} value={row.cateId} key={index}>
-                  {row.cateName}
-                </option>
-              ))}
-            </NativeSelect>
-          </Grid>
-        </Grid>
-        <Button
-          className={classes.save}
-          variant="contained"
-          fullWidth
-          component="label"
-          onClick={addCategoryHandler}>
-          Save
-        </Button>
+        <Box display="flex" flexWrap="wrap" justifyContent="space-between">
+          <Typography variant="subtitle2" className={classes.label}>
+            Father Category Name:
+          </Typography>
+          <NativeSelect
+            className={classes.select}
+            value={cateIdFather}
+            onChange={fatherCateChangeHandler}
+            name="price"
+            input={<BootstrapInput />}>
+            {father.map((row, index) => (
+              <option style={{ color: '#F39148' }} value={row.cateId} key={index}>
+                {row.cateName}
+              </option>
+            ))}
+          </NativeSelect>
+        </Box>
       </FormControl>
+      <Button
+        className={classes.save}
+        variant="contained"
+        fullWidth
+        component="label"
+        onClick={addCategoryHandler}>
+        Save
+      </Button>
       {error?.length > 0 && (
         <FormHelperText error style={{ marginBottom: 10 }}>
           {error}

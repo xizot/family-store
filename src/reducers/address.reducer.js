@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import addressApi from '../apis/address.api';
+import { addressApi } from '../apis/address.api';
 import { getResponseError } from '../helpers';
 
 export const getListCity = createAsyncThunk(
@@ -40,7 +40,29 @@ const addressSlice = createSlice({
     districts: [],
     wards: [],
   },
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.districts = [];
+      state.wards = [];
+    },
+    removeDisctricts: (state) => {
+      state.districts = [];
+    },
+    removeWards: (state) => {
+      state.wards = [];
+    },
+  },
+  extraReducers: {
+    [getListCity.fulfilled]: (state, action) => {
+      state.cities = action.payload.listcities;
+    },
+    [getListDistrict.fulfilled]: (state, action) => {
+      state.districts = action.payload.listDistricts;
+    },
+    [getListWard.fulfilled]: (state, action) => {
+      state.wards = action.payload.listcities;
+    },
+  },
 });
 
 export const addressActions = addressSlice.actions;

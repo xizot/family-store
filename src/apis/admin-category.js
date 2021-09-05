@@ -10,7 +10,7 @@ const CATEGORY_LIMIT = 10;
  * @param {string} data.cateName
  */
 const addCategory = (data) => {
-  return axios.post('/api/auth-categories/add-fathers', data);
+  return axios.post('/api/auth-categories/add-father', data);
 };
 
 const getListCategory = (page = null) => {

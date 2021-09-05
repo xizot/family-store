@@ -2,7 +2,7 @@ import { CardContent, makeStyles, Typography, Card, CardMedia } from '@material-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBasket } from '@material-ui/icons';
-import { moneyFormat } from '../../helpers';
+import { moneyFormat, removeHtmlTag } from '../../helpers';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: 'calc((9/16)*100%)',
     objectFit: 'cover',
+    backgroundSize: 'contain',
   },
   title: {
     display: '-webkit-box',
@@ -92,7 +93,11 @@ const ProductItem = ({
         <ShoppingBasket fontSize="small" />
       </div>
       <Link to={`/details/${id}`} className={classes.link}>
-        <CardMedia className={classes.media} image={image} title={title} />
+        <CardMedia
+          className={classes.media}
+          image={image || process.env.PUBLIC_URL + '/img/no-product.png'}
+          title={title}
+        />
         <CardContent className={classes.content}>
           <Typography className={classes.title} variant="body1">
             {title}
@@ -113,7 +118,7 @@ const ProductItem = ({
             color="textSecondary"
             component="p"
             className={classes.description}>
-            {description}
+            {removeHtmlTag(description)}
           </Typography>
         </CardContent>
       </Link>

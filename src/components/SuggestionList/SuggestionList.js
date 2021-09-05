@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Slider from 'react-slick';
@@ -102,7 +103,11 @@ function SuggestionList({ catID }) {
             />
           ))}
         </Slider>
-      )) || <p className={classes.noProduct}>There are no product recommendations</p>}
+      )) || (
+        <Typography variant="body1" className={classes.noProduct}>
+          There are no product recommendations
+        </Typography>
+      )}
     </div>
   );
 }

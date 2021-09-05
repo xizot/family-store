@@ -16,7 +16,6 @@ import Pagination from '@material-ui/lab/Pagination';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
-import SearchInput from '../../../../components/UI/SearchInput';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Add } from '@material-ui/icons';
@@ -27,6 +26,8 @@ import TableError from '../../../../components/TableError/TableError';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
 import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 import { toast } from 'react-toastify';
+import { removeHtmlTag } from '../../../../helpers';
+import SearchInputV2 from '../../../../components/UI/SearchInputV2';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
@@ -131,6 +132,15 @@ const useStyles = makeStyles((theme) => ({
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
   },
+  productName: {
+    wordWrap: 'break-word',
+    width: 200,
+    display: '-webkit-box',
+    '-webkit-line-clamp': 4,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
+  },
+
   tableRow: {
     '&:hover': {
       background: '#dedede !important ',
@@ -149,6 +159,7 @@ const ProductManager = (props) => {
   const [selectedId, setSelectedId] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const loading = useSelector((state) => state.product.loading);
   let { listProduct, numberOfPage } = productInfo;
@@ -187,6 +198,7 @@ const ProductManager = (props) => {
   const pageChangeHandler = (event, value) => {
     setPage(value);
   };
+
   const productDeleteHandler = async () => {
     if (!selectedId) return;
     try {
@@ -214,6 +226,9 @@ const ProductManager = (props) => {
     [dispatch]
   );
 
+  const searchChangeHandler = (value) => {
+    setSearch(value);
+  };
   useEffect(() => {
     if (page > numberOfPage) {
       setPage(numberOfPage || 1);
@@ -258,7 +273,7 @@ const ProductManager = (props) => {
           </Typography>
           <div className={classes.filter}>
             <div className={classes.search}>
-              <SearchInput />
+              <SearchInputV2 initialValue={search} onChange={searchChangeHandler} />
             </div>
 
             <div className={classes.addButton}>
@@ -286,7 +301,7 @@ const ProductManager = (props) => {
                   <TableHead>
                     <TableRow className={classes.tableHead}>
                       <TableCell>ID</TableCell>
-                      <TableCell>Product Name</TableCell>
+                      <TableCell width={200}>Product Name</TableCell>
                       <TableCell>Image</TableCell>
                       <TableCell>Category</TableCell>
                       <TableCell>Quantity</TableCell>
@@ -297,47 +312,57 @@ const ProductManager = (props) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {listProduct.map((row, index) => (
-                      <TableRow
-                        key={index}
-                        onClick={() => openUpdateModalHandler(row)}
-                        className={classes.tableRow}>
-                        <TableCell component="th" scope="row">
-                          {row.prod_id}
-                        </TableCell>
-                        <TableCell>{row.prod_name}</TableCell>
-                        <TableCell>
-                          <img
-                            src={row.images[0] || "/img/store-icon.png"}
-                            alt={row.prod_name}
-                            style={{ width: 100, height: 80, objectFit: 'cover' }}
-                          />
-                        </TableCell>
-                        <TableCell>{row.prod_category_name}</TableCell>
-                        <TableCell>{row.prod_amount}</TableCell>
-                        <TableCell>{row.prod_price}</TableCell>
-                        <TableCell>
-                          <Box className={classes.longTextStyle}>{row.prod_description}</Box>
-                        </TableCell>
-                        <TableCell>{row.prod_updated_date || row.prod_created_date || ""}</TableCell>
-                        <TableCell align="center">
-                          <Box style={{ width: 150 }}>
-                            <Button
-                              size="small"
-                              startIcon={<EditIcon />}
-                              style={{ padding: '0' }}
-                              onClick={() => openUpdateModalHandler(row)}
+                    {listProduct
+                      .filter((product) =>
+                        product.prod_name.toLowerCase().includes(search.toLowerCase())
+                      )
+                      .map((row, index) => (
+                        <TableRow
+                          key={index}
+                          onClick={() => openUpdateModalHandler(row)}
+                          className={classes.tableRow}>
+                          <TableCell component="th" scope="row">
+                            {row.prod_id}
+                          </TableCell>
+                          <TableCell>
+                            <Box className={classes.productName}>{row.prod_name}</Box>
+                          </TableCell>
+                          <TableCell>
+                            <img
+                              src={row.images[0] || '/img/store-icon.png'}
+                              alt={row.prod_name}
+                              style={{ width: 100, height: 80, objectFit: 'cover' }}
                             />
-                            <Button
-                              size="small"
-                              startIcon={<DeleteIcon />}
-                              style={{ padding: '0' }}
-                              onClick={(e) => openDeleteModalHandler(e, row.prod_id)}
-                            />
-                          </Box>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                          </TableCell>
+                          <TableCell>{row.prod_category_name}</TableCell>
+                          <TableCell>{row.prod_amount}</TableCell>
+                          <TableCell>{row.prod_price}</TableCell>
+                          <TableCell>
+                            <Box className={classes.longTextStyle}>
+                              {removeHtmlTag(row.prod_description)}
+                            </Box>
+                          </TableCell>
+                          <TableCell>
+                            {row.prod_updated_date || row.prod_created_date || ''}
+                          </TableCell>
+                          <TableCell align="center">
+                            <Box style={{ width: 150 }}>
+                              <Button
+                                size="small"
+                                startIcon={<EditIcon />}
+                                style={{ padding: '0' }}
+                                onClick={() => openUpdateModalHandler(row)}
+                              />
+                              <Button
+                                size="small"
+                                startIcon={<DeleteIcon />}
+                                style={{ padding: '0' }}
+                                onClick={(e) => openDeleteModalHandler(e, row.prod_id)}
+                              />
+                            </Box>
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </TableContainer>

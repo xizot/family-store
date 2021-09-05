@@ -1,12 +1,13 @@
-import { makeStyles, Modal } from '@material-ui/core';
+import { Box, makeStyles, Modal } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: 'auto',
-    width: '60rem',
-    padding: 10,
-    maxWidth: '90%',
-    margin: '0 auto',
-    overflow: 'auto',
+    outline: 'none',
+    position: 'absolute !important',
+    overflow: 'scroll',
+    height: '100%',
+    display: 'block',
+    top: 0,
+    left: 0,
     '&::-webkit-scrollbar-track': {
       '-webkit-box-shadow': 'inset 0 0 6px rgba(255,255,255,0.4)',
       backgroundColor: ' #fff',
@@ -29,7 +30,9 @@ const ProductModal = ({ isOpen, onClose, children }) => {
       onClose={onClose}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description">
-      {children}
+      <Box width="60rem" margin="0 auto" maxWidth="96%">
+        {children}
+      </Box>
     </Modal>
   );
 };

@@ -7,6 +7,7 @@ import {
   IconButton,
   makeStyles,
   Select,
+  TextareaAutosize,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -19,6 +20,7 @@ import { Validate } from '../../../../helpers';
 import { updateProductImage, updateProductInformation } from '../../../../reducers/product';
 import { toast } from 'react-toastify';
 import { getBaseImage } from '../../../../helpers/getBaseImage';
+import ButtonWithLoading from '../../../../components/UI/ButtonWithLoading/ButtonWithLoading';
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: '10vh',
@@ -27,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
   content: {
     background: '#fff',
     padding: theme.spacing(2, 5),
+    [theme.breakpoints.down('xs')]: {
+      padding: theme.spacing(2, 2),
+    },
   },
   title: {
     fontWeight: 'bold',
@@ -92,6 +97,31 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1,
     background: '#fff',
   },
+  textarea: {
+    outline: 'none',
+    resize: 'vertical',
+    padding: '10.5px 14px',
+    border: '1px solid #c4c4c4',
+    borderRadius: theme.shape.borderRadius,
+    marginBottom: theme.spacing(1),
+
+    '&:focus': {
+      borderColor: theme.palette.primary.main,
+    },
+  },
+  buttonSubmit: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 0,
+      width: '100%',
+      marginBottom: theme.spacing(1),
+    },
+  },
+  buttonDiscard: {
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+  },
 }));
 
 const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
@@ -99,7 +129,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.data);
   const [error, setError] = useState('');
-
+  const modifyLoading = useSelector((state) => state.product.modifyLoading);
   const {
     enteredInput: title,
     inputChangeHandler: titleChangeHandler,
@@ -415,20 +445,19 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
                   onChange={amountChangeHandler}
                 />
               </div>
-              <div className={classes.textField}>
+              <FormControl fullWidth className={classes.textField}>
                 <Typography variant="body1" component="p">
                   Add Description
                 </Typography>
-                <TextField
+                <TextareaAutosize
                   variant="outlined"
-                  size="small"
-                  multiline
-                  rows={4}
-                  fullWidth
+                  className={classes.textarea}
                   value={description}
                   onChange={descriptionChangeHandler}
+                  minRows={5}
+                  color="primary"
                 />
-              </div>
+              </FormControl>
               {/* {!submitIsValid && (
                 <FormHelperText error style={{ marginBottom: 8 }}>
                   All textfield must not be null or empty
@@ -440,15 +469,18 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
                 </FormHelperText>
               )}
 
-              <Box>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  style={{ marginRight: 16 }}
-                  onClick={updateInformation}>
+              <Box display="flex" flexWrap="wrap">
+                <ButtonWithLoading
+                  isLoading={modifyLoading}
+                  onClick={updateInformation}
+                  parentClasses={classes.buttonSubmit}>
                   UPDATE INFORMATION
-                </Button>
-                <Button variant="contained" onClick={closeModalHandler}>
+                </ButtonWithLoading>
+
+                <Button
+                  variant="contained"
+                  className={classes.buttonDiscard}
+                  onClick={closeModalHandler}>
                   Discard
                 </Button>
               </Box>

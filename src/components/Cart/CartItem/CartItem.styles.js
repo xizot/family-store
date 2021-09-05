@@ -25,12 +25,11 @@ export default makeStyles((theme) => ({
     position: 'relative',
     height: 100,
     width: 80,
-    background: '#ddd',
     marginRight: theme.spacing(1),
     '& img': {
       width: '100%',
       height: '100%',
-      objectFit: 'cover',
+      objectFit: 'contain',
     },
     '&:hover': {
       '& $remove': {

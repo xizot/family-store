@@ -7,6 +7,7 @@ import {
   IconButton,
   makeStyles,
   Select,
+  TextareaAutosize,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -16,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getListCategory } from '../../../../reducers/category';
 import { addNewProduct } from '../../../../reducers/product';
 import { toast } from 'react-toastify';
+import ButtonWithLoading from '../../../../components/UI/ButtonWithLoading/ButtonWithLoading';
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: '10vh',
@@ -77,12 +79,33 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
+  textarea: {
+    outline: 'none',
+    resize: 'vertical',
+    padding: '10.5px 14px',
+    border: '1px solid #c4c4c4',
+    borderRadius: theme.shape.borderRadius,
+    marginBottom: theme.spacing(1),
+
+    '&:focus': {
+      borderColor: theme.palette.primary.main,
+    },
+  },
+  actions: {
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'center',
+    },
+  },
+  buttonSubmit: {
+    marginRight: theme.spacing(2),
+  },
 }));
 
 const AddProduct = ({ isOpen, onClose, getList }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.data);
+  const modifyLoading = useSelector((state) => state.product.modifyLoading);
   const [images, setImages] = useState([]);
   const [mainImageSrc, setMainImageSrc] = useState(null);
   const [submitIsValid, setSubmitIsValid] = useState(true);
@@ -91,8 +114,10 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
   const categoryRef = useRef('');
   const priceRef = useRef(0);
   const amountRef = useRef(0);
-  const descriptionRef = useRef('');
-
+  const [description, setDescription] = useState('');
+  const descriptionChangeHandler = (e) => {
+    setDescription(e.target.value);
+  };
   const fileChangeHandler = (file) => {
     if (file) {
       setImages((prevState) => [...prevState, file]);
@@ -134,7 +159,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
     const enteredCategory = categoryRef.current.value;
     const enteredPrice = priceRef.current.value;
     const enteredAmount = amountRef.current.value;
-    const enteredDescription = descriptionRef.current.value;
+
     let formData = new FormData();
 
     if (
@@ -160,7 +185,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
     formData.append('prodCategoryID', enteredCategory);
     formData.append('prodPrice', enteredPrice);
     formData.append('prodAmount', enteredAmount);
-    formData.append('prodDescription', enteredDescription);
+    formData.append('prodDescription', description);
     try {
       await dispatch(addNewProduct(formData)).unwrap();
       toast.success('Add new product success');
@@ -169,6 +194,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
       onClose();
     } catch (err) {
       setError(err);
+      toast.error(error);
       console.log('🚀 ~ file: AddProduct.js ~ line 140 ~ addNewProductHandler ~ error', error);
     }
   };
@@ -293,19 +319,19 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
                   inputRef={amountRef}
                 />
               </div>
-              <div className={classes.textField}>
+              <FormControl color="primary" fullWidth className={classes.textField}>
                 <Typography variant="body1" component="p">
                   Add Description
                 </Typography>
-                <TextField
+                <TextareaAutosize
                   variant="outlined"
-                  size="small"
-                  multiline
-                  rows={4}
-                  fullWidth
-                  inputRef={descriptionRef}
+                  className={classes.textarea}
+                  value={description}
+                  onChange={descriptionChangeHandler}
+                  minRows={5}
+                  color="primary"
                 />
-              </div>
+              </FormControl>
               {!submitIsValid && (
                 <FormHelperText error style={{ marginBottom: 8 }}>
                   All text field must not be null or empty. <br /> Title must be less than 60
@@ -319,14 +345,14 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
                 </FormHelperText>
               )}
 
-              <Box>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  style={{ marginRight: 16 }}
-                  onClick={addNewProductHandler}>
+              <Box display="flex" flexWrap="wrap" className={classes.actions}>
+                <ButtonWithLoading
+                  isLoading={modifyLoading}
+                  onClick={addNewProductHandler}
+                  parentClasses={classes.buttonSubmit}>
                   ADD
-                </Button>
+                </ButtonWithLoading>
+
                 <Button variant="contained" onClick={onClose}>
                   Discard
                 </Button>

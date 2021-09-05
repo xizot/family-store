@@ -5,6 +5,7 @@ import { getResponseError } from '../helpers';
 const initialState = {
   data: [],
   loading: false,
+  modifyLoading: false,
   totalPage: 0,
 };
 
@@ -30,7 +31,7 @@ export const getListCategory = createAsyncThunk(
 );
 
 export const deleteCategory = createAsyncThunk(
-  'subcategory/Delete',
+  'category/Delete',
   async (id, { rejectWithValue }) => {
     try {
       await adminCategoryApi.deleteCategory(id);
@@ -42,7 +43,7 @@ export const deleteCategory = createAsyncThunk(
 );
 
 export const updateSubCategory = createAsyncThunk(
-  'subcategory/Update',
+  'category/Update',
   async ({ cateId, cateName }, { rejectWithValue }) => {
     try {
       return (await adminCategoryApi.updateCategory(cateId, cateName)).data;
@@ -67,6 +68,24 @@ const adminCategorySlice = createSlice({
       state.loading = false;
       state.data = action.payload.paginationResult;
       state.totalPage = action.payload.totalPage || 0;
+    },
+    [addCategory.pending]: (state) => {
+      state.modifyLoading = true;
+    },
+    [addCategory.rejected]: (state) => {
+      state.modifyLoading = false;
+    },
+    [addCategory.fulfilled]: (state) => {
+      state.modifyLoading = false;
+    },
+    [updateSubCategory.pending]: (state) => {
+      state.modifyLoading = true;
+    },
+    [updateSubCategory.rejected]: (state) => {
+      state.modifyLoading = false;
+    },
+    [updateSubCategory.fulfilled]: (state) => {
+      state.modifyLoading = false;
     },
   },
 });

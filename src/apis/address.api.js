@@ -1,13 +1,7 @@
 import axios from '../axios/index';
-
-const getListCity = () => axios.get('/api/delivery/list-city');
-const getListDistrict = (cityId) => axios.post('/api/delivery/list-districts', { cityId: +cityId });
-const getListWard = ({ cityId, districtId }) =>
-  axios.get('/api/delivery/list-districts', { cityId: +cityId, districtId: +districtId });
-
-const addressApi = {
-  getListCity,
-  getListDistrict,
-  getListWard,
+export const addressApi = {
+  getListCity: () => axios.get('/api/delivery/list-cities'),
+  getListDistrict: (cityId) => axios.post('/api/delivery/list-districts', { cityId: +cityId }),
+  getListWard: ({ cityId, districtId }) =>
+    axios.post('/api/delivery/list-ward', { cityId: +cityId, districtId: +districtId }),
 };
-export default addressApi;

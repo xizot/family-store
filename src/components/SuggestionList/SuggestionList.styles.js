@@ -10,9 +10,6 @@ export default makeStyles((theme) => ({
     padding: '0px 2px',
   },
   noProduct: {
-    fontSize: 20,
-    color: '#999',
-    fontWeight: 'bold',
     textAlign: 'center',
   },
 }));
