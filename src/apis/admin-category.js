@@ -10,7 +10,7 @@ const CATEGORY_LIMIT = 10;
  * @param {string} data.cateName
  */
 const addCategory = (data) => {
-  return axios.post('/api/categories/add-father', data);
+  return axios.post('/api/auth-categories/add-fathers', data);
 };
 
 const getListCategory = (page = null) => {
@@ -22,10 +22,10 @@ const getListCategory = (page = null) => {
 };
 
 const updateCategory = (cateId, cateName) => {
-  return axios.post('/api/categories/update', { cateId, cateName });
+  return axios.post('/api/auth-categories/update', { cateId, cateName });
 };
 const deleteCategory = (cateId) => {
-  return axios.post('api/categories/delete', { cateId });
+  return axios.post('api/auth-categories/delete', { cateId });
 };
 const adminCategoryApi = {
   addCategory,

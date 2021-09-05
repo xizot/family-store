@@ -15,13 +15,13 @@ const getListSubCategory = (cateFather, page = null) => {
   return axios.post(query, { cateFather });
 };
 const deleteCategory = (cateId) => {
-  return axios.post('api/categories/delete', { cateId });
+  return axios.post('api/auth-categories/delete', { cateId });
 };
 const addSubCategory = (cateName, cateFather) => {
-  return axios.post('/api/categories/add-child', { cateName, cateFather });
+  return axios.post('/api/auth-categories/add-child', { cateName, cateFather });
 };
 const updateSubCategory = (cateFather, cateId, cateName) => {
-  return axios.post('/api/categories/update', { cateFather, cateId, cateName });
+  return axios.post('/api/auth-categories/update', { cateFather, cateId, cateName });
 };
 const adminSubCategoryApi = {
   getListSubCategory,
