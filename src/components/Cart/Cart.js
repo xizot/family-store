@@ -9,21 +9,27 @@ import { uiActions } from '../../reducers/ui';
 import CartModal from '../UI/CartModal/CartModal';
 import CartItem from './CartItem/CartItem';
 import useStyles from './Cart.styles';
+import { useHistory } from 'react-router-dom';
 
 const Cart = (props) => {
   const { t } = useTranslation();
+  const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.data);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const { addNew, removeItem, updateAmount } = useCart();
+  const isOpenCart = useSelector((state) => state.ui.isOpenCart);
 
+  const checkoutHandler = () => {
+    history.push('/checkout');
+  };
   const toggleCartModalHandler = () => {
     dispatch(uiActions.toggleCartModal());
   };
 
   return (
-    <CartModal onClose={toggleCartModalHandler}>
+    <CartModal onClose={toggleCartModalHandler} isOpen={isOpenCart}>
       <div className={classes.content}>
         <div>
           <div className={classes.title}>
@@ -65,6 +71,7 @@ const Cart = (props) => {
           variant="contained"
           color="primary"
           className={classes.buttonCheckout}
+          onClick={checkoutHandler}
           disabled={cartItems.length <= 0}>
           {t('cartModal.checkout')}
         </Button>

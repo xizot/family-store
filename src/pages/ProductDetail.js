@@ -1,4 +1,4 @@
-import { Button, IconButton, Typography, Select, FormControl, MenuItem } from '@material-ui/core';
+import { Button, IconButton, Typography } from '@material-ui/core';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -20,40 +20,40 @@ import SuggestionList from '../components/SuggestionList/SuggestionList';
 import RequestLoading from '../components/RequestLoading/RequestLoading';
 import { useCart } from '../hooks/use-cart';
 
-const districts = [
-  {
-    id: 'QBT',
-    title: 'Quận Bình Thạnh',
-  },
-  {
-    id: 'Q1',
-    title: 'Quận 1',
-  },
-  {
-    id: 'Q2',
-    title: 'Quận 2',
-  },
-  {
-    id: 'Q3',
-    title: 'Quận 3',
-  },
-  {
-    id: 'Q4',
-    title: 'Quận 4',
-  },
-  {
-    id: 'Q5',
-    title: 'Quận 5',
-  },
-  {
-    id: 'Q9',
-    title: 'Quận 9',
-  },
-  {
-    id: 'Q10',
-    title: 'Quận 10',
-  },
-];
+// const districts = [
+//   {
+//     id: 'QBT',
+//     title: 'Quận Bình Thạnh',
+//   },
+//   {
+//     id: 'Q1',
+//     title: 'Quận 1',
+//   },
+//   {
+//     id: 'Q2',
+//     title: 'Quận 2',
+//   },
+//   {
+//     id: 'Q3',
+//     title: 'Quận 3',
+//   },
+//   {
+//     id: 'Q4',
+//     title: 'Quận 4',
+//   },
+//   {
+//     id: 'Q5',
+//     title: 'Quận 5',
+//   },
+//   {
+//     id: 'Q9',
+//     title: 'Quận 9',
+//   },
+//   {
+//     id: 'Q10',
+//     title: 'Quận 10',
+//   },
+// ];
 
 const ProductDetail = (props) => {
   const { t } = useTranslation();
@@ -61,7 +61,7 @@ const ProductDetail = (props) => {
   const { productId } = useParams();
   const [toggleDescription, setToggleDescription] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [selectedDistrict, setSelectedDistrict] = useState('QBT');
+  // const [selectedDistrict, setSelectedDistrict] = useState('QBT');
   const [productDetails, setProductDetails] = useState({});
   const [commentPage, setCommentPage] = useState(1);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -105,9 +105,9 @@ const ProductDetail = (props) => {
     setToggleDescription((prevState) => !prevState);
   };
 
-  const districtChangeHandler = (e) => {
-    setSelectedDistrict(e.target.value);
-  };
+  // const districtChangeHandler = (e) => {
+  //   setSelectedDistrict(e.target.value);
+  // };
 
   const commentPageChangeHandler = (e, value) => {
     setCommentPage(value);
@@ -198,7 +198,7 @@ const ProductDetail = (props) => {
                   <Typography variant="h6" component="p" className={classes.price}>
                     {productDetails.prod_price && moneyFormat(productDetails.prod_price)} VND
                   </Typography>
-                  <div className={classes.shipPredict}>
+                  {/* <div className={classes.shipPredict}>
                     <div className={classes.shipPredictInfo}>
                       <Typography variant="body2" className={classes.shipPredictLabel}>
                         {t('productDetailPage.estimatedDeliveryFee')}
@@ -229,7 +229,7 @@ const ProductDetail = (props) => {
                         </Select>
                       </FormControl>
                     </div>
-                  </div>
+                  </div> */}
                   <div className={classes.addToCart}>
                     <NumericUpDown
                       quantity={quantity}

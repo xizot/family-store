@@ -27,7 +27,6 @@ const theme = createTheme({
 function App() {
   const dispatch = useDispatch();
   const { i18n } = useTranslation();
-  const isOpenCart = useSelector((state) => state.ui.isOpenCart);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const getListCart = useCallback(async () => {
@@ -70,7 +69,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer autoClose={5000} closeOnClick position="top-right" />
-      {isOpenCart && <Cart />}
+      <Cart />
       <Suspense fallback={<Loading />}>
         <Switch>
           {routes.map((route, index) => {
