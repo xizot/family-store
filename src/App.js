@@ -13,7 +13,7 @@ import Loading from './components/Loading/Loading';
 import Cart from './components/Cart/Cart';
 import { AdminTemplate } from './components/Templates/Admin/AdminTemplate';
 import { CheckRole } from './components/Common/CheckRole';
-import { userGetListCart } from './reducers/cart';
+import { cartActions, userGetListCart } from './reducers/cart';
 const PageNotFound = lazy(() => import('./pages/404NotFound'));
 
 const theme = createTheme({
@@ -36,6 +36,8 @@ function App() {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      dispatch(cartActions.reset());
     }
   }, [dispatch, isAuthenticated]);
 

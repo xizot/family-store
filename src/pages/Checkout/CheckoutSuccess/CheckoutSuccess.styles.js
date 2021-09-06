@@ -22,6 +22,7 @@ export default makeStyles((theme) => ({
     flexDirection: 'column',
     '& > a': {
       color: theme.palette.primary.main,
+      whiteSpace: 'nowrap',
     },
     [theme.breakpoints.down('xs')]: {
       padding: '50px 0',

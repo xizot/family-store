@@ -61,7 +61,12 @@ const cartSlice = createSlice({
     data: [],
     totalAmount: 0,
   },
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.data = [];
+      state.totalAmount = 0;
+    },
+  },
   extraReducers: {
     [userGetListCart.fulfilled]: (state, action) => {
       if (!action.payload.errorMessage) {

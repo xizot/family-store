@@ -1,5 +1,12 @@
 import axios from '../axios/index';
 export const checkoutApi = {
-  addBill: ({ accAddress, priceShip, listProduct }) =>
-    axios.post('/api/bill/add', { accAddress, priceShip, listProduct }),
+  addBill: ({ receiverName, receiverPhone, receiverNote, accAddress, priceShip, listProduct }) =>
+    axios.post('/api/bill/add', {
+      receiverName,
+      receiverPhone,
+      receiverNote,
+      accAddress,
+      priceShip,
+      listProduct,
+    }),
 };

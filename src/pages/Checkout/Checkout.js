@@ -32,6 +32,7 @@ import {
 import { addBill } from '../../reducers/checkout.reducer';
 import { toast } from 'react-toastify';
 import { userAddDelivery } from '../../reducers/delivery.reducer';
+import { cartActions } from '../../reducers/cart';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -74,7 +75,7 @@ const Checkout = () => {
     hasError: fullnameHasError,
     inputBlurHandler: fullnameBlurHandler,
     inputChangeHandler: fullnameChangeHandler,
-    // inputIsValid: fullnameIsValid,
+    inputIsValid: fullnameIsValid,
     // inputReset: fullnameReset,
   } = useInput(Validate.isNotEmpty);
 
@@ -83,9 +84,9 @@ const Checkout = () => {
     hasError: phoneNumberHasError,
     inputBlurHandler: phoneNumberBlurHandler,
     inputChangeHandler: phoneNumberChangeHandler,
-    // inputIsValid: phoneNumberIsValid,
+    inputIsValid: phoneNumberIsValid,
     // inputReset: phoneNumberReset,
-  } = useInput(Validate.isNotEmpty);
+  } = useInput((value) => Validate.isNotEmpty(value) && Validate.isPhoneNumber(value));
   const {
     enteredInput: noteEntered,
     inputBlurHandler: noteBlurHandler,
@@ -195,7 +196,9 @@ const Checkout = () => {
     selectedAddress.city != null &&
     selectedAddress.district != null &&
     selectedAddress.ward != null &&
-    selectedAddress.street.length > 0;
+    selectedAddress.street.length > 0 &&
+    fullnameIsValid &&
+    phoneNumberIsValid;
   const addBillHandler = async () => {
     if (!billIsValid) {
       return;
@@ -217,11 +220,16 @@ const Checkout = () => {
     try {
       await dispatch(
         addBill({
+          receiverName: fullnameEntered,
+          receiverPhone: phoneNumberEntered,
+          receiverNote: noteEntered,
           accAddress: accAddress,
           priceShip: shippingFee,
           listProduct: cart.map((item) => ({ prodId: item.prodId, prodQuantity: item.cartAmount })),
         })
       ).unwrap();
+
+      dispatch(cartActions.reset());
       localStorage.setItem('checkout', '1');
       history.push('/checkout-success');
     } catch (error) {
