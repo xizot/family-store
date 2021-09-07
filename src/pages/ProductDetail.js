@@ -234,6 +234,7 @@ const ProductDetail = (props) => {
                   toggleDescription ? classes.isLess : classes.isLess
                 }`}
               />
+
               <div className={classes.btnToggleDescription}>
                 <IconButton onClick={descriptionToggleHandler} size="small">
                   <img

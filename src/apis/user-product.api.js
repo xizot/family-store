@@ -1,6 +1,6 @@
 import axios from '../axios/index';
 
-const getListByCateIDAndPage = ({ catID, page = 1, limit = 10 }) =>
+const getListByCateIDAndPage = ({ catID, page = 1, limit = 12 }) =>
   axios.post('/api/product/list-by-cat', { catID, page, limit });
 
 const getListSuggest = ({ catID, page = 1, limit = 10 }) =>
