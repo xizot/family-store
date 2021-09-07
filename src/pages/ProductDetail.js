@@ -226,12 +226,13 @@ const ProductDetail = (props) => {
                 {t('productDetailPage.productDescription')}
               </Typography>
               {loading && <RequestLoading />}
-              <Typography
-                variant="body2"
+              <div
                 dangerouslySetInnerHTML={{
                   __html: productDetails.prod_description,
                 }}
-                className={`${classes.descriptionText} ${toggleDescription ? classes.isLess : ''}`}
+                className={`${classes.descriptionText} ${
+                  toggleDescription ? classes.isLess : classes.isLess
+                }`}
               />
               <div className={classes.btnToggleDescription}>
                 <IconButton onClick={descriptionToggleHandler} size="small">
