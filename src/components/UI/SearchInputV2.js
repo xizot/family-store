@@ -1,7 +1,6 @@
 import { alpha, InputBase, makeStyles } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
@@ -35,8 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchInputV2 = ({ border, initialValue, onChange }) => {
-  const { t } = useTranslation();
+const SearchInputV2 = ({ border, placeholder, initialValue, onChange }) => {
   const classes = useStyles({ border });
 
   const [searchInput, setSearchInput] = useState(initialValue);
@@ -52,7 +50,7 @@ const SearchInputV2 = ({ border, initialValue, onChange }) => {
         <Search />
       </div>
       <InputBase
-        placeholder={t('searchPlaceHolder')}
+        placeholder={placeholder}
         classes={{
           root: classes.inputRoot,
           input: classes.inputInput,
