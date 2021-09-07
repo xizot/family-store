@@ -44,6 +44,7 @@ const userProductSlice = createSlice({
   },
   extraReducers: {
     [getListProductByCateAndPage.pending]: (state) => {
+      state.products = [];
       state.loading = true;
     },
     [getListProductByCateAndPage.rejected]: (state) => {

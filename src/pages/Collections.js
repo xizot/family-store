@@ -99,6 +99,10 @@ const Collections = (props) => {
 
   const pageChangeHandler = (event, value) => {
     setPage(value);
+    getListProductByCateHandler({
+      cateID,
+      page: value,
+    });
   };
   const getListProductByCateHandler = useCallback(
     async ({ cateID, page }) => {
