@@ -231,7 +231,7 @@ const ProductDetail = (props) => {
                   __html: productDetails.prod_description,
                 }}
                 className={`${classes.descriptionText} ${
-                  toggleDescription ? classes.isLess : classes.isLess
+                  toggleDescription ? classes.isLess : ""//classes.isLess
                 }`}
               />
 
