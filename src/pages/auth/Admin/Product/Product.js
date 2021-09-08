@@ -16,9 +16,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import { Add } from '@material-ui/icons';
+import { Add, Delete, Edit } from '@material-ui/icons';
 import { deleteProduct, getListProductByPage } from '../../../../reducers/product';
 import AddProduct from './AddProduct';
 import UpdateProduct from './UpdateProduct';
@@ -33,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   title: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(5),
     textAlign: 'center',
     color: theme.palette.primary.main,
   },
@@ -145,6 +143,12 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       background: '#dedede !important ',
       cursor: 'pointer',
+    },
+  },
+  actionIcon: {
+    cursor: 'pointer',
+    '&:not(:last-child)': {
+      marginRight: theme.spacing(1),
     },
   },
 }));
@@ -273,7 +277,11 @@ const ProductManager = (props) => {
           </Typography>
           <div className={classes.filter}>
             <div className={classes.search}>
-              <SearchInputV2 initialValue={search} onChange={searchChangeHandler} />
+              <SearchInputV2
+                placeholder="Tìm kiếm tên sản phẩm"
+                initialValue={search}
+                onChange={searchChangeHandler}
+              />
             </div>
 
             <div className={classes.addButton}>
@@ -295,9 +303,9 @@ const ProductManager = (props) => {
           ) : error?.length > 0 ? (
             <TableError message={error} onTryAgain={getListProductByPageHandler.bind(null, page)} />
           ) : listProduct?.length > 0 ? (
-            <>
-              <TableContainer component={Paper} className={classes.section}>
-                <Table aria-label="a dense table" style={{ width: '1200px' }}>
+            <Paper className={classes.section}>
+              <TableContainer>
+                <Table aria-label="a dense table" style={{ minWidth: '1200px' }}>
                   <TableHead>
                     <TableRow className={classes.tableHead}>
                       <TableCell>ID</TableCell>
@@ -346,17 +354,13 @@ const ProductManager = (props) => {
                             {row.prod_updated_date || row.prod_created_date || ''}
                           </TableCell>
                           <TableCell align="center">
-                            <Box style={{ width: 150 }}>
-                              <Button
-                                size="small"
-                                startIcon={<EditIcon />}
-                                style={{ padding: '0' }}
+                            <Box display="flex">
+                              <Edit
+                                className={classes.actionIcon}
                                 onClick={() => openUpdateModalHandler(row)}
                               />
-                              <Button
-                                size="small"
-                                startIcon={<DeleteIcon />}
-                                style={{ padding: '0' }}
+                              <Delete
+                                className={classes.actionIcon}
                                 onClick={(e) => openDeleteModalHandler(e, row.prod_id)}
                               />
                             </Box>
@@ -376,7 +380,7 @@ const ProductManager = (props) => {
                   onChange={pageChangeHandler}
                 />
               </div>
-            </>
+            </Paper>
           ) : (
             <TableError
               message="No data available in database"

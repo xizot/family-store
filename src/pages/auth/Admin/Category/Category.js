@@ -9,15 +9,14 @@ import {
   Paper,
   Typography,
   Button,
+  Box,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 // import Pagination from '@material-ui/lab/Pagination';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import { Add } from '@material-ui/icons';
+import { Add, Delete, Edit } from '@material-ui/icons';
 import { getListCategory, deleteCategory } from '../../../../reducers/category';
 import TableError from '../../../../components/TableError/TableError';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   title: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(5),
     textAlign: 'center',
     color: theme.palette.primary.main,
   },
@@ -110,6 +109,12 @@ const useStyles = makeStyles((theme) => ({
   tableHead: {
     fontWeight: 'bold',
     color: 'red',
+  },
+  actionIcon: {
+    cursor: 'pointer',
+    '&:not(:last-child)': {
+      marginRight: theme.spacing(1),
+    },
   },
 }));
 
@@ -219,7 +224,11 @@ const SubCateManager = (props) => {
         </Typography>
         <div className={classes.filter}>
           <div className={classes.search}>
-            <SearchInputV2 initialValue={search} onChange={searchChangeHandler} />
+            <SearchInputV2
+              placeholder="Tìm kiếm category"
+              initialValue={search}
+              onChange={searchChangeHandler}
+            />
           </div>
           <div className={classes.addButton}>
             <Button
@@ -251,7 +260,7 @@ const SubCateManager = (props) => {
                     <TableCell style={{ textAlign: 'center' }}>Category Name</TableCell>
                     <TableCell style={{ textAlign: 'center' }}>Sub Category Inside</TableCell>
                     <TableCell>Last Modified</TableCell>
-                    <TableCell align="center">Options</TableCell>
+                    <TableCell>Options</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -274,19 +283,17 @@ const SubCateManager = (props) => {
                             {row.subCategories.length}
                           </TableCell>
                           <TableCell>{row.createDate}</TableCell>
-                          <TableCell align="center">
-                            <Button
-                              size="small"
-                              startIcon={<EditIcon />}
-                              style={{ padding: '0' }}
-                              onClick={() => openModalHandler('UPDATE', row)}
-                            />
-                            <Button
-                              size="small"
-                              startIcon={<DeleteIcon />}
-                              style={{ padding: '0' }}
-                              onClick={() => openDeleteModalHandler(row.cateId)}
-                            />
+                          <TableCell>
+                            <Box display="flex">
+                              <Edit
+                                className={classes.actionIcon}
+                                onClick={() => openModalHandler('UPDATE', row)}
+                              />
+                              <Delete
+                                className={classes.actionIcon}
+                                onClick={() => openDeleteModalHandler(row.cateId)}
+                              />
+                            </Box>
                           </TableCell>
                         </TableRow>
                       ))}
