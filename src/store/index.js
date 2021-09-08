@@ -11,6 +11,7 @@ import userProductSlice from '../reducers/user-product.reducer';
 import userCommentSlice from '../reducers/user-comment.reducer';
 import addressSlice from '../reducers/address.reducer';
 import checkoutSlice from '../reducers/checkout.reducer';
+import orderSlice from '../reducers/order.reducer';
 // import userCartSlice from '../reducers/user-cart.reducer';
 
 const store = configureStore({
@@ -27,6 +28,7 @@ const store = configureStore({
     userComment: userCommentSlice.reducer,
     address: addressSlice.reducer,
     checkout: checkoutSlice.reducer,
+    order:orderSlice.reducer,
     // userCart: userCartSlice.reducer,
   },
 });

@@ -1,5 +1,6 @@
 import { makeStyles, Tab } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import TabPanel from '@material-ui/lab/TabPanel';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
@@ -8,7 +9,7 @@ import Header from './../../components/Layout/Header';
 import SideBar from '../../components/SideBar/SideBar';
 import OrderItem from './../../components/Order/OrderItem';
 import CategoryMenu from '../../components/CategoriesMenu/CategoriesMenu';
-
+import {getAllOrder,getDeliveringOrder,getDeliveredOrder} from '../../reducers/order.reducer';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
@@ -44,24 +45,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
 }));
-const itemsOrderDelivering = [
-  {
-    id: '000144004',
-    img: 'https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png',
-    date: '22/02/2021',
-    expected: '23/02/2021',
-    total: 700000,
-    status: 'Delivering',
-  },
-  {
-    id: '000144007',
-    img: 'https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png',
-    date: '15/12/2021',
-    expected: '23/12/2021',
-    total: 1100000,
-    status: 'Delivering',
-  },
-];
+
 const itemsOrderCancel = [
   {
     id: '000144006',
@@ -82,68 +66,73 @@ const itemsOrderConfirm = [
     status: 'Await confirm',
   },
 ];
-const itemsOrderDelivered = [
-  {
-    id: '000144005',
-    img: 'https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png',
-    date: '22/12/2011',
-    expected: '13/02/2021',
-    total: 500000,
-    status: 'Delivered',
-  },
-];
-const itemsOrder = [
-  {
-    id: '000144008',
-    img: 'https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png',
-    date: '01/02/2022',
-    expected: '25/02/2022',
-    total: 500000,
-    status: 'Await confirm',
-  },
-  {
-    id: '000144004',
-    img: 'https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png',
-    date: '22/02/2021',
-    expected: '23/02/2021',
-    total: 700000,
-    status: 'Delivering',
-  },
-  {
-    id: '000144007',
-    img: 'https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png',
-    date: '15/12/2021',
-    expected: '23/12/2021',
-    total: 1100000,
-    status: 'Delivering',
-  },
-  {
-    id: '000144005',
-    img: 'https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png',
-    date: '22/12/2011',
-    expected: '13/02/2021',
-    total: 500000,
-    status: 'Delivered',
-  },
-  {
-    id: '000144006',
-    img: 'https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png',
-    date: '05/02/2021',
-    expected: '23/02/2021',
-    total: 100000,
-    status: 'Cancel',
-  },
-];
 
 const OrderPage = (props) => {
+  const img = "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png"
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [error, setError] = useState('');
+  const {data,delivering,totalPage,delivered} = useSelector((state) => state.order);
+  const [page, setPage] = useState(1);
   const [value, setValue] = useState('0');
+
+
+  const getAllOrderHandler = useCallback(
+    async (selectedPage) => {
+      try {
+        await dispatch(getAllOrder(selectedPage)).unwrap();
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [dispatch]
+  );
+
+  const getDeliveringOrderHandler = useCallback(
+    async (selectedPage) => {
+      try {
+        await dispatch(getDeliveringOrder(selectedPage)).unwrap();
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [dispatch]
+  );
+
+  const getDeliveredOrderHandler = useCallback(
+    async (selectedPage) => {
+      try {
+        await dispatch(getDeliveredOrder(selectedPage)).unwrap();
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    getAllOrderHandler(page);
+  }, [dispatch, getAllOrderHandler, page]);
+
   const handleChange = (event, newValue) => {
+    if(newValue === '2'){
+      getDeliveringOrderHandler(page);
+    }
+    if(newValue === "3"){
+      getDeliveredOrderHandler(page);
+    }
     setValue(newValue);
   };
+
   useEffect(() => {
     document.title = 'All Order';
   }, []);
+
+  useEffect(() => {
+    if (page > totalPage) {
+      setPage(totalPage || 1);
+    }
+  }, [page, totalPage]);
 
   return (
     <>
@@ -171,16 +160,16 @@ const OrderPage = (props) => {
               </div>
               <div className={classes.listItem}>
                 <TabPanel value="0">
-                  {itemsOrder?.length > 0 &&
-                    itemsOrder.map((item, index) => (
+                  {data?.length > 0 &&
+                    data.map((item, index) => (
                       <OrderItem
                         key={index}
-                        id={item.id}
-                        img={item.img}
-                        status={item.status}
-                        date={item.date}
-                        expected={item.expected}
-                        total={item.total}
+                        id={item.billId}
+                        img={img}
+                        status={item.billStatus}
+                        date={item.createDate}
+                        expected={item.expectedDate}
+                        total={item.totalPrice}
                       />
                     ))}
                 </TabPanel>
@@ -199,30 +188,30 @@ const OrderPage = (props) => {
                     ))}
                 </TabPanel>
                 <TabPanel value="2">
-                  {itemsOrderDelivering?.length > 0 &&
-                    itemsOrderDelivering.map((item, index) => (
+                  {delivering?.length > 0 &&
+                    delivering.map((item, index) => (
                       <OrderItem
                         key={index}
-                        id={item.id}
-                        img={item.img}
-                        status={item.status}
-                        date={item.date}
-                        expected={item.expected}
-                        total={item.total}
+                        id={item.billId}
+                        img={img}
+                        status={item.billStatus}
+                        date={item.createDate}
+                        expected={item.expectedDate}
+                        total={item.totalPrice}
                       />
                     ))}
                 </TabPanel>
                 <TabPanel value="3">
-                  {itemsOrderDelivered?.length > 0 &&
-                    itemsOrderDelivered.map((item, index) => (
+                  {delivered?.length > 0 &&
+                    delivered.map((item, index) => (
                       <OrderItem
                         key={index}
-                        id={item.id}
-                        img={item.img}
-                        status={item.status}
-                        date={item.date}
-                        expected={item.expected}
-                        total={item.total}
+                        id={item.billId}
+                        img={img}
+                        status={item.billStatus}
+                        date={item.createDate}
+                        expected={item.expectedDate}
+                        total={item.totalPrice}
                       />
                     ))}
                 </TabPanel>
