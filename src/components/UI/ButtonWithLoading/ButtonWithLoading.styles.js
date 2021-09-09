@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core';
 
 export default makeStyles((theme) => ({
   root: {
+    textTransform: (props) => (props.isUpperCase ? 'uppercase' : 'capitalize'),
     display: 'block',
     '&.Mui-disabled': {
       boxShadow: '0px 2px 4px rgba(0,0,0,.3)',

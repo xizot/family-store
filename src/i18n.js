@@ -30,7 +30,7 @@ const vnTranslation = {
     email: 'Email',
     emailInValid: 'Địa chỉ email không hợp lệ',
     address: 'Địa chỉ',
-    fullName: 'Tên đầy đủ',
+    fullName: 'Họ và tên',
     fullNameInValid: 'Tên người dùng không hợp lệ.',
     addressInValid: 'Địa chỉ không hợp lệ.',
     password: 'Mật khẩu',
@@ -86,12 +86,17 @@ const vnTranslation = {
   },
   profilepage: {
     title: 'Tài khoản của tôi',
+    changePassword: 'Đổi mật khẩu',
+    cancel: 'Hủy bỏ',
+    selectNewAvatar: 'Chọn hình ảnh mới',
+    removeChange: 'X Hủy bỏ thay đổi',
+    updateProfilePicture: 'Cập nhật ảnh',
     tabTitle: {
       1: 'CƠ BẢN',
       2: 'ĐỔI MẬT KHẨU',
       3: 'ẢNH ĐẠI DIỆN',
     },
-    fullName: 'Tên đầy đủ',
+    fullName: 'Họ và tên',
     email: 'Email',
     address: 'Địa chỉ',
     currentPassword: 'Mật khẩu hiện tại của bạn',
@@ -121,6 +126,9 @@ const vnTranslation = {
     categories: 'Danh mục sản phẩm',
   },
   back: 'Quay lại',
+  updateUser: 'Cập nhật tài khoản',
+  familyAdminPanel: 'Quản trị viên',
+  addNew: 'Thêm mới',
 };
 const enTranslation = {
   title: 'Family Store - Easy to buy online',
@@ -205,6 +213,11 @@ const enTranslation = {
   },
   profilepage: {
     title: 'My account',
+    changePassword: 'Change password',
+    cancel: 'Cancel',
+    selectNewAvatar: 'Select new avatar',
+    removeChange: 'X Remove change',
+    updateProfilePicture: 'Update profile picture',
     tabTitle: {
       1: 'BASIC PROFILE',
       2: 'CHANGE PASSWORD',
@@ -241,6 +254,9 @@ const enTranslation = {
     categories: 'All Categories',
   },
   back: 'Back',
+  updateUser: 'Update User',
+  familyAdminPanel: 'Family Admin Panel',
+  addNew: 'Add New',
 };
 
 const resources = {

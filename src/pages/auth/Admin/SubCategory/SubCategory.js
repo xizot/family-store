@@ -1,5 +1,4 @@
 import {
-  makeStyles,
   Table,
   TableBody,
   TableCell,
@@ -31,103 +30,8 @@ import { getListSubCategory, deleteCategory } from '../../../../reducers/sub-cat
 import Pagination from '@material-ui/lab/Pagination';
 import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 import SearchInputV2 from '../../../../components/UI/SearchInputV2';
+import useStyles from './SubCategory.styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-  section: {
-    borderRadius: theme.shape.borderRadius,
-    background: 'white',
-    boxShadow: '0px 2px 8px rgba(0,0,0,.1)',
-    padding: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  },
-  title: {
-    marginBottom: theme.spacing(5),
-    textAlign: 'center',
-    color: theme.palette.primary.main,
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  listItem: {
-    background: '#fff',
-    borderRadius: theme.shape.borderRadius,
-    width: '100%',
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-  filter: {
-    marginTop: theme.spacing(2),
-
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  filterItem: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '12px',
-    [theme.breakpoints.down('xs')]: {
-      '&:not(:last-child)': {
-        marginBottom: theme.spacing(1),
-      },
-    },
-  },
-  label: {
-    [theme.breakpoints.down('xs')]: {
-      minWidth: 70,
-    },
-  },
-  select: {
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: '#F39148',
-    marginLeft: theme.spacing(1),
-    '& svg': {
-      color: theme.palette.common.white,
-    },
-  },
-  addButton: {
-    marginBottom: '12px',
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 0,
-    },
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing(1),
-    },
-  },
-  search: {
-    marginBottom: '12px',
-    borderRadius: theme.shape.borderRadius,
-    border: '1px solid #ddd',
-    [theme.breakpoints.down('xs')]: {
-      marginRight: 0,
-      marginBottom: theme.spacing(1),
-      width: '100%',
-      justifyContent: 'space-between',
-    },
-  },
-  pagination: {
-    '& > *': {
-      justifyContent: 'center',
-      display: 'flex',
-    },
-  },
-  tableHead: {
-    fontWeight: 'bold',
-    color: 'red',
-  },
-  actionIcon: {
-    cursor: 'pointer',
-    '&:not(:last-child)': {
-      marginRight: theme.spacing(1),
-    },
-  },
-}));
 const BootstrapInput = withStyles((theme) => ({
   root: {
     'label + &': {
@@ -204,7 +108,8 @@ const SubCateManager = (props) => {
     setClose(false);
   };
 
-  const subCateDeleteHandler = (item) => {
+  const subCateDeleteHandler = (e, item) => {
+    e.stopPropagation();
     setClose(true);
     setDetail(item);
   };
@@ -300,7 +205,7 @@ const SubCateManager = (props) => {
           </div>
           <div className={classes.addButton}>
             <Button variant="contained" color="primary" onClick={handleOpen} startIcon={<Add />}>
-              Add
+              {t('addNew')}
             </Button>
           </div>
         </div>
@@ -336,12 +241,15 @@ const SubCateManager = (props) => {
                         subcategory.cateName.toLowerCase().includes(search.toLowerCase())
                       )
                       .map((row, index) => (
-                        <TableRow key={index}>
+                        <TableRow
+                          key={index}
+                          onClick={() => editSubCategory(row)}
+                          className={classes.tableRow}>
                           <TableCell
                             component="th"
                             scope="row"
                             style={{ width: 20, textAlign: 'center', fontWeight: 'bold' }}>
-                            {index + 1}
+                            {(page - 1) * 10 + index + 1}
                           </TableCell>
                           <TableCell style={{ textAlign: 'center' }}>{row.cateId}</TableCell>
                           <TableCell style={{ textAlign: 'center' }}>{row.cateName}</TableCell>
@@ -354,7 +262,7 @@ const SubCateManager = (props) => {
                               />
                               <Delete
                                 className={classes.actionIcon}
-                                onClick={(e) => subCateDeleteHandler(row)}
+                                onClick={(e) => subCateDeleteHandler(e, row)}
                               />
                             </Box>
                           </TableCell>
@@ -392,7 +300,7 @@ const SubCateManager = (props) => {
           timeout: 500,
         }}>
         <Fade in={open}>
-          <div style={{ maxWidth: '100%' }}>
+          <Box className={classes.content}>
             <AddComponent
               cateFather={optionFather}
               action={action}
@@ -401,7 +309,7 @@ const SubCateManager = (props) => {
               parentHandleClose={handleClose}
               getList={getChildCategoryHandler.bind(null, optionFather, page)}
             />
-          </div>
+          </Box>
         </Fade>
       </Modal>
 

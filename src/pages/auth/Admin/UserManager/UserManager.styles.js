@@ -38,4 +38,15 @@ export default makeStyles((theme) => ({
       marginRight: theme.spacing(1),
     },
   },
+  longText: {
+    wordWrap: 'break-word',
+    maxWidth: 250,
+  },
+  tableRow: {
+    transition: 'all .5s',
+    '&:hover': {
+      background: '#dedede !important ',
+      cursor: 'pointer',
+    },
+  },
 }));

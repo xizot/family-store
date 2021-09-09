@@ -9,9 +9,10 @@ function ButtonWithLoading({
   onClick,
   fullWidth = true,
   isLoading,
+  isUpperCase = true,
   ...props
 }) {
-  const classes = useStyles();
+  const classes = useStyles({ isUpperCase });
   return (
     <Box position="relative" className={parentClasses || ''}>
       {isLoading && (

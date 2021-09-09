@@ -5,101 +5,19 @@ import {
   FormControl,
   FormHelperText,
   IconButton,
-  makeStyles,
   Select,
   TextareaAutosize,
   TextField,
   Typography,
 } from '@material-ui/core';
-import { Add, Delete } from '@material-ui/icons';
+import { Add, Close, Delete } from '@material-ui/icons';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getListCategory } from '../../../../reducers/category';
 import { addNewProduct } from '../../../../reducers/product';
 import { toast } from 'react-toastify';
 import ButtonWithLoading from '../../../../components/UI/ButtonWithLoading/ButtonWithLoading';
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: '10vh',
-    marginBottom: '10vh',
-  },
-  content: {
-    background: '#fff',
-    padding: theme.spacing(2, 5),
-  },
-  title: {
-    fontWeight: 'bold',
-  },
-  subTitle: {
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  mainImage: {
-    height: '400px',
-    borderRadius: theme.shape.borderRadius,
-    background: '#f1f4fb',
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-
-    [theme.breakpoints.down('xs')]: {
-      width: 'calc(100% - 50px)',
-    },
-  },
-  listUpload: {},
-  iconAdd: {
-    marginBottom: theme.spacing(1),
-    background: '#f1f4fb',
-  },
-  textField: {
-    marginBottom: theme.spacing(1),
-
-    '& > p': {
-      width: 300,
-      fontWeight: 'bold',
-    },
-  },
-  productInformation: {
-    width: 'calc(100% - 350px)',
-
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
-    },
-  },
-  image: {
-    width: 300,
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
-    },
-  },
-  menuPaper: {
-    maxHeight: 300,
-  },
-  section: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  textarea: {
-    outline: 'none',
-    resize: 'vertical',
-    padding: '10.5px 14px',
-    border: '1px solid #c4c4c4',
-    borderRadius: theme.shape.borderRadius,
-    marginBottom: theme.spacing(1),
-
-    '&:focus': {
-      borderColor: theme.palette.primary.main,
-    },
-  },
-  actions: {
-    [theme.breakpoints.down('xs')]: {
-      justifyContent: 'center',
-    },
-  },
-  buttonSubmit: {
-    marginRight: theme.spacing(2),
-  },
-}));
+import useStyles from './AddProduct.styles';
 
 const AddProduct = ({ isOpen, onClose, getList }) => {
   const classes = useStyles();
@@ -214,17 +132,20 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
     <ProductModal isOpen={isOpen} onClose={closeModalHandler}>
       <div className={classes.root}>
         <Box borderRadius={6} className={classes.content}>
-          <Box marginBottom={4} marginTop={2}>
+          <Box marginBottom={4} marginTop={2} position="relative">
             <Typography variant="h5" className={classes.title}>
               ADD PRODUCTS
             </Typography>
             <Typography variant="caption" className={classes.subTitle}>
               Family Admin Panel
             </Typography>
+            <IconButton className={classes.iconClose} onClick={closeModalHandler}>
+              <Close fontSize="large" />
+            </IconButton>
           </Box>
           <form encType="multipart/form-data" className={classes.section}>
             <Box marginBottom={2} className={classes.image}>
-              <div className={classes.mainImage}>
+              <label htmlFor="img1" className={classes.mainImage}>
                 <img
                   alt=""
                   src={mainImageSrc}
@@ -234,7 +155,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
                     objectFit: 'cover',
                   }}
                 />
-              </div>
+              </label>
               <div className={classes.listUpload}>
                 <input
                   accept="image/jpeg"

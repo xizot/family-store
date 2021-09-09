@@ -8,7 +8,8 @@ const useStyles = makeStyles((theme) => ({
     width: '30rem',
     margin: '20vh auto 0',
     background: 'white',
-    padding: theme.spacing(2),
+    padding: theme.spacing(4),
+    outline: 'none',
   },
   actions: {
     alignItems: 'center',

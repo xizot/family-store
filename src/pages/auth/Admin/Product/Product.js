@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   title: {
+    textTransform: 'uppercase',
     marginBottom: theme.spacing(5),
     textAlign: 'center',
     color: theme.palette.primary.main,
@@ -124,6 +125,7 @@ const useStyles = makeStyles((theme) => ({
   },
   longTextStyle: {
     wordWrap: 'break-word',
+    width: 250,
     maxWidth: 500,
     display: '-webkit-box',
     '-webkit-line-clamp': 4,
@@ -140,6 +142,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   tableRow: {
+    transition: 'all .5s',
     '&:hover': {
       background: '#dedede !important ',
       cursor: 'pointer',
@@ -291,7 +294,7 @@ const ProductManager = (props) => {
                 color="primary"
                 className={classes.addButton}
                 onClick={openAddModalHandler}>
-                Add
+                {t('addNew')}
               </Button>
             </div>
           </div>
@@ -308,6 +311,7 @@ const ProductManager = (props) => {
                 <Table aria-label="a dense table" style={{ minWidth: '1200px' }}>
                   <TableHead>
                     <TableRow className={classes.tableHead}>
+                      <TableCell style={{ fontWeight: 'bold' }}>#</TableCell>
                       <TableCell>ID</TableCell>
                       <TableCell width={200}>Product Name</TableCell>
                       <TableCell>Image</TableCell>
@@ -329,9 +333,10 @@ const ProductManager = (props) => {
                           key={index}
                           onClick={() => openUpdateModalHandler(row)}
                           className={classes.tableRow}>
-                          <TableCell component="th" scope="row">
-                            {row.prod_id}
+                          <TableCell component="th" scope="row" style={{ fontWeight: 'bold' }}>
+                            {(page - 1) * 10 + index + 1}
                           </TableCell>
+                          <TableCell>{row.prod_id}</TableCell>
                           <TableCell>
                             <Box className={classes.productName}>{row.prod_name}</Box>
                           </TableCell>
@@ -342,7 +347,11 @@ const ProductManager = (props) => {
                               style={{ width: 100, height: 80, objectFit: 'cover' }}
                             />
                           </TableCell>
-                          <TableCell>{row.prod_category_name}</TableCell>
+                          <TableCell>
+                            <Box width={150} style={{ wordBreak: 'break-word' }}>
+                              {row.prod_category_name}
+                            </Box>
+                          </TableCell>
                           <TableCell>{row.prod_amount}</TableCell>
                           <TableCell>{row.prod_price}</TableCell>
                           <TableCell>
@@ -351,7 +360,9 @@ const ProductManager = (props) => {
                             </Box>
                           </TableCell>
                           <TableCell>
-                            {row.prod_updated_date || row.prod_created_date || ''}
+                            <Box width={100} style={{ wordBreak: 'break-word' }}>
+                              {row.prod_updated_date || row.prod_created_date || ''}
+                            </Box>
                           </TableCell>
                           <TableCell align="center">
                             <Box display="flex">

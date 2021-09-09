@@ -17,13 +17,7 @@ import { addSubCategory, updateSubCategory } from '../../../../reducers/sub-cate
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    position: 'relative',
-    width: '30rem',
-    maxWidth: '90%',
-    margin: '20vh auto 0',
-    backgroundColor: '#fff',
-    borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(5),
+    width: '100%',
   },
   form: {
     marginTop: '9px',

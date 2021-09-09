@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
   subTitle: {
     fontWeight: 'bold',
@@ -122,6 +123,7 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
     },
   },
+  marginRight: 16,
 }));
 
 const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
@@ -130,6 +132,8 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
   const categories = useSelector((state) => state.category.data);
   const [error, setError] = useState('');
   const modifyLoading = useSelector((state) => state.product.modifyLoading);
+  const [updateImageLoading, setUpdateImageLoading] = useState(false);
+
   const {
     enteredInput: title,
     inputChangeHandler: titleChangeHandler,
@@ -193,6 +197,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
   };
 
   const updateImageHandler = async () => {
+    setUpdateImageLoading(true);
     let formData = new FormData();
     for (let i = 0; i < listNewImage.length; i++) {
       formData.append('image', listNewImage[i]);
@@ -208,8 +213,10 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
       toast.success(`Update images for product id ${itemInfo.prod_id} sucessfully`);
       getList();
       closeModalHandler();
+      setUpdateImageLoading(false);
     } catch (error) {
       toast.error(error);
+      setUpdateImageLoading(false);
     }
   };
 
@@ -370,13 +377,12 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
                       <Add />
                     </label>
                   </IconButton>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    style={{ marginRight: 16 }}
-                    onClick={updateImageHandler}>
+                  <ButtonWithLoading
+                    isLoading={updateImageLoading}
+                    onClick={updateImageHandler}
+                    parentClasses={classes.buttonUpdateImage}>
                     UPDATE IMAGES
-                  </Button>
+                  </ButtonWithLoading>
                 </Box>
               </div>
             </Box>

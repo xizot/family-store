@@ -58,7 +58,6 @@ const adminAccountSlice = createSlice({
       state.loading = false;
     },
     [getList.fulfilled]: (state, action) => {
-      console.log('🚀 ~ file: admin-account.reducer.js ~ line 61 ~ action', action.payload);
       state.loading = false;
     },
     [updateAccount.pending]: (state) => {

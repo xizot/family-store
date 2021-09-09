@@ -5,6 +5,7 @@ import SideBar from '../../SideBar/SideBar';
 import UserInfomation from '../../UserInfomation/UserInfomation';
 import Footer from '../../Layout/Footer';
 import { makeStyles } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 const options = [
   {
@@ -63,13 +64,14 @@ const useStyles = makeStyles((theme) => ({
 
 export const AdminTemplate = ({ children }) => {
   const classes = useStyles();
+  const user = useSelector((state) => state.auth.user);
   return (
     <>
       <HeaderAdmin showMenu />
       <SideBar>
         <UserInfomation
-          avatar="http://themes.pixelstrap.com/multikart/assets/images/dashboard/man.png"
-          name="Hieu Dang PC"
+          avatar={`${process.env.PUBLIC_URL + '/img/default-avatar.png'}`}
+          name={`[Acc ID]: ${user.accId}`}
           position="GENERAL MANAGER"
         />
         <AdminMenu options={options} />

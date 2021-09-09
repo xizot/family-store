@@ -1,7 +1,9 @@
-import { Box, makeStyles, Modal } from '@material-ui/core';
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from '@material-ui/core';
+
+export default makeStyles((theme) => ({
   root: {
     outline: 'none',
+    position: 'absolute !important',
     overflow: 'scroll',
     height: '100%',
     display: 'block',
@@ -21,23 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     width: '60rem',
-    margin: '0 auto',
+    margin: '20vh auto 0',
     maxWidth: '96%',
     outline: 'none',
   },
 }));
-const ProductModal = ({ isOpen, onClose, children }) => {
-  const classes = useStyles();
-  return (
-    <Modal
-      className={classes.root}
-      open={isOpen}
-      onClose={onClose}
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description">
-      <Box className={classes.content}>{children}</Box>
-    </Modal>
-  );
-};
-
-export default ProductModal;

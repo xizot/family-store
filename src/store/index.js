@@ -12,6 +12,7 @@ import userCommentSlice from '../reducers/user-comment.reducer';
 import addressSlice from '../reducers/address.reducer';
 import checkoutSlice from '../reducers/checkout.reducer';
 import adminAccountSlice from '../reducers/admin-account.reducer';
+import accountSlice from '../reducers/account.reducer';
 
 const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ const store = configureStore({
     address: addressSlice.reducer,
     checkout: checkoutSlice.reducer,
     adminAccount: adminAccountSlice.reducer,
+    account: accountSlice.reducer,
   },
 });
 export default store;

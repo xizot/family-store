@@ -16,14 +16,19 @@ import {
 import useStyles from './UserManager.styles';
 import SearchInputV2 from '../../../../components/UI/SearchInputV2';
 import { useDispatch, useSelector } from 'react-redux';
-import { getList, updateRole } from '../../../../reducers/admin-account.reducer';
+import { deleteAccount, getList, updateRole } from '../../../../reducers/admin-account.reducer';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { Add, Delete, Edit } from '@material-ui/icons';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
 import TableError from '../../../../components/TableError/TableError';
+import AddUser from '../../../../components/AddUser/AddUser';
+import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
+import UpdateUser from '../../../../components/UpdateUser/UpdateUser';
+import { useTranslation } from 'react-i18next';
 
 const UserManager = (props) => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
@@ -32,6 +37,49 @@ const UserManager = (props) => {
   const [limit, setLimit] = useState(10);
   const [listAccount, setListAccount] = useState([]);
   const loading = useSelector((state) => state.adminAccount.loading);
+  const [isOpenAddModal, setIsOpenAddModal] = useState(false);
+  const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+
+  const closeModalHandler = () => {
+    setIsOpenUpdateModal(false);
+    setIsOpenAddModal(false);
+    setIsOpenDeleteModal(false);
+    setSelectedId(null);
+  };
+
+  const addAccountSuccessHandler = () => {
+    closeModalHandler();
+    setPage(0);
+    getListUserHandler(0, limit);
+  };
+
+  const openAddModalHandler = () => {
+    setIsOpenAddModal(true);
+  };
+  const openDeleteModalHandler = (e, accId) => {
+    e.stopPropagation();
+    setSelectedId(accId);
+    setIsOpenDeleteModal(true);
+  };
+
+  const openUpdateModalHandler = (accId) => {
+    setSelectedId(accId);
+    setIsOpenUpdateModal(true);
+  };
+
+  const deleteAccountHandler = async () => {
+    try {
+      await dispatch(deleteAccount({ accId: selectedId })).unwrap();
+      getListUserHandler(page, limit);
+      toast.success(`Delete account id: [${selectedId}] successfully`);
+      closeModalHandler();
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
   // const modify = useSelector((state) => state.adminAccount.modify);
   const [error, setError] = useState('');
 
@@ -40,6 +88,7 @@ const UserManager = (props) => {
   };
 
   const roleChangeHandler = async (e, accId) => {
+    e.stopPropagation();
     try {
       dispatch(
         updateRole({
@@ -52,9 +101,9 @@ const UserManager = (props) => {
           item.accId === accId ? { ...item, accRole: e.target.value } : item
         )
       );
-      toast.success(`Update role for id: ${accId} successfully`);
+      toast.success(`Update [ROLE] for id: [${accId}] successfully`);
     } catch (error) {
-      toast.error(`Update role for id: ${accId} failed`);
+      toast.error(`Update [ROLE] for id: [${accId}] failed`);
     }
   };
 
@@ -76,10 +125,6 @@ const UserManager = (props) => {
         const response = await dispatch(getList({ page: page === 0 ? 1 : page, limit })).unwrap();
         setListAccount(response.listAccounts);
         setTotalPage(response.totalPage);
-        console.log(
-          '🚀 ~ file: UserManager.js ~ line 29 ~ getListUserHandler ~ response',
-          response
-        );
       } catch (error) {
         console.log('err', error);
         setError(error);
@@ -98,6 +143,24 @@ const UserManager = (props) => {
 
   return (
     <div className={classes.root}>
+      <AddUser
+        isOpen={isOpenAddModal}
+        onClose={closeModalHandler}
+        onSuccess={addAccountSuccessHandler}
+      />
+
+      <UpdateUser
+        isOpen={isOpenUpdateModal}
+        onClose={closeModalHandler}
+        opUpdateSuccess={addAccountSuccessHandler}
+        accId={selectedId}
+      />
+      <ModalConfirm
+        isOpen={isOpenDeleteModal}
+        onConfirm={deleteAccountHandler}
+        onClose={closeModalHandler}
+        title="DELETE SUB CATEGORY"
+      />
       <div className={classes.section}>
         <Typography variant="h5" className={classes.title}>
           USER MANAGER
@@ -111,9 +174,13 @@ const UserManager = (props) => {
               onChange={searchChangeHandler}
             />
           </Box>
-          <Button variant="contained" color="primary" className={classes.filterItem}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.filterItem}
+            onClick={openAddModalHandler}>
             <Add />
-            Add New Account
+            {t('addNew')}
           </Button>
         </Box>
         <Paper className={classes.root}>
@@ -142,16 +209,27 @@ const UserManager = (props) => {
                         account.accFullName?.toLowerCase().includes(search.toLowerCase())
                       )
                       .map((account, index) => (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                          <TableCell style={{ fontWeight: 'bold' }}>{index + 1}</TableCell>
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={index}
+                          className={classes.tableRow}
+                          onClick={() => openUpdateModalHandler(account.accId)}>
+                          <TableCell style={{ fontWeight: 'bold' }}>
+                            {page * limit + index + 1}
+                          </TableCell>
                           <TableCell>{account.accId}</TableCell>
-                          <TableCell>{account.accFullName}</TableCell>
+                          <TableCell>
+                            <Box className={classes.longText}>{account.accFullName}</Box>
+                          </TableCell>
                           <TableCell>{account.accEmail}</TableCell>
                           <TableCell>{account.accPhoneNumber}</TableCell>
                           <TableCell>
                             <Select
                               native
                               value={account.accRole}
+                              onClick={(e) => e.stopPropagation()}
                               onChange={(e) => roleChangeHandler(e, account.accId)}
                               inputProps={{
                                 name: 'age',
@@ -163,8 +241,14 @@ const UserManager = (props) => {
                           </TableCell>
                           <TableCell>
                             <Box display="flex">
-                              <Edit className={classes.actionIcon} />
-                              <Delete className={classes.actionIcon} />
+                              <Edit
+                                className={classes.actionIcon}
+                                onClick={() => openUpdateModalHandler(account.accId)}
+                              />
+                              <Delete
+                                className={classes.actionIcon}
+                                onClick={(e) => openDeleteModalHandler(e, account.accId)}
+                              />
                             </Box>
                           </TableCell>
                         </TableRow>
