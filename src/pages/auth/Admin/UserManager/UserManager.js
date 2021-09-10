@@ -205,8 +205,10 @@ const UserManager = (props) => {
                   </TableHead>
                   <TableBody>
                     {listAccount
-                      .filter((account) =>
-                        account.accFullName?.toLowerCase().includes(search.toLowerCase())
+                      .filter(
+                        (account) =>
+                          account.accFullName?.toLowerCase().includes(search.toLowerCase()) ||
+                          (account.accFullName === null && search.length === 0)
                       )
                       .map((account, index) => (
                         <TableRow
