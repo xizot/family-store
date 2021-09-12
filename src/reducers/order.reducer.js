@@ -6,10 +6,14 @@ const initialState = {
     data: [],
     delivering: [],
     delivered: [],
+    confirm: [],
+    cancel: [],
     totalPage: 0,
     loading: false,
     loadDelivering: false,
-    loadDelivered: false
+    loadDelivered: false,
+    loadConfirm: false,
+    loadCancel:false
 };
 
 export const getAllOrder = createAsyncThunk(
@@ -37,6 +41,26 @@ export const getDeliveredOrder = createAsyncThunk(
     async ({ page }, { rejectWithValue }) => {
         try {
             return (await orderApi.getDelivered(page)).data;
+        } catch (error) {
+            return rejectWithValue(getResponseError(error));
+        }
+    }
+);
+export const getConfirmOrder = createAsyncThunk(
+    'order/GetConfirm',
+    async ({ page }, { rejectWithValue }) => {
+        try {
+            return (await orderApi.getConfirm(page)).data;
+        } catch (error) {
+            return rejectWithValue(getResponseError(error));
+        }
+    }
+);
+export const getCancelOrder = createAsyncThunk(
+    'order/GetCancel',
+    async ({ page }, { rejectWithValue }) => {
+        try {
+            return (await orderApi.getCancel(page)).data;
         } catch (error) {
             return rejectWithValue(getResponseError(error));
         }
@@ -78,6 +102,28 @@ const orderSlice = createSlice({
         [getDeliveredOrder.fulfilled]: (state, action) => {
             state.loadDelivered = false;
             state.delivered = action.payload.billList;
+            state.totalPage = action.payload.totalPage || 0;
+        },
+        [getConfirmOrder.pending]: (state) => {
+            state.loadConfirm = false;
+        },
+        [getConfirmOrder.rejected]: (state) => {
+            state.loadConfirm = true;
+        },
+        [getConfirmOrder.fulfilled]: (state, action) => {
+            state.loadConfirm = true;
+            state.confirm = action.payload.billList;
+            state.totalPage = action.payload.totalPage || 0;
+        },
+        [getCancelOrder.pending]: (state) => {
+            state.loadCancel = false;
+        },
+        [getCancelOrder.rejected]: (state) => {
+            state.loadCancel = true;
+        },
+        [getCancelOrder.fulfilled]: (state, action) => {
+            state.loadCancel = true;
+            state.cancel = action.payload.billList;
             state.totalPage = action.payload.totalPage || 0;
         },
     },

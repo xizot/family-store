@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ProductItem = ({ id, date, expected, status, total, img }) => {
+const ProductItem = ({ id, date, expected, status, total, img , detail}) => {
 	const classes = useStyles();
 
 	return (
