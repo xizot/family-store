@@ -3,7 +3,7 @@ import axios from '../axios/index';
 const getAll = () => {
   return axios.get('/api/product/list');
 };
-const getByPage = (page = 1, limit = 10) => {
+const getByPage = (page, limit) => {
   // return axios.post(`/api/product/list?page=${page}&limit=${limit}`);
   return axios.post('/api/product/list', { page, limit });
 };
@@ -38,6 +38,9 @@ const updateInformation = (id, data) => {
   return axios.post(`/api/auth-product/update/${id}`, data);
 };
 
+const getByCate = ({ catID, page, limit }) =>
+  axios.post('/api/product/list-by-cat', { catID: +catID, page, limit });
+
 const adminProductApis = {
   getAll,
   getByPage,
@@ -45,6 +48,7 @@ const adminProductApis = {
   deleteById,
   updateImages,
   updateInformation,
+  getByCate,
 };
 
 export default adminProductApis;

@@ -138,6 +138,7 @@ const useStyles = makeStyles((theme) => ({
       cursor: 'default',
       display: 'flex',
       alignItems: 'center',
+
       padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,
     },
     '& li:not(:last-child)': {
@@ -150,6 +151,7 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: 5,
       textDecoration: 'none',
       color: '#333',
+      flex: 1,
       '&:hover': {
         textDecoration: 'underline',
       },

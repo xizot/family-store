@@ -131,13 +131,6 @@ export const routes = [
 
 export const adminRoutes = [
   {
-    path: '/admin',
-    protected: false,
-    exact: true,
-    component: Dashboard,
-    roles: [Role.Admin],
-  },
-  {
     path: '/admin/users',
     protected: false,
     exact: true,
@@ -163,6 +156,13 @@ export const adminRoutes = [
     protected: false,
     exact: true,
     component: AdminCategoryPage,
+    roles: [Role.Admin],
+  },
+  {
+    path: '/admin',
+    protected: false,
+    exact: true,
+    component: Dashboard,
     roles: [Role.Admin],
   },
 ];

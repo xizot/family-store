@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export const deleteProduct = createAsyncThunk(
-  'product/DeleteProduct',
+  'product/deleteProduct',
   async (productId, { rejectWithValue }) => {
     try {
       return (await adminProductApis.deleteById(productId)).data;
@@ -19,7 +19,7 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 export const updateProductImage = createAsyncThunk(
-  'product/UpdateImage',
+  'product/updateProductImage',
   async ({ id, data }, { rejectWithValue }) => {
     try {
       return (await adminProductApis.updateImages(id, data)).data;
@@ -29,7 +29,7 @@ export const updateProductImage = createAsyncThunk(
   }
 );
 export const updateProductInformation = createAsyncThunk(
-  'product/UpdateInformation',
+  'product/updateProductInformation',
   async ({ id, data }, { rejectWithValue }) => {
     try {
       return (await adminProductApis.updateInformation(id, data)).data;
@@ -39,7 +39,7 @@ export const updateProductInformation = createAsyncThunk(
   }
 );
 export const addNewProduct = createAsyncThunk(
-  'product/AddNewProduct',
+  'product/addNewProduct',
   async (formData, { rejectWithValue }) => {
     console.log('Form data', formData);
     try {
@@ -50,11 +50,23 @@ export const addNewProduct = createAsyncThunk(
   }
 );
 export const getListProductByPage = createAsyncThunk(
-  'product/GetList',
-  async (page, { rejectWithValue }) => {
+  'product/getListProductByPage',
+  async ({ page, limit }, { rejectWithValue }) => {
     try {
-      return (await adminProductApis.getByPage(page)).data;
+      return (await adminProductApis.getByPage(page, limit)).data;
     } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
+
+export const getByCate = createAsyncThunk(
+  'product/getByCate',
+  async ({ catID, page, limit }, { rejectWithValue }) => {
+    try {
+      return (await adminProductApis.getByCate({ catID, page, limit })).data;
+    } catch (error) {
+      console.log('🚀 ~ file: product.js ~ line 80 ~ error', error);
       return rejectWithValue(getResponseError(error));
     }
   }
@@ -65,13 +77,13 @@ const adminProductSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [getListProductByPage.pending]: (state) => {
+    [getByCate.pending]: (state) => {
       state.loading = true;
     },
-    [getListProductByPage.rejected]: (state) => {
+    [getByCate.rejected]: (state) => {
       state.loading = false;
     },
-    [getListProductByPage.fulfilled]: (state, action) => {
+    [getByCate.fulfilled]: (state, action) => {
       state.loading = false;
       state.data = action.payload.listCategories;
     },

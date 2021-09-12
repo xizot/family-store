@@ -15,6 +15,7 @@ import {
   Backdrop,
   Modal,
   Box,
+  TablePagination,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState, useCallback } from 'react';
@@ -27,7 +28,6 @@ import TableError from '../../../../components/TableError/TableError';
 import { toast } from 'react-toastify';
 import TableLoading from '../../../../components/TableLoading/TableLoading';
 import { getListSubCategory, deleteCategory } from '../../../../reducers/sub-category';
-import Pagination from '@material-ui/lab/Pagination';
 import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 import SearchInputV2 from '../../../../components/UI/SearchInputV2';
 import useStyles from './SubCategory.styles';
@@ -59,20 +59,21 @@ const BootstrapInput = withStyles((theme) => ({
 
 const SubCateManager = (props) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [error, setError] = useState('');
-  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
   const [detail, setDetail] = useState({});
   const [action, setAction] = useState('insert');
-  const data = useSelector((state) => state.category.data);
   const totalPage = useSelector((state) => state.subCategory.totalPage);
+  const [limit, setLimit] = useState(10);
   const [sub, setSub] = useState([]);
   const loading = useSelector((state) => state.subCategory.loading);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [optionFather, setOptionFather] = useState('');
   const [search, setSearch] = useState('');
+  const [fatherCategory, setFatherCategory] = useState([]);
 
   const searchChangeHandler = (value) => {
     setSearch(value);
@@ -80,16 +81,7 @@ const SubCateManager = (props) => {
 
   const pageChangeHandler = (event, value) => {
     setPage(value);
-  };
-
-  const fatherChangeHandler = async (event) => {
-    if (event.target.value.length > 0) {
-      const cateFatherSelected = +event.target.value;
-      setOptionFather(cateFatherSelected);
-      getChildCategoryHandler(cateFatherSelected, page);
-    } else {
-      setSub([]);
-    }
+    getListChildCategoryHandler(optionFather, value + 1, limit);
   };
 
   const editSubCategory = (item) => {
@@ -113,64 +105,71 @@ const SubCateManager = (props) => {
     setClose(true);
     setDetail(item);
   };
+
   const subCateDeleteConfirm = async () => {
     try {
       setClose(false);
       await dispatch(deleteCategory(detail.cateId)).unwrap();
-      await getChildCategoryHandler(optionFather, page);
+      await getListChildCategoryHandler(optionFather);
       toast.success('Delete successfully');
     } catch (err) {
       toast.error(err);
       console.log('🚀 ~ file: SubCategory.js ~ line 199 ~ subCateDeleteConfirm ~ err', err);
     }
   };
-  const getChildCategoryHandler = useCallback(
-    async (cateFather, selectedPage) => {
-      const response = await dispatch(
-        getListSubCategory({ cateFather: +cateFather, page: selectedPage })
-      ).unwrap();
-      setSub(response.subCategories);
+
+  const getListChildCategoryHandler = useCallback(
+    async (cateFather, page, limit) => {
+      if (!cateFather || cateFather.length <= 0) return;
+      try {
+        const response = await dispatch(
+          getListSubCategory({ cateFather, page: page === 0 ? 1 : page, limit })
+        ).unwrap();
+        setSub(response.subCategories);
+      } catch (error) {
+        setError(error);
+      }
     },
     [dispatch]
   );
 
-  const fatherChangeHandlerV2 = useCallback(
-    async (value) => {
-      if (value > 0) {
-        const cateFatherSelected = +value;
-        setOptionFather(cateFatherSelected);
-        getChildCategoryHandler(cateFatherSelected, page);
-      } else {
-        setSub([]);
-      }
-    },
-    [getChildCategoryHandler, page]
-  );
-  const getListCategoryHandler = useCallback(async () => {
+  const fatherCategoryChangeHandler = async (value) => {
+    setSub([]);
+    setPage(0);
+    setOptionFather(value);
+    if (value) {
+      getListChildCategoryHandler(value, 0, limit);
+    }
+  };
+
+  const getListFatherCategoryHandler = useCallback(async () => {
     try {
-      const response = await dispatch(getListCategory()).unwrap();
-      if (response?.paginationResult?.length > 0) {
-        fatherChangeHandlerV2(response.paginationResult[0].cateId);
+      const response = await dispatch(getListCategory({ page: 1, limit: 9999 })).unwrap();
+      setFatherCategory(response.paginationResult);
+      if (response.paginationResult.length > 0) {
+        fatherCategoryChangeHandler(response.paginationResult[0].cateId);
       }
     } catch (err) {
       setError(err);
     }
-  }, [dispatch, fatherChangeHandlerV2]);
+  }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const limitPerPageChangeHandler = (event) => {
+    const newLimit = +event.target.value;
+    setLimit(newLimit);
+    setPage(0);
+    getListChildCategoryHandler(optionFather, 0, newLimit);
+  };
 
   useEffect(() => {
     dispatch(uiActions.hideModal());
-    getListCategoryHandler();
-  }, [dispatch, getListCategoryHandler]);
+    getListFatherCategoryHandler();
+  }, [dispatch, getListFatherCategoryHandler]);
 
   useEffect(() => {
     document.title = 'Sub Category Admin';
-  }, [t, optionFather, dispatch]);
+  }, []);
 
-  useEffect(() => {
-    if (page > totalPage) {
-      setPage(totalPage || 1);
-    }
-  }, [page, totalPage]);
   return (
     <div className={classes.root}>
       <div className={classes.section}>
@@ -192,15 +191,17 @@ const SubCateManager = (props) => {
             <NativeSelect
               value={optionFather}
               className={classes.select}
-              onChange={fatherChangeHandler}
+              onChange={(e) => fatherCategoryChangeHandler(e.target?.value)}
               name="price"
               input={<BootstrapInput />}>
               <option aria-label="None" value="" />
-              {data.map((row, index) => (
-                <option style={{ color: '#F39148' }} value={row.cateId} key={index}>
-                  {row.cateName}
-                </option>
-              ))}
+              {fatherCategory &&
+                fatherCategory.length > 0 &&
+                fatherCategory.map((row, index) => (
+                  <option style={{ color: '#F39148' }} value={row.cateId} key={index}>
+                    {row.cateName}
+                  </option>
+                ))}
             </NativeSelect>
           </div>
           <div className={classes.addButton}>
@@ -217,11 +218,11 @@ const SubCateManager = (props) => {
         ) : error?.length > 0 ? (
           <TableError
             message={error}
-            onTryAgain={getChildCategoryHandler.bind(null, optionFather, page)}
+            onTryAgain={getListChildCategoryHandler.bind(null, optionFather, page, limit)}
           />
         ) : sub?.length > 0 ? (
-          <>
-            <TableContainer component={Paper} className={classes.section}>
+          <Paper className={classes.section}>
+            <TableContainer>
               <Table aria-label="a dense table">
                 <TableHead>
                   <TableRow className={classes.tableHead}>
@@ -249,7 +250,7 @@ const SubCateManager = (props) => {
                             component="th"
                             scope="row"
                             style={{ width: 20, textAlign: 'center', fontWeight: 'bold' }}>
-                            {(page - 1) * 10 + index + 1}
+                            {page * 10 + index + 1}
                           </TableCell>
                           <TableCell style={{ textAlign: 'center' }}>{row.cateId}</TableCell>
                           <TableCell style={{ textAlign: 'center' }}>{row.cateName}</TableCell>
@@ -271,21 +272,20 @@ const SubCateManager = (props) => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <div className={`${classes.pagination} ${classes.section}`}>
-              <Pagination
-                count={totalPage}
-                page={page}
-                onChange={pageChangeHandler}
-                color="primary"
-                variant="outlined"
-                shape="rounded"
-              />
-            </div>
-          </>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={totalPage * limit}
+              rowsPerPage={limit}
+              page={page}
+              onPageChange={pageChangeHandler}
+              onRowsPerPageChange={limitPerPageChangeHandler}
+            />
+          </Paper>
         ) : (
           <TableError
             message="No data available in database"
-            onTryAgain={getChildCategoryHandler.bind(null, optionFather, page)}
+            onTryAgain={getListChildCategoryHandler.bind(null, optionFather, page, limit)}
           />
         )}
       </div>
@@ -305,9 +305,9 @@ const SubCateManager = (props) => {
               cateFather={optionFather}
               action={action}
               cate={detail}
-              father={data}
+              father={fatherCategory}
               parentHandleClose={handleClose}
-              getList={getChildCategoryHandler.bind(null, optionFather, page)}
+              getList={getListChildCategoryHandler.bind(null, optionFather, page)}
             />
           </Box>
         </Fade>

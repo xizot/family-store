@@ -10,9 +10,9 @@ const initialState = {
 
 export const getListSubCategory = createAsyncThunk(
   'subcategory/Get',
-  async ({ cateFather, page }, { rejectWithValue }) => {
+  async ({ cateFather, page, limit }, { rejectWithValue }) => {
     try {
-      return (await adminSubCategoryApi.getListSubCategory(cateFather, page)).data;
+      return (await adminSubCategoryApi.getListSubCategory({ cateFather, page, limit })).data;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }

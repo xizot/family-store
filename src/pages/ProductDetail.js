@@ -231,25 +231,28 @@ const ProductDetail = (props) => {
                   __html: productDetails.prod_description,
                 }}
                 className={`${classes.descriptionText} ${
-                  toggleDescription ? classes.isLess : ""//classes.isLess
+                  toggleDescription ? classes.isLess : '' //classes.isLess
                 }`}
               />
 
-              <div className={classes.btnToggleDescription}>
-                <IconButton onClick={descriptionToggleHandler} size="small">
-                  <img
-                    style={{ height: '24px' }}
-                    src={`${process.env.PUBLIC_URL}/img/arrow-jump-left.png`}
-                    alt="Prev icon"
-                    className={`${toggleDescription ? classes.imgShowMore : classes.imgShowLess}`}
-                  />
-                </IconButton>
-                <Typography variant="caption">
-                  {toggleDescription
-                    ? t('productDetailPage.showMore')
-                    : t('productDetailPage.showLess')}
-                </Typography>
-              </div>
+              {(productDetails.prod_description?.length > 1000 ||
+                productDetails.prod_description?.includes('img')) && (
+                <div className={classes.btnToggleDescription}>
+                  <IconButton onClick={descriptionToggleHandler} size="small">
+                    <img
+                      style={{ height: '24px' }}
+                      src={`${process.env.PUBLIC_URL}/img/arrow-jump-left.png`}
+                      alt="Prev icon"
+                      className={`${toggleDescription ? classes.imgShowMore : classes.imgShowLess}`}
+                    />
+                  </IconButton>
+                  <Typography variant="caption">
+                    {toggleDescription
+                      ? t('productDetailPage.showMore')
+                      : t('productDetailPage.showLess')}
+                  </Typography>
+                </div>
+              )}
             </div>
 
             <div className={classes.section}>

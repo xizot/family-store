@@ -9,6 +9,7 @@ import {
   Typography,
   Button,
   Box,
+  TablePagination,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 // import Pagination from '@material-ui/lab/Pagination';
@@ -22,7 +23,6 @@ import TableLoading from '../../../../components/TableLoading/TableLoading';
 import { toast } from 'react-toastify';
 import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 import CategoryModal from './CategoryModal';
-import Pagination from '@material-ui/lab/Pagination';
 import SearchInputV2 from '../../../../components/UI/SearchInputV2';
 import useStyles from './Category.styles';
 
@@ -36,7 +36,8 @@ const SubCateManager = (props) => {
   const loading = useSelector((state) => state.category.loading);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [type, setType] = useState('UPDATE');
@@ -48,6 +49,7 @@ const SubCateManager = (props) => {
 
   const pageChangeHandler = (event, value) => {
     setPage(value);
+    getListCategoryHandler(value + 1, limit);
   };
 
   const openModalHandler = (type, item = null) => {
@@ -85,10 +87,17 @@ const SubCateManager = (props) => {
     setOpenDeleteModal(false);
   };
 
+  const limitPerPageChangeHandler = (event) => {
+    const newLimit = +event.target.value;
+    setLimit(newLimit);
+    setPage(0);
+    getListCategoryHandler(0, newLimit);
+  };
+
   const getListCategoryHandler = useCallback(
-    async (selectedPage) => {
+    async (page, limit) => {
       try {
-        await dispatch(getListCategory(selectedPage)).unwrap();
+        await dispatch(getListCategory({ page: page === 0 ? 1 : page, limit })).unwrap();
       } catch (err) {
         setError(err);
       }
@@ -98,18 +107,13 @@ const SubCateManager = (props) => {
 
   useEffect(() => {
     dispatch(uiActions.hideModal());
-
-    getListCategoryHandler(page);
-  }, [dispatch, getListCategoryHandler, page]);
+    getListCategoryHandler(0, 10);
+  }, [dispatch, getListCategoryHandler]);
 
   useEffect(() => {
     document.title = 'Category Admin';
   }, [t]);
-  useEffect(() => {
-    if (page > totalPage) {
-      setPage(totalPage || 1);
-    }
-  }, [page, totalPage]);
+
   return (
     <div className={classes.root}>
       <CategoryModal
@@ -157,8 +161,8 @@ const SubCateManager = (props) => {
         ) : error?.length > 0 ? (
           <TableError message={error} onTryAgain={getListCategoryHandler.bind(null, page)} />
         ) : data?.length > 0 ? (
-          <>
-            <TableContainer component={Paper} className={classes.section}>
+          <Paper className={classes.section}>
+            <TableContainer>
               <Table aria-label="a dense table">
                 <TableHead>
                   <TableRow className={classes.tableHead}>
@@ -187,7 +191,7 @@ const SubCateManager = (props) => {
                             component="th"
                             scope="row"
                             style={{ width: 20, textAlign: 'center', fontWeight: 'bold' }}>
-                            {(page - 1) * 10 + index + 1}
+                            {page * limit + index + 1}
                           </TableCell>
                           <TableCell style={{ textAlign: 'center' }}>{row.cateId}</TableCell>
                           <TableCell style={{ textAlign: 'center' }}>{row.cateName}</TableCell>
@@ -212,17 +216,16 @@ const SubCateManager = (props) => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <div className={`${classes.pagination} ${classes.section}`}>
-              <Pagination
-                count={totalPage || 1}
-                page={page}
-                onChange={pageChangeHandler}
-                color="primary"
-                variant="outlined"
-                shape="rounded"
-              />
-            </div>
-          </>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={totalPage * limit}
+              rowsPerPage={limit}
+              page={page}
+              onPageChange={pageChangeHandler}
+              onRowsPerPageChange={limitPerPageChangeHandler}
+            />
+          </Paper>
         ) : (
           <TableError
             message="No data available in database"

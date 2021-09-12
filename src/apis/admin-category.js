@@ -1,7 +1,5 @@
 import axios from '../axios/index';
 
-const CATEGORY_LIMIT = 10;
-
 // import { updateSubCategory } from '../reducers/sub-category';
 
 /**
@@ -13,10 +11,10 @@ const addCategory = (data) => {
   return axios.post('/api/auth-categories/add-father', data);
 };
 
-const getListCategory = (page = null) => {
+const getListCategory = ({ page, limit }) => {
   let query = '/api/categories/list';
   if (page) {
-    query = `/api/categories/list?page=${page}&limit=${CATEGORY_LIMIT}`;
+    query = `/api/categories/list?page=${page}&limit=${limit}`;
   }
   return axios.get(query);
 };

@@ -1,6 +1,6 @@
 import AdminMenu from '../../AdminMenu/AdminMenu';
 import HeaderAdmin from '../../Layout/HeaderAdmin';
-import { Person, Menu, Loyalty, AttachMoney } from '@material-ui/icons';
+import { Person, Menu, Loyalty } from '@material-ui/icons';
 import SideBar from '../../SideBar/SideBar';
 import UserInfomation from '../../UserInfomation/UserInfomation';
 import Footer from '../../Layout/Footer';
@@ -36,11 +36,11 @@ const options = [
     title: 'Users',
     link: '/admin/users',
   },
-  {
-    icon: AttachMoney,
-    title: 'Orders',
-    link: '/admin/orders',
-  },
+  // {
+  //   icon: AttachMoney,
+  //   title: 'Orders',
+  //   link: '/admin/orders',
+  // },
 ];
 
 const useStyles = makeStyles((theme) => ({

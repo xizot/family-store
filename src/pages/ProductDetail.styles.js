@@ -124,6 +124,7 @@ export default makeStyles((theme) => ({
 
   descriptionText: {
     position: 'relative',
+    wordBreak: 'break-word',
     marginBottom: theme.spacing(2),
     transition: 'max-height .5s',
     fontSize: 16,

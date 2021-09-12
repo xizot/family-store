@@ -99,7 +99,6 @@ function App() {
               />
             );
           })}
-
           <Route
             path="/admin"
             render={(props) => {

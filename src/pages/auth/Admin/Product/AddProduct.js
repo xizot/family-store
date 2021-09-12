@@ -11,9 +11,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Add, Close, Delete } from '@material-ui/icons';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListCategory } from '../../../../reducers/category';
 import { addNewProduct } from '../../../../reducers/product';
 import { toast } from 'react-toastify';
 import ButtonWithLoading from '../../../../components/UI/ButtonWithLoading/ButtonWithLoading';
@@ -57,16 +56,9 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
     setImages((prevState) => prevState.filter((image) => image !== item));
   };
 
-  const getListCategoryHandler = useCallback(async () => {
-    try {
-      await dispatch(getListCategory()).unwrap();
-    } catch (err) {
-      console.log('🚀 ~ file: Product.js ~ line 166 ~ getListCategoryHandler ~ err', err);
-    }
-  }, [dispatch]);
-
   const closeModalHandler = () => {
     setImages([]);
+    setDescription('');
     setError('');
     onClose();
   };
@@ -116,9 +108,6 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
       console.log('🚀 ~ file: AddProduct.js ~ line 140 ~ addNewProductHandler ~ error', error);
     }
   };
-  useEffect(() => {
-    getListCategoryHandler();
-  }, [dispatch, getListCategoryHandler]);
 
   useEffect(() => {
     if (images.length > 0) {

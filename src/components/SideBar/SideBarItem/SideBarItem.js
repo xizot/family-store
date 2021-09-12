@@ -91,7 +91,7 @@ export const SideBarItem = ({ IconComponent, title, link, subItems }) => {
     <li className={classes.root}>
       <div>
         {link ? (
-          <NavLink to={link} className={classes.navLink} activeClassName={classes.itemActive}>
+          <NavLink exact to={link} className={classes.navLink} activeClassName={classes.itemActive}>
             <IconComponent className={classes.icon} />
             <Typography variant="subtitle1" className={classes.title}>
               {title}

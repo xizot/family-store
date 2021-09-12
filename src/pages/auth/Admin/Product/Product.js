@@ -1,5 +1,4 @@
 import {
-  makeStyles,
   Table,
   TableBody,
   TableCell,
@@ -10,14 +9,16 @@ import {
   Typography,
   Button,
   Box,
+  TablePagination,
+  FormControl,
+  Select,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import Pagination from '@material-ui/lab/Pagination';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../reducers/ui';
 import { Add, Delete, Edit } from '@material-ui/icons';
-import { deleteProduct, getListProductByPage } from '../../../../reducers/product';
+import { deleteProduct, getByCate } from '../../../../reducers/product';
 import AddProduct from './AddProduct';
 import UpdateProduct from './UpdateProduct';
 import TableError from '../../../../components/TableError/TableError';
@@ -26,135 +27,8 @@ import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 import { toast } from 'react-toastify';
 import { removeHtmlTag } from '../../../../helpers';
 import SearchInputV2 from '../../../../components/UI/SearchInputV2';
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-  title: {
-    textTransform: 'uppercase',
-    marginBottom: theme.spacing(5),
-    textAlign: 'center',
-    color: theme.palette.primary.main,
-  },
-  section: {
-    borderRadius: theme.shape.borderRadius,
-    background: 'white',
-    boxShadow: '0px 2px 8px rgba(0,0,0,.1)',
-    padding: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  },
-  topContent: {
-    borderRadius: theme.shape.borderRadius,
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  listItem: {
-    background: '#fff',
-    borderRadius: theme.shape.borderRadius,
-    width: '100%',
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-  filter: {
-    marginTop: theme.spacing(2),
-    marginBottom: '12px',
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-  },
-  filterItem: {
-    display: 'flex',
-    alignItems: 'center',
-    '&:not(:last-child)': {
-      marginRight: theme.spacing(2),
-    },
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing(1),
-      width: '100%',
-      justifyContent: 'space-between',
-      '&:not(:last-child)': {
-        marginRight: 0,
-      },
-    },
-  },
-  label: {
-    [theme.breakpoints.down('xs')]: {
-      minWidth: 70,
-    },
-  },
-  select: {
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: '#F39148',
-    marginLeft: theme.spacing(1),
-    '& svg': {
-      color: theme.palette.common.white,
-    },
-  },
-  addButton: {
-    marginLeft: 'auto',
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 0,
-    },
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing(1),
-    },
-  },
-  search: {
-    border: '1px solid #ddd',
-    borderRadius: theme.shape.borderRadius,
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
-      marginRight: 0,
-      marginBottom: theme.spacing(1),
-      width: '100%',
-      justifyContent: 'space-between',
-    },
-  },
-  pagination: {
-    '& > *': {
-      justifyContent: 'center',
-      display: 'flex',
-    },
-  },
-  tableHead: {
-    fontWeight: 'bold',
-    color: 'red',
-  },
-  longTextStyle: {
-    wordWrap: 'break-word',
-    width: 250,
-    maxWidth: 500,
-    display: '-webkit-box',
-    '-webkit-line-clamp': 4,
-    '-webkit-box-orient': 'vertical',
-    overflow: 'hidden',
-  },
-  productName: {
-    wordWrap: 'break-word',
-    width: 200,
-    display: '-webkit-box',
-    '-webkit-line-clamp': 4,
-    '-webkit-box-orient': 'vertical',
-    overflow: 'hidden',
-  },
-
-  tableRow: {
-    transition: 'all .5s',
-    '&:hover': {
-      background: '#dedede !important ',
-      cursor: 'pointer',
-    },
-  },
-  actionIcon: {
-    cursor: 'pointer',
-    '&:not(:last-child)': {
-      marginRight: theme.spacing(1),
-    },
-  },
-}));
+import useStyles from './Product.styles';
+import { getListCategory } from '../../../../reducers/category';
 
 const ProductManager = (props) => {
   const { t } = useTranslation();
@@ -162,17 +36,19 @@ const ProductManager = (props) => {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [productInfo, setProductInfo] = useState({});
+  const [productInfo, setProductInfo] = useState({ listProduct: [], numberOfPage: 0 });
   const [selectedId, setSelectedId] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [selectedCategory, setselectedCategory] = useState('');
   const loading = useSelector((state) => state.product.loading);
   let { listProduct, numberOfPage } = productInfo;
+  const categories = useSelector((state) => state.category.data);
+
   const dispatch = useDispatch();
-  // const [optionPrice, setOptionPrice] = useState('Price');
-  // const [optionType, setOptionType] = useState('Ascending');
 
   const openAddModalHandler = () => {
     setOpenAddModal(true);
@@ -202,6 +78,18 @@ const ProductManager = (props) => {
     setSelectedId(null);
   };
 
+  const selectedCategoryChangeHandler = (e) => {
+    const newSelected = e.target?.value;
+    setselectedCategory(newSelected);
+    setPage(0);
+  };
+  const limitPerPageChangeHandler = (event) => {
+    const newLimit = +event.target.value;
+    setLimit(newLimit);
+    setPage(0);
+    getListProductHandler(0, newLimit);
+  };
+
   const pageChangeHandler = (event, value) => {
     setPage(value);
   };
@@ -212,21 +100,24 @@ const ProductManager = (props) => {
       await dispatch(deleteProduct(selectedId)).unwrap();
       toast.success(`Delete product id ${selectedId} successfully`);
 
-      getListProductByPageHandler(page);
+      getListProductHandler(page, limit);
     } catch (err) {
+      console.error(err);
       toast.error(err);
     }
     closeModalHandler();
   };
 
-  const getListProductByPageHandler = useCallback(
-    async (selectPage = 1) => {
+  const getListProductHandler = useCallback(
+    async (catID, page, limit) => {
+      if (!catID || catID === '') return;
       try {
-        const response = await dispatch(getListProductByPage(selectPage)).unwrap();
-
-        setProductInfo(response);
+        const response = await dispatch(
+          getByCate({ catID, page: page === 0 ? 1 : page, limit })
+        ).unwrap();
+        setProductInfo({ listProduct: response.listProduct, numberOfPage: response.numberOfPage });
       } catch (err) {
-        console.log('🚀 ~ file: Product.js ~ line 194 ~ err', err);
+        console.error(err);
         setError(err);
       }
     },
@@ -236,36 +127,49 @@ const ProductManager = (props) => {
   const searchChangeHandler = (value) => {
     setSearch(value);
   };
-  useEffect(() => {
-    if (page > numberOfPage) {
-      setPage(numberOfPage || 1);
-    }
-  }, [page, numberOfPage]);
-  useEffect(() => {
-    dispatch(uiActions.hideModal());
-    getListProductByPageHandler(page);
-  }, [dispatch, getListProductByPageHandler, page]);
 
   useEffect(() => {
-    document.title = 'Product Admin';
-  }, [t]);
+    setProductInfo({ listProduct: [], numberOfPage: 0 });
+    if (selectedCategory !== '') {
+      getListProductHandler(selectedCategory, page, limit);
+    }
+  }, [selectedCategory, page, limit, getListProductHandler]);
+
+  useEffect(() => {
+    const getListCategoryHandler = async () => {
+      try {
+        const response = await dispatch(getListCategory({ page: 1, limit: 9999 })).unwrap();
+        if (response.paginationResult.length > 0) {
+          if (response.paginationResult[0]?.subCategories.length > 0) {
+            setselectedCategory(response.paginationResult[0].subCategories[0].cateId);
+          }
+        }
+      } catch (err) {}
+    };
+    getListCategoryHandler();
+  }, [dispatch]);
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    dispatch(uiActions.hideModal());
+    document.title = 'Product Admin';
+  }, [t, dispatch]);
   return (
     <>
       <div className={classes.root}>
         <AddProduct
           isOpen={openAddModal}
           onClose={closeModalHandler}
-          getList={getListProductByPageHandler.bind(null, page)}
+          getList={getListProductHandler.bind(null, selectedCategory, page, limit)}
         />
         <UpdateProduct
           itemInfo={selectedItem}
           isOpen={openUpdateModal}
           onClose={closeModalHandler}
-          getList={getListProductByPageHandler.bind(null, page)}
+          getList={getListProductHandler.bind(null, selectedCategory, page, limit)}
         />
         <ModalConfirm
           title="Delete Product"
@@ -286,7 +190,26 @@ const ProductManager = (props) => {
                 onChange={searchChangeHandler}
               />
             </div>
-
+            <div className={classes.textField}>
+              <FormControl variant="outlined" size="small" fullWidth>
+                <Select native value={selectedCategory} onChange={selectedCategoryChangeHandler}>
+                  <option aria-label="None" value="" style={{ color: '#F39148' }}>
+                    Categories
+                  </option>
+                  {categories?.length > 0 &&
+                    categories.map((cate, index) => (
+                      <optgroup label={cate.cateName} key={index} style={{ color: '#F39148' }}>
+                        {cate.subCategories?.length > 0 &&
+                          cate.subCategories.map((subCate, index) => (
+                            <option value={subCate.cateId} key={index} style={{ color: '#F39148' }}>
+                              {subCate.cateName}
+                            </option>
+                          ))}
+                      </optgroup>
+                    ))}
+                </Select>
+              </FormControl>
+            </div>
             <div className={classes.addButton}>
               <Button
                 startIcon={<Add />}
@@ -304,7 +227,10 @@ const ProductManager = (props) => {
           {loading ? (
             <TableLoading />
           ) : error?.length > 0 ? (
-            <TableError message={error} onTryAgain={getListProductByPageHandler.bind(null, page)} />
+            <TableError
+              message={error}
+              onTryAgain={getListProductHandler.bind(null, selectedCategory, page, limit)}
+            />
           ) : listProduct?.length > 0 ? (
             <Paper className={classes.section}>
               <TableContainer>
@@ -334,7 +260,7 @@ const ProductManager = (props) => {
                           onClick={() => openUpdateModalHandler(row)}
                           className={classes.tableRow}>
                           <TableCell component="th" scope="row" style={{ fontWeight: 'bold' }}>
-                            {(page - 1) * 10 + index + 1}
+                            {page * limit + index + 1}
                           </TableCell>
                           <TableCell>{row.prod_id}</TableCell>
                           <TableCell>
@@ -342,7 +268,7 @@ const ProductManager = (props) => {
                           </TableCell>
                           <TableCell>
                             <img
-                              src={row.images[0] || '/img/store-icon.png'}
+                              src={row.images || process.env.PUBLIC_URL + '/img/no-product.png'}
                               alt={row.prod_name}
                               style={{ width: 100, height: 80, objectFit: 'cover' }}
                             />
@@ -381,21 +307,20 @@ const ProductManager = (props) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <div className={`${classes.pagination} ${classes.section}`}>
-                <Pagination
-                  count={numberOfPage}
-                  color="primary"
-                  variant="outlined"
-                  shape="rounded"
-                  page={page}
-                  onChange={pageChangeHandler}
-                />
-              </div>
+              <TablePagination
+                rowsPerPageOptions={[1, 2, 10, 25, 100]}
+                component="div"
+                count={numberOfPage * limit}
+                rowsPerPage={limit}
+                page={page}
+                onPageChange={pageChangeHandler}
+                onRowsPerPageChange={limitPerPageChangeHandler}
+              />
             </Paper>
           ) : (
             <TableError
               message="No data available in database"
-              onTryAgain={getListProductByPageHandler.bind(null, page)}
+              onTryAgain={getListProductHandler.bind(null, selectedCategory, page, limit)}
             />
           )}
         </div>
