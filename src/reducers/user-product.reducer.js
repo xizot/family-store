@@ -2,6 +2,16 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userProductApi from '../apis/user-product.api';
 import { getResponseError } from '../helpers';
 
+export const getHomeProduct = createAsyncThunk(
+  'userProduct/getHomeProduct',
+  async (_, { rejectWithValue }) => {
+    try {
+      return (await userProductApi.getHomeProduct()).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
 export const getListProductByCateAndPage = createAsyncThunk(
   'userProduct/GetList',
   async ({ catID, page }, { rejectWithValue }) => {

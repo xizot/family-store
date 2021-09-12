@@ -11,8 +11,9 @@ const useStyles = makeStyles((theme) => ({
     height: 'calc(100% - 2px)',
     boxShadow:
       'rgb(0 0 0 / 20%) 0px 3px 1px -2px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px',
-
+    transition: 'all .5s',
     '&:hover': {
+      boxShadow: '0px 2px 8px rgba(0,0,0,.5)',
       '& $title': {
         textDecoration: 'underline',
       },

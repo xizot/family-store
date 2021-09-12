@@ -1,5 +1,7 @@
 import axios from '../axios/index';
 
+const getHomeProduct = () => axios.get('/api/categories/product-with-cate');
+
 const getListByCateIDAndPage = ({ catID, page = 1, limit = 12 }) =>
   axios.post('/api/product/list-by-cat', { catID, page, limit });
 
@@ -12,5 +14,6 @@ const userProductApi = {
   getListByCateIDAndPage,
   getListSuggest,
   getDetail,
+  getHomeProduct,
 };
 export default userProductApi;

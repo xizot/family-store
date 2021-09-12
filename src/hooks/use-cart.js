@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { userAddToCart, userDeleteCart, userUpdateCartAmount } from '../reducers/cart';
 
 export const useCart = () => {
@@ -22,6 +23,7 @@ export const useCart = () => {
         })
       );
     } catch (error) {
+      toast.error(error);
       console.log(error);
     }
   };
