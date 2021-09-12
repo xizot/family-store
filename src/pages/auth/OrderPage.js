@@ -9,7 +9,7 @@ import Header from './../../components/Layout/Header';
 import SideBar from '../../components/SideBar/SideBar';
 import OrderItem from './../../components/Order/OrderItem';
 import CategoryMenu from '../../components/CategoriesMenu/CategoriesMenu';
-import {getAllOrder,getDeliveringOrder,getDeliveredOrder} from '../../reducers/order.reducer';
+import { getAllOrder, getDeliveringOrder, getDeliveredOrder, getConfirmOrder, getCancelOrder } from '../../reducers/order.reducer';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
@@ -46,33 +46,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const itemsOrderCancel = [
-  {
-    id: '000144006',
-    img: 'https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png',
-    date: '05/02/2021',
-    expected: '23/02/2021',
-    total: 100000,
-    status: 'Cancel',
-  },
-];
-const itemsOrderConfirm = [
-  {
-    id: '000144008',
-    img: 'https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png',
-    date: '01/02/2022',
-    expected: '25/02/2022',
-    total: 500000,
-    status: 'Await confirm',
-  },
-];
-
 const OrderPage = (props) => {
   const img = "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png"
   const classes = useStyles();
   const dispatch = useDispatch();
   const [error, setError] = useState('');
-  const {data,delivering,totalPage,delivered} = useSelector((state) => state.order);
+  const { data, delivering, totalPage, delivered, confirm, cancel } = useSelector((state) => state.order);
   const [page, setPage] = useState(1);
   const [value, setValue] = useState('0');
 
@@ -110,16 +89,44 @@ const OrderPage = (props) => {
     [dispatch]
   );
 
+  const getConfirmOrderHandler = useCallback(
+    async (selectedPage) => {
+      try {
+        await dispatch(getConfirmOrder(selectedPage)).unwrap();
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [dispatch]
+  );
+
+  const getCancelOrderHandler = useCallback(
+    async (selectedPage) => {
+      try {
+        await dispatch(getCancelOrder(selectedPage)).unwrap();
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     getAllOrderHandler(page);
   }, [dispatch, getAllOrderHandler, page]);
 
   const handleChange = (event, newValue) => {
-    if(newValue === '2'){
+    if (newValue === '2') {
       getDeliveringOrderHandler(page);
     }
-    if(newValue === "3"){
+    if (newValue === "3") {
       getDeliveredOrderHandler(page);
+    }
+    if (newValue === "1") {
+      getConfirmOrderHandler(page);
+    }
+    if (newValue === "4") {
+      getCancelOrderHandler(page);
     }
     setValue(newValue);
   };
@@ -170,20 +177,22 @@ const OrderPage = (props) => {
                         date={item.createDate}
                         expected={item.expectedDate}
                         total={item.totalPrice}
+                        detail={item.billDetailList}
                       />
                     ))}
                 </TabPanel>
                 <TabPanel value="1">
-                  {itemsOrderConfirm?.length > 0 &&
-                    itemsOrderConfirm.map((item, index) => (
+                  {confirm?.length > 0 &&
+                    confirm.map((item, index) => (
                       <OrderItem
                         key={index}
-                        id={item.id}
-                        img={item.img}
-                        status={item.status}
-                        date={item.date}
-                        expected={item.expected}
-                        total={item.total}
+                        id={item.billId}
+                        img={img}
+                        status={item.billStatus}
+                        date={item.createDate}
+                        expected={item.expectedDate}
+                        total={item.totalPrice}
+                        detail={item.billDetailList}
                       />
                     ))}
                 </TabPanel>
@@ -198,6 +207,7 @@ const OrderPage = (props) => {
                         date={item.createDate}
                         expected={item.expectedDate}
                         total={item.totalPrice}
+                        detail={item.billDetailList}
                       />
                     ))}
                 </TabPanel>
@@ -212,20 +222,22 @@ const OrderPage = (props) => {
                         date={item.createDate}
                         expected={item.expectedDate}
                         total={item.totalPrice}
+                        detail={item.billDetailList}
                       />
                     ))}
                 </TabPanel>
                 <TabPanel value="4">
-                  {itemsOrderCancel?.length > 0 &&
-                    itemsOrderCancel.map((item, index) => (
+                  {cancel?.length > 0 &&
+                    cancel.map((item, index) => (
                       <OrderItem
                         key={index}
-                        id={item.id}
-                        img={item.img}
-                        status={item.status}
-                        date={item.date}
-                        expected={item.expected}
-                        total={item.total}
+                        id={item.billId}
+                        img={img}
+                        status={item.billStatus}
+                        date={item.createDate}
+                        expected={item.expectedDate}
+                        total={item.totalPrice}
+                        detail={item.billDetailList}
                       />
                     ))}
                 </TabPanel>
