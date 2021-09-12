@@ -201,14 +201,15 @@ const HomePage = () => {
               <RequestLoading />
             ) : (
               homeProducts?.length > 0 &&
-              homeProducts.map((item, index) => (
-                <div className={classes.section} key={index}>
-                  <Typography variant="h5" className={classes.topSaleTitle}>
-                    {item.cateName}
-                  </Typography>
-                  <Grid container spacing={3} className={classes.listSale}>
-                    {item.listProducts?.length > 0 &&
-                      item.listProducts.map((product, index) => (
+              homeProducts
+                .filter((item) => item.listProducts.length > 0)
+                .map((item, index) => (
+                  <div className={classes.section} key={index}>
+                    <Typography variant="h5" className={classes.topSaleTitle}>
+                      {item.cateName}
+                    </Typography>
+                    <Grid container spacing={3} className={classes.listSale}>
+                      {item.listProducts.map((product, index) => (
                         <Grid item xs={12} sm={6} md={3} key={index}>
                           <ProductItem
                             id={product.prodId}
@@ -220,13 +221,13 @@ const HomePage = () => {
                           />
                         </Grid>
                       ))}
-                  </Grid>
-                  <Link to={`/collections/${item.cateId}`} className={classes.viewMore}>
-                    View More
-                    <ChevronRight />
-                  </Link>
-                </div>
-              ))
+                    </Grid>
+                    <Link to={`/collections/${item.cateId}`} className={classes.viewMore}>
+                      View More
+                      <ChevronRight />
+                    </Link>
+                  </div>
+                ))
             )}
           </div>
         </div>
