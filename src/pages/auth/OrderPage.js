@@ -10,6 +10,8 @@ import SideBar from '../../components/SideBar/SideBar';
 import OrderItem from './../../components/Order/OrderItem';
 import CategoryMenu from '../../components/CategoriesMenu/CategoriesMenu';
 import { getAllOrder, getDeliveringOrder, getDeliveredOrder, getConfirmOrder, getCancelOrder } from '../../reducers/order.reducer';
+import { useTranslation } from 'react-i18next';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
@@ -47,7 +49,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OrderPage = (props) => {
-  const img = "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png"
+	const { t } = useTranslation();
+  // const img = "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png";
+	const img = "https://icons.veryicon.com/png/o/system/crm-android-app-icon/app-icon-sales-order.png";
   const classes = useStyles();
   const dispatch = useDispatch();
   const [error, setError] = useState('');
@@ -158,11 +162,11 @@ const OrderPage = (props) => {
                   indicatorColor="primary"
                   variant="fullWidth"
                   aria-label="full width tabs example">
-                  <Tab label="All Order" value="0" />
-                  <Tab label="Awaiting confirm" value="1" />
-                  <Tab label="Delivering" value="2" />
-                  <Tab label="Delivered" value="3" />
-                  <Tab label="Cancel" value="4" />
+                  <Tab label= {t("ordersPage.all")} value="0" />
+                  <Tab label= {t("ordersPage.await")} value="1" />
+                  <Tab label= {t("ordersPage.delivering")} value="2" />
+                  <Tab label= {t("ordersPage.delivered")} value="3" />
+                  <Tab label= {t("ordersPage.canceled")} value="4" />
                 </TabList>
               </div>
               <div className={classes.listItem}>

@@ -282,7 +282,7 @@ const RegisterPage = () => {
                   fullWidth
                   type="submit"
                   disabled={!formIsValid}>
-                  {t('registerpage.buttonRegister')}
+                  {t('generalButtons.register')}
                 </ButtonWithLoading>
                 <Typography className={classes.forwardTo} variant="body2">
                   {t('registerpage.haveAccount')}{' '}

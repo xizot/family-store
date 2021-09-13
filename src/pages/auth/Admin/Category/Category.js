@@ -117,7 +117,7 @@ const SubCateManager = (props) => {
   return (
     <div className={classes.root}>
       <CategoryModal
-        title={type === 'UPDATE' ? 'UPDATE CATEGORY' : 'ADD NEW CATEGORY'}
+        title={type === 'UPDATE' ? t('adminPage.category.modal.updateTitle') : t('adminPage.category.modal.addingTitle')}
         isOpen={openModal}
         onClose={handleClose}
         item={itemSelected}
@@ -126,19 +126,19 @@ const SubCateManager = (props) => {
       />
 
       <ModalConfirm
-        title="Delete Category"
+        title= {t('deleteModal.category')}
         isOpen={openDeleteModal}
         onClose={handleClose}
         onConfirm={DeleteConfirm}
       />
       <div className={classes.section}>
         <Typography variant="h5" className={classes.title}>
-          CATEGORY MANAGER
+					{t('adminPage.category.title')}
         </Typography>
         <div className={classes.filter}>
           <div className={classes.search}>
             <SearchInputV2
-              placeholder="Tìm kiếm category"
+              placeholder= {t('adminPage.category.searchPlaceHolder')}
               initialValue={search}
               onChange={searchChangeHandler}
             />
@@ -149,7 +149,7 @@ const SubCateManager = (props) => {
               color="primary"
               startIcon={<Add />}
               onClick={() => openModalHandler('ADD')}>
-              {t('addNew')}
+              {t('generalButtons.add')}
             </Button>
           </div>
         </div>
@@ -169,11 +169,11 @@ const SubCateManager = (props) => {
                     <TableCell style={{ width: 20, textAlign: 'center', fontWeight: 'bold' }}>
                       #
                     </TableCell>
-                    <TableCell style={{ textAlign: 'center' }}>Category ID</TableCell>
-                    <TableCell style={{ textAlign: 'center' }}>Category Name</TableCell>
-                    <TableCell style={{ textAlign: 'center' }}>Sub Category Inside</TableCell>
-                    <TableCell>Last Modified</TableCell>
-                    <TableCell>Options</TableCell>
+                    <TableCell style={{ textAlign: 'center' }}> {t('adminPage.category.table.categoryId')} </TableCell>
+                    <TableCell style={{ textAlign: 'center' }}> {t('adminPage.category.table.categoryName')} </TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>  {t('adminPage.category.table.subCategoryCount')} </TableCell>
+                    <TableCell> {t('generalTable.lastModified')} </TableCell>
+                    <TableCell> {t('generalTable.options')} </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -198,7 +198,7 @@ const SubCateManager = (props) => {
                           <TableCell style={{ textAlign: 'center' }}>
                             {row.subCategories.length}
                           </TableCell>
-                          <TableCell>{row.createDate}</TableCell>
+                          <TableCell>{row.createDate || t('generalTable.unknown')} </TableCell>
                           <TableCell>
                             <Box display="flex">
                               <Edit
@@ -228,7 +228,7 @@ const SubCateManager = (props) => {
           </Paper>
         ) : (
           <TableError
-            message="No data available in database"
+            message= {t('generalTable.emptyData')}
             onTryAgain={getListCategoryHandler.bind(null, page)}
           />
         )}

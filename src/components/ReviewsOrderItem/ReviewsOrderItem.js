@@ -7,6 +7,7 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 import GenerateStarV2 from "../GenerateStarV2/GenerateStarV2";
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -56,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ReviewsOrderItem = ({ id, name, quantity, img, onReview }) => {
+	const { t } = useTranslation();
 	const classes = useStyles();
 	const [numOfStar, setNumOfStar] = useState(5);
 	const [comment, setComment] = useState("");
@@ -110,7 +112,7 @@ const ReviewsOrderItem = ({ id, name, quantity, img, onReview }) => {
 						multiline
 						rows={4}
 						variant="filled"
-						placeholder="Comment what you think about this product?"
+						placeholder= {t("ordersPage.details.placeHolder")}
 						className={classes.textarea}
 						value={comment}
 						onChange={commentHandler}
@@ -121,7 +123,7 @@ const ReviewsOrderItem = ({ id, name, quantity, img, onReview }) => {
 						className={classes.executeButton}
 						onClick={reviewHandler}
 					>
-						Review
+						{t("generalButtons.review")}
 					</Button>
 				</Grid>
 			</Grid>

@@ -1,6 +1,8 @@
 import { Box, Button, Typography } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 const TableError = ({ message, onTryAgain }) => {
+	const { t } = useTranslation();
   return (
     <Box
       display="flex"
@@ -13,7 +15,7 @@ const TableError = ({ message, onTryAgain }) => {
         {message}
       </Typography>
       <Button color="primary" variant="outlined" onClick={onTryAgain}>
-        Refresh
+        {t('generalButtons.refresh')}
       </Button>
     </Box>
   );

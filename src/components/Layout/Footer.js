@@ -1,5 +1,6 @@
 import { Container, makeStyles, Typography } from "@material-ui/core";
 import { Email, Facebook, GitHub, Phone } from "@material-ui/icons";
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -49,16 +50,18 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 const Footer = ({ hasSideBar }) => {
+	const { t } = useTranslation();
 	const classes = useStyles({ hasSideBar });
 	return (
 		<footer className={classes.root}>
 			<Container className={classes.container}>
 				<div className={classes.content}>
-					<Typography variant="body1">
-						Copyright 2021 © Family market.
-					</Typography>
+						<Typography variant="body1">
+							{t('footer.copyright')} 
+						</Typography>
 					<div className={classes.contact}>
-						<Typography variant="body1">Contact us at</Typography>
+						<span>&nbsp;&nbsp;</span>
+						<Typography variant="body1">{t('footer.contact')} </Typography>
 						<ul>
 							<li>
 								<a href="/" target="_blank">

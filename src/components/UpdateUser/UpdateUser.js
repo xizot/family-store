@@ -415,7 +415,7 @@ const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess, isAdmin = true })
                   fullWidth
                   type="submit"
                   disabled={!formIsValid}>
-                  {t('submit')}
+                  {t('profilepage.buttonExecute')}
                 </ButtonWithLoading>
               </Grid>
             </Grid>

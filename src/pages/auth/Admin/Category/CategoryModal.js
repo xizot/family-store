@@ -4,6 +4,7 @@ import * as Validate from '../../../../helpers/validate';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCategory, updateSubCategory } from '../../../../reducers/category';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import ButtonWithLoading from '../../../../components/UI/ButtonWithLoading/ButtonWithLoading';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
+	const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = useStyles();
   const modifyLoading = useSelector((state) => state.category.modifyLoading);
@@ -114,7 +116,7 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
         <form noValidate autoComplete="off" onSubmit={formSubmitHandler}>
           <FormControl className={classes.form} fullWidth size="small">
             <TextField
-              label="Category Name"
+              label= {t('adminPage.category.table.categoryName')}
               variant="outlined"
               value={cateName}
               error={cateNameHasError}
@@ -128,7 +130,7 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
             isLoading={modifyLoading}
             onClick={formSubmitHandler}
             disabled={!cateNameIsValid}>
-            Save
+            	{t('generalButtons.save')}
           </ButtonWithLoading>
         </form>
       </div>

@@ -7,6 +7,7 @@ import SideBar from '../../components/SideBar/SideBar';
 import Footer from '../../components/Layout/Footer';
 import Header from '../../components/Layout/Header';
 import CategoryMenu from '../../components/CategoriesMenu/CategoriesMenu';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,30 +115,31 @@ const itemsInOder = [
     id: '123',
     name: 'Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ',
     quantity: 10,
-    img: 'http://product.hstatic.net/1000074072/product/ot-vang_7b60e97586894f43aa0fe18175fc6b3a_grande.jpg',
+    img: 'https://product.hstatic.net/1000074072/product/ot-1284g_e063a92878d84db99b094a1c6b8c44c7.jpg',
   },
   {
     id: '1234',
     name: 'Sữa ông thọ',
     quantity: 10,
-    img: 'http://product.hstatic.net/1000074072/product/ot-vang_7b60e97586894f43aa0fe18175fc6b3a_grande.jpg',
+    img: 'https://product.hstatic.net/1000074072/product/ot-1284g_e063a92878d84db99b094a1c6b8c44c7.jpg',
   },
   {
     id: '1235',
     name: 'Sữa ông thọ',
     quantity: 10,
-    img: 'http://product.hstatic.net/1000074072/product/ot-vang_7b60e97586894f43aa0fe18175fc6b3a_grande.jpg',
+    img: 'https://product.hstatic.net/1000074072/product/ot-1284g_e063a92878d84db99b094a1c6b8c44c7.jpg',
   },
   {
     id: '1237',
     name: 'Sữa ông thọ',
     quantity: 10,
-    img: 'http://product.hstatic.net/1000074072/product/ot-vang_7b60e97586894f43aa0fe18175fc6b3a_grande.jpg',
+    img: 'https://product.hstatic.net/1000074072/product/ot-1284g_e063a92878d84db99b094a1c6b8c44c7.jpg',
   },
 ];
 
 const ReviewsPage = (props) => {
   const classes = useStyles();
+	const { t } = useTranslation();
   //const location = useLocation();
   //const query = location.search.slice(4) || "-1"; //?id=123
 
@@ -162,21 +164,21 @@ const ReviewsPage = (props) => {
                 <Grid item xs={12} sm={12} md={4}>
                   <Link to="/orders" className={classes.back}>
                     <Button variant="outlined" color="primary" className={classes.topLeftButton}>
-                      <ArrowBackIos fontSize="small" /> Back to Order
+                      <ArrowBackIos fontSize="small" /> {t("generalButtons.back")}
                     </Button>
                   </Link>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4}>
                   <div className={classes.commonTitle}>
                     <Typography variant="h6" className={classes.boldFont}>
-                      ORDER OVERVIEW
+                      {t("ordersPage.details.titleTop")}
                     </Typography>
                   </div>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <div className={classes.TopContentDetailsLeft}>
                     <div className={classes.ChildPropertiesLabel}>
-                      <Typography variant="body1">ORDER ID:</Typography>
+                      <Typography variant="body1"> {t("ordersPage.item.orderId")} </Typography>
                     </div>
                     <div className={classes.ChildPropertiesValue}>
                       <Typography variant="body1" className={classes.boldFont}>
@@ -188,7 +190,7 @@ const ReviewsPage = (props) => {
                 <Grid item xs={12} sm={12} md={6}>
                   <div className={classes.TopContentDetailRight}>
                     <div className={classes.ChildPropertiesLabel}>
-                      <Typography variant="body1">STATUS:</Typography>
+                      <Typography variant="body1"> {t("ordersPage.item.status")} </Typography>
                     </div>
                     <div className={classes.ChildPropertiesValue}>
                       <Typography variant="body1" className={classes.boldFont}>
@@ -204,7 +206,7 @@ const ReviewsPage = (props) => {
                 <Grid item xs={12} sm={12} md={12}>
                   <div className={classes.commonTitle}>
                     <Typography variant="h6" className={classes.boldFont}>
-                      PURCHASED PRODUCTS
+										{t("ordersPage.details.titleMid")}
                     </Typography>
                   </div>
                 </Grid>

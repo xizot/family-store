@@ -154,7 +154,7 @@ const AccountActivationPage = (props) => {
                   disabled={!formIsValid}
                   type="submit"
                   className={classes.button}>
-                  {t('accountactivationpage.buttonExecute')}
+                  {t('generalButtons.active')}
                 </Button>
               </form>
               <div className={classes.actions}>

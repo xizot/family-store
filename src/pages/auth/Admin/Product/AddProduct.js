@@ -17,8 +17,10 @@ import { addNewProduct } from '../../../../reducers/product';
 import { toast } from 'react-toastify';
 import ButtonWithLoading from '../../../../components/UI/ButtonWithLoading/ButtonWithLoading';
 import useStyles from './AddProduct.styles';
+import { useTranslation } from 'react-i18next';
 
 const AddProduct = ({ isOpen, onClose, getList }) => {
+	const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.data);
@@ -123,10 +125,10 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
         <Box borderRadius={6} className={classes.content}>
           <Box marginBottom={4} marginTop={2} position="relative">
             <Typography variant="h5" className={classes.title}>
-              ADD PRODUCTS
+							{t('adminPage.product.modal.addingTitle')}
             </Typography>
             <Typography variant="caption" className={classes.subTitle}>
-              Family Admin Panel
+							{t('familyAdminPanel')}
             </Typography>
             <IconButton className={classes.iconClose} onClick={closeModalHandler}>
               <Close fontSize="large" />
@@ -175,14 +177,14 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
             <Box className={classes.productInformation}>
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-                  Title
+									{t('adminPage.product.table.productName')}
                 </Typography>
                 <TextField variant="outlined" size="small" fullWidth inputRef={titleRef} />
               </div>
 
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-                  Category
+									{t('adminPage.product.table.category')}
                 </Typography>
                 <FormControl variant="outlined" size="small" fullWidth>
                   <Select
@@ -207,7 +209,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
               </div>
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-                  Price (VND)
+									{t('adminPage.product.table.price')}
                 </Typography>
                 <TextField
                   variant="outlined"
@@ -219,7 +221,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
               </div>
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-                  Amount
+									{t('adminPage.product.table.quantity')}
                 </Typography>
                 <TextField
                   variant="outlined"
@@ -231,7 +233,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
               </div>
               <FormControl color="primary" fullWidth className={classes.textField}>
                 <Typography variant="body1" component="p">
-                  Add Description
+									{t('adminPage.product.table.description')}
                 </Typography>
                 <TextareaAutosize
                   variant="outlined"
@@ -260,11 +262,11 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
                   isLoading={modifyLoading}
                   onClick={addNewProductHandler}
                   parentClasses={classes.buttonSubmit}>
-                  ADD
+                  {t('generalButtons.add')}
                 </ButtonWithLoading>
 
                 <Button variant="contained" onClick={onClose}>
-                  Discard
+									{t('generalButtons.cancel')}
                 </Button>
               </Box>
             </Box>

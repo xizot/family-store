@@ -183,7 +183,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const HeaderAdmin = ({ showMenu, showCart }) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const classes = useStyles({ showMenu });
   const dispatch = useDispatch();
   const history = useHistory();
@@ -290,7 +290,7 @@ const HeaderAdmin = ({ showMenu, showCart }) => {
                 <li>
                   <AiOutlineLogout fontSize={20} />
                   <Link to="" onClick={(e) => logoutHandler(e)}>
-                    Log Out
+									{t('generalButtons.logout')}
                   </Link>
                 </li>
               )}

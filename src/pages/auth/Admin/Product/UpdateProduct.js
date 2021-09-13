@@ -27,8 +27,10 @@ import useStyles from './UpdateProduct.styles';
 import { getListCategory } from '../../../../reducers/category';
 import RequestLoading from '../../../../components/RequestLoading/RequestLoading';
 import TableError from '../../../../components/TableError/TableError';
+import { useTranslation } from 'react-i18next';
 
 const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.data);
@@ -206,10 +208,10 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
         <Box borderRadius={6} className={classes.content}>
           <Box marginBottom={4} marginTop={2}>
             <Typography variant="h5" className={classes.title}>
-              UPDATE PRODUCTS
+              {t('adminPage.product.modal.updateTitle')}
             </Typography>
             <Typography variant="caption" className={classes.subTitle}>
-              Family Admin Panel
+              {t('familyAdminPanel')}
             </Typography>
           </Box>
           {fetchingDetails ? (

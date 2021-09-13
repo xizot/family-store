@@ -2,278 +2,590 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 const vnTranslation = {
-  title: 'Family Store - Mua sắm online dễ dàng hơn',
-  homepage: {
-    bannerTitle: 'Mua sắm ngay tại nhà',
-    bannerDescription:
-      'Vì sức khỏe cộng đồng "Kết nối không khoảng cách". An tâm mua sắm tại nhà cùng Family Store',
-    topTitle1: 'Bán chạy nhất tuần',
-    topTitle2: 'Bán chạy nhất tháng',
-    topTitle3: 'Sản phẩm giá tốt',
-  },
-  loginpage: {
-    title: 'Family Store - Đăng Nhập',
-    formTitle: 'Đăng Nhập',
-    email: 'Email',
-    emailInValid: 'Địa chỉ email không hợp lệ',
-    password: 'Mật khẩu',
-    passwordInValid: 'Mật khẩu không hợp lệ',
-    buttonLogin: 'Đăng nhập',
-    newMember: 'Chưa có tài khoản?',
-    forgotPassword: 'Quên mật khẩu?',
-    signUp: 'Đăng kí',
-    buttonLoginPending: 'Đang đăng nhập...',
-  },
-  registerpage: {
-    title: 'Family Store - Đăng Ký',
-    formTitle: 'Đăng Ký',
-    email: 'Email',
-    emailInValid: 'Địa chỉ email không hợp lệ',
-    address: 'Địa chỉ',
-    fullName: 'Họ và tên',
-    fullNameInValid: 'Tên người dùng không hợp lệ.',
-    addressInValid: 'Địa chỉ không hợp lệ.',
-    password: 'Mật khẩu',
-    passwordInValid: 'Mật khẩu không hợp lệ',
-    confirmPassword: 'Nhập lại mật khẩu',
-    confirmPasswordInValid: 'Mật khẩu và xác nhận mật khẩu không trùng nhau',
-    phonenumberInValid: 'Số điện thoại không hợp lệ',
-    buttonRegister: 'Đăng ký',
-    buttonRegisterPending: 'Đang đăng ký...',
-    haveAccount: 'Bạn đã có tài khoản ?',
-    signIn: 'Đăng nhập',
-  },
-  searchpage: {
-    title: 'Family Store - Tìm kiếm',
-    topContent: 'Kết quả tìm kiếm cho',
-    sortBy: 'Theo giá',
-    sortType: 'Theo loại',
-    optionPrice: 'Giá',
-    optionAscending: 'Tốt',
-    optionHigher: 'Từ cao',
-    optionLower: 'Từ thấp',
-  },
-  forgotpasswordpage: {
-    title: 'Family Store - Quên mật khẩu',
-    formTitle: 'Quên mật khẩu',
-    email: 'Email',
-    emailInValid: 'Địa chỉ email không hợp lệ',
-    buttonExecute: 'Nhận Email khôi phục',
-    newMember: 'Chưa có tài khoản?',
-    haveAccount: 'Quay lại trang đăng nhập',
-    signUp: 'Đăng kí',
-    pleaseCheckEmail:
-      'Vui lòng kiểm tra email để reset password!. Chuyển sang trang đổi mật khẩu sau: ',
-  },
-  recoverypasswordpage: {
-    title: 'Family Store - Khôi phục tài khoản',
-    formTitle: 'Khôi phục tài khoản',
-    password: 'Mật khẩu',
-    passwordInValid: 'Mật khẩu không hợp lệ',
-    confirmPassword: 'Nhập lại mật khẩu',
-    confirmPasswordInValid: 'Mật khẩu và xác nhận mật khẩu không trùng nhau',
-    buttonExecute: 'Xác nhận',
-    resetPasswordSucceed: 'Đổi mật thành công! Chuyển sang trang đăng nhập sau:',
-    checkEmail: 'Lấy code từ email',
-  },
-  accountactivationpage: {
-    title: 'Family Store - Kích hoạt tài khoản',
-    formTitle: 'Kích hoạt tài khoản',
-    code: 'Mã kích hoạt',
-    codeInvalid: 'Mã không hợp lệ',
-    buttonExecute: 'Kích hoạt',
-    haveAccount: 'Quay lại trang đăng nhập',
-  },
-  profilepage: {
-    title: 'Tài khoản của tôi',
-    changePassword: 'Đổi mật khẩu',
-    cancel: 'Hủy bỏ',
-    selectNewAvatar: 'Chọn hình ảnh mới',
-    removeChange: 'X Hủy bỏ thay đổi',
-    updateProfilePicture: 'Cập nhật ảnh',
-    tabTitle: {
-      1: 'CƠ BẢN',
-      2: 'ĐỔI MẬT KHẨU',
-      3: 'ẢNH ĐẠI DIỆN',
-    },
-    fullName: 'Họ và tên',
-    email: 'Email',
-    address: 'Địa chỉ',
-    currentPassword: 'Mật khẩu hiện tại của bạn',
-    newPassword: 'Mật khẩu mới',
-    confirmNewPassword: 'Nhập lại mật khẩu mới',
-    buttonRemove: 'Xóa',
-    buttonBrowse: 'Chọn',
-    buttonExecute: 'Lưu thay đổi',
-  },
-  productDetailPage: {
-    productDescription: 'THÔNG TIN SẢN PHẨM',
-    productReview: 'NHẬN XÉT SẢN PHẨM',
-    suggestions: 'SẢN PHẨM GỢI Ý',
-    showLess: 'Thu gọn',
-    showMore: 'Đầy đủ',
-    estimatedDeliveryFee: 'Phí giao hàng dự kiến:',
-    districtOrWard: 'Quận / Huyện:',
-    addToCart: 'Thêm vào giỏ hàng',
-  },
-  searchPlaceHolder: 'Tìm kiếm sản phẩm...',
-  cartModal: {
-    cart: 'Giỏ hàng',
-    total: 'Tổng tiền',
-    checkout: 'TIẾN HÀNH THANH TOÁN',
-  },
-  sideBar: {
-    categories: 'Danh mục sản phẩm',
-  },
-  back: 'Quay lại',
-  updateUser: 'Cập nhật tài khoản',
-  familyAdminPanel: 'Quản trị viên',
-  addNew: 'Thêm mới',
-};
-const enTranslation = {
-  title: 'Family Store - Easy to buy online',
-  homepage: {
-    bannerTitle: 'Stay home & delivered your daily need’s',
-    bannerDescription: 'Start your daily shopping with Family Store',
-    topTitle1: 'Top items selling last week',
-    topTitle2: 'Top items selling last month',
-    topTitle3: 'Items on sale',
-  },
-  loginpage: {
-    title: 'Family Store - Login',
-    formTitle: 'Login',
-    email: 'Email',
-    emailInValid: 'Please enter a valid email.',
-    password: 'Password',
-    passwordInValid: 'Please enter a valid password.',
-    buttonLogin: 'Sign in',
-    buttonLoginPending: 'Signing in...',
-    newMember: 'New member?',
-    forgotPassword: 'Forgot passsword?',
-    signUp: 'Sign up',
-  },
-  registerpage: {
-    title: 'Family Store - Sign up',
-    formTitle: 'Sign up',
-    email: 'Email',
-    emailInValid: 'Please enter a valid email',
-    address: 'Address',
-    addressInValid: 'Please enter a valid address',
-    fullName: 'FullName',
-    fullNameInValid: 'Please enter a valid name',
-    password: 'Password',
-    passwordInValid: 'Please enter a valid password',
-    confirmPassword: 'Confirm Password',
-    confirmPasswordInValid: 'Password and confirm password does not match',
-    phonenumberInValid: 'Please enter a valid phone number',
-    buttonRegister: 'Sign up',
-    buttonRegisterPending: 'Signing up...',
-    haveAccount: 'Already have account ?',
-    signIn: 'Login',
-  },
-  forgotpasswordpage: {
-    title: 'Family Store - Forgot password',
-    formTitle: 'Forgot password',
-    email: 'Email',
-    emailInValid: 'Please enter a valid email',
-    buttonExecute: 'Receive recovery email',
-    newMember: 'New member?',
-    haveAccount: 'Back to login',
-    signUp: 'Sign up',
-    pleaseCheckEmail: 'Email has been sent!. Forward to  reset password page after: ',
-  },
-  recoverypasswordpage: {
-    title: 'Family Store - Restore account',
-    formTitle: 'Restore account',
-    password: 'New password',
-    passwordInValid: 'Please enter a valid password',
-    confirmPassword: 'Retype new password',
-    confirmPasswordInValid: 'Password and confirm password does not match',
-    buttonExecute: 'Confirm',
-    resetPasswordSucceed: 'Reset password successfully! Forward to login page after',
-    checkEmail: 'Enter code from email',
-  },
-  accountactivationpage: {
-    title: 'Family Store - Account activation',
-    formTitle: 'Account activation',
-    code: 'Activation code',
-    codeInvalid: 'Code is invalid',
-    buttonExecute: 'Active',
-    haveAccount: 'Back to login',
-  },
-  searchpage: {
-    title: 'Family Store - Search',
-    topContent: 'Search results for',
-    sortBy: 'Sort by',
-    sortType: 'Sort type',
-    optionPrice: 'Price',
-    optionAscending: 'Ascending',
-    optionHigher: 'Higher',
-    optionLower: 'Lower',
-  },
-  profilepage: {
-    title: 'My account',
-    changePassword: 'Change password',
-    cancel: 'Cancel',
-    selectNewAvatar: 'Select new avatar',
-    removeChange: 'X Remove change',
-    updateProfilePicture: 'Update profile picture',
-    tabTitle: {
-      1: 'BASIC PROFILE',
-      2: 'CHANGE PASSWORD',
-      3: 'AVATAR',
-    },
-    fullName: 'Full name',
-    email: 'Email',
-    address: 'Address',
-    currentPassword: 'Your current password',
-    newPassword: 'New password',
-    confirmNewPassword: 'Retype your new password',
-    buttonRemove: 'Remove',
-    buttonBrowse: 'Browse',
-    buttonExecute: 'Save changes',
-  },
-  productDetailPage: {
-    productDescription: 'PRODUCT DESCRIPTION',
-    productReview: 'PRODUCT REVIEW',
-    suggestions: 'SUGGESTIONS',
-    showLess: 'Show Less',
-    showMore: 'Show More',
-    estimatedDeliveryFee: 'Estimated delivery fee:',
-    districtOrWard: 'District / Ward:',
-    addToCart: 'ADD TO CART',
-  },
+	title: 'Family Store - Mua sắm online dễ dàng hơn',
+	updateUser: 'Cập nhật tài khoản',
+	familyAdminPanel: 'Quản trị viên',
+	searchPlaceHolder: 'Tìm kiếm sản phẩm...',
 
-  searchPlaceHolder: 'What are you looking for?',
-  cartModal: {
-    cart: 'Cart',
-    total: 'Total Amount',
-    checkout: 'PROCESS TO CHECKOUT',
-  },
-  sideBar: {
-    categories: 'All Categories',
-  },
-  back: 'Back',
-  updateUser: 'Update User',
-  familyAdminPanel: 'Family Admin Panel',
-  addNew: 'Add New',
+	deleteModal: {
+		message: 'Bạn có chắc chắn xóa?',
+		user: 'Xóa người dùng',
+		category: 'Xóa danh mục',
+		subCategory: 'Xóa danh mục con',
+		product: 'Xóa sản phẩm'
+	},
+
+	generalButtons: {
+		cancel: 'Hủy',
+		add: 'Thêm mới',
+		update: 'Cập nhật',
+		delete: 'Xóa',
+		save: 'Lưu thay đổi',
+		back: 'Quay lại',
+		confirm: 'Xác nhận',
+		login: 'Đăng nhập',
+		register: 'Đăng ký',
+		accept: 'Chấp nhận',
+		active: 'Kích hoạt',
+		forgot: 'Nhận email khôi phục',
+		logout: 'Đăng xuất',
+		myAccount: 'Tài khoản',
+		myOrders: 'Các đơn hàng',
+		myCart: 'Xem giỏ hàng',
+		seeDetails: 'Xem chi tiết',
+		review: 'Nhận xét',
+		refresh: 'LÀM MỚI',
+		addToCart: 'THÊM VÀO GIỎ',
+		checkout: 'TIẾN HÀNH THANH TOÁN',
+		updateImage: 'CẬP NHẬT CÁC ẢNH'
+	},
+
+	footer: {
+		copyright: '© 2021 - Bản quyền thuộc về Family market. ',
+		contact: ' Liên lạc với chúng tôi tại '
+	},
+
+	generalTable: {
+		options: 'Tùy chọn',
+		unknown: 'Không rõ',
+		lastModified: 'Lần sửa đổi cuối',
+		emptyData: 'Không có dữ liệu',
+		wrong: 'Đã có sự cố xảy ra!'
+	},
+
+	homepage: {
+		bannerTitle: 'Mua sắm ngay tại nhà',
+		bannerDescription:
+			'Vì sức khỏe cộng đồng "Kết nối không khoảng cách". An tâm mua sắm tại nhà cùng Family Store',
+		topTitle1: 'Bán chạy nhất tuần',
+		topTitle2: 'Bán chạy nhất tháng',
+		topTitle3: 'Sản phẩm giá tốt'
+	},
+
+	loginpage: {
+		title: 'Family Store - Đăng Nhập',
+		formTitle: 'Đăng Nhập',
+		email: 'Email',
+		emailInValid: 'Địa chỉ email không hợp lệ',
+		password: 'Mật khẩu',
+		passwordInValid: 'Mật khẩu không hợp lệ',
+		newMember: 'Chưa có tài khoản?',
+		forgotPassword: 'Quên mật khẩu?',
+		signUp: 'Đăng kí'
+	},
+
+	registerpage: {
+		title: 'Family Store - Đăng Ký',
+		formTitle: 'Đăng Ký',
+		email: 'Email',
+		emailInValid: 'Địa chỉ email không hợp lệ',
+		address: 'Địa chỉ',
+		fullName: 'Họ và tên',
+		fullNameInValid: 'Tên người dùng không hợp lệ.',
+		addressInValid: 'Địa chỉ không hợp lệ.',
+		password: 'Mật khẩu',
+		passwordInValid: 'Mật khẩu không hợp lệ',
+		confirmPassword: 'Nhập lại mật khẩu',
+		confirmPasswordInValid: 'Mật khẩu và xác nhận mật khẩu không trùng nhau',
+		phonenumberInValid: 'Số điện thoại không hợp lệ',
+		haveAccount: 'Bạn đã có tài khoản ?',
+		signIn: 'Đăng nhập'
+	},
+
+	searchpage: {
+		title: 'Family Store - Tìm kiếm',
+		topContent: 'Kết quả tìm kiếm cho',
+		sortBy: 'Theo giá',
+		sortType: 'Theo loại',
+		optionPrice: 'Giá',
+		optionAscending: 'Tốt',
+		optionHigher: 'Từ cao',
+		optionLower: 'Từ thấp'
+	},
+
+	forgotpasswordpage: {
+		title: 'Family Store - Quên mật khẩu',
+		formTitle: 'Quên mật khẩu',
+		email: 'Email',
+		emailInValid: 'Địa chỉ email không hợp lệ',
+		newMember: 'Chưa có tài khoản?',
+		haveAccount: 'Quay lại trang đăng nhập',
+		signUp: 'Đăng kí',
+		pleaseCheckEmail: 'Vui lòng kiểm tra email để reset password!. Chuyển sang trang đổi mật khẩu sau: '
+	},
+
+	recoverypasswordpage: {
+		title: 'Family Store - Khôi phục tài khoản',
+		formTitle: 'Khôi phục tài khoản',
+		password: 'Mật khẩu',
+		passwordInValid: 'Mật khẩu không hợp lệ',
+		confirmPassword: 'Nhập lại mật khẩu',
+		confirmPasswordInValid: 'Mật khẩu và xác nhận mật khẩu không trùng nhau',
+		resetPasswordSucceed: 'Đổi mật thành công! Chuyển sang trang đăng nhập sau:',
+		checkEmail: 'Lấy code từ email'
+	},
+
+	accountactivationpage: {
+		title: 'Family Store - Kích hoạt tài khoản',
+		formTitle: 'Kích hoạt tài khoản',
+		code: 'Mã kích hoạt',
+		codeInvalid: 'Mã không hợp lệ',
+		haveAccount: 'Quay lại trang đăng nhập'
+	},
+
+	profilepage: {
+		title: 'Tài khoản của tôi',
+		changePassword: 'Đổi mật khẩu',
+		cancel: 'Hủy bỏ',
+		selectNewAvatar: 'Chọn hình ảnh mới',
+		removeChange: 'X Hủy bỏ thay đổi',
+		updateProfilePicture: 'Cập nhật ảnh',
+		tabTitle: {
+			1: 'CƠ BẢN',
+			2: 'ĐỔI MẬT KHẨU',
+			3: 'ẢNH ĐẠI DIỆN'
+		},
+		fullName: 'Họ và tên',
+		email: 'Email',
+		address: 'Địa chỉ',
+		currentPassword: 'Mật khẩu hiện tại của bạn',
+		newPassword: 'Mật khẩu mới',
+		confirmNewPassword: 'Nhập lại mật khẩu mới',
+		buttonRemove: 'Xóa',
+		buttonBrowse: 'Chọn',
+		buttonExecute: 'Lưu thay đổi'
+	},
+
+	productDetailPage: {
+		productDescription: 'THÔNG TIN SẢN PHẨM',
+		productReview: 'NHẬN XÉT SẢN PHẨM',
+		suggestions: 'SẢN PHẨM GỢI Ý',
+		showLess: 'Thu gọn',
+		showMore: 'Đầy đủ',
+		estimatedDeliveryFee: 'Phí giao hàng dự kiến:',
+		districtOrWard: 'Quận / Huyện:',
+		addToCart: 'Thêm vào giỏ hàng'
+	},
+
+	cartModal: {
+		cart: 'Giỏ hàng',
+		total: 'Tổng tiền',
+		checkout: 'TIẾN HÀNH THANH TOÁN'
+	},
+
+	sideBar: {
+		categories: 'Danh mục sản phẩm'
+	},
+
+	adminPage: {
+		sideBar: {
+			positionName: 'QUẢN LÝ',
+			idName: '[Mã tài khoản]: ',
+			dashboardName: 'Bảng điều khiển',
+			product: {
+				name: 'Quản lý sản phẩm',
+				category: 'Danh mục',
+				subCategory: 'Danh mục con',
+				product: 'Tất cả sản phẩm'
+			},
+			user: 'Tất cả người dùng'
+		},
+
+		landing: {
+			title: 'KHU VỰC QUẢN LÝ',
+			category: 'TỔNG SỐ DANH MỤC: ',
+			product: 'TỔNG SỐ SẢN PHẨM: ',
+			order: 'TỔNG SỐ ĐƠN HÀNG ĐÃ TẠO: ',
+			subCategory: 'TỔNG SỐ DANH MỤC CON: ',
+			customer: 'SỐ LƯỢNG KHÁCH HÀNG: ',
+			staff: 'SỐ LƯỢNG NHÂN VIÊN: ',
+			orderStatistics: 'THỐNG KÊ ĐƠN HÀNG'
+		},
+
+		user: {
+			title: 'QUẢN LÝ NGƯỜI DÙNG',
+			searchPlaceHolder: 'Tìm kiếm người dùng',
+			table: {
+				id: 'Mã',
+				fullName: 'Tên đầy đủ',
+				email: 'Email',
+				phoneNumber: 'Số điện thoại',
+				role: 'Quyền hạn'
+			},
+			addingModal: {
+				title: 'THÊM NGƯỜI DÙNG MỚI'
+			}
+		},
+
+		category: {
+			title: 'QUẢN LÝ DANH MỤC',
+			searchPlaceHolder: 'Tìm kiếm danh mục',
+			table: {
+				categoryId: 'Mã danh mục',
+				categoryName: 'Tên danh mục',
+				subCategoryCount: 'Số danh mục con'
+			},
+			modal: {
+				addingTitle: 'THÊM DANH MỤC MỚI',
+				updateTitle: 'CẬP NHẬT DANH MỤC'
+			}
+		},
+
+		subCategory: {
+			title: 'QUẢN LÝ DANH MỤC CON',
+			searchPlaceHolder: 'Tìm kiếm danh mục con',
+			fatherCatetory: 'Tên danh mục cha ',
+			table: {
+				subCategoryId: 'Mã danh mục con',
+				subCategoryName: 'Tên danh mục con'
+			},
+			modal: {
+				addtingTitle: 'THÊM DANH MỤC CON',
+				updateTitle: 'CẬP NHẬT DANH MỤC CON'
+			}
+		},
+
+		product: {
+			title: 'QUẢN LÝ SẢN PHẨM',
+			searchPlaceHolder: 'Tìm kiếm tên sản phẩm',
+			table: {
+				productId: 'ID',
+				productName: 'Tên sản phẩm',
+				image: 'Ảnh',
+				category: 'Danh mục con',
+				quantity: 'Số lượng',
+				price: 'Giá (VNĐ)',
+				description: 'Mô tả chi tiết'
+			},
+			modal: {
+				addingTitle: 'THÊM SẢN PHẨM MỚI',
+				updateTitle: 'CẬP NHẬT SẢN PHẨM'
+			}
+		}
+	},
+
+	ordersPage: {
+		all: 'TOÀN BỘ ĐƠN HÀNG',
+		await: 'ĐANG CHỜ XÁC NHẬN',
+		delivering: 'ĐANG VẬN CHUYỂN',
+		delivered: 'ĐÃ GIAO',
+		canceled: 'ĐÃ HỦY',
+		item: {
+			orderId: 'MÃ ĐƠN HÀNG: ',
+			createdDate: 'Ngày tạo đơn: ',
+			deliveryDate: 'Ngày giao dự kiến: ',
+			status: 'TRẠNG THÁI: ',
+			totalPayment: 'Tổng phải trả: '
+		},
+		details: {
+			titleTop: "TỔNG QUAN ĐƠN HÀNG",
+			titleMid: "CÁC SẢN PHẨM ĐÃ MUA",
+			placeHolder: "Bạn nghĩ gì về sản phẩm này?"
+		}
+	}
+};
+
+const enTranslation = {
+	title: 'Family Store - Easy to buy online',
+	searchPlaceHolder: 'What are you looking for?',
+	updateUser: 'Update User',
+	familyAdminPanel: 'Family Admin Panel',
+	addNew: 'Add New',
+
+	deleteModal: {
+		message: 'Are you sure to delete this item?',
+		user: 'Delete A User',
+		category: 'Delete A Category',
+		subCategory: 'Delete A Sub Category',
+		product: 'Delete A Product'
+	},
+
+	generalButtons: {
+		cancel: 'Cancel',
+		add: 'Add New',
+		update: 'Update',
+		delete: 'Delete',
+		save: 'Save Changes',
+		back: 'Back',
+		confirm: 'Confirm',
+		login: 'Login',
+		register: 'Register',
+		accept: 'Accept',
+		active: 'Active',
+		forgot: 'Recive recovery Email',
+		logout: 'Log out',
+		myAccount: 'My Account',
+		myOrders: 'My Orders',
+		myCart: 'My Cart',
+		seeDetails: 'See details',
+		review: 'Review',
+		refresh: 'REFRESH',
+		addToCart: 'ADD TO CART',
+		checkout: 'PROCESS TO CHECKOUT',
+		updateImage: 'UPDATE IMAGES'
+	},
+
+	generalTable: {
+		options: 'Options',
+		unknown: 'Unknown',
+		lastModified: 'Last Modified',
+		emptyData: 'No available data',
+		wrong: 'Something went wrong!'
+	},
+
+	footer: {
+		copyright: 'Copyright 2021 © Family market. ',
+		contact: ' Contact us at '
+	},
+
+	homepage: {
+		bannerTitle: 'Stay home & delivered your daily need’s',
+		bannerDescription: 'Start your daily shopping with Family Store',
+		topTitle1: 'Top items selling last week',
+		topTitle2: 'Top items selling last month',
+		topTitle3: 'Items on sale'
+	},
+
+	loginpage: {
+		title: 'Family Store - Login',
+		formTitle: 'Login',
+		email: 'Email',
+		emailInValid: 'Please enter a valid email.',
+		password: 'Password',
+		passwordInValid: 'Please enter a valid password.',
+		newMember: 'New member?',
+		forgotPassword: 'Forgot passsword?',
+		signUp: 'Sign up'
+	},
+
+	registerpage: {
+		title: 'Family Store - Sign up',
+		formTitle: 'Sign up',
+		email: 'Email',
+		emailInValid: 'Please enter a valid email',
+		address: 'Address',
+		addressInValid: 'Please enter a valid address',
+		fullName: 'FullName',
+		fullNameInValid: 'Please enter a valid name',
+		password: 'Password',
+		passwordInValid: 'Please enter a valid password',
+		confirmPassword: 'Confirm Password',
+		confirmPasswordInValid: 'Password and confirm password does not match',
+		phonenumberInValid: 'Please enter a valid phone number',
+		haveAccount: 'Already have account ?',
+		signIn: 'Login'
+	},
+
+	forgotpasswordpage: {
+		title: 'Family Store - Forgot password',
+		formTitle: 'Forgot password',
+		email: 'Email',
+		emailInValid: 'Please enter a valid email',
+		newMember: 'New member?',
+		haveAccount: 'Back to login',
+		signUp: 'Sign up',
+		pleaseCheckEmail: 'Email has been sent!. Forward to  reset password page after: '
+	},
+
+	recoverypasswordpage: {
+		title: 'Family Store - Restore account',
+		formTitle: 'Restore account',
+		password: 'New password',
+		passwordInValid: 'Please enter a valid password',
+		confirmPassword: 'Retype new password',
+		confirmPasswordInValid: 'Password and confirm password does not match',
+		resetPasswordSucceed: 'Reset password successfully! Forward to login page after',
+		checkEmail: 'Enter code from email'
+	},
+
+	accountactivationpage: {
+		title: 'Family Store - Account activation',
+		formTitle: 'Account activation',
+		code: 'Activation code',
+		codeInvalid: 'Code is invalid',
+		haveAccount: 'Back to login'
+	},
+
+	searchpage: {
+		title: 'Family Store - Search',
+		topContent: 'Search results for',
+		sortBy: 'Sort by',
+		sortType: 'Sort type',
+		optionPrice: 'Price',
+		optionAscending: 'Ascending',
+		optionHigher: 'Higher',
+		optionLower: 'Lower'
+	},
+
+	profilepage: {
+		title: 'My account',
+		changePassword: 'Change password',
+		cancel: 'Cancel',
+		selectNewAvatar: 'Select new avatar',
+		removeChange: 'X Remove change',
+		updateProfilePicture: 'Update profile picture',
+		tabTitle: {
+			1: 'BASIC PROFILE',
+			2: 'CHANGE PASSWORD',
+			3: 'AVATAR'
+		},
+		fullName: 'Full name',
+		email: 'Email',
+		address: 'Address',
+		currentPassword: 'Your current password',
+		newPassword: 'New password',
+		confirmNewPassword: 'Retype your new password',
+		buttonRemove: 'Remove',
+		buttonBrowse: 'Browse',
+		buttonExecute: 'Save changes'
+	},
+
+	productDetailPage: {
+		productDescription: 'PRODUCT DESCRIPTION',
+		productReview: 'PRODUCT REVIEW',
+		suggestions: 'SUGGESTIONS',
+		showLess: 'Show Less',
+		showMore: 'Show More',
+		estimatedDeliveryFee: 'Estimated delivery fee:',
+		districtOrWard: 'District / Ward:',
+		addToCart: 'ADD TO CART'
+	},
+
+	cartModal: {
+		cart: 'Cart',
+		total: 'Total Amount',
+		checkout: 'PROCESS TO CHECKOUT'
+	},
+
+	sideBar: {
+		categories: 'All Categories'
+	},
+
+	adminPage: {
+		sideBar: {
+			positionName: 'GENERAL MANAGER',
+			idName: '[Account ID]: ',
+			dashboardName: 'Dashboard',
+			user: 'All users',
+			product: {
+				name: 'Manage Products',
+				category: 'Categories',
+				subCategory: 'Sub Categories',
+				product: 'All Products'
+			}
+		},
+
+		landing: {
+			title: 'MANAGER AREA',
+			category: 'TOTAL CATEGORIES: ',
+			product: 'TOTAL PRODUCT: ',
+			order: 'TOTAL ORDER CREATED: ',
+			subCategory: 'TOTAL SUB CATEGORIES: ',
+			customer: 'TOTAL CUSTOMER: ',
+			staff: 'TOTAL STAFFS: ',
+			orderStatistics: 'ORDER STATISTICS'
+		},
+
+		user: {
+			title: 'USER MANAGER',
+			searchPlaceHolder: 'Search user',
+			table: {
+				id: 'ID',
+				fullName: 'Full name',
+				email: 'Email',
+				phoneNumber: 'Phone Number',
+				role: 'Role'
+			},
+			addingModal: {
+				title: 'ADD NEW USER'
+			}
+		},
+
+		category: {
+			title: 'CATEGORY MANAGER',
+			searchPlaceHolder: 'Search catagory',
+			table: {
+				categoryId: 'Category ID',
+				categoryName: 'Category Name',
+				subCategoryCount: 'Sub Categories inside'
+			},
+			modal: {
+				addingTitle: 'ADD NEW CATEGORY',
+				updateTitle: 'UPDATE CATEGORY',
+				placeHolder: 'Category Name'
+			}
+		},
+
+		subCategory: {
+			title: 'SUB CATEGORY MANAGER',
+			searchPlaceHolder: 'Search sub catagory',
+			fatherCatetory: 'Father Category',
+			table: {
+				subCategoryId: 'Sub Category ID',
+				subCategoryName: 'Sub Category Name'
+			},
+			modal: {
+				addtingTitle: 'ADD NEW SUB CATEGORY',
+				updateTitle: 'UPDATE SUB CATEGORY',
+				placeHolder: 'Sub Category Name'
+			}
+		},
+
+		product: {
+			title: 'PRODUCT MANAGER',
+			searchPlaceHolder: 'Search product name',
+			table: {
+				productId: 'ID',
+				productName: 'Product Name',
+				image: 'Image',
+				category: 'Sub Category',
+				quantity: 'Quantity',
+				price: 'Price (VNĐ)',
+				description: 'Description'
+			},
+			modal: {
+				addingTitle: 'ADD NEW PRODUCT',
+				updateTitle: 'UPDATE PRODUCT'
+			}
+		}
+	},
+
+	ordersPage: {
+		all: 'ALL ORDERS',
+		await: 'AWAITNG CONFIRM',
+		delivering: 'DELIVERING',
+		delivered: 'DELIVERED',
+		canceled: 'CANCELED',
+		item: {
+			orderId: 'ORDER ID: ',
+			createdDate: 'Created date: ',
+			deliveryDate: 'Estimated delivery date: ',
+			status: 'STATUS: ',
+			totalPayment: 'Total payment: '
+		},
+		details: {
+			titleTop: 'ORDER OVERVIEW',
+			titleMid: 'PURCHASED PRODUCTS',
+			placeHolder: 'Comment what do you think about this product?'
+		}
+	}
 };
 
 const resources = {
-  en: {
-    translation: enTranslation,
-  },
-  vn: {
-    translation: vnTranslation,
-  },
+	en: {
+		translation: enTranslation
+	},
+	vn: {
+		translation: vnTranslation
+	}
 };
 
 i18n.use(initReactI18next).init({
-  resources,
-  lng: 'en',
-  interpolation: {
-    escapeValue: false,
-  },
+	resources,
+	lng: 'en',
+	interpolation: {
+		escapeValue: false
+	}
 });
 
 export default i18n;

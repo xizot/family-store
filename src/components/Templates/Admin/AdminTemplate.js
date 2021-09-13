@@ -6,42 +6,7 @@ import UserInfomation from '../../UserInfomation/UserInfomation';
 import Footer from '../../Layout/Footer';
 import { makeStyles } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-
-const options = [
-  {
-    icon: Menu,
-    title: 'Dashboard',
-    link: '/admin/',
-  },
-  {
-    icon: Loyalty,
-    title: 'Products',
-    subItems: [
-      {
-        title: 'Categories',
-        link: '/admin/categories',
-      },
-      {
-        title: 'Sub Categories',
-        link: '/admin/sub-categories',
-      },
-      {
-        title: 'Product List',
-        link: '/admin/products',
-      },
-    ],
-  },
-  {
-    icon: Person,
-    title: 'Users',
-    link: '/admin/users',
-  },
-  // {
-  //   icon: AttachMoney,
-  //   title: 'Orders',
-  //   link: '/admin/orders',
-  // },
-];
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -65,14 +30,52 @@ const useStyles = makeStyles((theme) => ({
 export const AdminTemplate = ({ children }) => {
   const classes = useStyles();
   const user = useSelector((state) => state.auth.user);
+	const { t } = useTranslation();
+
+	const options = [
+		{
+			icon: Menu,
+			title: t('adminPage.sideBar.dashboardName'),
+			link: '/admin/',
+		},
+		{
+			icon: Loyalty,
+			title: t('adminPage.sideBar.product.name'),
+			subItems: [
+				{
+					title: t('adminPage.sideBar.product.category'),
+					link: '/admin/categories',
+				},
+				{
+					title: t('adminPage.sideBar.product.subCategory'),
+					link: '/admin/sub-categories',
+				},
+				{
+					title: t('adminPage.sideBar.product.product'),
+					link: '/admin/products',
+				},
+			],
+		},
+		{
+			icon: Person,
+			title: t('adminPage.sideBar.user'),
+			link: '/admin/users',
+		},
+		// {
+		//   icon: AttachMoney,
+		//   title: 'Orders',
+		//   link: '/admin/orders',
+		// },
+	];
+
   return (
     <>
       <HeaderAdmin showMenu />
       <SideBar>
         <UserInfomation
           avatar={`${process.env.PUBLIC_URL + '/img/default-avatar.png'}`}
-          name={`[Acc ID]: ${user.accId}`}
-          position="GENERAL MANAGER"
+          name=  {t('adminPage.sideBar.idName') + ` ${user.accId}`}
+          position={t('adminPage.sideBar.positionName')}
         />
         <AdminMenu options={options} />
       </SideBar>
