@@ -44,9 +44,9 @@ const ProductManager = (props) => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [selectedCategory, setselectedCategory] = useState('');
-  const loading = useSelector((state) => state.product.loading);
   let { listProduct, numberOfPage } = productInfo;
   const categories = useSelector((state) => state.category.data);
+  const [pageLoading, setPageLoading] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -56,8 +56,8 @@ const ProductManager = (props) => {
     setOpenDeleteModal(false);
   };
 
-  const openUpdateModalHandler = (item) => {
-    setSelectedItem(item);
+  const openUpdateModalHandler = (id) => {
+    setSelectedId(id);
     setOpenUpdateModal(true);
     setOpenAddModal(false);
     setOpenDeleteModal(false);
@@ -110,15 +110,23 @@ const ProductManager = (props) => {
 
   const getListProductHandler = useCallback(
     async (catID, page, limit) => {
-      if (!catID || catID === '') return;
+      setPageLoading(true);
+      if (!catID || catID === '') {
+        setPageLoading(false);
+
+        return;
+      }
       try {
         const response = await dispatch(
           getByCate({ catID, page: page === 0 ? 1 : page, limit })
         ).unwrap();
+
         setProductInfo({ listProduct: response.listProduct, numberOfPage: response.numberOfPage });
+        setPageLoading(false);
       } catch (err) {
         console.error(err);
         setError(err);
+        setPageLoading(false);
       }
     },
     [dispatch]
@@ -142,9 +150,15 @@ const ProductManager = (props) => {
         if (response.paginationResult.length > 0) {
           if (response.paginationResult[0]?.subCategories.length > 0) {
             setselectedCategory(response.paginationResult[0].subCategories[0].cateId);
+          } else {
+            setPageLoading(false);
           }
+        } else {
+          setPageLoading(false);
         }
-      } catch (err) {}
+      } catch (err) {
+        setPageLoading(false);
+      }
     };
     getListCategoryHandler();
   }, [dispatch]);
@@ -170,6 +184,7 @@ const ProductManager = (props) => {
           isOpen={openUpdateModal}
           onClose={closeModalHandler}
           getList={getListProductHandler.bind(null, selectedCategory, page, limit)}
+          prodId={selectedId}
         />
         <ModalConfirm
           title="Delete Product"
@@ -224,7 +239,7 @@ const ProductManager = (props) => {
         </div>
 
         <div className={`${classes.tableSection} `}>
-          {loading ? (
+          {pageLoading ? (
             <TableLoading />
           ) : error?.length > 0 ? (
             <TableError
@@ -257,7 +272,7 @@ const ProductManager = (props) => {
                       .map((row, index) => (
                         <TableRow
                           key={index}
-                          onClick={() => openUpdateModalHandler(row)}
+                          onClick={() => openUpdateModalHandler(row.prod_id)}
                           className={classes.tableRow}>
                           <TableCell component="th" scope="row" style={{ fontWeight: 'bold' }}>
                             {page * limit + index + 1}
@@ -294,7 +309,7 @@ const ProductManager = (props) => {
                             <Box display="flex">
                               <Edit
                                 className={classes.actionIcon}
-                                onClick={() => openUpdateModalHandler(row)}
+                                onClick={() => openUpdateModalHandler(row.prod_id)}
                               />
                               <Delete
                                 className={classes.actionIcon}

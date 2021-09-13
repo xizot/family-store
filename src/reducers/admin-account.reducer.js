@@ -32,6 +32,16 @@ export const updateRole = createAsyncThunk(
     }
   }
 );
+export const updateStatus = createAsyncThunk(
+  'adminAccount/updateRole',
+  async ({ accId, accStatus }, { rejectWithValue }) => {
+    try {
+      return (await adminAccountApi.updateStatus({ accId, accStatus })).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
 export const updateAccount = createAsyncThunk(
   'adminAccount/updateAccount',
   async (data, { rejectWithValue }) => {

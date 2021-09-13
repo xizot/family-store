@@ -16,7 +16,7 @@ import orderSlice from '../reducers/order.reducer';
 // import userCartSlice from '../reducers/user-cart.reducer';
 import adminAccountSlice from '../reducers/admin-account.reducer';
 import accountSlice from '../reducers/account.reducer';
-
+import searchSlice from '../reducers/search.reducer';
 
 const store = configureStore({
   reducer: {
@@ -32,10 +32,11 @@ const store = configureStore({
     userComment: userCommentSlice.reducer,
     address: addressSlice.reducer,
     checkout: checkoutSlice.reducer,
-    order:orderSlice.reducer,
+    order: orderSlice.reducer,
     // userCart: userCartSlice.reducer,
     adminAccount: adminAccountSlice.reducer,
     account: accountSlice.reducer,
+    search: searchSlice.reducer,
   },
 });
 export default store;

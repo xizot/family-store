@@ -69,11 +69,11 @@ const SubCateManager = (props) => {
   const totalPage = useSelector((state) => state.subCategory.totalPage);
   const [limit, setLimit] = useState(10);
   const [sub, setSub] = useState([]);
-  const loading = useSelector((state) => state.subCategory.loading);
   const [page, setPage] = useState(0);
   const [optionFather, setOptionFather] = useState('');
   const [search, setSearch] = useState('');
   const [fatherCategory, setFatherCategory] = useState([]);
+  const [pageLoading, setPageLoading] = useState(true);
 
   const searchChangeHandler = (value) => {
     setSearch(value);
@@ -120,14 +120,20 @@ const SubCateManager = (props) => {
 
   const getListChildCategoryHandler = useCallback(
     async (cateFather, page, limit) => {
-      if (!cateFather || cateFather.length <= 0) return;
+      setPageLoading(true);
+      if (!cateFather || cateFather.length <= 0) {
+        setPageLoading(false);
+        return;
+      }
       try {
         const response = await dispatch(
           getListSubCategory({ cateFather, page: page === 0 ? 1 : page, limit })
         ).unwrap();
         setSub(response.subCategories);
+        setPageLoading(false);
       } catch (error) {
         setError(error);
+        setPageLoading(false);
       }
     },
     [dispatch]
@@ -148,9 +154,12 @@ const SubCateManager = (props) => {
       setFatherCategory(response.paginationResult);
       if (response.paginationResult.length > 0) {
         fatherCategoryChangeHandler(response.paginationResult[0].cateId);
+      } else {
+        setPageLoading(false);
       }
     } catch (err) {
       setError(err);
+      setPageLoading(false);
     }
   }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -213,7 +222,7 @@ const SubCateManager = (props) => {
       </div>
 
       <div className={`${classes.tableSection} `}>
-        {loading ? (
+        {pageLoading ? (
           <TableLoading />
         ) : error?.length > 0 ? (
           <TableError

@@ -281,7 +281,8 @@ const ProductDetail = (props) => {
 
             <div className={classes.section}>
               <Typography variant="h5" component="h3" className={classes.title}>
-                {t('productDetailPage.suggestions')}
+                {/* {t('productDetailPage.suggestions')} */}
+                YOU MAY ALSO LIKE
               </Typography>
               <SuggestionList catID={productDetails.prod_category_id} />
             </div>

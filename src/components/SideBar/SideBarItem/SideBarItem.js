@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     color: '#000',
     display: 'block',
+    fontWeight: 500,
     flex: 1,
   },
   arrowIcon: {

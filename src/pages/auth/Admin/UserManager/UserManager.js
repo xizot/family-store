@@ -16,7 +16,12 @@ import {
 import useStyles from './UserManager.styles';
 import SearchInputV2 from '../../../../components/UI/SearchInputV2';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteAccount, getList, updateRole } from '../../../../reducers/admin-account.reducer';
+import {
+  deleteAccount,
+  getList,
+  updateRole,
+  updateStatus,
+} from '../../../../reducers/admin-account.reducer';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { Add, Delete, Edit } from '@material-ui/icons';
@@ -89,21 +94,40 @@ const UserManager = (props) => {
 
   const roleChangeHandler = async (e, accId) => {
     e.stopPropagation();
+    const newRole = e.target.value;
+    const formatRole = e.target.value === 'Admin' ? 'ADM' : 'USER';
     try {
-      dispatch(
+      await dispatch(
         updateRole({
-          accRole: e.target.value === 'Admin' ? 'ADM' : 'USER',
+          accRole: formatRole,
           accId,
         })
-      );
+      ).unwrap();
       setListAccount((prevValue) =>
-        prevValue.map((item) =>
-          item.accId === accId ? { ...item, accRole: e.target.value } : item
-        )
+        prevValue.map((item) => (+item.accId === +accId ? { ...item, accRole: newRole } : item))
       );
-      toast.success(`Update [ROLE] for id: [${accId}] successfully`);
+      toast.success(`Update [ROLE] for id: [${accId}] to ${newRole} successfully`);
     } catch (error) {
       toast.error(`Update [ROLE] for id: [${accId}] failed`);
+    }
+  };
+
+  const statusChangeHandler = async (e, accId) => {
+    e.stopPropagation();
+    const newStatus = e.target.value;
+    try {
+      await dispatch(
+        updateStatus({
+          accStatus: +newStatus,
+          accId,
+        })
+      ).unwrap();
+      setListAccount((prevValue) =>
+        prevValue.map((item) => (item.accId === accId ? { ...item, accStatus: newStatus } : item))
+      );
+      toast.success(`Update [STATUS] for id: [${accId}] successfully`);
+    } catch (error) {
+      toast.error(`Update [STATUS] for id: [${accId}] failed`);
     }
   };
 
@@ -199,7 +223,8 @@ const UserManager = (props) => {
                       <TableCell>Full name</TableCell>
                       <TableCell>Email</TableCell>
                       <TableCell>Phone Number</TableCell>
-                      <TableCell>Role</TableCell>
+                      <TableCell style={{ minWidth: 80, textAlign: 'center' }}>Role</TableCell>
+                      <TableCell style={{ minWidth: 80, textAlign: 'center' }}>Status</TableCell>
                       <TableCell>Options</TableCell>
                     </TableRow>
                   </TableHead>
@@ -227,18 +252,24 @@ const UserManager = (props) => {
                           </TableCell>
                           <TableCell>{account.accEmail}</TableCell>
                           <TableCell>{account.accPhoneNumber}</TableCell>
-                          <TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>
                             <Select
                               native
                               value={account.accRole}
                               onClick={(e) => e.stopPropagation()}
-                              onChange={(e) => roleChangeHandler(e, account.accId)}
-                              inputProps={{
-                                name: 'age',
-                                id: 'age-native-simple',
-                              }}>
+                              onChange={(e) => roleChangeHandler(e, account.accId)}>
                               <option value="User">User</option>
                               <option value="Admin">Admin</option>
+                            </Select>
+                          </TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>
+                            <Select
+                              native
+                              value={account.accStatus}
+                              onClick={(e) => e.stopPropagation()}
+                              onChange={(e) => statusChangeHandler(e, account.accId)}>
+                              <option value={0}>Active</option>
+                              <option value={1}>Blocked</option>
                             </Select>
                           </TableCell>
                           <TableCell>

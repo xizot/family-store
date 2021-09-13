@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
   root: {
     outline: 'none',
-    position: 'absolute !important',
     overflow: 'scroll',
     height: '100%',
     display: 'block',

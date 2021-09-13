@@ -6,6 +6,7 @@ const initialState = {
   data: [],
   loading: false,
   modifyLoading: false,
+  fetchingDetails: false,
 };
 
 export const deleteProduct = createAsyncThunk(
@@ -71,9 +72,17 @@ export const getByCate = createAsyncThunk(
     }
   }
 );
+export const getDetails = createAsyncThunk('product/getByCate', async (id, { rejectWithValue }) => {
+  try {
+    return (await adminProductApis.getDetails(id)).data;
+  } catch (error) {
+    console.log('🚀 ~ file: product.js ~ line 80 ~ error', error);
+    return rejectWithValue(getResponseError(error));
+  }
+});
 
 const adminProductSlice = createSlice({
-  name: 'category',
+  name: 'product',
   initialState,
   reducers: {},
   extraReducers: {
@@ -104,6 +113,15 @@ const adminProductSlice = createSlice({
     },
     [updateProductInformation.fulfilled]: (state) => {
       state.modifyLoading = false;
+    },
+    [getDetails.pending]: (state) => {
+      state.fetchingDetails = true;
+    },
+    [getDetails.rejected]: (state) => {
+      state.fetchingDetails = false;
+    },
+    [getDetails.fulfilled]: (state) => {
+      state.fetchingDetails = false;
     },
   },
 });

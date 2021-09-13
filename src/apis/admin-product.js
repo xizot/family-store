@@ -41,6 +41,7 @@ const updateInformation = (id, data) => {
 const getByCate = ({ catID, page, limit }) =>
   axios.post('/api/product/list-by-cat', { catID: +catID, page, limit });
 
+const getDetails = (id) => axios.get(`/api/product/details/${id}`);
 const adminProductApis = {
   getAll,
   getByPage,
@@ -49,6 +50,7 @@ const adminProductApis = {
   updateImages,
   updateInformation,
   getByCate,
+  getDetails,
 };
 
 export default adminProductApis;

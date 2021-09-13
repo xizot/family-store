@@ -17,14 +17,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import useStyles from './UpdateUser.styles';
 import SimpleModal from '../SimpleModal/SimpleModal';
 import ButtonWithLoading from '../UI/ButtonWithLoading/ButtonWithLoading';
-import { register } from '../../reducers/auth';
 import { Close } from '@material-ui/icons';
 import { toast } from 'react-toastify';
 import { getBaseImage } from '../../helpers/getBaseImage';
 import RequestLoading from '../RequestLoading/RequestLoading';
 import { details } from '../../reducers/account.reducer';
+import { updateAccount } from '../../reducers/admin-account.reducer';
 
-const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess }) => {
+const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess, isAdmin = true }) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess }) => {
     hasError: passwordHasError,
     inputBlurHandler: passwordBlurHandler,
     inputChangeHandler: passwordChangeHandler,
-    inputIsValid: passwordIsValid,
+    // inputIsValid: passwordIsValid,
     inputReset: passwordReset,
   } = useInput(Validate.isNotEmpty);
   const {
@@ -66,7 +66,7 @@ const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess }) => {
     hasError: confirmPasswordHasError,
     inputBlurHandler: confirmPasswordBlurHandler,
     inputChangeHandler: confirmPasswordChangeHandler,
-    inputIsValid: confirmPasswordIsValid,
+    // inputIsValid: confirmPasswordIsValid,
     inputReset: confirmPasswordReset,
   } = useInput((value) => Validate.isNotEmpty(value) && value === password);
 
@@ -107,11 +107,6 @@ const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess }) => {
     onClose();
   };
 
-  const addSuccessHandler = () => {
-    resetField();
-    opUpdateSuccess();
-  };
-
   const fileChangeHandler = (file) => {
     setSelectedFile(file || null);
   };
@@ -120,31 +115,7 @@ const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess }) => {
     setSelectedFile(null);
   };
 
-  const formIsValid =
-    emailIsValid &&
-    phoneNumberIsValid &&
-    passwordIsValid &&
-    confirmPasswordIsValid &&
-    fullNameIsValid;
-  const formSubmitHandler = async (event) => {
-    event.preventDefault();
-    if (!formIsValid) return;
-    try {
-      await dispatch(
-        register({
-          fullName: fullName,
-          username: email,
-          password: password,
-          email: email,
-          phoneNumber: phoneNumber,
-        })
-      ).unwrap();
-      toast.success('Add user successfully');
-      addSuccessHandler();
-    } catch (error) {
-      toast.error(error);
-    }
-  };
+  const formIsValid = emailIsValid && !phoneNumberHasError && fullNameIsValid;
 
   const getUserDetailsHandler = useCallback(
     async (accId) => {
@@ -157,6 +128,26 @@ const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess }) => {
     },
     [dispatch]
   );
+
+  const formSubmitHandler = async (event) => {
+    event.preventDefault();
+    if (!formIsValid) return;
+
+    let data = {
+      accId: +accId,
+      accEmail: email,
+      accPhoneNumber: phoneNumber,
+      accFullName: fullName,
+    };
+    try {
+      await dispatch(updateAccount(data)).unwrap();
+      toast.success('Updater user successfully');
+      opUpdateSuccess();
+      onclose();
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   useEffect(() => {
     const handleBaseImage = async (file) => {
@@ -207,53 +198,71 @@ const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess }) => {
           <form noValidate autoComplete="off" onSubmit={formSubmitHandler}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={4}>
-                <Box className={classes.handleAvatar}>
-                  <input
-                    accept="image/jpeg"
-                    id="avatar"
-                    type="file"
-                    style={{ display: 'none' }}
-                    onChange={(e) => fileChangeHandler(e.target.files[0])}
-                  />
-                  <div className={classes.labelAvatar}>
-                    <img
-                      src={
-                        newAvatar
-                          ? newAvatar
-                          : userDetails?.accAvatar
-                          ? userDetails?.accAvatar
-                          : process.env.PUBLIC_URL + '/img/default-avatar.png'
-                      }
-                      alt="user avatar"
-                      className={classes.avatar}
-                    />
-                    <div className={`${classes.avatarHover} ${newAvatar ? 'is-show' : ''}`}>
-                      {!newAvatar && (
-                        <Typography variant="caption" component="label" htmlFor="avatar">
-                          {t('profilepage.selectNewAvatar')}
-                        </Typography>
-                      )}
-                      {newAvatar && (
-                        <Typography
-                          variant="caption"
-                          component="label"
-                          onClick={removeFileChangeHandler}
-                          className={classes.labelDelete}>
-                          {t('profilepage.removeChange')}
-                        </Typography>
-                      )}
+                {isAdmin ? (
+                  <Box className={classes.handleAvatar}>
+                    <div className={classes.labelAvatar}>
+                      <img
+                        src={
+                          newAvatar
+                            ? newAvatar
+                            : userDetails?.accAvatar
+                            ? userDetails?.accAvatar
+                            : process.env.PUBLIC_URL + '/img/default-avatar.png'
+                        }
+                        alt="user avatar"
+                        className={classes.avatar}
+                      />
                     </div>
-                  </div>
-                  <ButtonWithLoading
-                    parentClasses={classes.btnUpdateImage}
-                    isLoading={loading}
-                    isUpperCase={false}
-                    fullWidth={false}
-                    type="submit"
-                    disabled={!newAvatar}>
-                    {t('profilepage.updateProfilePicture')}
-                  </ButtonWithLoading>
-                </Box>
+                  </Box>
+                ) : (
+                  <Box className={classes.handleAvatar}>
+                    <input
+                      accept="image/jpeg"
+                      id="avatar"
+                      type="file"
+                      style={{ display: 'none' }}
+                      onChange={(e) => fileChangeHandler(e.target.files[0])}
+                    />
+                    <div className={classes.labelAvatar}>
+                      <img
+                        src={
+                          newAvatar
+                            ? newAvatar
+                            : userDetails?.accAvatar
+                            ? userDetails?.accAvatar
+                            : process.env.PUBLIC_URL + '/img/default-avatar.png'
+                        }
+                        alt="user avatar"
+                        className={classes.avatar}
+                      />
+                      <div className={`${classes.avatarHover} ${newAvatar ? 'is-show' : ''}`}>
+                        {!newAvatar && (
+                          <Typography variant="caption" component="label" htmlFor="avatar">
+                            {t('profilepage.selectNewAvatar')}
+                          </Typography>
+                        )}
+                        {newAvatar && (
+                          <Typography
+                            variant="caption"
+                            component="label"
+                            onClick={removeFileChangeHandler}
+                            className={classes.labelDelete}>
+                            {t('profilepage.removeChange')}
+                          </Typography>
+                        )}
+                      </div>
+                    </div>
+                    <ButtonWithLoading
+                      parentClasses={classes.btnUpdateImage}
+                      isLoading={loading}
+                      isUpperCase={false}
+                      fullWidth={false}
+                      type="submit"
+                      disabled={!newAvatar}>
+                      {t('profilepage.updateProfilePicture')}
+                    </ButtonWithLoading>
+                  </Box>
+                )}
               </Grid>
               <Grid item xs={12} md={8}>
                 <FormControl className={classes.formControl}>
@@ -316,86 +325,91 @@ const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess }) => {
                     </FormHelperText>
                   )}
                 </FormControl>
-                <Typography
-                  color="primary"
-                  variant="subtitle1"
-                  style={{
-                    marginLeft: 'auto',
-                    width: 'fit-content',
-                    whiteSpace: 'nowrap',
-                    textDecoration: 'underline',
-                    cursor: 'pointer',
-                    marginBottom: 10,
-                  }}
-                  onClick={() => setIsChangePassword((prev) => !prev)}>
-                  {isChangePassword ? t('profilepage.cancel') : t('profilepage.changePassword')}
-                </Typography>
-                {isChangePassword && (
+                {!isAdmin && (
                   <>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        label={t('profilepage.currentPassword')}
-                        type="password"
-                        error={passwordHasError}
-                        helperText={passwordHasError && t('registerpage.passwordInValid')}
-                        fullWidth
-                        size="small"
-                        variant="outlined"
-                        value={password}
-                        onBlur={passwordBlurHandler}
-                        onChange={passwordChangeHandler}
-                        inputProps={{
-                          autoComplete: 'new-password',
-                          form: {
-                            autoComplete: 'off',
-                          },
-                        }}
-                      />
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        label={t('profilepage.newPassword')}
-                        type="password"
-                        error={passwordHasError}
-                        helperText={passwordHasError && t('registerpage.passwordInValid')}
-                        fullWidth
-                        size="small"
-                        variant="outlined"
-                        value={password}
-                        onBlur={passwordBlurHandler}
-                        onChange={passwordChangeHandler}
-                        inputProps={{
-                          autoComplete: 'new-password',
-                          form: {
-                            autoComplete: 'off',
-                          },
-                        }}
-                      />
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        label={t('profilepage.confirmNewPassword')}
-                        type="password"
-                        error={confirmPasswordHasError}
-                        helperText={
-                          confirmPasswordHasError && t('registerpage.confirmPasswordInValid')
-                        }
-                        fullWidth
-                        size="small"
-                        variant="outlined"
-                        value={confirmPassword}
-                        onBlur={confirmPasswordBlurHandler}
-                        onChange={confirmPasswordChangeHandler}
-                        inputProps={{
-                          autoComplete: 'new-password',
-                          form: {
-                            autoComplete: 'off',
-                          },
-                        }}
-                      />
-                    </FormControl>
+                    <Typography
+                      color="primary"
+                      variant="subtitle1"
+                      style={{
+                        marginLeft: 'auto',
+                        width: 'fit-content',
+                        whiteSpace: 'nowrap',
+                        textDecoration: 'underline',
+                        cursor: 'pointer',
+                        marginBottom: 10,
+                      }}
+                      onClick={() => setIsChangePassword((prev) => !prev)}>
+                      {isChangePassword ? t('profilepage.cancel') : t('profilepage.changePassword')}
+                    </Typography>
+                    {isChangePassword && (
+                      <>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            label={t('profilepage.currentPassword')}
+                            type="password"
+                            error={passwordHasError}
+                            helperText={passwordHasError && t('registerpage.passwordInValid')}
+                            fullWidth
+                            size="small"
+                            variant="outlined"
+                            value={password}
+                            onBlur={passwordBlurHandler}
+                            onChange={passwordChangeHandler}
+                            inputProps={{
+                              autoComplete: 'new-password',
+                              form: {
+                                autoComplete: 'off',
+                              },
+                            }}
+                          />
+                        </FormControl>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            label={t('profilepage.newPassword')}
+                            type="password"
+                            error={passwordHasError}
+                            helperText={passwordHasError && t('registerpage.passwordInValid')}
+                            fullWidth
+                            size="small"
+                            variant="outlined"
+                            value={password}
+                            onBlur={passwordBlurHandler}
+                            onChange={passwordChangeHandler}
+                            inputProps={{
+                              autoComplete: 'new-password',
+                              form: {
+                                autoComplete: 'off',
+                              },
+                            }}
+                          />
+                        </FormControl>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            label={t('profilepage.confirmNewPassword')}
+                            type="password"
+                            error={confirmPasswordHasError}
+                            helperText={
+                              confirmPasswordHasError && t('registerpage.confirmPasswordInValid')
+                            }
+                            fullWidth
+                            size="small"
+                            variant="outlined"
+                            value={confirmPassword}
+                            onBlur={confirmPasswordBlurHandler}
+                            onChange={confirmPasswordChangeHandler}
+                            inputProps={{
+                              autoComplete: 'new-password',
+                              form: {
+                                autoComplete: 'off',
+                              },
+                            }}
+                          />
+                        </FormControl>
+                      </>
+                    )}
                   </>
                 )}
+
                 <ButtonWithLoading
                   isLoading={loading}
                   fullWidth
