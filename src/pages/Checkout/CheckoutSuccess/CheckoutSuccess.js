@@ -12,7 +12,7 @@ function CheckoutSuccess() {
   useEffect(() => {
     const flag = localStorage.getItem('checkout');
     if (!flag) {
-      history.push('/');
+      //history.push('/');
     } else {
       localStorage.removeItem('checkout');
     }

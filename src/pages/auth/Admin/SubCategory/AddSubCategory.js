@@ -14,6 +14,7 @@ import { FormHelperText } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { addSubCategory, updateSubCategory } from '../../../../reducers/sub-category';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -85,6 +86,7 @@ const BootstrapInput = withStyles((theme) => ({
   },
 }))(InputBase);
 const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getList }) => {
+	const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const [error, setError] = useState('');
@@ -152,13 +154,13 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
         variant="h5"
         style={{ textAlign: 'center', color: '#F39148' }}
         className={classes.modalTitle}>
-        MODAL SUB CATEGORY
+        	{t('adminPage.subCategory.title')}
       </Typography>
       <FormControl className={classes.form} fullWidth>
         <TextField
           fullWidth
           variant="outlined"
-          label="Category Name"
+          label= {t('adminPage.subCategory.table.subCategoryName')}
           value={subCateName}
           onChange={subCateNameChangeHandler}
           size="small"
@@ -167,7 +169,7 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
         />
         <Box display="flex" flexWrap="wrap" justifyContent="space-between">
           <Typography variant="subtitle2" className={classes.label}>
-            Father Category Name:
+						{t('adminPage.subCategory.fatherCatetory')}
           </Typography>
           <NativeSelect
             className={classes.select}
@@ -189,7 +191,7 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
         fullWidth
         component="label"
         onClick={addCategoryHandler}>
-        Save
+        	{t('generalButtons.save')}
       </Button>
       {error?.length > 0 && (
         <FormHelperText error style={{ marginBottom: 10 }}>

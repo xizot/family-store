@@ -159,17 +159,17 @@ const UserManager = (props) => {
         isOpen={isOpenDeleteModal}
         onConfirm={deleteAccountHandler}
         onClose={closeModalHandler}
-        title="DELETE SUB CATEGORY"
+        title={t('deleteModal.user')}
       />
       <div className={classes.section}>
         <Typography variant="h5" className={classes.title}>
-          USER MANAGER
+				{t('adminPage.user.title')}
         </Typography>
         <Box className={classes.filter}>
           <Box className={classes.filterItem}>
             <SearchInputV2
               border
-              placeholder="Tìm kiếm tên người dùng"
+              placeholder= {t('adminPage.user.searchPlaceHolder')}
               initialValue={search}
               onChange={searchChangeHandler}
             />
@@ -180,7 +180,7 @@ const UserManager = (props) => {
             className={classes.filterItem}
             onClick={openAddModalHandler}>
             <Add />
-            {t('addNew')}
+            {t('generalButtons.add')}
           </Button>
         </Box>
         <Paper className={classes.root}>
@@ -195,12 +195,12 @@ const UserManager = (props) => {
                   <TableHead>
                     <TableRow>
                       <TableCell style={{ fontWeight: 'bold' }}>#</TableCell>
-                      <TableCell>ID</TableCell>
-                      <TableCell>Full name</TableCell>
-                      <TableCell>Email</TableCell>
-                      <TableCell>Phone Number</TableCell>
-                      <TableCell>Role</TableCell>
-                      <TableCell>Options</TableCell>
+                      <TableCell>{t('adminPage.user.table.id')}</TableCell>
+                      <TableCell>{t('adminPage.user.table.fullName')}</TableCell>
+                      <TableCell>{t('adminPage.user.table.email')}</TableCell>
+                      <TableCell>{t('adminPage.user.table.phoneNumber')}</TableCell>
+                      <TableCell>{t('adminPage.user.table.role')}</TableCell>
+                      <TableCell>{t('generalTable.options')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -270,7 +270,7 @@ const UserManager = (props) => {
             </>
           ) : (
             <TableError
-              message="No data available in database"
+              message= {t('generalTable.emptyData')}
               onTryAgain={getListUserHandler.bind(null, page, limit)}
             />
           )}

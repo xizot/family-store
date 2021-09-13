@@ -193,7 +193,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Header = ({ showMenu, showCart }) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const classes = useStyles({ showMenu });
   const dispatch = useDispatch();
   const history = useHistory();
@@ -296,23 +296,23 @@ const Header = ({ showMenu, showCart }) => {
               {!isAuthenticated && (
                 <li>
                   <AiOutlineLogin fontSize={20} />
-                  <Link to="/login">Log In</Link>
+                  <Link to="/login"> {t('generalButtons.login')} </Link>
                 </li>
               )}
               {isAuthenticated && (
                 <>
                   <li>
                     <AiOutlineProfile fontSize={20} />
-                    <Link to="/profile">My Account</Link>
+                    <Link to="/profile"> {t('generalButtons.myAccount')} </Link>
                   </li>
                   <li>
                     <AiOutlineOrderedList fontSize={20} />
-                    <Link to="/orders">My Orders</Link>
+                    <Link to="/orders"> {t('generalButtons.myOrders')} </Link>
                   </li>
                   <li>
                     <AiOutlineLogout fontSize={20} />
                     <Link to="" onClick={(e) => logoutHandler(e)}>
-                      Log Out
+										{t('generalButtons.logout')}
                     </Link>
                   </li>
                 </>
@@ -330,7 +330,7 @@ const Header = ({ showMenu, showCart }) => {
                 <LocalMall />
               </Badge>
               <Typography variant="caption" className={classes.iconButtonCaption}>
-                My cart
+							{t('generalButtons.myCart')}
               </Typography>
             </IconButton>
           )}

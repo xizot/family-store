@@ -166,7 +166,7 @@ const ForgotPasswordPage = () => {
                       fullWidth
                       type="submit"
                       disabled={!formIsValid}>
-                      {t('forgotpasswordpage.buttonExecute')}
+                      {t('generalButtons.forgot')}
                     </ButtonWithLoading>
                   </form>
                   <div className={classes.actions}>
@@ -176,7 +176,7 @@ const ForgotPasswordPage = () => {
                     </Typography>
 
                     <Link to="/login">
-                      <Typography variant="body2">{t('back')}</Typography>
+                      <Typography variant="body2">{t('generalButtons.back')}</Typography>
                     </Link>
                   </div>
                 </>

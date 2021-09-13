@@ -1,6 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 		marginRight: theme.spacing(1),
 	},
 	status: {
+		fontWeight: "bold",
 		position: "absolute",
 		right: "30px",
 	},
@@ -44,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductItem = ({ id, date, expected, status, total, img , detail}) => {
 	const classes = useStyles();
+	const { t } = useTranslation();
 
 	return (
 		<div className={classes.root}>
@@ -51,29 +54,29 @@ const ProductItem = ({ id, date, expected, status, total, img , detail}) => {
 			<div className={classes.content}>
 				<div className={classes.top}>
 					<Typography variant="body1" className={classes.name}>
-						ORDER ID: {id}
+						{t("ordersPage.item.orderId")} {id}
 					</Typography>
 					<Typography variant="body1" className={classes.status}>
-						Status: {status}
+						{t("ordersPage.item.status")} {status.toUpperCase()}
 					</Typography>
 				</div>
 				<div className={classes.body}>
 					<div>
-						<Typography variant="body2">Date: {date}</Typography>
+						<Typography variant="body2"> {t("ordersPage.item.createdDate")} {date}</Typography>
 						<Typography variant="body2">
-							Expected: {expected}
+							{t("ordersPage.item.deliveryDate")} {expected}
 						</Typography>
 					</div>
 					<div className={classes.total}>
 						<Typography variant="body2">
-							Total: {total} VND
+							{t("ordersPage.item.totalPayment")} {total} VNĐ
 						</Typography>
 						<Link to={`/reviews/${id}`}>
 							<Typography
 								variant="body2"
 								style={{ float: "right", color: "#F39148" }}
 							>
-								Detail
+								{t("generalButtons.seeDetails")}
 							</Typography>
 						</Link>
 					</div>

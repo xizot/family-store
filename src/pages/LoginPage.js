@@ -176,7 +176,7 @@ const LoginPage = () => {
                   fullWidth
                   type="submit"
                   disabled={!formIsValid}>
-                  {t('loginpage.buttonLogin')}
+                  {t('generalButtons.login')}
                 </ButtonWithLoading>
               </form>
               <div className={classes.actions}>

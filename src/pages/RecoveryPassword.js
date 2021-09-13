@@ -222,12 +222,12 @@ const LoginPage = () => {
                   fullWidth
                   type="submit"
                   disabled={!formIsValid}>
-                  {t('recoverypasswordpage.buttonExecute')}
+                  {t('generalButtons.confirm')}
                 </ButtonWithLoading>
               </form>
               <div className={classes.actions}>
                 <Link to="/forgot-password">
-                  <Typography variant="body2">{t('back')}</Typography>
+                  <Typography variant="body2">{t('generalButtons.back')}</Typography>
                 </Link>
               </div>
             </Box>

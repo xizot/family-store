@@ -1,4 +1,5 @@
 import { useLayoutEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   makeStyles,
   Grid,
@@ -29,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Dashboard = (props) => {
   const classes = useStyles();
+	const { t } = useTranslation();
+
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -36,33 +39,33 @@ const Dashboard = (props) => {
     <div className={classes.root}>
       <div className={classes.section}>
         <Typography variant="h5" className={classes.title}>
-          MANGER AREA
+          {t('adminPage.landing.title')}
         </Typography>
         <div className={classes.managerText}>
           <Grid container spacing={2} >
             <Grid item xs={12} sm={6}>
               <Typography variant="subtitle1" >
-                TOTAL CATEGORIES: {3}
+								{t('adminPage.landing.category')} {3}
               </Typography>
               <Typography variant="subtitle1" >
-                TOTAL PRODUCT: {551}
+								{t('adminPage.landing.product')} {551}
               </Typography>
               <Typography variant="subtitle1" >
-                TOTAL ORDER CREATED: {51}
+								{t('adminPage.landing.order')} {51}
               </Typography>
               <Typography variant="subtitle1" >
-                ORDER STATISTICS
+								{t('adminPage.landing.orderStatistics')}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
             <Typography variant="subtitle1" >
-                TOTAL SUB CATEGORIES: {100}
+								{t('adminPage.landing.subCategory')} {100}
               </Typography>
               <Typography variant="subtitle1" >
-                TOTAL CUSTOMER: {1051}
+								{t('adminPage.landing.customer')} {1051}
               </Typography>
               <Typography variant="subtitle1" >
-                TOTAL STAFF: {101}
+							{t('adminPage.landing.staff')} {101}
               </Typography>
             </Grid>
           </Grid>

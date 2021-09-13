@@ -21,6 +21,8 @@ import { updateProductImage, updateProductInformation } from '../../../../reduce
 import { toast } from 'react-toastify';
 import { getBaseImage } from '../../../../helpers/getBaseImage';
 import ButtonWithLoading from '../../../../components/UI/ButtonWithLoading/ButtonWithLoading';
+import { useTranslation } from 'react-i18next';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: '10vh',
@@ -127,6 +129,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
+	const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.data);
@@ -271,10 +274,10 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
         <Box borderRadius={6} className={classes.content}>
           <Box marginBottom={4} marginTop={2}>
             <Typography variant="h5" className={classes.title}>
-              UPDATE PRODUCTS
+              {t('adminPage.product.modal.updateTitle')}
             </Typography>
             <Typography variant="caption" className={classes.subTitle}>
-              Family Admin Panel
+              {t('familyAdminPanel')}
             </Typography>
           </Box>
           <form encType="multipart/form-data" className={classes.section}>
@@ -381,7 +384,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
                     isLoading={updateImageLoading}
                     onClick={updateImageHandler}
                     parentClasses={classes.buttonUpdateImage}>
-                    UPDATE IMAGES
+                    {t('generalButtons.updateImage')}
                   </ButtonWithLoading>
                 </Box>
               </div>
@@ -389,7 +392,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
             <Box className={classes.productInformation}>
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-                  Title
+									{t('adminPage.product.table.productName')}
                 </Typography>
                 <TextField
                   variant="outlined"
@@ -402,7 +405,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
 
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-                  Category
+									{t('adminPage.product.table.category')}
                 </Typography>
                 <FormControl variant="outlined" size="small" fullWidth>
                   <Select
@@ -427,7 +430,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
               </div>
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-                  Price (VND)
+									{t('adminPage.product.table.price')}
                 </Typography>
                 <TextField
                   variant="outlined"
@@ -440,7 +443,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
               </div>
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-                  Amount
+									{t('adminPage.product.table.quantity')}
                 </Typography>
                 <TextField
                   variant="outlined"
@@ -453,7 +456,7 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
               </div>
               <FormControl fullWidth className={classes.textField}>
                 <Typography variant="body1" component="p">
-                  Add Description
+									{t('adminPage.product.table.description')}
                 </Typography>
                 <TextareaAutosize
                   variant="outlined"
@@ -480,14 +483,14 @@ const UpdateProduct = ({ itemInfo, isOpen, onClose, getList }) => {
                   isLoading={modifyLoading}
                   onClick={updateInformation}
                   parentClasses={classes.buttonSubmit}>
-                  UPDATE INFORMATION
+                  {t('generalButtons.update')}
                 </ButtonWithLoading>
 
                 <Button
                   variant="contained"
                   className={classes.buttonDiscard}
                   onClick={closeModalHandler}>
-                  Discard
+                  {t('generalButtons.cancel')}
                 </Button>
               </Box>
             </Box>
