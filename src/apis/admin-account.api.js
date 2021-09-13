@@ -5,8 +5,5 @@ export const adminAccountApi = {
   deleteAccount: (accId) => axios.post(`/api/account/delete/${accId}`),
   updateRole: ({ accId, accRole }) =>
     axios.post('/api/account/update-role', { accId: +accId, accRole }),
-  updateAccount: (data) =>
-    axios.post('/api/account/update', data, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    }),
+  updateAccount: (data) => axios.post('/api/account/update', data),
 };

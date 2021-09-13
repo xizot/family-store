@@ -12,11 +12,23 @@ export const details = createAsyncThunk(
     }
   }
 );
+export const insertOrUpdateAvatar = createAsyncThunk(
+  'account/insertOrUpdateAvatar',
+  async (data, { rejectWithValue }) => {
+    console.log('🚀 ~ file: account.reducer.js ~ line 18 ~ data', data);
+    try {
+      return (await accountApi.insertOrUpdateAvatar(data)).data;
+    } catch (error) {
+      return rejectWithValue(getResponseError(error));
+    }
+  }
+);
 
 const accountSlice = createSlice({
   name: 'account',
   initialState: {
     loading: false,
+    modifyLoading: false,
   },
   reducers: {},
   extraReducers: {
@@ -28,6 +40,15 @@ const accountSlice = createSlice({
     },
     [details.fulfilled]: (state) => {
       state.loading = false;
+    },
+    [insertOrUpdateAvatar.pending]: (state) => {
+      state.modifyLoading = true;
+    },
+    [insertOrUpdateAvatar.rejected]: (state) => {
+      state.modifyLoading = false;
+    },
+    [insertOrUpdateAvatar.fulfilled]: (state) => {
+      state.modifyLoading = false;
     },
   },
 });

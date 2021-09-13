@@ -34,7 +34,7 @@ export const updateRole = createAsyncThunk(
 );
 export const updateAccount = createAsyncThunk(
   'adminAccount/updateAccount',
-  async ({ data }, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
       return (await adminAccountApi.updateAccount(data)).data;
     } catch (error) {
