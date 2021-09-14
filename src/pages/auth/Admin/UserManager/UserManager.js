@@ -170,6 +170,10 @@ const UserManager = (props) => {
     getListUserHandler(1, 10);
   }, [getListUserHandler]);
 
+	useEffect(() => {
+    document.title = t('pagesTitle.admin.user');
+  }, [t]);
+
   return (
     <div className={classes.root}>
       <AddUser

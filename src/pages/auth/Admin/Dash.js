@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   makeStyles,
@@ -35,6 +35,11 @@ const Dashboard = (props) => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+	useEffect(() => {
+    document.title = t('pagesTitle.admin.landing');
+  }, [t]);
+	
   return (
     <div className={classes.root}>
       <div className={classes.section}>
