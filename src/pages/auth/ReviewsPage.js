@@ -147,8 +147,8 @@ const ReviewsPage = (props) => {
     alert(`product id: ${productId} \nstars: ${numOfStar} \ncomment: ${comment}`);
   };
   useEffect(() => {
-    document.title = 'Reviews the order';
-  }, []);
+    document.title = t('pagesTitle.reviews');
+  }, [t]);
 
   return (
     <>

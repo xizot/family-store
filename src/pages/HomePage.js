@@ -173,7 +173,7 @@ const HomePage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    document.title = t('title');
+    document.title = t('pagesTitle.landing');
   }, [t]);
 
   useEffect(() => {

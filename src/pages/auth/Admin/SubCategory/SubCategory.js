@@ -176,8 +176,8 @@ const SubCateManager = (props) => {
   }, [dispatch, getListFatherCategoryHandler]);
 
   useEffect(() => {
-    document.title = 'Sub Category Admin';
-  }, []);
+    document.title = t('pagesTitle.admin.subCategory');
+  }, [t]);
 
   return (
     <div className={classes.root}>

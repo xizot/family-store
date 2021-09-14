@@ -99,7 +99,7 @@ const SearchPage = (props) => {
 
   useEffect(() => {
     dispatch(uiActions.hideModal());
-    document.title = t('searchpage.title');
+    document.title = t('pagesTitle.search');
   }, [dispatch, t]);
 
   useEffect(() => {

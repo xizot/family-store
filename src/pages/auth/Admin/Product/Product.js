@@ -170,7 +170,7 @@ const ProductManager = (props) => {
 
   useEffect(() => {
     dispatch(uiActions.hideModal());
-    document.title = 'Product Admin';
+    document.title = document.title = t('pagesTitle.admin.product');
   }, [t, dispatch]);
   return (
     <>

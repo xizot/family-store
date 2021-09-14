@@ -136,8 +136,8 @@ const OrderPage = (props) => {
   };
 
   useEffect(() => {
-    document.title = 'All Order';
-  }, []);
+    document.title = t('pagesTitle.orders');
+  }, [t]);
 
   useEffect(() => {
     if (page > totalPage) {

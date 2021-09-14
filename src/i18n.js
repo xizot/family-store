@@ -2,10 +2,33 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 const vnTranslation = {
-	title: 'Family Store - Mua sắm online dễ dàng hơn',
 	updateUser: 'Cập nhật tài khoản',
 	familyAdminPanel: 'Quản trị viên',
 	searchPlaceHolder: 'Tìm kiếm sản phẩm...',
+
+	pagesTitle: {
+		landing: 'Family Store - Mua sắm online dễ dàng hơn',
+		search: 'Family Store - Kết quả tìm kiếm',
+		login: 'Family Store - Đăng nhập',
+		register: 'Family Store - Đăng ký',
+		verify: 'Family Store - Kích hoạt tài khoản',
+		forgot: 'Family Store - Quên mật khẩu',
+		recovery: 'Family Store - Khôi mục mật khẩu',
+		collection: 'Family Store - Xem theo danh mục',
+		profile: 'Family Store - Trang cá nhân của tôi',
+		orders: 'Family Store - Các đơn hàng của tôi',
+		reviews: 'Family Store - Đánh giá đơn hàng',
+		checkout: 'Family Store - Thanh toán',
+		checkoutSuccess: 'Family Store - Thanh toán thành công',
+
+		admin: {
+			landing: 'Family Store - Quản trị viên',
+			user: 'Family Store - Quản lý người dùng',
+			category: 'Family Store - Quản lý danh mục',
+			subCategory: 'Family Store - Quản lý danh mục con',
+			product: 'Family Store - Quản lý sản phẩm'
+		}
+	},
 
 	deleteModal: {
 		message: 'Bạn có chắc chắn xóa?',
@@ -366,11 +389,34 @@ const vnTranslation = {
 };
 
 const enTranslation = {
-	title: 'Family Store - Easy to buy online',
 	searchPlaceHolder: 'What are you looking for?',
 	updateUser: 'Update User',
 	familyAdminPanel: 'Family Admin Panel',
 	addNew: 'Add New',
+
+	pagesTitle: {
+		landing: 'Family Store - Buy online Easier',
+		search: 'Family Store - Search results',
+		login: 'Family Store - Login',
+		register: 'Family Store - Register',
+		verify: 'Family Store - Activate account',
+		forgot: 'Family Store - Forgot password',
+		recovery: 'Family Store - Recovery',
+		collection: 'Family Store - Collections',
+		profile: 'Family Store - My profile',
+		orders: 'Family Store - My orders',
+		reviews: 'Family Store - Review this order',
+		checkout: 'Family Store - Payment',
+		checkoutSuccess: 'Family Store - Payment successfully',
+
+		admin: {
+			landing: 'Family Store - Administrator',
+			user: 'Family Store - Manage users',
+			category: 'Family Store - Manage Categories',
+			subCategory: 'Family Store - Manage Sub categories',
+			product: 'Family Store - Manage products'
+		}
+	},
 
 	deleteModal: {
 		message: 'Are you sure to delete this item?',

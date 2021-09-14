@@ -99,7 +99,7 @@ const Profile = (props) => {
   }, [user, getUserDetailsHandler]);
 
   useEffect(() => {
-    document.title = t('profilepage.title');
+    document.title = t('pagesTitle.profile');
   }, [t]);
   return (
     <>

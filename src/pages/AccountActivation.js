@@ -111,7 +111,7 @@ const AccountActivationPage = (props) => {
   };
 
   useEffect(() => {
-    document.title = t('accountactivationpage.title');
+    document.title = t('pagesTitle.verify');
   }, [t]);
 
   if (!id || user?.accStatus === 0) {

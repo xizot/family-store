@@ -112,7 +112,7 @@ const SubCateManager = (props) => {
   }, [dispatch, getListCategoryHandler]);
 
   useEffect(() => {
-    document.title = 'Category Admin';
+    document.title = t('pagesTitle.admin.category');
   }, [t]);
 
   return (
