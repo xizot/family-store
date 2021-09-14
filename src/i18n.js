@@ -206,7 +206,9 @@ const vnTranslation = {
 	cartModal: {
 		cart: 'Giỏ hàng',
 		total: 'Tổng tiền',
-		checkout: 'TIẾN HÀNH THANH TOÁN'
+		checkout: 'TIẾN HÀNH THANH TOÁN',
+		unitPrice: "Giá bán lẻ",
+		salePrice: "Giá khuyến mãi"
 	},
 
 	sideBar: {
@@ -593,7 +595,9 @@ const enTranslation = {
 	cartModal: {
 		cart: 'Cart',
 		total: 'Total Amount',
-		checkout: 'PROCESS TO CHECKOUT'
+		checkout: 'PROCESS TO CHECKOUT',
+		unitPrice: "Unit Price",
+		salePrice: "Sale price"
 	},
 
 	sideBar: {

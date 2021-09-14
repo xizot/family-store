@@ -281,7 +281,7 @@ const Header = ({ showMenu, showCart }) => {
               <Typography className={classes.mobileOnly}>EN</Typography>
             </MenuItem>
             <MenuItem value="vn">
-              <Typography className={classes.fromTablet}>Vietnamese</Typography>
+              <Typography className={classes.fromTablet}>Tiếng Việt</Typography>
               <Typography className={classes.mobileOnly}>VN</Typography>
             </MenuItem>
           </Select>
