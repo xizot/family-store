@@ -30,14 +30,19 @@ const vnTranslation = {
 		forgot: 'Nhận email khôi phục',
 		logout: 'Đăng xuất',
 		myAccount: 'Tài khoản',
-		myOrders: 'Các đơn hàng',
+		myOrders: 'Xem các đơn hàng',
 		myCart: 'Xem giỏ hàng',
 		seeDetails: 'Xem chi tiết',
 		review: 'Nhận xét',
 		refresh: 'LÀM MỚI',
 		addToCart: 'THÊM VÀO GIỎ',
 		checkout: 'TIẾN HÀNH THANH TOÁN',
-		updateImage: 'CẬP NHẬT CÁC ẢNH'
+		updateImage: 'CẬP NHẬT CÁC ẢNH',
+		newAddress: 'Địa chỉ mới',
+		savedAddress: 'Địa chỉ đã lưu',
+		saveAddress: 'Lưu lại địa chỉ này',
+		backToMainPage: 'Tiếp tục mua sắm',
+		viewMore: 'XEM THÊM'
 	},
 
 	footer: {
@@ -92,15 +97,22 @@ const vnTranslation = {
 		signIn: 'Đăng nhập'
 	},
 
-	searchpage: {
-		title: 'Family Store - Tìm kiếm',
+	searchPage: {
+		title: 'Family Store - Kết quả tìm kiếm',
 		topContent: 'Kết quả tìm kiếm cho',
-		sortBy: 'Theo giá',
-		sortType: 'Theo loại',
-		optionPrice: 'Giá',
-		optionAscending: 'Tốt',
-		optionHigher: 'Từ cao',
-		optionLower: 'Từ thấp'
+		emptyMessage: 'Không có kết quả nào cho từ khóa này, hãy thử từ khóa khác',
+		sortBy: {
+			title: 'Sắp xếp theo',
+			name: 'Tên sản phẩm',
+			quantity: 'Số lượng',
+			createdDate: 'Ngày tạo',
+			price: "Giá"
+		},
+		sortType: {
+			title: 'Kiểu sắp',
+			asc: 'Tăng dần',
+			desc: 'Giảm dần'
+		}
 	},
 
 	forgotpasswordpage: {
@@ -210,7 +222,8 @@ const vnTranslation = {
 				fullName: 'Tên đầy đủ',
 				email: 'Email',
 				phoneNumber: 'Số điện thoại',
-				role: 'Quyền hạn'
+				role: 'Quyền hạn',
+				status: 'Trạng thái'
 			},
 			addingModal: {
 				title: 'THÊM NGƯỜI DÙNG MỚI'
@@ -278,9 +291,40 @@ const vnTranslation = {
 			totalPayment: 'Tổng phải trả: '
 		},
 		details: {
-			titleTop: "TỔNG QUAN ĐƠN HÀNG",
-			titleMid: "CÁC SẢN PHẨM ĐÃ MUA",
-			placeHolder: "Bạn nghĩ gì về sản phẩm này?"
+			titleTop: 'TỔNG QUAN ĐƠN HÀNG',
+			titleMid: 'CÁC SẢN PHẨM ĐÃ MUA',
+			placeHolder: 'Bạn nghĩ gì về sản phẩm này?'
+		}
+	},
+
+	checkoutPage: {
+		address: {
+			title: '1. Địa chỉ nhận hàng',
+			form: {
+				titleTop: 'Thông tin người nhận hàng',
+				titleMid: 'Loại địa chỉ',
+				namePlaceHolder: 'Họ và tên',
+				phoneNumberPlaceHolder: 'Sô điện thoại',
+				cityPlaceHolder: 'tên tỉnh thành',
+				districtPlaceHolder: 'Tên Quận/huyện',
+				wardPlaceHolder: 'Tên Phường/Xã',
+				streetPlaceHolder: 'Số địa chỉ nhà, tên đường'
+			}
+		},
+		others: {
+			title: '2. Thời gian giao hàng dự kiến: ',
+			form: {
+				note: 'Ghi chú thêm (Nếu có)',
+				price: 'Tiền mua hàng',
+				deliveryPrice: 'Phí giao hàng',
+				totalPayment: 'Tổng phải trả',
+				deliveryMethod: '(THANH TOÁN KHI NHẬN HÀNG)'
+			}
+		},
+		success: {
+			thanks: 'CẢM ƠN BẠN!',
+			title: 'Đơn Hàng Của Bạn Đã Được Xử Lý!',
+			message: 'Bạn sẽ nhận được Email về chi tiết đơn hàng.'
 		}
 	}
 };
@@ -315,14 +359,19 @@ const enTranslation = {
 		forgot: 'Recive recovery Email',
 		logout: 'Log out',
 		myAccount: 'My Account',
-		myOrders: 'My Orders',
+		myOrders: 'View my orders',
 		myCart: 'My Cart',
 		seeDetails: 'See details',
 		review: 'Review',
 		refresh: 'REFRESH',
 		addToCart: 'ADD TO CART',
 		checkout: 'PROCESS TO CHECKOUT',
-		updateImage: 'UPDATE IMAGES'
+		updateImage: 'UPDATE IMAGES',
+		newAddress: 'New address',
+		savedAddress: 'Saved address',
+		saveAddress: 'Save this address',
+		backToMainPage: 'Continue to shopping',
+		viewMore: 'VIEW MORE'
 	},
 
 	generalTable: {
@@ -406,15 +455,22 @@ const enTranslation = {
 		haveAccount: 'Back to login'
 	},
 
-	searchpage: {
+	searchPage: {
 		title: 'Family Store - Search',
 		topContent: 'Search results for',
-		sortBy: 'Sort by',
-		sortType: 'Sort type',
-		optionPrice: 'Price',
-		optionAscending: 'Ascending',
-		optionHigher: 'Higher',
-		optionLower: 'Lower'
+		emptyMessage: 'No results found Try different or more general keywords',
+		sortBy: {
+			title: 'Sort by',
+			name: 'Product Name',
+			quantity: 'Quantity',
+			createdDate: 'Created Date',
+			price: "Price"
+		},
+		sortType: {
+			title: 'Sort type',
+			asc: 'Ascending',
+			desc: 'Descending'
+		}
 	},
 
 	profilepage: {
@@ -494,7 +550,8 @@ const enTranslation = {
 				fullName: 'Full name',
 				email: 'Email',
 				phoneNumber: 'Phone Number',
-				role: 'Role'
+				role: 'Role',
+				status: 'Status'
 			},
 			addingModal: {
 				title: 'ADD NEW USER'
@@ -567,6 +624,37 @@ const enTranslation = {
 			titleTop: 'ORDER OVERVIEW',
 			titleMid: 'PURCHASED PRODUCTS',
 			placeHolder: 'Comment what do you think about this product?'
+		}
+	},
+
+	checkoutPage: {
+		address: {
+			title: '1. Delivery address',
+			form: {
+				titleTop: 'Receiver information',
+				titleMid: 'Address type',
+				namePlaceHolder: 'Full name',
+				phoneNumberPlaceHolder: 'Phone number',
+				cityPlaceHolder: 'Name of the city',
+				districtPlaceHolder: 'Name of district',
+				wardPlaceHolder: 'Name of the ward',
+				streetPlaceHolder: 'Address, street name'
+			}
+		},
+		others: {
+			title: '2. Estimated delivery date: ',
+			form: {
+				note: 'Notes (Optional)',
+				price: 'Total products cots',
+				deliveryPrice: 'Delivery fee',
+				totalPayment: 'Total payment',
+				deliveryMethod: '(PAYMENT ON DELIVERY)'
+			}
+		},
+		success: {
+			thanks: 'THANK YOU!',
+			title: 'Your Order Has Been Processed',
+			message: 'You will receive an email with order details'
 		}
 	}
 };

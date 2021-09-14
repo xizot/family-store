@@ -223,7 +223,7 @@ const HomePage = () => {
                       ))}
                     </Grid>
                     <Link to={`/collections/${item.cateId}`} className={classes.viewMore}>
-                      View More
+												{t("generalButtons.viewMore")}
                       <ChevronRight />
                     </Link>
                   </div>

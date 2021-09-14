@@ -13,6 +13,7 @@ import { Validate } from '../../helpers';
 import { useInput } from '../../hooks/use-input';
 import { getListDistrict, getListWard } from '../../reducers/address.reducer';
 import { userGetListDelivery } from '../../reducers/delivery.reducer';
+import { useTranslation } from 'react-i18next';
 
 function SavedAddress({
   selectedAddress,
@@ -43,7 +44,7 @@ function SavedAddress({
     // inputIsValid: streetIsValid,
     // inputReset: streetReset,
   } = useInput(Validate.isNotEmpty, selectedAddress.street || '');
-
+	const { t } = useTranslation();
   const inputStreetChangeHandler = (e) => {
     onStreetChange(e);
   };
@@ -99,11 +100,11 @@ function SavedAddress({
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={6} lg={4}>
               <FormControl variant="filled" fullWidth size="small">
-                <InputLabel htmlFor="selectSaved">Địa chỉ đã lưu</InputLabel>
+                <InputLabel htmlFor="selectSaved">{t("generalButtons.savedAddress")}</InputLabel>
                 <Select
                   native
                   onChange={currentDeliveryChangeHandler}
-                  label="Địa chỉ đã lưu"
+                  label={t("generalButtons.savedAddress")}
                   inputProps={{
                     name: 'save-address',
                     id: 'selectSaved',

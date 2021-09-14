@@ -326,7 +326,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                       isLoading={updateImageLoading}
                       onClick={updateImageHandler}
                       parentClasses={classes.buttonUpdateImage}>
-                      UPDATE IMAGES
+                      {t('generalButtons.updateImage')}
                     </ButtonWithLoading>
                   </Box>
                 </div>
@@ -334,7 +334,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
               <Box className={classes.productInformation}>
                 <div className={classes.textField}>
                   <Typography variant="body1" component="p">
-                    Title
+										{t('adminPage.product.table.productName')}
                   </Typography>
                   <TextField
                     variant="outlined"
@@ -347,7 +347,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
 
                 <div className={classes.textField}>
                   <Typography variant="body1" component="p">
-                    Category
+										{t('adminPage.product.table.category')}
                   </Typography>
                   <FormControl variant="outlined" size="small" fullWidth>
                     <Select
@@ -372,7 +372,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                 </div>
                 <div className={classes.textField}>
                   <Typography variant="body1" component="p">
-                    Price (VND)
+										{t('adminPage.product.table.price')}
                   </Typography>
                   <TextField
                     variant="outlined"
@@ -385,7 +385,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                 </div>
                 <div className={classes.textField}>
                   <Typography variant="body1" component="p">
-                    Amount
+										{t('adminPage.product.table.quantity')}
                   </Typography>
                   <TextField
                     variant="outlined"
@@ -398,7 +398,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                 </div>
                 <FormControl fullWidth className={classes.textField}>
                   <Typography variant="body1" component="p">
-                    Add Description
+										{t('adminPage.product.table.description')}
                   </Typography>
                   <TextareaAutosize
                     variant="outlined"
@@ -420,14 +420,14 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                     isLoading={modifyLoading}
                     onClick={updateInformation}
                     parentClasses={classes.buttonSubmit}>
-                    UPDATE INFORMATION
+                   	 {t('generalButtons.update')}
                   </ButtonWithLoading>
 
                   <Button
                     variant="contained"
                     className={classes.buttonDiscard}
                     onClick={closeModalHandler}>
-                    Discard
+                    {t('generalButtons.cancel')}
                   </Button>
                 </Box>
               </Box>

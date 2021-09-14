@@ -33,6 +33,7 @@ import { addBill } from '../../reducers/checkout.reducer';
 import { toast } from 'react-toastify';
 import { userAddDelivery } from '../../reducers/delivery.reducer';
 import { cartActions } from '../../reducers/cart';
+import { useTranslation } from 'react-i18next';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -50,6 +51,7 @@ const TabPanel = (props) => {
 };
 
 const Checkout = () => {
+	const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const [tabValue, setTabValue] = useState(0);
@@ -245,7 +247,7 @@ const Checkout = () => {
     dispatch(uiActions.hideModal());
   }, [dispatch]);
   useEffect(() => {
-    document.title = 'Thanh toán';
+    document.title = "Thanh toán";
   }, []);
   return (
     <>
@@ -259,20 +261,20 @@ const Checkout = () => {
             <div className={classes.checkoutPage}>
               <Link to="/" className={classes.back}>
                 <AiOutlineLeft />
-                Quay lại trang chủ
+                 {t("generalButtons.back")}
               </Link>
               <div className={classes.section}>
                 <Typography variant="subtitle1" className={classes.title}>
-                  1. Địa chỉ nhận hàng
+									{t("checkoutPage.address.title")}
                 </Typography>
                 <div>
                   <Typography variant="body1" className={classes.subTitle}>
-                    Thông tin người nhận hàng
+										{t("checkoutPage.address.form.titleTop")}
                   </Typography>
                   <div className={classes.textField}>
                     <TextField
                       size="small"
-                      label="Họ và tên"
+                      label= {t("checkoutPage.address.form.namePlaceHolder")}
                       variant="filled"
                       fullWidth
                       value={fullnameEntered}
@@ -285,7 +287,7 @@ const Checkout = () => {
                   <div className={classes.textField}>
                     <TextField
                       size="small"
-                      label="Số điện thoại"
+                      label= {t("checkoutPage.address.form.phoneNumberPlaceHolder")}
                       variant="filled"
                       fullWidth
                       type="number"
@@ -303,7 +305,7 @@ const Checkout = () => {
                     variant="body1"
                     className={classes.subTitle}
                     style={{ marginBottom: 8 }}>
-                    Địa chỉ nhận hàng
+                    {t("checkoutPage.address.form.titleMid")}
                   </Typography>
 
                   <FormControl component="fieldset" color="primary">
@@ -316,13 +318,13 @@ const Checkout = () => {
                       <FormControlLabel
                         value={0}
                         control={<Radio color="primary" />}
-                        label="Địa chỉ mới"
+                        label= {t("generalButtons.newAddress")}
                       />
                       <FormControlLabel
                         value={1}
                         color="primary"
                         control={<Radio color="primary" />}
-                        label="Địa chỉ đã lưu"
+                        label= {t("generalButtons.savedAddress")}
                       />
                     </RadioGroup>
                   </FormControl>
@@ -361,7 +363,7 @@ const Checkout = () => {
 
               <div className={classes.section}>
                 <Typography variant="subtitle1" className={classes.title}>
-                  2. Thời gian nhận hàng dự kiến:{' '}
+									{t("checkoutPage.others.title")}
                   <Typography
                     className={classes.expectedDate}
                     component="span"
@@ -372,7 +374,7 @@ const Checkout = () => {
                 </Typography>
 
                 <TextField
-                  label="Ghi chú thêm (Nếu có)"
+                  label= 	{t("checkoutPage.others.form.note")}
                   variant="filled"
                   fullWidth
                   multiline
@@ -384,7 +386,7 @@ const Checkout = () => {
                 <Box marginTop={5} marginBottom={1}>
                   <Box className={classes.billInfo}>
                     <Typography variant="subtitle1" className={classes.billInfoLabel}>
-                      Tiền hàng:
+                      {t("checkoutPage.others.form.price")}
                     </Typography>
                     <Typography variant="subtitle1" component="span" style={{ fontWeight: 'bold' }}>
                       {moneyFormat(totalAmount)}VND
@@ -392,7 +394,7 @@ const Checkout = () => {
                   </Box>
                   <Box className={classes.billInfo}>
                     <Typography variant="subtitle1" className={classes.billInfoLabel}>
-                      Phí giao hàng dự kiến:
+											{t("checkoutPage.others.form.deliveryPrice")}
                     </Typography>
                     <Typography variant="subtitle1" component="span">
                       {moneyFormat(shippingFee)}VND
@@ -401,7 +403,7 @@ const Checkout = () => {
                   </Box>
                   <Box className={classes.billInfo}>
                     <Typography variant="subtitle1" className={classes.billInfoLabel}>
-                      Tổng tiền:
+											{t("checkoutPage.others.form.totalPayment")}
                     </Typography>
                     <Typography variant="subtitle1" component="span" style={{ fontWeight: 'bold' }}>
                       {moneyFormat(Number(totalAmount) + Number(shippingFee))}VND
@@ -417,10 +419,10 @@ const Checkout = () => {
                 disabled={!billIsValid}
                 onClick={addBillHandler}>
                 <Typography variant="body1" style={{ fontWeight: 'bold' }}>
-                  XÁC NHẬN ĐƠN HÀNG
+									{t("generalButtons.confirm")}
                 </Typography>
                 <Typography variant="body2" style={{ fontSize: 10 }}>
-                  (Thanh toán khi nhận hàng)
+									{t("checkoutPage.others.form.deliveryMethod")}
                 </Typography>
               </ButtonWithLoading>
             </div>
