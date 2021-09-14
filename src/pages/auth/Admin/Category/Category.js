@@ -9,7 +9,6 @@ import {
   Typography,
   Button,
   Box,
-  TablePagination,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 // import Pagination from '@material-ui/lab/Pagination';
@@ -25,6 +24,7 @@ import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 import CategoryModal from './CategoryModal';
 import SearchInputV2 from '../../../../components/UI/SearchInputV2';
 import useStyles from './Category.styles';
+import CustomTablePagination from '../../../../components/CustomTablePagination/CustomTablePagination';
 
 const SubCateManager = (props) => {
   const { t } = useTranslation();
@@ -79,7 +79,8 @@ const SubCateManager = (props) => {
     try {
       await dispatch(deleteCategory(selectedId)).unwrap();
       await getListCategoryHandler(page);
-      toast.success(`Delete category id ${selectedId} successfully`);
+      // toast.success(`Delete category id ${selectedId} successfully`);
+			toast.success(t('toastMessages.admin.category.deleteSuccess'));
     } catch (error) {
       console.log(error);
       toast.error(error);
@@ -216,7 +217,7 @@ const SubCateManager = (props) => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <TablePagination
+            <CustomTablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
               count={totalPage * limit}

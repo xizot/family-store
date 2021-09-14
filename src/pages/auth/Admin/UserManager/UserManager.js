@@ -9,7 +9,6 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
   Typography,
 } from '@material-ui/core';
@@ -30,6 +29,7 @@ import TableError from '../../../../components/TableError/TableError';
 import AddUser from '../../../../components/AddUser/AddUser';
 import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 import UpdateUser from '../../../../components/UpdateUser/UpdateUser';
+import CustomTablePagination from '../../../../components/CustomTablePagination/CustomTablePagination';
 import { useTranslation } from 'react-i18next';
 
 const UserManager = (props) => {
@@ -78,7 +78,8 @@ const UserManager = (props) => {
     try {
       await dispatch(deleteAccount({ accId: selectedId })).unwrap();
       getListUserHandler(page, limit);
-      toast.success(`Delete account id: [${selectedId}] successfully`);
+      // toast.success(`Delete account id: [${selectedId}] successfully`);
+			toast.success(t('toastMessages.admin.user.deleteSuccess'));
       closeModalHandler();
     } catch (error) {
       toast.error(error);
@@ -106,9 +107,11 @@ const UserManager = (props) => {
       setListAccount((prevValue) =>
         prevValue.map((item) => (+item.accId === +accId ? { ...item, accRole: newRole } : item))
       );
-      toast.success(`Update [ROLE] for id: [${accId}] to ${newRole} successfully`);
+      // toast.success(`Update [ROLE] for id: [${accId}] > ${newRole}`);
+			toast.success(t('toastMessages.admin.user.updateRoleSuccess') + `${accId} > ${newRole}`);
     } catch (error) {
-      toast.error(`Update [ROLE] for id: [${accId}] failed`);
+      // toast.error(`Update [ROLE] for id: [${accId}] failed`);
+			toast.error(t('toastMessages.admin.user.updateRoleFail') + ` ${accId}`)
     }
   };
 
@@ -125,9 +128,11 @@ const UserManager = (props) => {
       setListAccount((prevValue) =>
         prevValue.map((item) => (item.accId === accId ? { ...item, accStatus: newStatus } : item))
       );
-      toast.success(`Update [STATUS] for id: [${accId}] successfully`);
+      // toast.success(`Update [STATUS] for id: [${accId}] successfully`);
+      toast.success(t('toastMessages.admin.user.updateStatusSuccess') + `${accId}`);
     } catch (error) {
-      toast.error(`Update [STATUS] for id: [${accId}] failed`);
+      // toast.error(`Update [STATUS] for id: [${accId}] failed`);
+      toast.error(t('toastMessages.admin.user.updateStatusFail') + `${accId}`);
     }
   };
 
@@ -293,7 +298,7 @@ const UserManager = (props) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <TablePagination
+              <CustomTablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
                 count={totalPage * limit}

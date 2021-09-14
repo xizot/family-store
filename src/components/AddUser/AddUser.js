@@ -105,7 +105,7 @@ const AddUser = ({ isOpen, onClose, onSuccess }) => {
 					phoneNumber: phoneNumber
 				})
 			).unwrap();
-			toast.success('Add user successfully');
+			toast.success(t('toastMessages.admin.user.addSuccess'));
 			addSuccessHandler();
 		} catch (error) {
 			toast.error(error);
@@ -117,10 +117,10 @@ const AddUser = ({ isOpen, onClose, onSuccess }) => {
 			<Box className={classes.form} boxShadow={3}>
 				<Box marginBottom={4} position="relative">
 					<Typography variant="h5" className={classes.title}>
-					{t('adminPage.user.addingModal.title')}
+						{t('adminPage.user.addingModal.title')}
 					</Typography>
 					<Typography variant="caption" className={classes.subTitle}>
-					{t('familyAdminPanel')}
+						{t('familyAdminPanel')}
 					</Typography>
 					<IconButton className={classes.iconClose} onClick={closeModalHandler}>
 						<Close fontSize="large" />

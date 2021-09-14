@@ -120,7 +120,8 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
           data: formData,
         })
       ).unwrap();
-      toast.success(`Update images for product id ${prodId} sucessfully`);
+      // toast.success(`Update images for product id ${prodId} sucessfully`);
+			toast.success(t('toastMessages.admin.product.updateImageSuccess'));
       getList();
       closeModalHandler();
       setUpdateImageLoading(false);
@@ -145,7 +146,8 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
         })
       ).unwrap();
 
-      toast.success(`Update product id ${prodId} sucessfully`);
+      // toast.success(`Update product id ${prodId} sucessfully`);
+			toast.success(t('toastMessages.admin.product.updateSuccess'));
       getList();
       closeModalHandler();
     } catch (error) {

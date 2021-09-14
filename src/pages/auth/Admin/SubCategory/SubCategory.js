@@ -14,8 +14,7 @@ import {
   Fade,
   Backdrop,
   Modal,
-  Box,
-  TablePagination,
+  Box
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState, useCallback } from 'react';
@@ -30,6 +29,7 @@ import TableLoading from '../../../../components/TableLoading/TableLoading';
 import { getListSubCategory, deleteCategory } from '../../../../reducers/sub-category';
 import ModalConfirm from '../../../../components/ModalConfirm/ModalConfirm';
 import SearchInputV2 from '../../../../components/UI/SearchInputV2';
+import CustomTablePagination from '../../../../components/CustomTablePagination/CustomTablePagination';
 import useStyles from './SubCategory.styles';
 
 const BootstrapInput = withStyles((theme) => ({
@@ -111,7 +111,7 @@ const SubCateManager = (props) => {
       setClose(false);
       await dispatch(deleteCategory(detail.cateId)).unwrap();
       await getListChildCategoryHandler(optionFather);
-      toast.success('Delete successfully');
+      toast.success(t('toastMessages.admin.subCategory.deleteSuccess'));
     } catch (err) {
       toast.error(err);
       console.log('🚀 ~ file: SubCategory.js ~ line 199 ~ subCateDeleteConfirm ~ err', err);
@@ -281,7 +281,7 @@ const SubCateManager = (props) => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <TablePagination
+            <CustomTablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
               count={totalPage * limit}

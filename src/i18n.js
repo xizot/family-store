@@ -55,7 +55,8 @@ const vnTranslation = {
 		unknown: 'Không rõ',
 		lastModified: 'Lần sửa đổi cuối',
 		emptyData: 'Không có dữ liệu',
-		wrong: 'Đã có sự cố xảy ra!'
+		wrong: 'Đã có sự cố xảy ra!',
+		rowsPerPage: 'Số dòng mỗi trang: '
 	},
 
 	homepage: {
@@ -106,7 +107,7 @@ const vnTranslation = {
 			name: 'Tên sản phẩm',
 			quantity: 'Số lượng',
 			createdDate: 'Ngày tạo',
-			price: "Giá"
+			price: 'Giá'
 		},
 		sortType: {
 			title: 'Kiểu sắp',
@@ -326,6 +327,41 @@ const vnTranslation = {
 			title: 'Đơn Hàng Của Bạn Đã Được Xử Lý!',
 			message: 'Bạn sẽ nhận được Email về chi tiết đơn hàng.'
 		}
+	},
+
+	toastMessages: {
+		common: {
+			error: 'Đã có lỗi xảy ra!',
+			success: 'Thành công!'
+		},
+		admin: {
+			user: {
+				addSuccess: 'Thêm người dùng thành công!',
+				updateSuccess: 'Cập nhật người dùng thành công!',
+				deleteSuccess: 'Xóa người dùng thành công!',
+				updateRoleSuccess: 'Cập nhật quyền thành công cho người dùng có id: ',
+				updateRoleFail: 'Cập nhật quyền thất bại cho người dùng có id: ',
+				updateStatusSuccess: 'Cập nhật trạng thái thành công cho người dùng có id: ',
+				updateStatusFail: 'Cập nhật trạng thái thái bại cho người dùng có id: '
+			},
+			category: {
+				deleteSuccess: 'Xóa danh mục thành công!',
+				addSuccess: 'Thêm danh mục mới thành công!',
+				updateSuccess: 'Cập nhật danh mục thành công!'
+			},
+			subCategory: {
+				deleteSuccess: 'Xóa danh mục con thành công!',
+				addSuccess: 'Thêm danh mục con mới thành công!',
+				updateSuccess: 'Cập nhật danh mục con thành công!'
+			},
+			product: {
+				deleteSuccess: 'Xóa sản phẩm thành công!',
+				addSuccess: 'Thêm sản phẩm mới thành công!',
+				updateSuccess: 'Cập nhật thông tin sản phẩm thành công!',
+				updateImageSuccess: 'Cập nhật ảnh cho sản phẩm thành công!'
+			}
+		},
+		user: {}
 	}
 };
 
@@ -379,7 +415,8 @@ const enTranslation = {
 		unknown: 'Unknown',
 		lastModified: 'Last Modified',
 		emptyData: 'No available data',
-		wrong: 'Something went wrong!'
+		wrong: 'Something went wrong!',
+		rowsPerPage: 'Rows per page: '
 	},
 
 	footer: {
@@ -464,7 +501,7 @@ const enTranslation = {
 			name: 'Product Name',
 			quantity: 'Quantity',
 			createdDate: 'Created Date',
-			price: "Price"
+			price: 'Price'
 		},
 		sortType: {
 			title: 'Sort type',
@@ -656,6 +693,41 @@ const enTranslation = {
 			title: 'Your Order Has Been Processed',
 			message: 'You will receive an email with order details'
 		}
+	},
+
+	toastMessages: {
+		common: {
+			error: 'Something broke!',
+			success: 'Success!'
+		},
+		admin: {
+			user: {
+				addSuccess: 'Add user successfully!',
+				updateSuccess: 'Update user successfully!',
+				deleteSuccess: 'Delete user successfully!',
+				updateRoleSuccess: 'Update Role successfully for id: ',
+				updateRoleFail: 'Update Role Failed for id: ',
+				updateStatusSuccess: 'Update Status successfully for id: ',
+				updateStatusFail: 'Update Status Failed for id: '
+			},
+			category: {
+				deleteSuccess: 'Delete category successfully!',
+				addSuccess: 'Add new Category successfully!',
+				updateSuccess: 'Update category successfully!'
+			},
+			subCategory: {
+				deleteSuccess: 'Delete sub category successfully!',
+				addSuccess: 'Add new sub Category successfully!',
+				updateSuccess: 'Update sub category successfully!'
+			},
+			product: {
+				deleteSuccess: 'Delete product successfully!',
+				addSuccess: 'Add new product successfully!',
+				updateSuccess: 'Update product successfully!',
+				updateImageSuccess: 'Update Images for product successfully!'
+			}
+		},
+		user: {}
 	}
 };
 

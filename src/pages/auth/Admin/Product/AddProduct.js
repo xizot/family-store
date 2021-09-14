@@ -100,7 +100,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
     formData.append('prodDescription', description);
     try {
       await dispatch(addNewProduct(formData)).unwrap();
-      toast.success('Add new product success');
+      toast.success(t('toastMessages.admin.product.addSuccess'));
       closeModalHandler();
       getList();
       onClose();
