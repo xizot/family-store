@@ -1,14 +1,15 @@
 import { Grid, makeStyles, Typography, Button } from '@material-ui/core';
-import { useEffect } from 'react';
+import { useEffect, useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ArrowBackIos } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ReviewsOrderItem from '../../components/ReviewsOrderItem/ReviewsOrderItem';
 import SideBar from '../../components/SideBar/SideBar';
 import Footer from '../../components/Layout/Footer';
 import Header from '../../components/Layout/Header';
 import CategoryMenu from '../../components/CategoriesMenu/CategoriesMenu';
 import { useTranslation } from 'react-i18next';
-
+import { getDetailOrder } from '../../reducers/order.reducer';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
@@ -139,9 +140,30 @@ const itemsInOder = [
 
 const ReviewsPage = (props) => {
   const classes = useStyles();
-	const { t } = useTranslation();
-  //const location = useLocation();
-  //const query = location.search.slice(4) || "-1"; //?id=123
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  // eslint-disable-next-line no-unused-vars
+  const [error, setError] = useState('');
+  let query = location.search.slice(4) || "-1"; //?id=123
+  
+  const detail = useSelector((state) => state.order);
+  
+
+  const getDetailOrderHandler = useCallback(
+    async (billId) => {
+      try {
+        await dispatch(getDetailOrder(billId)).unwrap();
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    getDetailOrderHandler(query);
+  }, [dispatch, getDetailOrderHandler, query]);
 
   const reviewHandler = ({ productId, numOfStar, comment }) => {
     alert(`product id: ${productId} \nstars: ${numOfStar} \ncomment: ${comment}`);
@@ -206,7 +228,7 @@ const ReviewsPage = (props) => {
                 <Grid item xs={12} sm={12} md={12}>
                   <div className={classes.commonTitle}>
                     <Typography variant="h6" className={classes.boldFont}>
-										{t("ordersPage.details.titleMid")}
+                      {t("ordersPage.details.titleMid")}
                     </Typography>
                   </div>
                 </Grid>

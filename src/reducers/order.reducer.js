@@ -4,6 +4,7 @@ import { getResponseError } from '../helpers';
 
 const initialState = {
     data: [],
+    detail: [],
     delivering: [],
     delivered: [],
     confirm: [],
@@ -13,7 +14,8 @@ const initialState = {
     loadDelivering: false,
     loadDelivered: false,
     loadConfirm: false,
-    loadCancel:false
+    loadCancel:false,
+    loadDetail:false,
 };
 
 export const getAllOrder = createAsyncThunk(
@@ -61,6 +63,17 @@ export const getCancelOrder = createAsyncThunk(
     async ({ page }, { rejectWithValue }) => {
         try {
             return (await orderApi.getCancel(page)).data;
+        } catch (error) {
+            return rejectWithValue(getResponseError(error));
+        }
+    }
+);
+
+export const getDetailOrder = createAsyncThunk(
+    'order/GetDetail',
+    async ({ billId }, { rejectWithValue }) => {
+        try {
+            return (await orderApi.getCancel(billId)).data;
         } catch (error) {
             return rejectWithValue(getResponseError(error));
         }
@@ -125,6 +138,16 @@ const orderSlice = createSlice({
             state.loadCancel = true;
             state.cancel = action.payload.billList;
             state.totalPage = action.payload.totalPage || 0;
+        },
+        [getDetailOrder.pending]: (state) => {
+            state.loadDetail = false;
+        },
+        [getDetailOrder.rejected]: (state) => {
+            state.loadDetail = true;
+        },
+        [getDetailOrder.fulfilled]: (state, action) => {
+            state.loadDetail = true;
+            state.detail = action.payload.ListDetail;
         },
     },
 });
