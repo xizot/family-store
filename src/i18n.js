@@ -207,8 +207,8 @@ const vnTranslation = {
 		cart: 'Giỏ hàng',
 		total: 'Tổng tiền',
 		checkout: 'TIẾN HÀNH THANH TOÁN',
-		unitPrice: "Giá bán lẻ",
-		salePrice: "Giá khuyến mãi"
+		unitPrice: 'Giá bán lẻ',
+		salePrice: 'Giá khuyến mãi'
 	},
 
 	sideBar: {
@@ -387,6 +387,10 @@ const vnTranslation = {
 			}
 		},
 		user: {}
+	},
+
+	collectionPage: {
+		empty: 'Hiện không có sản phẩm nào ở danh mục này'
 	}
 };
 
@@ -596,8 +600,8 @@ const enTranslation = {
 		cart: 'Cart',
 		total: 'Total Amount',
 		checkout: 'PROCESS TO CHECKOUT',
-		unitPrice: "Unit Price",
-		salePrice: "Sale price"
+		unitPrice: 'Unit Price',
+		salePrice: 'Sale price'
 	},
 
 	sideBar: {
@@ -778,6 +782,10 @@ const enTranslation = {
 			}
 		},
 		user: {}
+	},
+
+	collectionPage: {
+		empty: "There are no products in this category"
 	}
 };
 
