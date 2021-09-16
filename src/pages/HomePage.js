@@ -1,19 +1,16 @@
-import { Grid, makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Footer from '../components/Layout/Footer';
-import ProductItem from '../components/ProductItem/ProductItem';
 import SideBar from '../components/SideBar/SideBar';
 import Header from './../components/Layout/Header';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import CategoriesMenu from '../components/CategoriesMenu/CategoriesMenu';
 import { getHomeProduct } from '../reducers/user-product.reducer';
-import { useCart } from '../hooks/use-cart';
 import RequestLoading from '../components/RequestLoading/RequestLoading';
-import { Link } from 'react-router-dom';
-import { ChevronRight } from '@material-ui/icons';
+import HomePageSection from '../components/HomePageSection/HomePageSection';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,64 +88,11 @@ const useStyles = makeStyles((theme) => ({
   saleContent: {
     marginBottom: theme.spacing(1),
   },
-  section: {
-    marginBottom: theme.spacing(2),
-    borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(2, 0),
-    backgroundColor: '#FFF',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      height: 'auto',
-    },
-  },
-
-  topSaleTitle: {
-    textAlign: 'left',
-    paddingLeft: theme.spacing(2),
-    color: '#F39148',
-    fontWeight: '500',
-    textTransform: 'uppercase',
-    position: 'relative',
-    margin: theme.spacing(2),
-    '&:before': {
-      content: "''",
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      width: 5,
-      height: '100%',
-      background: theme.palette.primary.main,
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: '1.4rem',
-    },
-  },
 
   listSale: {
     width: '100%',
     margin: 0,
     padding: theme.spacing(1),
-  },
-  viewMore: {
-    background: '#fff',
-    border: `1px solid ${theme.palette.primary.main}`,
-    borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(1, 2),
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 250,
-    margin: '20px auto 0',
-    textDecoration: 'none',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fonttFamily: 'Roboto, Helvetica, Arial, sans-serif',
-    color: theme.palette.primary.main,
-    transition: 'all .5s',
-    '&:hover': {
-      color: '#fff',
-      background: theme.palette.primary.main,
-    },
   },
 }));
 
@@ -158,7 +102,6 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const [homeProducts, setHomeProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { addNew } = useCart();
 
   const getHomeProductHandler = useCallback(async () => {
     setLoading(true);
@@ -204,29 +147,11 @@ const HomePage = () => {
               homeProducts
                 .filter((item) => item.listProducts.length > 0)
                 .map((item, index) => (
-                  <div className={classes.section} key={index}>
-                    <Typography variant="h5" className={classes.topSaleTitle}>
-                      {item.cateName}
-                    </Typography>
-                    <Grid container spacing={3} className={classes.listSale}>
-                      {item.listProducts.map((product, index) => (
-                        <Grid item xs={12} sm={6} md={3} key={index}>
-                          <ProductItem
-                            id={product.prodId}
-                            title={product.prodName}
-                            description={product.prodDescription}
-                            image={product.prodImage}
-                            price={product.prodPrice}
-                            onAddToCart={addNew.bind(null, product, 1)}
-                          />
-                        </Grid>
-                      ))}
-                    </Grid>
-                    <Link to={`/collections/${item.cateId}`} className={classes.viewMore}>
-												{t("generalButtons.viewMore")}
-                      <ChevronRight />
-                    </Link>
-                  </div>
+                  <HomePageSection
+                    key={index}
+                    cateName={item.cateName}
+                    listProduct={item.listProducts}
+                  />
                 ))
             )}
           </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormControl, TextField, Typography, Grid, Box, FormHelperText } from '@material-ui/core';
 import PhoneInput from 'react-phone-input-2';
@@ -20,6 +20,7 @@ const BasicProfilePanel = ({
   pPhoneNumber,
   pAvatar,
   onUpdateNewData,
+  onChangeDetails,
 }) => {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -34,7 +35,7 @@ const BasicProfilePanel = ({
     Validate.isNotEmpty(phoneNumber) && Validate.isPhoneNumber(phoneNumber);
   const phoneNumberHasError = !phoneNumberIsValid && phoneNumberIsTouched;
   const [isChangePassword, setIsChangePassword] = useState(false);
-
+  const fileRef = useRef();
   const {
     enteredInput: email,
     hasError: emailHasError,
@@ -88,6 +89,7 @@ const BasicProfilePanel = ({
   };
 
   const removeFileChangeHandler = () => {
+    fileRef.current.value = '';
     setSelectedFile(null);
   };
 
@@ -100,8 +102,10 @@ const BasicProfilePanel = ({
     try {
       await dispatch(insertOrUpdateAvatar(formData)).unwrap();
       onUpdateNewData({ accAvatar: selectedFile });
+      onChangeDetails({ accAvatar: newAvatar });
       setSelectedFile(null);
       setNewAvatar(null);
+      toast.success('Cập nhật ảnh thành công');
     } catch (error) {
       toast.error(error);
     }
@@ -175,6 +179,7 @@ const BasicProfilePanel = ({
                   accept="image/jpeg"
                   id="avatar"
                   type="file"
+                  ref={fileRef}
                   style={{ display: 'none' }}
                   onChange={(e) => fileChangeHandler(e.target.files[0])}
                 />

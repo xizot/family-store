@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import BasicProfilePanel from '../../components/Panels/BasicProfilePanel';
-import AvatarPanel from '../../components/Panels/AvatarPanel';
-import ChangePasswordPanel from '../../components/Panels/ChangePasswordPanel';
+// import AvatarPanel from '../../components/Panels/AvatarPanel';
+// import ChangePasswordPanel from '../../components/Panels/ChangePasswordPanel';
 import Footer from '../../components/Layout/Footer';
 import Header from '../../components/Layout/Header';
 import { details } from '../../reducers/account.reducer';
@@ -67,6 +67,9 @@ const Profile = (props) => {
     setTabValue(newValue);
   };
 
+  const changeUserDetails = (newDetail) => {
+    setUserDetails((prev) => ({ ...prev, ...newDetail }));
+  };
   useEffect(() => {
     const tabNameToIndex = {
       basic: 0,
@@ -77,7 +80,7 @@ const Profile = (props) => {
   }, [slug]);
 
   const updateNewDataHandler = (newData) => {
-    setUserDetails((prev) => ({ ...setUserDetails, ...newData }));
+    setUserDetails((prev) => ({ ...prev, ...newData }));
   };
 
   const getUserDetailsHandler = useCallback(
@@ -115,8 +118,8 @@ const Profile = (props) => {
               className={classes.tabs}
               TabIndicatorProps={{ className: classes.tabActive }}>
               <Tab label={t('profilepage.tabTitle.1')} />
-              <Tab label={t('profilepage.tabTitle.2')} />
-              <Tab label={t('profilepage.tabTitle.3')} />
+              {/* <Tab label={t('profilepage.tabTitle.2')} />
+              <Tab label={t('profilepage.tabTitle.3')} /> */}
             </Tabs>
           </Paper>
           <TabPanel value={tabValue} index={0} className={classes.tabPanel}>
@@ -130,6 +133,7 @@ const Profile = (props) => {
                 pPhoneNumber={userDetails?.accPhoneNumber}
                 pAvatar={userDetails?.accAvatar}
                 onUpdateNewData={updateNewDataHandler}
+                onChangeDetails={changeUserDetails}
               />
             ) : (
               <TableError
@@ -138,12 +142,12 @@ const Profile = (props) => {
               />
             )}
           </TabPanel>
-          <TabPanel value={tabValue} index={1} className={classes.tabPanel}>
+          {/* <TabPanel value={tabValue} index={1} className={classes.tabPanel}>
             <ChangePasswordPanel />
           </TabPanel>
           <TabPanel value={tabValue} index={2} className={classes.tabPanel}>
             <AvatarPanel />
-          </TabPanel>
+          </TabPanel> */}
         </Container>
       </div>
       <Footer />
