@@ -71,9 +71,9 @@ export const getCancelOrder = createAsyncThunk(
 
 export const getDetailOrder = createAsyncThunk(
     'order/GetDetail',
-    async ({ billId }, { rejectWithValue }) => {
+    async ( billId , { rejectWithValue }) => {
         try {
-            return (await orderApi.getCancel(billId)).data;
+            return (await orderApi.getDetail(billId)).data;
         } catch (error) {
             return rejectWithValue(getResponseError(error));
         }
@@ -146,6 +146,7 @@ const orderSlice = createSlice({
             state.loadDetail = true;
         },
         [getDetailOrder.fulfilled]: (state, action) => {
+            state.detail =action.payload.ListDetail;
             state.loadDetail = true;
             state.detail = action.payload.ListDetail;
         },

@@ -110,7 +110,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const oderOverviewInfo = { orderId: '12345678910', status: 'Delivered' };
 const itemsInOder = [
   {
     id: '123',
@@ -145,9 +144,9 @@ const ReviewsPage = (props) => {
   const location = useLocation();
   // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState('');
-  let query = location.search.slice(4) || "-1"; //?id=123
+  let query = location.pathname.slice(9) || 1 ; //?id=123
   
-  const detail = useSelector((state) => state.order);
+  const detail = useSelector((state) => state.order.detail);
   
 
   const getDetailOrderHandler = useCallback(
@@ -162,8 +161,8 @@ const ReviewsPage = (props) => {
   );
 
   useEffect(() => {
-    getDetailOrderHandler(query);
-  }, [dispatch, getDetailOrderHandler, query]);
+    getDetailOrderHandler(parseInt(query));
+  }, [dispatch,getDetailOrderHandler, query]);
 
   const reviewHandler = ({ productId, numOfStar, comment }) => {
     alert(`product id: ${productId} \nstars: ${numOfStar} \ncomment: ${comment}`);
@@ -201,10 +200,22 @@ const ReviewsPage = (props) => {
                   <div className={classes.TopContentDetailsLeft}>
                     <div className={classes.ChildPropertiesLabel}>
                       <Typography variant="body1"> {t("ordersPage.item.orderId")} </Typography>
+                      <Typography variant="body1"> FULL NAME </Typography>
+                      <Typography variant="body1"> ADDRESS </Typography>
+                      <Typography variant="body1"> PHONENUMBER </Typography>
                     </div>
                     <div className={classes.ChildPropertiesValue}>
                       <Typography variant="body1" className={classes.boldFont}>
-                        {oderOverviewInfo.orderId}
+                        {detail.billId}
+                      </Typography>
+                      <Typography variant="body1" className={classes.boldFont}>
+                        {detail.fullNameReceiver}
+                      </Typography>
+                      <Typography variant="body1" className={classes.boldFont}>
+                        {detail.billAddress}
+                      </Typography>
+                      <Typography variant="body1" className={classes.boldFont}>
+                        {detail.phoneNumberReceiver}
                       </Typography>
                     </div>
                   </div>
@@ -216,7 +227,7 @@ const ReviewsPage = (props) => {
                     </div>
                     <div className={classes.ChildPropertiesValue}>
                       <Typography variant="body1" className={classes.boldFont}>
-                        {oderOverviewInfo.status.toUpperCase()}
+                        {detail.billStatus}
                       </Typography>
                     </div>
                   </div>
@@ -233,14 +244,14 @@ const ReviewsPage = (props) => {
                   </div>
                 </Grid>
               </Grid>
-              {itemsInOder?.length > 0 &&
-                itemsInOder.map((item, index) => (
+              {detail.billDetailList?.length > 0 &&
+                detail.billDetailList.map((item, index) => (
                   <ReviewsOrderItem
                     key={index}
-                    id={item.id}
-                    img={item.img}
-                    name={item.name}
-                    quantity={item.quantity}
+                    id={item.productID}
+                    img={item.images}
+                    name={item.prodName}
+                    quantity={item.prodQuantity}
                     onReview={reviewHandler}
                   />
                 ))}
