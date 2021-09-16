@@ -11,6 +11,8 @@ import CategoryMenu from '../components/CategoriesMenu/CategoriesMenu';
 import Pagination from '@material-ui/lab/Pagination';
 import { getListProductByCateAndPage } from '../reducers/user-product.reducer';
 import RequestLoading from '../components/RequestLoading/RequestLoading';
+import { useTranslation } from 'react-i18next';
+
 import { useCart } from '../hooks/use-cart';
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Collections = (props) => {
+	const { t } = useTranslation();
   const classes = useStyles();
   const { categoryId: cateID } = useParams();
   const [page, setPage] = useState(1);
@@ -192,7 +195,7 @@ const Collections = (props) => {
                     ))
                   ) : (
                     <Box padding={2} textAlign="center" width="100%">
-                      <Typography variant="body1">Không có sản phẩm nào</Typography>
+                      <Typography variant="body1"> {t('collectionPage.empty')} </Typography>
                     </Box>
                   )}
                 </Grid>

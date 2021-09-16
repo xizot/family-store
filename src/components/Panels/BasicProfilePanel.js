@@ -143,7 +143,7 @@ const BasicProfilePanel = ({
       passwordReset();
       newPasswordReset();
       confirmPasswordReset();
-      toast.success('Updater user successfully');
+      toast.success(t('toastMessages.admin.user.updateSuccess'));
     } catch (error) {
       toast.error(error);
     }

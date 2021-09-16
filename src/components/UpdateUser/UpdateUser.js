@@ -141,7 +141,7 @@ const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess, isAdmin = true })
     };
     try {
       await dispatch(updateAccount(data)).unwrap();
-      toast.success('Updater user successfully');
+      toast.success(t('toastMessages.admin.user.updateSuccess'));
       opUpdateSuccess();
       onclose();
     } catch (error) {

@@ -178,7 +178,7 @@ const RegisterPage = () => {
   };
 
   useEffect(() => {
-    document.title = t('registerpage.title');
+    document.title = t('pagesTitle.register');
   }, [t]);
 
   return (

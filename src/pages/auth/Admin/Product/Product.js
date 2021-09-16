@@ -9,7 +9,6 @@ import {
   Typography,
   Button,
   Box,
-  TablePagination,
   FormControl,
   Select,
 } from '@material-ui/core';
@@ -29,6 +28,7 @@ import { removeHtmlTag } from '../../../../helpers';
 import SearchInputV2 from '../../../../components/UI/SearchInputV2';
 import useStyles from './Product.styles';
 import { getListCategory } from '../../../../reducers/category';
+import CustomTablePagination from '../../../../components/CustomTablePagination/CustomTablePagination';
 
 const ProductManager = (props) => {
   const { t } = useTranslation();
@@ -98,7 +98,8 @@ const ProductManager = (props) => {
     if (!selectedId) return;
     try {
       await dispatch(deleteProduct(selectedId)).unwrap();
-      toast.success(`Delete product id ${selectedId} successfully`);
+      // toast.success(`Delete product id ${selectedId} successfully`);
+			toast.success(t('toastMessages.admin.product.deleteSuccess'));
 
       getListProductHandler(page, limit);
     } catch (err) {
@@ -169,7 +170,7 @@ const ProductManager = (props) => {
 
   useEffect(() => {
     dispatch(uiActions.hideModal());
-    document.title = 'Product Admin';
+    document.title = document.title = t('pagesTitle.admin.product');
   }, [t, dispatch]);
   return (
     <>
@@ -322,7 +323,7 @@ const ProductManager = (props) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <TablePagination
+              <CustomTablePagination
                 rowsPerPageOptions={[1, 2, 10, 25, 100]}
                 component="div"
                 count={numberOfPage * limit}

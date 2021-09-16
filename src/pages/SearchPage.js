@@ -99,7 +99,7 @@ const SearchPage = (props) => {
 
   useEffect(() => {
     dispatch(uiActions.hideModal());
-    document.title = t('searchpage.title');
+    document.title = t('pagesTitle.search');
   }, [dispatch, t]);
 
   useEffect(() => {
@@ -121,12 +121,12 @@ const SearchPage = (props) => {
           <div className={classes.mainContent}>
             <div className={`${classes.topContent} ${classes.shadow}`}>
               <Typography variant="h5">
-                {t('searchpage.topContent')} "{query}"
+                {t('searchPage.topContent')} "{query}"
               </Typography>
               <div className={classes.filter}>
                 <div className={classes.filterItem}>
                   <Typography variant="subtitle2" className={classes.label}>
-                    {t('searchpage.sortBy')}
+										{t('searchPage.sortBy.title')}
                   </Typography>
                   <NativeSelect
                     className={classes.select}
@@ -135,22 +135,22 @@ const SearchPage = (props) => {
                     name="price"
                     input={<BootstrapInput />}>
                     <option style={{ color: '#F39148' }} value="prod_name">
-                      Product Name
+											{t('searchPage.sortBy.name')}
                     </option>
                     <option style={{ color: '#F39148' }} value="prod_amount">
-                      Product Amount
+											{t('searchPage.sortBy.quantity')}
                     </option>
                     <option style={{ color: '#F39148' }} value="prod_price">
-                      Product Price
+											{t('searchPage.sortBy.price')}
                     </option>
                     <option style={{ color: '#F39148' }} value="prod_created_date">
-                      Created Date
+											{t('searchPage.sortBy.createdDate')}
                     </option>
                   </NativeSelect>
                 </div>
                 <div className={classes.filterItem}>
                   <Typography vvariant="subtitle2" className={classes.label}>
-                    {t('searchpage.sortType')}
+										{t('searchPage.sortType.title')}
                   </Typography>
                   <NativeSelect
                     className={classes.select}
@@ -159,10 +159,10 @@ const SearchPage = (props) => {
                     onChange={sortChangeHandler}
                     input={<BootstrapInput />}>
                     <option style={{ color: '#F39148' }} value="asc">
-                      Ascending
+											{t('searchPage.sortType.asc')}
                     </option>
                     <option style={{ color: '#F39148' }} value="desc">
-                      Descending
+											{t('searchPage.sortType.desc')}
                     </option>
                   </NativeSelect>
                 </div>
@@ -204,7 +204,7 @@ const SearchPage = (props) => {
                   )}
                 </>
               ) : (
-                <Typography>No results found Try different or more general keywords</Typography>
+                <Typography> {t('searchPage.emptyMessage')} </Typography>
               )}
             </div>
           </div>

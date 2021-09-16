@@ -75,7 +75,8 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
     if (type === 'UPDATE') {
       try {
         await dispatch(updateSubCategory({ cateName, cateId: item?.cateId })).unwrap();
-        toast.success(`Update category id ${item?.cateId} successfully`);
+        // toast.success(`Update category id ${item?.cateId} successfully`);
+				toast.success(t('toastMessages.admin.category.updateSuccess'));
         getList();
         onClose();
         cateReset();
@@ -85,7 +86,7 @@ const CategoryModal = ({ item, title, type, isOpen, onClose, getList }) => {
     } else {
       try {
         await dispatch(addCategory({ cateName })).unwrap();
-        toast.success('Add new category successfully');
+        toast.success(t('toastMessages.admin.category.addSuccess'));
         getList();
         onClose();
         cateReset();

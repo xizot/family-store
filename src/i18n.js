@@ -2,10 +2,33 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 const vnTranslation = {
-	title: 'Family Store - Mua sắm online dễ dàng hơn',
 	updateUser: 'Cập nhật tài khoản',
 	familyAdminPanel: 'Quản trị viên',
 	searchPlaceHolder: 'Tìm kiếm sản phẩm...',
+
+	pagesTitle: {
+		landing: 'Family Store - Mua sắm online dễ dàng hơn',
+		search: 'Family Store - Kết quả tìm kiếm',
+		login: 'Family Store - Đăng nhập',
+		register: 'Family Store - Đăng ký',
+		verify: 'Family Store - Kích hoạt tài khoản',
+		forgot: 'Family Store - Quên mật khẩu',
+		recovery: 'Family Store - Khôi mục mật khẩu',
+		collection: 'Family Store - Xem theo danh mục',
+		profile: 'Family Store - Trang cá nhân của tôi',
+		orders: 'Family Store - Các đơn hàng của tôi',
+		reviews: 'Family Store - Đánh giá đơn hàng',
+		checkout: 'Family Store - Thanh toán',
+		checkoutSuccess: 'Family Store - Thanh toán thành công',
+
+		admin: {
+			landing: 'Family Store - Quản trị viên',
+			user: 'Family Store - Quản lý người dùng',
+			category: 'Family Store - Quản lý danh mục',
+			subCategory: 'Family Store - Quản lý danh mục con',
+			product: 'Family Store - Quản lý sản phẩm'
+		}
+	},
 
 	deleteModal: {
 		message: 'Bạn có chắc chắn xóa?',
@@ -30,14 +53,19 @@ const vnTranslation = {
 		forgot: 'Nhận email khôi phục',
 		logout: 'Đăng xuất',
 		myAccount: 'Tài khoản',
-		myOrders: 'Các đơn hàng',
+		myOrders: 'Xem các đơn hàng',
 		myCart: 'Xem giỏ hàng',
 		seeDetails: 'Xem chi tiết',
 		review: 'Nhận xét',
 		refresh: 'LÀM MỚI',
 		addToCart: 'THÊM VÀO GIỎ',
 		checkout: 'TIẾN HÀNH THANH TOÁN',
-		updateImage: 'CẬP NHẬT CÁC ẢNH'
+		updateImage: 'CẬP NHẬT CÁC ẢNH',
+		newAddress: 'Địa chỉ mới',
+		savedAddress: 'Địa chỉ đã lưu',
+		saveAddress: 'Lưu lại địa chỉ này',
+		backToMainPage: 'Tiếp tục mua sắm',
+		viewMore: 'XEM THÊM'
 	},
 
 	footer: {
@@ -50,7 +78,8 @@ const vnTranslation = {
 		unknown: 'Không rõ',
 		lastModified: 'Lần sửa đổi cuối',
 		emptyData: 'Không có dữ liệu',
-		wrong: 'Đã có sự cố xảy ra!'
+		wrong: 'Đã có sự cố xảy ra!',
+		rowsPerPage: 'Số dòng mỗi trang: '
 	},
 
 	homepage: {
@@ -92,15 +121,22 @@ const vnTranslation = {
 		signIn: 'Đăng nhập'
 	},
 
-	searchpage: {
-		title: 'Family Store - Tìm kiếm',
+	searchPage: {
+		title: 'Family Store - Kết quả tìm kiếm',
 		topContent: 'Kết quả tìm kiếm cho',
-		sortBy: 'Theo giá',
-		sortType: 'Theo loại',
-		optionPrice: 'Giá',
-		optionAscending: 'Tốt',
-		optionHigher: 'Từ cao',
-		optionLower: 'Từ thấp'
+		emptyMessage: 'Không có kết quả nào cho từ khóa này, hãy thử từ khóa khác',
+		sortBy: {
+			title: 'Sắp xếp theo',
+			name: 'Tên sản phẩm',
+			quantity: 'Số lượng',
+			createdDate: 'Ngày tạo',
+			price: 'Giá'
+		},
+		sortType: {
+			title: 'Kiểu sắp',
+			asc: 'Tăng dần',
+			desc: 'Giảm dần'
+		}
 	},
 
 	forgotpasswordpage: {
@@ -170,7 +206,9 @@ const vnTranslation = {
 	cartModal: {
 		cart: 'Giỏ hàng',
 		total: 'Tổng tiền',
-		checkout: 'TIẾN HÀNH THANH TOÁN'
+		checkout: 'TIẾN HÀNH THANH TOÁN',
+		unitPrice: 'Giá bán lẻ',
+		salePrice: 'Giá khuyến mãi'
 	},
 
 	sideBar: {
@@ -210,7 +248,8 @@ const vnTranslation = {
 				fullName: 'Tên đầy đủ',
 				email: 'Email',
 				phoneNumber: 'Số điện thoại',
-				role: 'Quyền hạn'
+				role: 'Quyền hạn',
+				status: 'Trạng thái'
 			},
 			addingModal: {
 				title: 'THÊM NGƯỜI DÙNG MỚI'
@@ -278,19 +317,112 @@ const vnTranslation = {
 			totalPayment: 'Tổng phải trả: '
 		},
 		details: {
-			titleTop: "TỔNG QUAN ĐƠN HÀNG",
-			titleMid: "CÁC SẢN PHẨM ĐÃ MUA",
-			placeHolder: "Bạn nghĩ gì về sản phẩm này?"
+			titleTop: 'TỔNG QUAN ĐƠN HÀNG',
+			titleMid: 'CÁC SẢN PHẨM ĐÃ MUA',
+			placeHolder: 'Bạn nghĩ gì về sản phẩm này?'
 		}
+	},
+
+	checkoutPage: {
+		address: {
+			title: '1. Địa chỉ nhận hàng',
+			form: {
+				titleTop: 'Thông tin người nhận hàng',
+				titleMid: 'Loại địa chỉ',
+				namePlaceHolder: 'Họ và tên',
+				phoneNumberPlaceHolder: 'Sô điện thoại',
+				cityPlaceHolder: 'tên tỉnh thành',
+				districtPlaceHolder: 'Tên Quận/huyện',
+				wardPlaceHolder: 'Tên Phường/Xã',
+				streetPlaceHolder: 'Số địa chỉ nhà, tên đường'
+			}
+		},
+		others: {
+			title: '2. Thời gian giao hàng dự kiến: ',
+			form: {
+				note: 'Ghi chú thêm (Nếu có)',
+				price: 'Tiền mua hàng',
+				deliveryPrice: 'Phí giao hàng',
+				totalPayment: 'Tổng phải trả',
+				deliveryMethod: '(THANH TOÁN KHI NHẬN HÀNG)'
+			}
+		},
+		success: {
+			thanks: 'CẢM ƠN BẠN!',
+			title: 'Đơn Hàng Của Bạn Đã Được Xử Lý!',
+			message: 'Bạn sẽ nhận được Email về chi tiết đơn hàng.'
+		}
+	},
+
+	toastMessages: {
+		common: {
+			error: 'Đã có lỗi xảy ra!',
+			success: 'Thành công!'
+		},
+		admin: {
+			user: {
+				addSuccess: 'Thêm người dùng thành công!',
+				updateSuccess: 'Cập nhật người dùng thành công!',
+				deleteSuccess: 'Xóa người dùng thành công!',
+				updateRoleSuccess: 'Cập nhật quyền thành công cho người dùng có id: ',
+				updateRoleFail: 'Cập nhật quyền thất bại cho người dùng có id: ',
+				updateStatusSuccess: 'Cập nhật trạng thái thành công cho người dùng có id: ',
+				updateStatusFail: 'Cập nhật trạng thái thái bại cho người dùng có id: '
+			},
+			category: {
+				deleteSuccess: 'Xóa danh mục thành công!',
+				addSuccess: 'Thêm danh mục mới thành công!',
+				updateSuccess: 'Cập nhật danh mục thành công!'
+			},
+			subCategory: {
+				deleteSuccess: 'Xóa danh mục con thành công!',
+				addSuccess: 'Thêm danh mục con mới thành công!',
+				updateSuccess: 'Cập nhật danh mục con thành công!'
+			},
+			product: {
+				deleteSuccess: 'Xóa sản phẩm thành công!',
+				addSuccess: 'Thêm sản phẩm mới thành công!',
+				updateSuccess: 'Cập nhật thông tin sản phẩm thành công!',
+				updateImageSuccess: 'Cập nhật ảnh cho sản phẩm thành công!'
+			}
+		},
+		user: {}
+	},
+
+	collectionPage: {
+		empty: 'Hiện không có sản phẩm nào ở danh mục này'
 	}
 };
 
 const enTranslation = {
-	title: 'Family Store - Easy to buy online',
 	searchPlaceHolder: 'What are you looking for?',
 	updateUser: 'Update User',
 	familyAdminPanel: 'Family Admin Panel',
 	addNew: 'Add New',
+
+	pagesTitle: {
+		landing: 'Family Store - Buy online Easier',
+		search: 'Family Store - Search results',
+		login: 'Family Store - Login',
+		register: 'Family Store - Register',
+		verify: 'Family Store - Activate account',
+		forgot: 'Family Store - Forgot password',
+		recovery: 'Family Store - Recovery',
+		collection: 'Family Store - Collections',
+		profile: 'Family Store - My profile',
+		orders: 'Family Store - My orders',
+		reviews: 'Family Store - Review this order',
+		checkout: 'Family Store - Payment',
+		checkoutSuccess: 'Family Store - Payment successfully',
+
+		admin: {
+			landing: 'Family Store - Administrator',
+			user: 'Family Store - Manage users',
+			category: 'Family Store - Manage Categories',
+			subCategory: 'Family Store - Manage Sub categories',
+			product: 'Family Store - Manage products'
+		}
+	},
 
 	deleteModal: {
 		message: 'Are you sure to delete this item?',
@@ -315,14 +447,19 @@ const enTranslation = {
 		forgot: 'Recive recovery Email',
 		logout: 'Log out',
 		myAccount: 'My Account',
-		myOrders: 'My Orders',
+		myOrders: 'View my orders',
 		myCart: 'My Cart',
 		seeDetails: 'See details',
 		review: 'Review',
 		refresh: 'REFRESH',
 		addToCart: 'ADD TO CART',
 		checkout: 'PROCESS TO CHECKOUT',
-		updateImage: 'UPDATE IMAGES'
+		updateImage: 'UPDATE IMAGES',
+		newAddress: 'New address',
+		savedAddress: 'Saved address',
+		saveAddress: 'Save this address',
+		backToMainPage: 'Continue to shopping',
+		viewMore: 'VIEW MORE'
 	},
 
 	generalTable: {
@@ -330,7 +467,8 @@ const enTranslation = {
 		unknown: 'Unknown',
 		lastModified: 'Last Modified',
 		emptyData: 'No available data',
-		wrong: 'Something went wrong!'
+		wrong: 'Something went wrong!',
+		rowsPerPage: 'Rows per page: '
 	},
 
 	footer: {
@@ -406,15 +544,22 @@ const enTranslation = {
 		haveAccount: 'Back to login'
 	},
 
-	searchpage: {
+	searchPage: {
 		title: 'Family Store - Search',
 		topContent: 'Search results for',
-		sortBy: 'Sort by',
-		sortType: 'Sort type',
-		optionPrice: 'Price',
-		optionAscending: 'Ascending',
-		optionHigher: 'Higher',
-		optionLower: 'Lower'
+		emptyMessage: 'No results found Try different or more general keywords',
+		sortBy: {
+			title: 'Sort by',
+			name: 'Product Name',
+			quantity: 'Quantity',
+			createdDate: 'Created Date',
+			price: 'Price'
+		},
+		sortType: {
+			title: 'Sort type',
+			asc: 'Ascending',
+			desc: 'Descending'
+		}
 	},
 
 	profilepage: {
@@ -454,7 +599,9 @@ const enTranslation = {
 	cartModal: {
 		cart: 'Cart',
 		total: 'Total Amount',
-		checkout: 'PROCESS TO CHECKOUT'
+		checkout: 'PROCESS TO CHECKOUT',
+		unitPrice: 'Unit Price',
+		salePrice: 'Sale price'
 	},
 
 	sideBar: {
@@ -494,7 +641,8 @@ const enTranslation = {
 				fullName: 'Full name',
 				email: 'Email',
 				phoneNumber: 'Phone Number',
-				role: 'Role'
+				role: 'Role',
+				status: 'Status'
 			},
 			addingModal: {
 				title: 'ADD NEW USER'
@@ -568,6 +716,76 @@ const enTranslation = {
 			titleMid: 'PURCHASED PRODUCTS',
 			placeHolder: 'Comment what do you think about this product?'
 		}
+	},
+
+	checkoutPage: {
+		address: {
+			title: '1. Delivery address',
+			form: {
+				titleTop: 'Receiver information',
+				titleMid: 'Address type',
+				namePlaceHolder: 'Full name',
+				phoneNumberPlaceHolder: 'Phone number',
+				cityPlaceHolder: 'Name of the city',
+				districtPlaceHolder: 'Name of district',
+				wardPlaceHolder: 'Name of the ward',
+				streetPlaceHolder: 'Address, street name'
+			}
+		},
+		others: {
+			title: '2. Estimated delivery date: ',
+			form: {
+				note: 'Notes (Optional)',
+				price: 'Total products cots',
+				deliveryPrice: 'Delivery fee',
+				totalPayment: 'Total payment',
+				deliveryMethod: '(PAYMENT ON DELIVERY)'
+			}
+		},
+		success: {
+			thanks: 'THANK YOU!',
+			title: 'Your Order Has Been Processed',
+			message: 'You will receive an email with order details'
+		}
+	},
+
+	toastMessages: {
+		common: {
+			error: 'Something broke!',
+			success: 'Success!'
+		},
+		admin: {
+			user: {
+				addSuccess: 'Add user successfully!',
+				updateSuccess: 'Update user successfully!',
+				deleteSuccess: 'Delete user successfully!',
+				updateRoleSuccess: 'Update Role successfully for id: ',
+				updateRoleFail: 'Update Role Failed for id: ',
+				updateStatusSuccess: 'Update Status successfully for id: ',
+				updateStatusFail: 'Update Status Failed for id: '
+			},
+			category: {
+				deleteSuccess: 'Delete category successfully!',
+				addSuccess: 'Add new Category successfully!',
+				updateSuccess: 'Update category successfully!'
+			},
+			subCategory: {
+				deleteSuccess: 'Delete sub category successfully!',
+				addSuccess: 'Add new sub Category successfully!',
+				updateSuccess: 'Update sub category successfully!'
+			},
+			product: {
+				deleteSuccess: 'Delete product successfully!',
+				addSuccess: 'Add new product successfully!',
+				updateSuccess: 'Update product successfully!',
+				updateImageSuccess: 'Update Images for product successfully!'
+			}
+		},
+		user: {}
+	},
+
+	collectionPage: {
+		empty: "There are no products in this category"
 	}
 };
 

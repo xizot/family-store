@@ -133,7 +133,7 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    document.title = t('recoverypasswordpage.title');
+    document.title = t('pagesTitle.recovery');
   }, [t]);
   useEffect(() => {
     setTimer(5);

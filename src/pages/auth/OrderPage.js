@@ -48,12 +48,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OrderPage = (props) => {
+const OrderPage = () => {
 	const { t } = useTranslation();
   // const img = "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png";
 	const img = "https://icons.veryicon.com/png/o/system/crm-android-app-icon/app-icon-sales-order.png";
   const classes = useStyles();
   const dispatch = useDispatch();
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState('');
   const { data, delivering, totalPage, delivered, confirm, cancel } = useSelector((state) => state.order);
   const [page, setPage] = useState(1);
@@ -136,8 +137,8 @@ const OrderPage = (props) => {
   };
 
   useEffect(() => {
-    document.title = 'All Order';
-  }, []);
+    document.title = t('pagesTitle.orders');
+  }, [t]);
 
   useEffect(() => {
     if (page > totalPage) {

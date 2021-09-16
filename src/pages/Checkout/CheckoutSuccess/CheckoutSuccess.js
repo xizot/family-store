@@ -5,9 +5,12 @@ import { Link, useHistory } from 'react-router-dom';
 import Footer from '../../../components/Layout/Footer';
 import Header from '../../../components/Layout/Header';
 import useStyles from './CheckoutSuccess.styles';
+import { useTranslation } from 'react-i18next';
+
 function CheckoutSuccess() {
   const classes = useStyles();
   const history = useHistory();
+	const { t } = useTranslation();
 
   useEffect(() => {
     const flag = localStorage.getItem('checkout');
@@ -25,18 +28,18 @@ function CheckoutSuccess() {
           <div className={classes.content}>
             <Done className={classes.icon} />
             <Typography variant="h3" color="primary" className={classes.thank}>
-              THANK YOU!
+              {t("checkoutPage.success.thanks")}
             </Typography>
             <Typography variant="h4" className={classes.subtitle1}>
-              Your Order Has Been Processed
+							{t("checkoutPage.success.title")}
             </Typography>
             <Typography variant="subtitle1" className={classes.subtitle}>
-              We'll email you order details
+							{t("checkoutPage.success.message")}
             </Typography>
             <Link to="/orders" className={classes.viewOrder}>
-              View orders
+							{t("generalButtons.myOrders")}
             </Link>
-            <Link to="/">Back to Shopping</Link>
+            <Link to="/">{t("generalButtons.backToMainPage")}g</Link>
           </div>
         </div>
       </div>

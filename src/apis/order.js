@@ -15,9 +15,12 @@ const getConfirm = (page = 1, limit = 10) => {
 const getCancel = (page = 1, limit = 10) => {
     return axios.post('/api/bill/list/cancel', { page, limit });
 };
-
+const getDetail = (billId) => {
+    return axios.post('/api/bill/details',{billId})
+}
 const orderApi = {
     getAll,
+    getDetail,
     getDelivering,
     getDelivered,
     getConfirm,

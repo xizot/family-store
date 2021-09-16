@@ -123,7 +123,7 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
         ).unwrap();
         getList();
         parentHandleClose();
-        toast.success('Add successfully');
+        toast.success(t('toastMessages.admin.subCategory.addSuccess'));
       } catch (error) {
         setError(error);
         toast.error(error);
@@ -138,7 +138,7 @@ const AddSubCate = ({ cateFather, cate, action, parentHandleClose, father, getLi
             cateName: subCateName,
           })
         ).unwrap();
-        toast.success('Update successfully');
+        toast.success(t('toastMessages.admin.subCategory.updateSuccess'));
         getList();
         parentHandleClose();
       } catch (error) {

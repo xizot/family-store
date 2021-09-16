@@ -111,7 +111,7 @@ const ForgotPasswordPage = () => {
   };
 
   useEffect(() => {
-    document.title = t('forgotpasswordpage.title');
+    document.title = t('pagesTitle.forgot');
   }, [t]);
 
   useEffect(() => {

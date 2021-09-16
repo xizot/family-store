@@ -3,6 +3,7 @@ import { Close } from '@material-ui/icons';
 import { moneyFormat } from '../../../helpers';
 import NumericUpDown from '../../UI/NumericUpDown';
 import useStyles from './CartItem.styles';
+import { useTranslation } from 'react-i18next';
 
 const CartItem = ({
   id,
@@ -17,6 +18,7 @@ const CartItem = ({
   onClear,
 }) => {
   const classes = useStyles();
+	const { t } = useTranslation();
 
   return (
     <li className={classes.root} id={id}>
@@ -36,11 +38,11 @@ const CartItem = ({
           <Typography
             variant="caption"
             className={`${classes.price} ${salePrice ? classes.hasSale : ''}`}>
-            Unit Price {price && moneyFormat(price)} VND
+            {t('cartModal.unitPrice')} {price && moneyFormat(price)} VNĐ
           </Typography>
           {salePrice && (
             <Typography variant="subtitle2" className={classes.price}>
-              Sale {salePrice && moneyFormat(salePrice)} VND
+              {t('cartModal.salePrice')} {salePrice && moneyFormat(salePrice)} VNĐ
             </Typography>
           )}
         </div>

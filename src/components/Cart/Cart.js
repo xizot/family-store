@@ -45,7 +45,7 @@ const Cart = (props) => {
               {t('cartModal.total')}
             </Typography>
             <Typography variant="h6" component="p" style={{ fontWeight: 'bold' }}>
-              {totalAmount && moneyFormat(totalAmount)} VND
+              {totalAmount && moneyFormat(totalAmount)} VNĐ
             </Typography>
           </div>
         </div>

@@ -118,7 +118,7 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    document.title = t('loginpage.title');
+    document.title = t('pagesTitle.login');
   }, [t]);
   useEffect(() => {
     dispatch(uiActions.hideModal());
