@@ -181,9 +181,9 @@ const ReviewsPage = (props) => {
                   <div className={classes.TopContentDetailsLeft}>
                     <div className={classes.ChildPropertiesLabel}>
                       <Typography variant="body1"> {t("ordersPage.item.orderId")} </Typography>
-                      <Typography variant="body1"> FULL NAME </Typography>
-                      <Typography variant="body1"> ADDRESS </Typography>
-                      <Typography variant="body1"> PHONENUMBER </Typography>
+                      <Typography variant="body1"> {t('profilepage.fullName')?.toUpperCase()}: </Typography>
+                      <Typography variant="body1">  {t('profilepage.address')?.toUpperCase()}: </Typography>
+                      <Typography variant="body1">  {t('checkoutPage.address.form.phoneNumberPlaceHolder')?.toUpperCase()}: </Typography>
                     </div>
                     <div className={classes.ChildPropertiesValue}>
                       <Typography variant="body1" className={classes.boldFont}>
@@ -196,7 +196,7 @@ const ReviewsPage = (props) => {
                         {detail.billAddress}
                       </Typography>
                       <Typography variant="body1" className={classes.boldFont}>
-                        {detail.phoneNumberReceiver}
+                        {(detail.phoneNumberReceiver)}
                       </Typography>
                     </div>
                   </div>
@@ -208,7 +208,7 @@ const ReviewsPage = (props) => {
                     </div>
                     <div className={classes.ChildPropertiesValue}>
                       <Typography variant="body1" className={classes.boldFont}>
-                        {detail.billStatus}
+                        {detail.billStatus?.toUpperCase()}
                       </Typography>
                     </div>
                   </div>
