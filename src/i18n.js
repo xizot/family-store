@@ -65,7 +65,8 @@ const vnTranslation = {
 		savedAddress: 'Địa chỉ đã lưu',
 		saveAddress: 'Lưu lại địa chỉ này',
 		backToMainPage: 'Tiếp tục mua sắm',
-		viewMore: 'XEM THÊM'
+		viewMore: 'XEM THÊM',
+		viewMoreProducts: 'SẢN PHẨM'
 	},
 
 	footer: {
@@ -459,7 +460,8 @@ const enTranslation = {
 		savedAddress: 'Saved address',
 		saveAddress: 'Save this address',
 		backToMainPage: 'Continue to shopping',
-		viewMore: 'VIEW MORE'
+		viewMore: 'VIEW MORE ',
+		viewMoreProducts: ' PRODUCTS'
 	},
 
 	generalTable: {
@@ -785,7 +787,7 @@ const enTranslation = {
 	},
 
 	collectionPage: {
-		empty: "There are no products in this category"
+		empty: 'There are no products in this category'
 	}
 };
 
