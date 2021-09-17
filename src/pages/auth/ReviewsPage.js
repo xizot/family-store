@@ -10,6 +10,8 @@ import Header from '../../components/Layout/Header';
 import CategoryMenu from '../../components/CategoriesMenu/CategoriesMenu';
 import { useTranslation } from 'react-i18next';
 import { getDetailOrder } from '../../reducers/order.reducer';
+import { toast } from 'react-toastify';
+import { addComment } from '../../reducers/user-comment.reducer';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
@@ -110,33 +112,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const itemsInOder = [
-  {
-    id: '123',
-    name: 'Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ Sữa ông thọ',
-    quantity: 10,
-    img: 'https://product.hstatic.net/1000074072/product/ot-1284g_e063a92878d84db99b094a1c6b8c44c7.jpg',
-  },
-  {
-    id: '1234',
-    name: 'Sữa ông thọ',
-    quantity: 10,
-    img: 'https://product.hstatic.net/1000074072/product/ot-1284g_e063a92878d84db99b094a1c6b8c44c7.jpg',
-  },
-  {
-    id: '1235',
-    name: 'Sữa ông thọ',
-    quantity: 10,
-    img: 'https://product.hstatic.net/1000074072/product/ot-1284g_e063a92878d84db99b094a1c6b8c44c7.jpg',
-  },
-  {
-    id: '1237',
-    name: 'Sữa ông thọ',
-    quantity: 10,
-    img: 'https://product.hstatic.net/1000074072/product/ot-1284g_e063a92878d84db99b094a1c6b8c44c7.jpg',
-  },
-];
-
 const ReviewsPage = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
@@ -144,10 +119,10 @@ const ReviewsPage = (props) => {
   const location = useLocation();
   // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState('');
-  let query = location.pathname.slice(9) || 1 ; //?id=123
-  
+  let query = location.pathname.slice(9) || 1; //?id=123
+
   const detail = useSelector((state) => state.order.detail);
-  
+
 
   const getDetailOrderHandler = useCallback(
     async (billId) => {
@@ -162,10 +137,15 @@ const ReviewsPage = (props) => {
 
   useEffect(() => {
     getDetailOrderHandler(parseInt(query));
-  }, [dispatch,getDetailOrderHandler, query]);
+  }, [dispatch, getDetailOrderHandler, query]);
 
-  const reviewHandler = ({ productId, numOfStar, comment }) => {
-    alert(`product id: ${productId} \nstars: ${numOfStar} \ncomment: ${comment}`);
+  const reviewHandler = async ({ productId, numOfStar, comment }) => {
+    try {
+      await dispatch(addComment(productId, comment, numOfStar)).unwrap
+      alert(`product id: ${productId} \nstars: ${numOfStar} \ncomment: ${comment}`);
+    } catch (error) {
+      toast.error(error);
+    }
   };
   useEffect(() => {
     document.title = t('pagesTitle.reviews');
