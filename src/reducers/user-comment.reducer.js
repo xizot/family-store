@@ -15,9 +15,10 @@ export const getListCommentByProductID = createAsyncThunk(
 
 export const addComment = createAsyncThunk(
   'userComment/AddComment',
-  async ({ productID, content,vote }, { rejectWithValue }) => {
+  async ({ productID, content, vote }, { rejectWithValue }) => {
     try {
-      return (await userCommentApi.addComment({ productID, content,vote })).data;
+      console.log(content)
+      return (await userCommentApi.addComment({ productID, content, vote })).data;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }
@@ -57,6 +58,16 @@ const userComment = createSlice({
     state.totalReviewStar.five = action.payload.listComment.numberFiveStars;
     state.totalPage = action.payload.listComment.numberOfPage;
   },
+  [getListCommentByProductID.pending]: (state) => {
+    state.loading = true;
+  },
+  [getListCommentByProductID.error]: (state) => {
+    state.loading = false;
+  },
+  [getListCommentByProductID.fulfilled]: (state, action) => {
+    state.add = action.payload.cmtId;
+    state.loading = true;
+  }
 });
 
 export const userCommentActions = userComment.actions;

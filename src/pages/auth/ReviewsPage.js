@@ -141,8 +141,9 @@ const ReviewsPage = (props) => {
 
   const reviewHandler = async ({ productId, numOfStar, comment }) => {
     try {
-      await dispatch(addComment(productId, comment, numOfStar)).unwrap
-      alert(`product id: ${productId} \nstars: ${numOfStar} \ncomment: ${comment}`);
+
+      await dispatch(addComment({ productID: productId, content: comment, vote: numOfStar })).unwrap();
+      toast.success("Comment success")
     } catch (error) {
       toast.error(error);
     }
