@@ -24,7 +24,7 @@ const ProductDetail = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { productId } = useParams();
-  const [toggleDescription, setToggleDescription] = useState(false);
+  const [toggleDescription, setToggleDescription] = useState(true);
   const [quantity, setQuantity] = useState(1);
   // const [selectedDistrict, setSelectedDistrict] = useState('QBT');
   const [productDetails, setProductDetails] = useState({});
@@ -89,10 +89,6 @@ const ProductDetail = (props) => {
     [dispatch]
   );
 
-  useLayoutEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   useEffect(() => {
     setCommentPage(1);
     const getProductDetailHandler = async (productId) => {
@@ -114,7 +110,9 @@ const ProductDetail = (props) => {
       getListCommentHandler({ productId, page: commentPage });
     }
   }, [dispatch, productId, commentPage, getListCommentHandler, isAuthenticated]);
-
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div className={classes.root}>
@@ -133,7 +131,7 @@ const ProductDetail = (props) => {
                   className={classes.thumbnail}>
                   {productDetails.prod_img &&
                     productDetails.prod_img.map((item, index) => (
-                      <div key={index} className={classes.sliderImage}>
+                      <div key={index} className={classes.sliderMainImage}>
                         <img src={item} alt="" />
                       </div>
                     ))}

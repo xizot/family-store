@@ -9,7 +9,13 @@ import Header from './../../components/Layout/Header';
 import SideBar from '../../components/SideBar/SideBar';
 import OrderItem from './../../components/Order/OrderItem';
 import CategoryMenu from '../../components/CategoriesMenu/CategoriesMenu';
-import { getAllOrder, getDeliveringOrder, getDeliveredOrder, getConfirmOrder, getCancelOrder } from '../../reducers/order.reducer';
+import {
+  getAllOrder,
+  getDeliveringOrder,
+  getDeliveredOrder,
+  getConfirmOrder,
+  getCancelOrder,
+} from '../../reducers/order.reducer';
 import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
@@ -49,17 +55,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OrderPage = () => {
-	const { t } = useTranslation();
+  const { t } = useTranslation();
   // const img = "https://www.shareicon.net/data/128x128/2015/10/07/113776_packages_512x512.png";
-	const img = "https://icons.veryicon.com/png/o/system/crm-android-app-icon/app-icon-sales-order.png";
+  const img =
+    'https://icons.veryicon.com/png/o/system/crm-android-app-icon/app-icon-sales-order.png';
   const classes = useStyles();
   const dispatch = useDispatch();
   // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState('');
-  const { data, delivering, totalPage, delivered, confirm, cancel } = useSelector((state) => state.order);
+  const { data, delivering, totalPage, delivered, confirm, cancel } = useSelector(
+    (state) => state.order
+  );
   const [page, setPage] = useState(1);
   const [value, setValue] = useState('0');
-
 
   const getAllOrderHandler = useCallback(
     async (selectedPage) => {
@@ -124,13 +132,13 @@ const OrderPage = () => {
     if (newValue === '2') {
       getDeliveringOrderHandler(page);
     }
-    if (newValue === "3") {
+    if (newValue === '3') {
       getDeliveredOrderHandler(page);
     }
-    if (newValue === "1") {
+    if (newValue === '1') {
       getConfirmOrderHandler(page);
     }
-    if (newValue === "4") {
+    if (newValue === '4') {
       getCancelOrderHandler(page);
     }
     setValue(newValue);
@@ -163,11 +171,11 @@ const OrderPage = () => {
                   indicatorColor="primary"
                   variant="fullWidth"
                   aria-label="full width tabs example">
-                  <Tab label= {t("ordersPage.all")} value="0" />
-                  <Tab label= {t("ordersPage.await")} value="1" />
-                  <Tab label= {t("ordersPage.delivering")} value="2" />
-                  <Tab label= {t("ordersPage.delivered")} value="3" />
-                  <Tab label= {t("ordersPage.canceled")} value="4" />
+                  <Tab label={t('ordersPage.all')} value="0" />
+                  <Tab label={t('ordersPage.await')} value="1" />
+                  <Tab label={t('ordersPage.delivering')} value="2" />
+                  <Tab label={t('ordersPage.delivered')} value="3" />
+                  <Tab label={t('ordersPage.canceled')} value="4" />
                 </TabList>
               </div>
               <div className={classes.listItem}>

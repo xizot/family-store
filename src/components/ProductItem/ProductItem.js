@@ -119,7 +119,7 @@ const ProductItem = ({
             color="textSecondary"
             component="p"
             className={classes.description}>
-            {removeHtmlTag(description)}
+            {description && removeHtmlTag(description)}
           </Typography>
         </CardContent>
       </Link>

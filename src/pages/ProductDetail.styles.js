@@ -116,9 +116,19 @@ export default makeStyles((theme) => ({
     },
   },
   sliderImage: {
+    height: 50,
+    '& img': {
+      objectFit: 'cover',
+      width: '100%',
+      height: '100%',
+    },
+  },
+  sliderMainImage: {
+    height: 300,
     '& img': {
       width: '100%',
       height: '100%',
+      objectFit: 'cover',
     },
   },
 
@@ -182,7 +192,7 @@ export default makeStyles((theme) => ({
   },
   title: {
     color: theme.palette.primary.main,
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(5),
     textAlign: 'center',
     [theme.breakpoints.down('xs')]: {
       fontSize: '1.25rem',
