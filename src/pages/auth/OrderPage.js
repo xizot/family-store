@@ -169,8 +169,7 @@ const OrderPage = () => {
                   value={value}
                   onChange={handleChange}
                   indicatorColor="primary"
-                  variant="fullWidth"
-                  aria-label="full width tabs example">
+                  variant="fullWidth">
                   <Tab label={t('ordersPage.all')} value="0" />
                   <Tab label={t('ordersPage.await')} value="1" />
                   <Tab label={t('ordersPage.delivering')} value="2" />

@@ -1,88 +1,123 @@
-import { makeStyles, Typography } from "@material-ui/core";
-import React from "react";
-import { Link } from "react-router-dom";
+import { makeStyles, Typography } from '@material-ui/core';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { moneyFormat } from '../../helpers';
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		display: "flex",
-		marginBottom: theme.spacing(1),
-		height: "110px",
-		borderBottom: `1px solid #D3D3D3`,
-		padding: theme.spacing(1),
-	},
-	image: {
-		width: 80,
-		height: 80,
-		borderRadius: "50%",
-		marginRight: theme.spacing(2),
-	},
-	name: {
-		fontWeight: "bold",
-		marginRight: theme.spacing(1),
-	},
-	status: {
-		fontWeight: "bold",
-		position: "absolute",
-		right: "30px",
-	},
-	content: {
-		flex: 1,
-	},
-	top: {
-		display: "flex",
-		flexWrap: "wrap",
-		paddingBottom: "20px",
-	},
-	body: {
-		display: "flex",
-		flexWrap: "wrap",
-	},
-	total: {
-		position: "absolute",
-		right: "30px",
-	},
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    marginBottom: theme.spacing(1),
+    minHeight: '110px',
+    borderBottom: `1px solid #D3D3D3`,
+    padding: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: '50%',
+    marginRight: theme.spacing(2),
+  },
+  name: {
+    fontWeight: 'bold',
+    marginRight: theme.spacing(1),
+  },
+  status: {
+    fontWeight: 'bold',
+    // position: 'absolute',
+    // right: '30px',
+    // margin
+  },
+  content: {
+    flex: 1,
+  },
+  top: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    paddingBottom: '20px',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
+  },
+  body: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
+  },
+  total: {
+    // position: 'absolute',
+    // right: '30px',
+  },
+  confirm: {
+    color: '#F3DA90',
+  },
+  canceled: {
+    color: '#ED8B84',
+  },
+  delivering: {
+    color: '#5081AB',
+  },
+  delivered: {
+    color: '#348c3a',
+  },
+  seeDetail: {
+    color: theme.palette.primary.main,
+    textAlign: 'right',
+    display: 'block',
+    fontWeight: 'bold',
+    marginTop: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'left',
+    },
+  },
 }));
 
-const ProductItem = ({ id, date, expected, status, total, img , detail}) => {
-	const classes = useStyles();
-	const { t } = useTranslation();
+const ProductItem = ({ id, date, expected, status, total, img, detail }) => {
+  const classes = useStyles();
+  const { t } = useTranslation();
+  console.log(status);
 
-	return (
-		<div className={classes.root}>
-			<img src={img} alt="" className={classes.image} />
-			<div className={classes.content}>
-				<div className={classes.top}>
-					<Typography variant="body1" className={classes.name}>
-						{t("ordersPage.item.orderId")} {id}
-					</Typography>
-					<Typography variant="body1" className={classes.status}>
-						{t("ordersPage.item.status")} {status.toUpperCase()}
-					</Typography>
-				</div>
-				<div className={classes.body}>
-					<div>
-						<Typography variant="body2"> {t("ordersPage.item.createdDate")} {date}</Typography>
-						<Typography variant="body2">
-							{t("ordersPage.item.deliveryDate")} {expected}
-						</Typography>
-					</div>
-					<div className={classes.total}>
-						<Typography variant="body2">
-							{t("ordersPage.item.totalPayment")} {total} VNĐ
-						</Typography>
-						<Link to={`/reviews/${id}`}>
-							<Typography
-								variant="body2"
-								style={{ float: "right", color: "#F39148" }}
-							>
-								{t("generalButtons.seeDetails")}
-							</Typography>
-						</Link>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div className={classes.root}>
+      <img src={img} alt="" className={classes.image} />
+      <div className={classes.content}>
+        <div className={classes.top}>
+          <Typography variant="body1" className={classes.name}>
+            {t('ordersPage.item.orderId')} {id}
+          </Typography>
+          <Typography variant="caption" className={classes.status}>
+            {t('ordersPage.item.status')}{' '}
+            <span className={classes[status?.toLowerCase()]}>{status?.toUpperCase()}</span>
+          </Typography>
+        </div>
+        <div className={classes.body}>
+          <div>
+            <Typography variant="body2">
+              {t('ordersPage.item.createdDate')} {date}
+            </Typography>
+            <Typography variant="body2">
+              {t('ordersPage.item.deliveryDate')} {expected}
+            </Typography>
+          </div>
+          <div className={classes.total}>
+            <Typography variant="body2">
+              <b>{t('ordersPage.item.totalPayment')}</b> {total && moneyFormat(total)} VNĐ
+            </Typography>
+            <Link to={`/reviews/${id}`} className={classes.seeDetail}>
+              {t('generalButtons.seeDetails')}
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 export default ProductItem;
