@@ -180,23 +180,11 @@ const ReviewsPage = (props) => {
                 <Grid item xs={12} sm={12} md={6}>
                   <div className={classes.TopContentDetailsLeft}>
                     <div className={classes.ChildPropertiesLabel}>
-                      <Typography variant="body1"> {t("ordersPage.item.orderId")} </Typography>
-                      <Typography variant="body1"> {t('profilepage.fullName')?.toUpperCase()}: </Typography>
-                      <Typography variant="body1">  {t('profilepage.address')?.toUpperCase()}: </Typography>
-                      <Typography variant="body1">  {t('checkoutPage.address.form.phoneNumberPlaceHolder')?.toUpperCase()}: </Typography>
+                      <Typography variant="body1"> {t("ordersPage.item.orderId")}:  </Typography>
                     </div>
                     <div className={classes.ChildPropertiesValue}>
                       <Typography variant="body1" className={classes.boldFont}>
                         {detail.billId}
-                      </Typography>
-                      <Typography variant="body1" className={classes.boldFont}>
-                        {detail.fullNameReceiver}
-                      </Typography>
-                      <Typography variant="body1" className={classes.boldFont}>
-                        {detail.billAddress}
-                      </Typography>
-                      <Typography variant="body1" className={classes.boldFont}>
-                        {(detail.phoneNumberReceiver)}
                       </Typography>
                     </div>
                   </div>
@@ -209,6 +197,30 @@ const ReviewsPage = (props) => {
                     <div className={classes.ChildPropertiesValue}>
                       <Typography variant="body1" className={classes.boldFont}>
                         {detail.billStatus?.toUpperCase()}
+                      </Typography>
+                    </div>
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={12} md={1}>
+                  <div className={classes.TopContentDetailsLeft}>
+                    <div className={classes.ChildPropertiesLabel}>
+                      <Typography variant="body1"> NAME: </Typography>
+                      <Typography variant="body1">  {t('profilepage.address')?.toUpperCase()}: </Typography>
+                      <Typography variant="body1">  PHONE: </Typography>
+                    </div>
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={12} md={6}>
+                  <div className={classes.TopContentDetailsLeft}>
+                    <div className={classes.ChildPropertiesValue}>
+                      <Typography variant="body1" className={classes.boldFont}>
+                        {detail.fullNameReceiver}
+                      </Typography>
+                      <Typography variant="body1" className={classes.boldFont}>
+                        {detail.billAddress}
+                      </Typography>
+                      <Typography variant="body1" className={classes.boldFont}>
+                        {(detail.phoneNumberReceiver)}
                       </Typography>
                     </div>
                   </div>
