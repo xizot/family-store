@@ -1,6 +1,7 @@
 import AdminMenu from '../../AdminMenu/AdminMenu';
 import HeaderAdmin from '../../Layout/HeaderAdmin';
-import { Person, Menu, Loyalty } from '@material-ui/icons';
+import { Person, Loyalty, Eco, TurnedIn } from '@material-ui/icons';
+
 import SideBar from '../../SideBar/SideBar';
 import UserInfomation from '../../UserInfomation/UserInfomation';
 import Footer from '../../Layout/Footer';
@@ -30,43 +31,30 @@ const useStyles = makeStyles((theme) => ({
 export const AdminTemplate = ({ children }) => {
   const classes = useStyles();
   const user = useSelector((state) => state.auth.user);
-	const { t } = useTranslation();
+  const { t } = useTranslation();
 
-	const options = [
-		{
-			icon: Menu,
-			title: t('adminPage.sideBar.dashboardName'),
-			link: '/admin/',
-		},
-		{
-			icon: Loyalty,
-			title: t('adminPage.sideBar.product.name'),
-			subItems: [
-				{
-					title: t('adminPage.sideBar.product.category'),
-					link: '/admin/categories',
-				},
-				{
-					title: t('adminPage.sideBar.product.subCategory'),
-					link: '/admin/sub-categories',
-				},
-				{
-					title: t('adminPage.sideBar.product.product'),
-					link: '/admin/products',
-				},
-			],
-		},
-		{
-			icon: Person,
-			title: t('adminPage.sideBar.user'),
-			link: '/admin/users',
-		},
-		// {
-		//   icon: AttachMoney,
-		//   title: 'Orders',
-		//   link: '/admin/orders',
-		// },
-	];
+  const options = [
+    {
+      icon: Loyalty,
+      title: t('adminPage.sideBar.product.category'),
+      link: '/admin/categories',
+    },
+    {
+      icon: TurnedIn,
+      title: t('adminPage.sideBar.product.subCategory'),
+      link: '/admin/sub-categories',
+    },
+    {
+      icon: Eco,
+      title: t('adminPage.sideBar.product.product'),
+      link: '/admin/products',
+    },
+    {
+      icon: Person,
+      title: t('adminPage.sideBar.user'),
+      link: '/admin/users',
+    },
+  ];
 
   return (
     <>
@@ -74,7 +62,7 @@ export const AdminTemplate = ({ children }) => {
       <SideBar>
         <UserInfomation
           avatar={`${process.env.PUBLIC_URL + '/img/default-avatar.png'}`}
-          name=  {t('adminPage.sideBar.idName') + ` ${user.accId}`}
+          name={t('adminPage.sideBar.idName') + ` ${user.accId}`}
           position={t('adminPage.sideBar.positionName')}
         />
         <AdminMenu options={options} />

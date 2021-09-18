@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import { Redirect } from 'react-router';
 import UserManager from '../pages/auth/Admin/UserManager/UserManager';
 import Checkout from '../pages/Checkout/Checkout';
 import CheckoutSuccess from '../pages/Checkout/CheckoutSuccess/CheckoutSuccess';
@@ -19,7 +20,6 @@ const ReviewsPage = lazy(() => import('../pages/auth/ReviewsPage'));
 const AdminProductPage = lazy(() => import('../pages/auth/Admin/Product/Product'));
 const AdminSubCatePage = lazy(() => import('../pages/auth/Admin/SubCategory/SubCategory'));
 const AdminCategoryPage = lazy(() => import('../pages/auth/Admin/Category/Category'));
-const Dashboard = lazy(() => import('../pages/auth/Admin/Dash.js'));
 
 export const routes = [
   {
@@ -129,6 +129,10 @@ export const routes = [
   },
 ];
 
+const ComponentRedirectToCategories = () => {
+  return <Redirect to="/admin/categories" />;
+};
+
 export const adminRoutes = [
   {
     path: '/admin/users',
@@ -162,7 +166,7 @@ export const adminRoutes = [
     path: '/admin',
     protected: false,
     exact: true,
-    component: Dashboard,
+    component: ComponentRedirectToCategories,
     roles: [Role.Admin],
   },
 ];
