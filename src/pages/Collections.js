@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Collections = (props) => {
-	const { t } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles();
   const { categoryId: cateID } = useParams();
   const [page, setPage] = useState(1);
@@ -127,11 +127,8 @@ const Collections = (props) => {
     dispatch(uiActions.hideModal());
 
     categories.forEach((category, index) => {
-      if (catName.length > 0) {
-        return;
-      }
       category.subCategories.forEach((sub) => {
-        if (sub.cateId === +cateID) {
+        if (+sub.cateId === +cateID) {
           setCatName(sub.cateName);
           return;
         }
