@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { moneyFormat } from '../../helpers';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateStatus } from '../../reducers/order.reducer'
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -92,18 +94,23 @@ const useStyles = makeStyles((theme) => ({
 const ProductItem = ({ id, date, expected, status, total, img, detail }) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const [check,setCheck] = useState(true);
-  const [disablec,setDis] = useState(false)
+  const dispatch = useDispatch();
+  const [check, setCheck] = useState(true);
+  const [disablec, setDis] = useState(false)
 
   useEffect(() => {
-    if(status === "shipping"){
+    if (status === "shipping") {
       setCheck(false);
     }
-  },[status])
+  }, [status])
 
-  const clickHanlder = () => {
+  const clickHanlder = async () => {
     setDis(true);
-
+    try {
+      await dispatch(updateStatus({ billId: id, status:'delivered' })).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <div className={classes.root}>
@@ -137,7 +144,7 @@ const ProductItem = ({ id, date, expected, status, total, img, detail }) => {
             <div className={classes.cdc}>
               <button hidden={check} disabled={disablec} onClick={clickHanlder}>Tôi đã nhận được hàng</button>
             </div>
-        
+
           </div>
         </div>
       </div>

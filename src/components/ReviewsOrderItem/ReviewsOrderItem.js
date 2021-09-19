@@ -95,15 +95,13 @@ const ReviewsOrderItem = ({ id, name, quantity, img, onReview, cmt, status }) =>
 		getAllCommentHandler(id, 10)
 	}, [getAllCommentHandler, id])
 	useEffect(() => {
-		for (let i = 0; i < comments.length; i++) {
-			if (comments[i].user_id === users.accId) {
-				setCheck(true)
-			}
-		}
 		if (cmt === true) {
 			setCheck(true)
 		}
-	}, [comments, id, cmt, users]);
+		if(status === "delivered"){
+			setCheck(true);
+		}
+	}, [comments, id, cmt, users,status]);
 
 	return (
 		<div className={classes.root}>

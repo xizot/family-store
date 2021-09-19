@@ -16,10 +16,14 @@ const getCancel = (page = 1, limit = 50) => {
     return axios.post('/api/bill/list/cancel', { page, limit });
 };
 const getDetail = (billId) => {
-    return axios.post('/api/bill/details',{billId})
+    return axios.post('/api/bill/details', { billId })
+}
+const updateStatus = (billId, status) => {
+    return axios.post('/api/bill/update-status', { billId, status })
 }
 const orderApi = {
     getAll,
+    updateStatus,
     getDetail,
     getDelivering,
     getDelivered,

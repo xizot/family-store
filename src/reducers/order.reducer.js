@@ -80,6 +80,16 @@ export const getDetailOrder = createAsyncThunk(
     }
 );
 
+export const updateStatus = createAsyncThunk(
+    'order/updateStatus',
+    async ( {billId, status} , { rejectWithValue }) => {
+        try {
+            return (await orderApi.updateStatus(billId,status)).data;
+        } catch (error) {
+            return rejectWithValue(getResponseError(error));
+        }
+    }
+);
 const orderSlice = createSlice({
     name: 'order',
     initialState,

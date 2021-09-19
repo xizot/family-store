@@ -243,6 +243,7 @@ const ReviewsPage = (props) => {
                     key={index}
                     id={item.productID}
                     img={item.images}
+                    status={detail.status}
                     name={item.prodName}
                     quantity={item.prodQuantity}
                     cmt={check}
