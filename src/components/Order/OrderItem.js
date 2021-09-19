@@ -96,7 +96,7 @@ const ProductItem = ({ id, date, expected, status, total, img, detail }) => {
   const [disablec,setDis] = useState(false)
 
   useEffect(() => {
-    if(status === "confirm"){
+    if(status === "shipping"){
       setCheck(false);
     }
   },[status])
