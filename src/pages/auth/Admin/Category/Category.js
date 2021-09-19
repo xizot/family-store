@@ -78,9 +78,9 @@ const SubCateManager = (props) => {
   const DeleteConfirm = async () => {
     try {
       await dispatch(deleteCategory(selectedId)).unwrap();
-      await getListCategoryHandler(page);
+      await getListCategoryHandler(page, limit);
       // toast.success(`Delete category id ${selectedId} successfully`);
-			toast.success(t('toastMessages.admin.category.deleteSuccess'));
+      toast.success(t('toastMessages.admin.category.deleteSuccess'));
     } catch (error) {
       console.log(error);
       toast.error(error);
@@ -118,28 +118,32 @@ const SubCateManager = (props) => {
   return (
     <div className={classes.root}>
       <CategoryModal
-        title={type === 'UPDATE' ? t('adminPage.category.modal.updateTitle') : t('adminPage.category.modal.addingTitle')}
+        title={
+          type === 'UPDATE'
+            ? t('adminPage.category.modal.updateTitle')
+            : t('adminPage.category.modal.addingTitle')
+        }
         isOpen={openModal}
         onClose={handleClose}
         item={itemSelected}
         type={type}
-        getList={getListCategoryHandler.bind(null, page)}
+        getList={getListCategoryHandler.bind(null, page, limit)}
       />
 
       <ModalConfirm
-        title= {t('deleteModal.category')}
+        title={t('deleteModal.category')}
         isOpen={openDeleteModal}
         onClose={handleClose}
         onConfirm={DeleteConfirm}
       />
       <div className={classes.section}>
         <Typography variant="h5" className={classes.title}>
-					{t('adminPage.category.title')}
+          {t('adminPage.category.title')}
         </Typography>
         <div className={classes.filter}>
           <div className={classes.search}>
             <SearchInputV2
-              placeholder= {t('adminPage.category.searchPlaceHolder')}
+              placeholder={t('adminPage.category.searchPlaceHolder')}
               initialValue={search}
               onChange={searchChangeHandler}
             />
@@ -160,7 +164,7 @@ const SubCateManager = (props) => {
         {loading ? (
           <TableLoading />
         ) : error?.length > 0 ? (
-          <TableError message={error} onTryAgain={getListCategoryHandler.bind(null, page)} />
+          <TableError message={error} onTryAgain={getListCategoryHandler.bind(null, page, limit)} />
         ) : data?.length > 0 ? (
           <Paper className={classes.section}>
             <TableContainer>
@@ -170,9 +174,18 @@ const SubCateManager = (props) => {
                     <TableCell style={{ width: 20, textAlign: 'center', fontWeight: 'bold' }}>
                       #
                     </TableCell>
-                    <TableCell style={{ textAlign: 'center' }}> {t('adminPage.category.table.categoryId')} </TableCell>
-                    <TableCell style={{ textAlign: 'center' }}> {t('adminPage.category.table.categoryName')} </TableCell>
-                    <TableCell style={{ textAlign: 'center' }}>  {t('adminPage.category.table.subCategoryCount')} </TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>
+                      {' '}
+                      {t('adminPage.category.table.categoryId')}{' '}
+                    </TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>
+                      {' '}
+                      {t('adminPage.category.table.categoryName')}{' '}
+                    </TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>
+                      {' '}
+                      {t('adminPage.category.table.subCategoryCount')}{' '}
+                    </TableCell>
                     <TableCell> {t('generalTable.lastModified')} </TableCell>
                     <TableCell> {t('generalTable.options')} </TableCell>
                   </TableRow>
@@ -229,8 +242,8 @@ const SubCateManager = (props) => {
           </Paper>
         ) : (
           <TableError
-            message= {t('generalTable.emptyData')}
-            onTryAgain={getListCategoryHandler.bind(null, page)}
+            message={t('generalTable.emptyData')}
+            onTryAgain={getListCategoryHandler.bind(null, page, limit)}
           />
         )}
       </div>
