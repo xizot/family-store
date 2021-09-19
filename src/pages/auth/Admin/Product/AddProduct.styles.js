@@ -8,10 +8,16 @@ export default makeStyles((theme) => ({
   content: {
     background: '#fff',
     padding: theme.spacing(2, 5),
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(2),
+    },
   },
   title: {
     textTransform: 'uppercase',
     fontWeight: 'bold',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 18,
+    },
   },
   subTitle: {
     fontWeight: 'bold',
@@ -26,7 +32,8 @@ export default makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
 
     [theme.breakpoints.down('xs')]: {
-      width: 'calc(100% - 50px)',
+      width: '100%',
+      height: 250,
     },
   },
   listUpload: {},

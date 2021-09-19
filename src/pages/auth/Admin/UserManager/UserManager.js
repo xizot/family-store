@@ -79,7 +79,7 @@ const UserManager = (props) => {
       await dispatch(deleteAccount({ accId: selectedId })).unwrap();
       getListUserHandler(page, limit);
       // toast.success(`Delete account id: [${selectedId}] successfully`);
-			toast.success(t('toastMessages.admin.user.deleteSuccess'));
+      toast.success(t('toastMessages.admin.user.deleteSuccess'));
       closeModalHandler();
     } catch (error) {
       toast.error(error);
@@ -108,10 +108,10 @@ const UserManager = (props) => {
         prevValue.map((item) => (+item.accId === +accId ? { ...item, accRole: newRole } : item))
       );
       // toast.success(`Update [ROLE] for id: [${accId}] > ${newRole}`);
-			toast.success(t('toastMessages.admin.user.updateRoleSuccess') + `${accId} > ${newRole}`);
+      toast.success(t('toastMessages.admin.user.updateRoleSuccess') + `${accId} > ${newRole}`);
     } catch (error) {
       // toast.error(`Update [ROLE] for id: [${accId}] failed`);
-			toast.error(t('toastMessages.admin.user.updateRoleFail') + ` ${accId}`)
+      toast.error(t('toastMessages.admin.user.updateRoleFail') + ` ${accId}`);
     }
   };
 
@@ -170,7 +170,7 @@ const UserManager = (props) => {
     getListUserHandler(1, 10);
   }, [getListUserHandler]);
 
-	useEffect(() => {
+  useEffect(() => {
     document.title = t('pagesTitle.admin.user');
   }, [t]);
 
@@ -283,6 +283,7 @@ const UserManager = (props) => {
                               onChange={(e) => statusChangeHandler(e, account.accId)}>
                               <option value={0}>Active</option>
                               <option value={1}>Blocked</option>
+                              <option value={2}>Not Active</option>
                             </Select>
                           </TableCell>
                           <TableCell>

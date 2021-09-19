@@ -38,15 +38,16 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'flex-end',
+    marginRight: theme.spacing(2),
   },
   filterItem: {
     background: theme.palette.primary.main,
     minWidth: 200,
-    '&:not(:last-child)': {
-      marginRight: theme.spacing(2),
-    },
+    marginRight: theme.spacing(2),
+    color: '#fff',
     [theme.breakpoints.down('xs')]: {
       marginBottom: theme.spacing(1),
+
       width: '100%',
       justifyContent: 'space-between',
       '&:not(:last-child)': {
@@ -127,6 +128,7 @@ export default makeStyles((theme) => ({
     },
   },
   textField: {
+    marginRight: theme.spacing(2),
     '& select': {
       paddingTop: 8,
       paddingBototm: 8,
@@ -135,6 +137,7 @@ export default makeStyles((theme) => ({
       outline: 'none',
       borderRadius: theme.shape.borderRadius,
       marginBottom: theme.spacing(1),
+
       maxWidth: 250,
       whiteSpace: 'nowrap',
       overflow: 'hidden',

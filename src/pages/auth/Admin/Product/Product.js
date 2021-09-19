@@ -99,9 +99,9 @@ const ProductManager = (props) => {
     try {
       await dispatch(deleteProduct(selectedId)).unwrap();
       // toast.success(`Delete product id ${selectedId} successfully`);
-			toast.success(t('toastMessages.admin.product.deleteSuccess'));
+      toast.success(t('toastMessages.admin.product.deleteSuccess'));
 
-      getListProductHandler(page, limit);
+      getListProductHandler(selectedCategory, page, limit);
     } catch (err) {
       console.error(err);
       toast.error(err);
@@ -188,7 +188,7 @@ const ProductManager = (props) => {
           prodId={selectedId}
         />
         <ModalConfirm
-          title= {t('deleteModal.product')}
+          title={t('deleteModal.product')}
           isOpen={openDeleteModal}
           onClose={closeModalHandler}
           onConfirm={productDeleteHandler}
@@ -196,12 +196,12 @@ const ProductManager = (props) => {
 
         <div className={classes.section}>
           <Typography variant="h5" className={classes.title}>
-						{t('adminPage.product.title')}
+            {t('adminPage.product.title')}
           </Typography>
           <div className={classes.filter}>
             <div className={classes.search}>
               <SearchInputV2
-                placeholder= {t('adminPage.product.searchPlaceHolder')}
+                placeholder={t('adminPage.product.searchPlaceHolder')}
                 initialValue={search}
                 onChange={searchChangeHandler}
               />
@@ -231,7 +231,6 @@ const ProductManager = (props) => {
                 startIcon={<Add />}
                 variant="contained"
                 color="primary"
-                className={classes.addButton}
                 onClick={openAddModalHandler}>
                 {t('generalButtons.add')}
               </Button>
@@ -255,14 +254,32 @@ const ProductManager = (props) => {
                     <TableRow className={classes.tableHead}>
                       <TableCell style={{ fontWeight: 'bold' }}>#</TableCell>
                       <TableCell> {t('adminPage.product.table.productId')} </TableCell>
-                      <TableCell width={200}> {t('adminPage.product.table.productName')} </TableCell>
+                      <TableCell width={200}>
+                        {' '}
+                        {t('adminPage.product.table.productName')}{' '}
+                      </TableCell>
                       <TableCell> {t('adminPage.product.table.image')} </TableCell>
                       <TableCell> {t('adminPage.product.table.category')} </TableCell>
-                      <TableCell style={{ minWidth: '95px' }}> {t('adminPage.product.table.quantity')} </TableCell>
-                      <TableCell style={{ minWidth: '105px' }}> {t('adminPage.product.table.price')} </TableCell>
-                      <TableCell width={500}> {t('adminPage.product.table.description')} </TableCell>
-                      <TableCell style={{ minWidth: '140px' }}> {t('generalTable.lastModified')} </TableCell>
-                      <TableCell align="center" style={{ minWidth: '95px' }}>  {t('generalTable.options')}  </TableCell>
+                      <TableCell style={{ minWidth: '95px' }}>
+                        {' '}
+                        {t('adminPage.product.table.quantity')}{' '}
+                      </TableCell>
+                      <TableCell style={{ minWidth: '105px' }}>
+                        {' '}
+                        {t('adminPage.product.table.price')}{' '}
+                      </TableCell>
+                      <TableCell width={500}>
+                        {' '}
+                        {t('adminPage.product.table.description')}{' '}
+                      </TableCell>
+                      <TableCell style={{ minWidth: '140px' }}>
+                        {' '}
+                        {t('generalTable.lastModified')}{' '}
+                      </TableCell>
+                      <TableCell align="center" style={{ minWidth: '95px' }}>
+                        {' '}
+                        {t('generalTable.options')}{' '}
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -303,7 +320,9 @@ const ProductManager = (props) => {
                           </TableCell>
                           <TableCell>
                             <Box width={100} style={{ wordBreak: 'break-word' }}>
-                              {row.prod_updated_date || row.prod_created_date || t('generalTable.unknown')}
+                              {row.prod_updated_date ||
+                                row.prod_created_date ||
+                                t('generalTable.unknown')}
                             </Box>
                           </TableCell>
                           <TableCell align="center">
@@ -335,7 +354,7 @@ const ProductManager = (props) => {
             </Paper>
           ) : (
             <TableError
-              message= {t('generalTable.emptyData')}
+              message={t('generalTable.emptyData')}
               onTryAgain={getListProductHandler.bind(null, selectedCategory, page, limit)}
             />
           )}
