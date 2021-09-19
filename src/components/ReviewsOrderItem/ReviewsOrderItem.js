@@ -98,13 +98,14 @@ const ReviewsOrderItem = ({ id, name, quantity, img, onReview, cmt, status }) =>
 		if (cmt === true) {
 			setCheck(true)
 		}
-		if(status === "delivered"){
+		if(status !== "delivered"){
 			setCheck(true);
 		}
 	}, [comments, id, cmt, users,status]);
 
 	return (
 		<div className={classes.root}>
+			{console.log(status)}
 			<Grid container spacing={2}>
 				<Grid item sm={12} md={6} className={classes.productInfo}>
 					<div className={classes.image}>
