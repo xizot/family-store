@@ -15,10 +15,10 @@ export const getListCommentByProductID = createAsyncThunk(
 
 export const addComment = createAsyncThunk(
   'userComment/AddComment',
-  async ({ productID, content, vote }, { rejectWithValue }) => {
+  async ({ billID, productID, content, vote }, { rejectWithValue }) => {
     try {
       console.log(content);
-      return (await userCommentApi.addComment({ productID, content, vote })).data;
+      return (await userCommentApi.addComment({ billID, productID, content, vote })).data;
     } catch (error) {
       return rejectWithValue(getResponseError(error));
     }

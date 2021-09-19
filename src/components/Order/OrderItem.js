@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { moneyFormat } from '../../helpers';
-
+import { useEffect, useState } from 'react';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -78,13 +78,33 @@ const useStyles = makeStyles((theme) => ({
       textAlign: 'left',
     },
   },
+  cdc: {
+    textAlign: 'right',
+    display: 'block',
+    fontWeight: 'bold',
+    marginTop: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'left',
+    },
+  }
 }));
 
 const ProductItem = ({ id, date, expected, status, total, img, detail }) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  console.log(status);
+  const [check,setCheck] = useState(true);
+  const [disablec,setDis] = useState(false)
 
+  useEffect(() => {
+    if(status === "confirm"){
+      setCheck(false);
+    }
+  },[status])
+
+  const clickHanlder = () => {
+    setDis(true);
+
+  }
   return (
     <div className={classes.root}>
       <img src={img} alt="" className={classes.image} />
@@ -111,9 +131,13 @@ const ProductItem = ({ id, date, expected, status, total, img, detail }) => {
             <Typography variant="body2">
               <b>{t('ordersPage.item.totalPayment')}</b> {total && moneyFormat(total)} VNĐ
             </Typography>
-            <Link to={`/reviews/${id}`} className={classes.seeDetail}>
+            <Link to={`/reviews/${id}/`} className={classes.seeDetail}>
               {t('generalButtons.seeDetails')}
             </Link>
+            <div className={classes.cdc}>
+              <button hidden={check} disabled={disablec} onClick={clickHanlder}>Tôi đã nhận được hàng</button>
+            </div>
+        
           </div>
         </div>
       </div>

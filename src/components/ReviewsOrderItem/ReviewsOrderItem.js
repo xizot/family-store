@@ -5,9 +5,11 @@ import {
 	Button,
 	TextField,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import GenerateStarV2 from "../GenerateStarV2/GenerateStarV2";
 import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import { getListCommentByProductID } from "../../reducers/user-comment.reducer";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -56,11 +58,15 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ReviewsOrderItem = ({ id, name, quantity, img, onReview }) => {
+const ReviewsOrderItem = ({ id, name, quantity, img, onReview, cmt, status }) => {
+	const dispatch = useDispatch();
 	const { t } = useTranslation();
+	const comments = useSelector((state) => state.userComment.comments);
+	const users = useSelector((state) => state.auth.user)
 	const classes = useStyles();
 	const [numOfStar, setNumOfStar] = useState(5);
 	const [comment, setComment] = useState("");
+	const [check, setCheck] = useState(false);
 
 	const commentHandler = (e) => {
 		setComment(e.target.value);
@@ -75,12 +81,36 @@ const ReviewsOrderItem = ({ id, name, quantity, img, onReview }) => {
 			comment,
 		});
 	};
+	const getAllCommentHandler = useCallback(
+		async (productID, selectedPage) => {
+			try {
+				await dispatch(getListCommentByProductID({ productID, selectedPage })).unwrap();
+			} catch (err) {
+				console.log(err);
+			}
+		},
+		[dispatch]
+	);
+	useEffect(() => {
+		getAllCommentHandler(id, 10)
+	}, [getAllCommentHandler, id])
+	useEffect(() => {
+		for (let i = 0; i < comments.length; i++) {
+			if (comments[i].user_id === users.accId) {
+				setCheck(true)
+			}
+		}
+		if (cmt === true) {
+			setCheck(true)
+		}
+	}, [comments, id, cmt, users]);
+
 	return (
 		<div className={classes.root}>
 			<Grid container spacing={2}>
 				<Grid item sm={12} md={6} className={classes.productInfo}>
 					<div className={classes.image}>
-						<img src={img} alt="Product Img" />
+						<a href={`/details/${id}`}><img src={img} alt="Product Img" /></a>
 					</div>
 					<div className={classes.nameAndQuantity}>
 						<div className={classes.name}>
@@ -112,7 +142,7 @@ const ReviewsOrderItem = ({ id, name, quantity, img, onReview }) => {
 						multiline
 						rows={4}
 						variant="filled"
-						placeholder= {t("ordersPage.details.placeHolder")}
+						placeholder={t("ordersPage.details.placeHolder")}
 						className={classes.textarea}
 						value={comment}
 						onChange={commentHandler}
@@ -122,6 +152,7 @@ const ReviewsOrderItem = ({ id, name, quantity, img, onReview }) => {
 						color="primary"
 						className={classes.executeButton}
 						onClick={reviewHandler}
+						disabled={check}
 					>
 						{t("generalButtons.review")}
 					</Button>

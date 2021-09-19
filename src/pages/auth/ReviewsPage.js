@@ -119,8 +119,8 @@ const ReviewsPage = (props) => {
   const location = useLocation();
   // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState('');
+  const [check,setCheck] = useState(false);
   let query = location.pathname.slice(9) || 1; //?id=123
-
   const detail = useSelector((state) => state.order.detail);
 
 
@@ -141,8 +141,8 @@ const ReviewsPage = (props) => {
 
   const reviewHandler = async ({ productId, numOfStar, comment }) => {
     try {
-
-      await dispatch(addComment({ productID: productId, content: comment, vote: numOfStar })).unwrap();
+      await dispatch(addComment({billID:detail.billId, productID: productId, content: comment, vote: numOfStar })).unwrap();
+      setCheck(true);
       toast.success("Comment success")
     } catch (error) {
       toast.error(error);
@@ -245,6 +245,7 @@ const ReviewsPage = (props) => {
                     img={item.images}
                     name={item.prodName}
                     quantity={item.prodQuantity}
+                    cmt={check}
                     onReview={reviewHandler}
                   />
                 ))}
