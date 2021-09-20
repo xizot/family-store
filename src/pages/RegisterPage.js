@@ -129,7 +129,7 @@ const RegisterPage = () => {
     inputChangeHandler: fullNameChangeHandler,
     inputIsValid: fullNameIsValid,
     inputReset: fullNameReset,
-  } = useInput(Validate.isNotEmpty);
+  } = useInput((value) => Validate.isNotEmpty(value) && value?.length <= 100);
 
   const phoneNumberChangeHandler = (value) => {
     setPhoneNumber(value);

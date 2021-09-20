@@ -74,7 +74,7 @@ const BasicProfilePanel = ({
     inputBlurHandler: fullNameBlurHandler,
     inputChangeHandler: fullNameChangeHandler,
     inputIsValid: fullNameIsValid,
-  } = useInput((value) => Validate.isNotEmpty(value), pFullName || '');
+  } = useInput((value) => Validate.isNotEmpty(value) && value?.length <= 100, pFullName || '');
 
   const phoneNumberChangeHandler = (value) => {
     setPhoneNumber(value);

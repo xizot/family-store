@@ -82,29 +82,28 @@ const cartSlice = createSlice({
       const { cartAmount, cartId } = action.payload;
       const existingItemIndex = state.data.findIndex((item) => item.cartId === cartId);
       const existingItem = state.data[existingItemIndex];
-      const newItemTotalPrice = cartAmount * +existingItem.prodPrice;
 
-      const newTotalAmount = +state.totalAmount - +existingItem.totalPrice + newItemTotalPrice;
-
-      if (existingItem.cartAmount === 1) {
+      if (cartAmount === 0) {
         state.data.splice(existingItemIndex, 1);
       } else {
-        const updatedItem = {
-          ...existingItem,
-          cartAmount: cartAmount,
-        };
-
-        updatedItem.totalPrice = newItemTotalPrice;
-
-        state.data[existingItemIndex] = updatedItem;
+        const newItemTotalPrice = cartAmount * +existingItem.prodPrice;
+        state.data = state.data.map((item) =>
+          item.cartId === cartId
+            ? { ...item, cartAmount: cartAmount, totalPrice: newItemTotalPrice }
+            : item
+        );
       }
+
+      const newTotalAmount = state.data.reduce(
+        (prevItem, currentItem) => prevItem + currentItem.totalPrice,
+        0
+      );
 
       state.totalAmount = newTotalAmount;
     },
     [userAddToCart.fulfilled]: (state, action) => {
       const { quantity, formatItem: newItem } = action.payload;
       const newItemPrice = quantity * +newItem.prodPrice;
-      const newTotalAmount = +state.totalAmount + newItemPrice;
       const existingItemIndex = state.data.findIndex((item) => item.prodId === newItem.prodId);
       const existingItem = state.data[existingItemIndex];
 
@@ -123,6 +122,10 @@ const cartSlice = createSlice({
 
         state.data[existingItemIndex] = updatedItem;
       }
+      const newTotalAmount = state.data.reduce(
+        (prevItem, currentItem) => prevItem + currentItem.totalPrice,
+        0
+      );
       state.totalAmount = newTotalAmount;
     },
     [userDeleteCart.fulfilled]: (state, action) => {
