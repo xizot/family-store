@@ -51,7 +51,7 @@ const TabPanel = (props) => {
 };
 
 const Checkout = () => {
-	const { t } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const [tabValue, setTabValue] = useState(0);
@@ -244,11 +244,15 @@ const Checkout = () => {
   }, [getListCityHandler]);
 
   useEffect(() => {
-    dispatch(uiActions.hideModal());
-  }, [dispatch]);
+    console.log(cart);
+    if (cart?.length <= 0) history.push('/');
+  }, [cart, history]);
+
   useEffect(() => {
     document.title = t('pagesTitle.checkout');
-  }, [t]);
+    dispatch(uiActions.hideModal());
+  }, [t, dispatch]);
+
   return (
     <>
       <div className={classes.root}>
@@ -261,20 +265,20 @@ const Checkout = () => {
             <div className={classes.checkoutPage}>
               <Link to="/" className={classes.back}>
                 <AiOutlineLeft />
-                 {t("generalButtons.back")}
+                {t('generalButtons.back')}
               </Link>
               <div className={classes.section}>
                 <Typography variant="subtitle1" className={classes.title}>
-									{t("checkoutPage.address.title")}
+                  {t('checkoutPage.address.title')}
                 </Typography>
                 <div>
                   <Typography variant="body1" className={classes.subTitle}>
-										{t("checkoutPage.address.form.titleTop")}
+                    {t('checkoutPage.address.form.titleTop')}
                   </Typography>
                   <div className={classes.textField}>
                     <TextField
                       size="small"
-                      label= {t("checkoutPage.address.form.namePlaceHolder")}
+                      label={t('checkoutPage.address.form.namePlaceHolder')}
                       variant="filled"
                       fullWidth
                       value={fullnameEntered}
@@ -287,7 +291,7 @@ const Checkout = () => {
                   <div className={classes.textField}>
                     <TextField
                       size="small"
-                      label= {t("checkoutPage.address.form.phoneNumberPlaceHolder")}
+                      label={t('checkoutPage.address.form.phoneNumberPlaceHolder')}
                       variant="filled"
                       fullWidth
                       type="number"
@@ -305,7 +309,7 @@ const Checkout = () => {
                     variant="body1"
                     className={classes.subTitle}
                     style={{ marginBottom: 8 }}>
-                    {t("checkoutPage.address.form.titleMid")}
+                    {t('checkoutPage.address.form.titleMid')}
                   </Typography>
 
                   <FormControl component="fieldset" color="primary">
@@ -318,13 +322,13 @@ const Checkout = () => {
                       <FormControlLabel
                         value={0}
                         control={<Radio color="primary" />}
-                        label= {t("generalButtons.newAddress")}
+                        label={t('generalButtons.newAddress')}
                       />
                       <FormControlLabel
                         value={1}
                         color="primary"
                         control={<Radio color="primary" />}
-                        label= {t("generalButtons.savedAddress")}
+                        label={t('generalButtons.savedAddress')}
                       />
                     </RadioGroup>
                   </FormControl>
@@ -363,7 +367,7 @@ const Checkout = () => {
 
               <div className={classes.section}>
                 <Typography variant="subtitle1" className={classes.title}>
-									{t("checkoutPage.others.title")}
+                  {t('checkoutPage.others.title')}
                   <Typography
                     className={classes.expectedDate}
                     component="span"
@@ -374,7 +378,7 @@ const Checkout = () => {
                 </Typography>
 
                 <TextField
-                  label= 	{t("checkoutPage.others.form.note")}
+                  label={t('checkoutPage.others.form.note')}
                   variant="filled"
                   fullWidth
                   multiline
@@ -386,7 +390,7 @@ const Checkout = () => {
                 <Box marginTop={5} marginBottom={1}>
                   <Box className={classes.billInfo}>
                     <Typography variant="subtitle1" className={classes.billInfoLabel}>
-                      {t("checkoutPage.others.form.price")}
+                      {t('checkoutPage.others.form.price')}
                     </Typography>
                     <Typography variant="subtitle1" component="span" style={{ fontWeight: 'bold' }}>
                       {moneyFormat(totalAmount)}VND
@@ -394,7 +398,7 @@ const Checkout = () => {
                   </Box>
                   <Box className={classes.billInfo}>
                     <Typography variant="subtitle1" className={classes.billInfoLabel}>
-											{t("checkoutPage.others.form.deliveryPrice")}
+                      {t('checkoutPage.others.form.deliveryPrice')}
                     </Typography>
                     <Typography variant="subtitle1" component="span">
                       {moneyFormat(shippingFee)}VND
@@ -403,7 +407,7 @@ const Checkout = () => {
                   </Box>
                   <Box className={classes.billInfo}>
                     <Typography variant="subtitle1" className={classes.billInfoLabel}>
-											{t("checkoutPage.others.form.totalPayment")}
+                      {t('checkoutPage.others.form.totalPayment')}
                     </Typography>
                     <Typography variant="subtitle1" component="span" style={{ fontWeight: 'bold' }}>
                       {moneyFormat(Number(totalAmount) + Number(shippingFee))}VND
@@ -419,10 +423,10 @@ const Checkout = () => {
                 disabled={!billIsValid}
                 onClick={addBillHandler}>
                 <Typography variant="body1" style={{ fontWeight: 'bold' }}>
-									{t("generalButtons.confirm")}
+                  {t('generalButtons.confirm')}
                 </Typography>
                 <Typography variant="body2" style={{ fontSize: 10 }}>
-									{t("checkoutPage.others.form.deliveryMethod")}
+                  {t('checkoutPage.others.form.deliveryMethod')}
                 </Typography>
               </ButtonWithLoading>
             </div>
