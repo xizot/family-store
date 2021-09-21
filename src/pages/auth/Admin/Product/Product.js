@@ -87,7 +87,7 @@ const ProductManager = (props) => {
     const newLimit = +event.target.value;
     setLimit(newLimit);
     setPage(0);
-    getListProductHandler(0, newLimit);
+    getListProductHandler(1, newLimit);
   };
 
   const pageChangeHandler = (event, value) => {
@@ -100,8 +100,8 @@ const ProductManager = (props) => {
       await dispatch(deleteProduct(selectedId)).unwrap();
       // toast.success(`Delete product id ${selectedId} successfully`);
       toast.success(t('toastMessages.admin.product.deleteSuccess'));
-
-      getListProductHandler(selectedCategory, page, limit);
+      setPage(0);
+      getListProductHandler(selectedCategory, page + 1, limit);
     } catch (err) {
       console.error(err);
       toast.error(err);
@@ -140,7 +140,7 @@ const ProductManager = (props) => {
   useEffect(() => {
     setProductInfo({ listProduct: [], numberOfPage: 0 });
     if (selectedCategory !== '') {
-      getListProductHandler(selectedCategory, page, limit);
+      getListProductHandler(selectedCategory, page + 1, limit);
     }
   }, [selectedCategory, page, limit, getListProductHandler]);
 
@@ -164,6 +164,11 @@ const ProductManager = (props) => {
     getListCategoryHandler();
   }, [dispatch]);
 
+  const reloadData = () => {
+    setPage(0);
+    getListProductHandler(selectedCategory, 1, limit);
+  };
+
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -175,16 +180,12 @@ const ProductManager = (props) => {
   return (
     <>
       <div className={classes.root}>
-        <AddProduct
-          isOpen={openAddModal}
-          onClose={closeModalHandler}
-          getList={getListProductHandler.bind(null, selectedCategory, page, limit)}
-        />
+        <AddProduct isOpen={openAddModal} onClose={closeModalHandler} getList={reloadData} />
         <UpdateProduct
           itemInfo={selectedItem}
           isOpen={openUpdateModal}
           onClose={closeModalHandler}
-          getList={getListProductHandler.bind(null, selectedCategory, page, limit)}
+          getList={reloadData}
           prodId={selectedId}
         />
         <ModalConfirm
@@ -242,10 +243,7 @@ const ProductManager = (props) => {
           {pageLoading ? (
             <TableLoading />
           ) : error?.length > 0 ? (
-            <TableError
-              message={error}
-              onTryAgain={getListProductHandler.bind(null, selectedCategory, page, limit)}
-            />
+            <TableError message={error} onTryAgain={reloadData} />
           ) : listProduct?.length > 0 ? (
             <Paper className={classes.section}>
               <TableContainer>
@@ -353,10 +351,7 @@ const ProductManager = (props) => {
               />
             </Paper>
           ) : (
-            <TableError
-              message={t('generalTable.emptyData')}
-              onTryAgain={getListProductHandler.bind(null, selectedCategory, page, limit)}
-            />
+            <TableError message={t('generalTable.emptyData')} onTryAgain={reloadData} />
           )}
         </div>
       </div>
