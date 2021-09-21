@@ -143,7 +143,7 @@ const ReviewsPage = (props) => {
     try {
       await dispatch(addComment({billID:detail.billId, productID: productId, content: comment, vote: numOfStar })).unwrap();
       setCheck(true);
-      toast.success("Comment success")
+      toast.success(t('toastMessages.user.review.success'))
     } catch (error) {
       toast.error(error);
     }
@@ -204,9 +204,9 @@ const ReviewsPage = (props) => {
                 <Grid item xs={12} sm={12} md={1}>
                   <div className={classes.TopContentDetailsLeft}>
                     <div className={classes.ChildPropertiesLabel}>
-                      <Typography variant="body1"> NAME: </Typography>
+                      <Typography variant="body1"> {t('checkoutPage.address.namePlaceHolder')?.toUpperCase()}: </Typography>
                       <Typography variant="body1">  {t('profilepage.address')?.toUpperCase()}: </Typography>
-                      <Typography variant="body1">  PHONE: </Typography>
+                      <Typography variant="body1"> {t('checkoutPage.address.phoneNumberPlaceHolder')?.toUpperCase()}: </Typography>
                     </div>
                   </div>
                 </Grid>

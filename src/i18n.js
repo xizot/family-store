@@ -66,7 +66,8 @@ const vnTranslation = {
 		saveAddress: 'Lưu lại địa chỉ này',
 		backToMainPage: 'Tiếp tục mua sắm',
 		viewMore: 'XEM THÊM',
-		viewMoreProducts: 'SẢN PHẨM'
+		viewMoreProducts: 'SẢN PHẨM',
+		receivedProduct: 'Tôi đã nhận được hàng'
 	},
 
 	footer: {
@@ -201,7 +202,8 @@ const vnTranslation = {
 		showMore: 'Đầy đủ',
 		estimatedDeliveryFee: 'Phí giao hàng dự kiến:',
 		districtOrWard: 'Quận / Huyện:',
-		addToCart: 'Thêm vào giỏ hàng'
+		addToCart: 'Thêm vào giỏ hàng',
+		suggestion: 'BẠN CŨNG CÓ THỂ THÍCH'
 	},
 
 	cartModal: {
@@ -387,7 +389,11 @@ const vnTranslation = {
 				updateImageSuccess: 'Cập nhật ảnh cho sản phẩm thành công!'
 			}
 		},
-		user: {}
+		user: {
+			review: {
+				success: 'Đã đánh giá sản phẩm thành công!'
+			}
+		}
 	},
 
 	collectionPage: {
@@ -447,7 +453,7 @@ const enTranslation = {
 		active: 'Active',
 		forgot: 'Recive recovery Email',
 		logout: 'Log out',
-		myAccount: 'My Account',
+		myAccount: 'My account',
 		myOrders: 'View my orders',
 		myCart: 'My Cart',
 		seeDetails: 'See details',
@@ -461,7 +467,8 @@ const enTranslation = {
 		saveAddress: 'Save this address',
 		backToMainPage: 'Continue to shopping',
 		viewMore: 'VIEW MORE ',
-		viewMoreProducts: ' PRODUCTS'
+		viewMoreProducts: ' PRODUCTS',
+		receivedProduct: 'I have received this order'
 	},
 
 	generalTable: {
@@ -595,7 +602,8 @@ const enTranslation = {
 		showMore: 'Show More',
 		estimatedDeliveryFee: 'Estimated delivery fee:',
 		districtOrWard: 'District / Ward:',
-		addToCart: 'ADD TO CART'
+		addToCart: 'ADD TO CART',
+		suggestion: 'YOU MAY ALSO LIKE'
 	},
 
 	cartModal: {
@@ -783,7 +791,11 @@ const enTranslation = {
 				updateImageSuccess: 'Update Images for product successfully!'
 			}
 		},
-		user: {}
+		user: {
+			review: {
+				success: 'Reviewed the product successfully!'
+			}
+		}
 	},
 
 	collectionPage: {

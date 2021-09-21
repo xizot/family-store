@@ -142,7 +142,7 @@ const ProductItem = ({ id, date, expected, status, total, img, detail }) => {
               {t('generalButtons.seeDetails')}
             </Link>
             <div className={classes.cdc}>
-              <button hidden={check} disabled={disablec} onClick={clickHanlder}>Tôi đã nhận được hàng</button>
+              <button hidden={check} disabled={disablec} onClick={clickHanlder}> {t('generalButtons.receivedProduct')} </button>
             </div>
 
           </div>
