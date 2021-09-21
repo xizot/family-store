@@ -10,12 +10,12 @@ import { useTranslation } from 'react-i18next';
 function CheckoutSuccess() {
   const classes = useStyles();
   const history = useHistory();
-	const { t } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const flag = localStorage.getItem('checkout');
     if (!flag) {
-      //history.push('/');
+      history.push('/');
     } else {
       localStorage.removeItem('checkout');
     }
@@ -28,18 +28,18 @@ function CheckoutSuccess() {
           <div className={classes.content}>
             <Done className={classes.icon} />
             <Typography variant="h3" color="primary" className={classes.thank}>
-              {t("checkoutPage.success.thanks")}
+              {t('checkoutPage.success.thanks')}
             </Typography>
             <Typography variant="h4" className={classes.subtitle1}>
-							{t("checkoutPage.success.title")}
+              {t('checkoutPage.success.title')}
             </Typography>
             <Typography variant="subtitle1" className={classes.subtitle}>
-							{t("checkoutPage.success.message")}
+              {t('checkoutPage.success.message')}
             </Typography>
             <Link to="/orders" className={classes.viewOrder}>
-							{t("generalButtons.myOrders")}
+              {t('generalButtons.myOrders')}
             </Link>
-            <Link to="/">{t("generalButtons.backToMainPage")}g</Link>
+            <Link to="/">{t('generalButtons.backToMainPage')}g</Link>
           </div>
         </div>
       </div>

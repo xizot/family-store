@@ -244,8 +244,8 @@ const Checkout = () => {
   }, [getListCityHandler]);
 
   useEffect(() => {
-    console.log(cart);
-    if (cart?.length <= 0) history.push('/');
+    const flag = localStorage.getItem('checkout');
+    if (cart?.length <= 0 && !flag) history.push('/');
   }, [cart, history]);
 
   useEffect(() => {
