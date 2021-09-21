@@ -78,7 +78,10 @@ const UpdateUser = ({ accId, isOpen, onClose, opUpdateSuccess, isAdmin = true })
     inputIsValid: fullNameIsValid,
     inputReset: fullNameReset,
     setEnteredInput: setFullName,
-  } = useInput((value) => Validate.isNotEmpty(value), userDetails?.accFullName || '');
+  } = useInput(
+    (value) => Validate.isNotEmpty(value) && value?.length <= 100,
+    userDetails?.accFullName || ''
+  );
 
   const phoneNumberChangeHandler = (value) => {
     setPhoneNumber(value);
