@@ -266,25 +266,29 @@ const UserManager = (props) => {
                           <TableCell>{account.accEmail}</TableCell>
                           <TableCell>{account.accPhoneNumber}</TableCell>
                           <TableCell style={{ textAlign: 'center' }}>
-                            <Select
-                              native
-                              value={account.accRole}
-                              onClick={(e) => e.stopPropagation()}
-                              onChange={(e) => roleChangeHandler(e, account.accId)}>
-                              <option value="User">User</option>
-                              <option value="Admin">Admin</option>
-                            </Select>
+                            <Box width={100}>
+                              <Select
+                                native
+                                value={account.accRole}
+                                onClick={(e) => e.stopPropagation()}
+                                onChange={(e) => roleChangeHandler(e, account.accId)}>
+                                <option value="User">User</option>
+                                <option value="Admin">Admin</option>
+                              </Select>
+                            </Box>
                           </TableCell>
                           <TableCell style={{ textAlign: 'center' }}>
-                            <Select
-                              native
-                              value={account.accStatus}
-                              onClick={(e) => e.stopPropagation()}
-                              onChange={(e) => statusChangeHandler(e, account.accId)}>
-                              <option value={0}>Active</option>
-                              <option value={1}>Blocked</option>
-                              <option value={2}>Not Active</option>
-                            </Select>
+                            <Box width={100}>
+                              <Select
+                                native
+                                value={account.accStatus}
+                                onClick={(e) => e.stopPropagation()}
+                                onChange={(e) => statusChangeHandler(e, account.accId)}>
+                                <option value={0}>Active</option>
+                                <option value={1}>Blocked</option>
+                                <option value={2}>Not Active</option>
+                              </Select>
+                            </Box>
                           </TableCell>
                           <TableCell>
                             <Box display="flex">
