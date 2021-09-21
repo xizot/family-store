@@ -235,7 +235,7 @@ const ReviewsPage = (props) => {
                   </div>
                 </Grid>
 
-								<Grid item xs={12} sm={12} md={6}>
+								<Grid item xs={12} sm={12} md={12}>
                   <div className={classes.TopContentDetailsLeft}>
                     <div className={classes.ChildPropertiesLabel}>
                       <Typography variant="body1"> {t('profilepage.address')?.toUpperCase()}: </Typography>
