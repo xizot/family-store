@@ -105,7 +105,7 @@ const ReviewsOrderItem = ({ id, name, quantity, img, onReview, cmt, status }) =>
 
 	return (
 		<div className={classes.root}>
-			{console.log(status)}
+			{/* {console.log(status)} */}
 			<Grid container spacing={2}>
 				<Grid item sm={12} md={6} className={classes.productInfo}>
 					<div className={classes.image}>

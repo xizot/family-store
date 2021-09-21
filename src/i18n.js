@@ -333,7 +333,7 @@ const vnTranslation = {
 				titleTop: 'Thông tin người nhận hàng',
 				titleMid: 'Loại địa chỉ',
 				namePlaceHolder: 'Họ và tên',
-				phoneNumberPlaceHolder: 'Sô điện thoại',
+				phoneNumberPlaceHolder: 'Số điện thoại',
 				cityPlaceHolder: 'tên tỉnh thành',
 				districtPlaceHolder: 'Tên Quận/huyện',
 				wardPlaceHolder: 'Tên Phường/Xã',

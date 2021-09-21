@@ -87,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: '0px',
       marginRight: theme.spacing(2) + theme.spacing(2),
     },
+		[theme.breakpoints.down('xs')]: {
+			float: 'left',
+			marginLeft:  theme.spacing(1),
+    },
   },
 
   boldFont: {
@@ -180,7 +184,7 @@ const ReviewsPage = (props) => {
                 <Grid item xs={12} sm={12} md={6}>
                   <div className={classes.TopContentDetailsLeft}>
                     <div className={classes.ChildPropertiesLabel}>
-                      <Typography variant="body1"> {t("ordersPage.item.orderId")}:  </Typography>
+                      <Typography variant="body1"> {t("ordersPage.item.orderId")} </Typography>
                     </div>
                     <div className={classes.ChildPropertiesValue}>
                       <Typography variant="body1" className={classes.boldFont}>
@@ -201,31 +205,50 @@ const ReviewsPage = (props) => {
                     </div>
                   </div>
                 </Grid>
-                <Grid item xs={12} sm={12} md={1}>
+
+								
+              </Grid>
+							<Grid container spacing={0}>
+							<Grid item xs={12} sm={12} md={6}>
                   <div className={classes.TopContentDetailsLeft}>
                     <div className={classes.ChildPropertiesLabel}>
                       <Typography variant="body1"> {t('checkoutPage.address.form.namePlaceHolder')?.toUpperCase()}: </Typography>
-                      <Typography variant="body1">  {t('profilepage.address')?.toUpperCase()}: </Typography>
-                      <Typography variant="body1"> {t('checkoutPage.address.form.phoneNumberPlaceHolder')?.toUpperCase()}: </Typography>
                     </div>
-                  </div>
-                </Grid>
-                <Grid item xs={12} sm={12} md={6}>
-                  <div className={classes.TopContentDetailsLeft}>
                     <div className={classes.ChildPropertiesValue}>
                       <Typography variant="body1" className={classes.boldFont}>
-                        {detail.fullNameReceiver}
-                      </Typography>
-                      <Typography variant="body1" className={classes.boldFont}>
-                        {detail.billAddress}
-                      </Typography>
-                      <Typography variant="body1" className={classes.boldFont}>
-                        {(detail.phoneNumberReceiver)}
+											{detail.fullNameReceiver}
                       </Typography>
                     </div>
                   </div>
                 </Grid>
-              </Grid>
+
+								<Grid item xs={12} sm={12} md={6}>
+                  <div className={classes.TopContentDetailRight}>
+                    <div className={classes.ChildPropertiesLabel}>
+                      <Typography variant="body1"> {t('checkoutPage.address.form.phoneNumberPlaceHolder')?.toUpperCase()}: </Typography>
+                    </div>
+                    <div className={classes.ChildPropertiesValue}>
+                      <Typography variant="body1" className={classes.boldFont}>
+											{(detail.phoneNumberReceiver)}
+                      </Typography>
+                    </div>
+                  </div>
+                </Grid>
+
+								<Grid item xs={12} sm={12} md={6}>
+                  <div className={classes.TopContentDetailsLeft}>
+                    <div className={classes.ChildPropertiesLabel}>
+                      <Typography variant="body1"> {t('profilepage.address')?.toUpperCase()}: </Typography>
+                    </div>
+                    <div className={classes.ChildPropertiesValue}>
+                      <Typography variant="body1" className={classes.boldFont}>
+												{detail.billAddress}
+                      </Typography>
+                    </div>
+                  </div>
+                </Grid>
+							</Grid>
+
             </div>
             <div className={classes.bottomContent}>
               <Grid container spacing={2}>
