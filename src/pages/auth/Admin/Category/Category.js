@@ -78,7 +78,7 @@ const SubCateManager = (props) => {
   const DeleteConfirm = async () => {
     try {
       await dispatch(deleteCategory(selectedId)).unwrap();
-      await getListCategoryHandler(page, limit);
+      reloadData();
       // toast.success(`Delete category id ${selectedId} successfully`);
       toast.success(t('toastMessages.admin.category.deleteSuccess'));
     } catch (error) {
@@ -95,6 +95,10 @@ const SubCateManager = (props) => {
     getListCategoryHandler(0, newLimit);
   };
 
+  const reloadData = () => {
+    setPage(0);
+    getListCategoryHandler(0, limit);
+  };
   const getListCategoryHandler = useCallback(
     async (page, limit) => {
       try {
@@ -127,7 +131,7 @@ const SubCateManager = (props) => {
         onClose={handleClose}
         item={itemSelected}
         type={type}
-        getList={getListCategoryHandler.bind(null, page, limit)}
+        getList={reloadData}
       />
 
       <ModalConfirm

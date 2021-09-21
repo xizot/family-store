@@ -71,6 +71,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
   const [listNewImage, setListNewImage] = useState([]);
   const [listNewRender, setListNewRender] = useState([]);
   const [getDetailsError, setGetDetailsError] = useState(null);
+  const [submitIsValid, setSubmitIsValid] = useState(true);
 
   const fileChangeHandler = (file) => {
     if (file) {
@@ -98,6 +99,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
     titleReset();
     priceReset();
     amountReset();
+    setSubmitIsValid(true);
   };
 
   const getListCategoryHandler = useCallback(async () => {
@@ -121,7 +123,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
         })
       ).unwrap();
       // toast.success(`Update images for product id ${prodId} sucessfully`);
-			toast.success(t('toastMessages.admin.product.updateImageSuccess'));
+      toast.success(t('toastMessages.admin.product.updateImageSuccess'));
       getList();
       closeModalHandler();
       setUpdateImageLoading(false);
@@ -132,7 +134,19 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
   };
 
   const updateInformation = async () => {
+    setSubmitIsValid(true);
     try {
+      if (
+        title.length > 100 ||
+        title.length <= 0 ||
+        +amount > 10000 ||
+        +amount <= 0 ||
+        +price >= 1000000000 ||
+        +price <= 1000
+      ) {
+        setSubmitIsValid(false);
+        return;
+      }
       await dispatch(
         updateProductInformation({
           id: prodId,
@@ -147,7 +161,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
       ).unwrap();
 
       // toast.success(`Update product id ${prodId} sucessfully`);
-			toast.success(t('toastMessages.admin.product.updateSuccess'));
+      toast.success(t('toastMessages.admin.product.updateSuccess'));
       getList();
       closeModalHandler();
     } catch (error) {
@@ -327,7 +341,8 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                     <ButtonWithLoading
                       isLoading={updateImageLoading}
                       onClick={updateImageHandler}
-                      parentClasses={classes.buttonUpdateImage}>
+                      parentClasses={classes.buttonUpdateImage}
+                      type="button">
                       {t('generalButtons.updateImage')}
                     </ButtonWithLoading>
                   </Box>
@@ -336,7 +351,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
               <Box className={classes.productInformation}>
                 <div className={classes.textField}>
                   <Typography variant="body1" component="p">
-										{t('adminPage.product.table.productName')}
+                    {t('adminPage.product.table.productName')}
                   </Typography>
                   <TextField
                     variant="outlined"
@@ -349,7 +364,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
 
                 <div className={classes.textField}>
                   <Typography variant="body1" component="p">
-										{t('adminPage.product.table.category')}
+                    {t('adminPage.product.table.category')}
                   </Typography>
                   <FormControl variant="outlined" size="small" fullWidth>
                     <Select
@@ -374,7 +389,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                 </div>
                 <div className={classes.textField}>
                   <Typography variant="body1" component="p">
-										{t('adminPage.product.table.price')}
+                    {t('adminPage.product.table.price')}
                   </Typography>
                   <TextField
                     variant="outlined"
@@ -387,7 +402,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                 </div>
                 <div className={classes.textField}>
                   <Typography variant="body1" component="p">
-										{t('adminPage.product.table.quantity')}
+                    {t('adminPage.product.table.quantity')}
                   </Typography>
                   <TextField
                     variant="outlined"
@@ -400,7 +415,7 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                 </div>
                 <FormControl fullWidth className={classes.textField}>
                   <Typography variant="body1" component="p">
-										{t('adminPage.product.table.description')}
+                    {t('adminPage.product.table.description')}
                   </Typography>
                   <TextareaAutosize
                     variant="outlined"
@@ -411,6 +426,14 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                     color="primary"
                   />
                 </FormControl>
+                {!submitIsValid && (
+                  <FormHelperText error style={{ marginBottom: 8 }}>
+                    All text field must not be null or empty. <br />
+                    Title must be less than or equals 100 characters. <br />
+                    Price must be smaller than 1000000000 or greater than 1000 !. <br />
+                    Amount must be smaller than 10000 and greater than 0!
+                  </FormHelperText>
+                )}
                 {error.length > 0 && (
                   <FormHelperText error style={{ marginBottom: 8 }}>
                     {error}
@@ -421,8 +444,9 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
                   <ButtonWithLoading
                     isLoading={modifyLoading}
                     onClick={updateInformation}
-                    parentClasses={classes.buttonSubmit}>
-                   	 {t('generalButtons.update')}
+                    parentClasses={classes.buttonSubmit}
+                    type="button">
+                    {t('generalButtons.update')}
                   </ButtonWithLoading>
 
                   <Button

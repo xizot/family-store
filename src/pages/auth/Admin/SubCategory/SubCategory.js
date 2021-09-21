@@ -14,7 +14,7 @@ import {
   Fade,
   Backdrop,
   Modal,
-  Box
+  Box,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState, useCallback } from 'react';
@@ -110,7 +110,7 @@ const SubCateManager = (props) => {
     try {
       setClose(false);
       await dispatch(deleteCategory(detail.cateId)).unwrap();
-      await getListChildCategoryHandler(optionFather);
+      reloadData();
       toast.success(t('toastMessages.admin.subCategory.deleteSuccess'));
     } catch (err) {
       toast.error(err);
@@ -163,6 +163,11 @@ const SubCateManager = (props) => {
     }
   }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const reloadData = () => {
+    setPage(0);
+    getListChildCategoryHandler(optionFather, 0, limit);
+  };
+
   const limitPerPageChangeHandler = (event) => {
     const newLimit = +event.target.value;
     setLimit(newLimit);
@@ -183,19 +188,19 @@ const SubCateManager = (props) => {
     <div className={classes.root}>
       <div className={classes.section}>
         <Typography variant="h5" className={classes.title}>
-				{t('adminPage.subCategory.title')}
+          {t('adminPage.subCategory.title')}
         </Typography>
         <div className={classes.filter}>
           <div className={classes.search}>
             <SearchInputV2
-              placeholder= {t('adminPage.subCategory.searchPlaceHolder')}
+              placeholder={t('adminPage.subCategory.searchPlaceHolder')}
               initialValue={search}
               onChange={searchChangeHandler}
             />
           </div>
           <div className={classes.filterItem}>
             <Typography variant="subtitle2" className={classes.label}>
-						{t('adminPage.subCategory.fatherCatetory')}
+              {t('adminPage.subCategory.fatherCatetory')}
             </Typography>
             <NativeSelect
               value={optionFather}
@@ -238,8 +243,14 @@ const SubCateManager = (props) => {
                     <TableCell style={{ width: 20, textAlign: 'center', fontWeight: 'bold' }}>
                       #
                     </TableCell>
-                    <TableCell style={{ textAlign: 'center' }}> {t('adminPage.subCategory.table.subCategoryId')} </TableCell>
-                    <TableCell style={{ textAlign: 'center' }}> {t('adminPage.subCategory.table.subCategoryName')} </TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>
+                      {' '}
+                      {t('adminPage.subCategory.table.subCategoryId')}{' '}
+                    </TableCell>
+                    <TableCell style={{ textAlign: 'center' }}>
+                      {' '}
+                      {t('adminPage.subCategory.table.subCategoryName')}{' '}
+                    </TableCell>
                     <TableCell> {t('generalTable.lastModified')} </TableCell>
                     <TableCell> {t('generalTable.options')} </TableCell>
                   </TableRow>
@@ -293,7 +304,7 @@ const SubCateManager = (props) => {
           </Paper>
         ) : (
           <TableError
-            message= {t('generalTable.emptyData')}
+            message={t('generalTable.emptyData')}
             onTryAgain={getListChildCategoryHandler.bind(null, optionFather, page, limit)}
           />
         )}
@@ -316,7 +327,7 @@ const SubCateManager = (props) => {
               cate={detail}
               father={fatherCategory}
               parentHandleClose={handleClose}
-              getList={getListChildCategoryHandler.bind(null, optionFather, page)}
+              getList={reloadData}
             />
           </Box>
         </Fade>
@@ -326,7 +337,7 @@ const SubCateManager = (props) => {
         isOpen={close}
         onConfirm={subCateDeleteConfirm}
         onClose={handleClose}
-        title= {t('deleteModal.subCategory')}
+        title={t('deleteModal.subCategory')}
       />
     </div>
   );

@@ -20,7 +20,7 @@ import useStyles from './AddProduct.styles';
 import { useTranslation } from 'react-i18next';
 
 const AddProduct = ({ isOpen, onClose, getList }) => {
-	const { t } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.data);
@@ -63,10 +63,11 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
     setDescription('');
     setError('');
     onClose();
+    setSubmitIsValid(true);
   };
   const addNewProductHandler = async () => {
     setError('');
-
+    setSubmitIsValid(true);
     const enteredTitle = titleRef.current.value;
     const enteredCategory = categoryRef.current.value;
     const enteredPrice = priceRef.current.value;
@@ -75,16 +76,13 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
     let formData = new FormData();
 
     if (
-      enteredTitle?.length > 0 &&
-      enteredTitle.length < 60 &&
-      enteredCategory?.length > 0 &&
-      enteredPrice?.length > 0 &&
-      enteredPrice > 0 &&
-      enteredAmount?.length > 0 &&
-      enteredAmount > 0
+      enteredTitle.length > 100 ||
+      enteredTitle.length <= 0 ||
+      +enteredAmount > 10000 ||
+      +enteredAmount <= 0 ||
+      +enteredPrice >= 1000000000 ||
+      +enteredPrice <= 1000
     ) {
-      setSubmitIsValid(true);
-    } else {
       setSubmitIsValid(false);
       return;
     }
@@ -125,10 +123,10 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
         <Box borderRadius={6} className={classes.content}>
           <Box marginBottom={4} marginTop={2} position="relative">
             <Typography variant="h5" className={classes.title}>
-							{t('adminPage.product.modal.addingTitle')}
+              {t('adminPage.product.modal.addingTitle')}
             </Typography>
             <Typography variant="caption" className={classes.subTitle}>
-							{t('familyAdminPanel')}
+              {t('familyAdminPanel')}
             </Typography>
             <IconButton className={classes.iconClose} onClick={closeModalHandler}>
               <Close fontSize="large" />
@@ -177,14 +175,14 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
             <Box className={classes.productInformation}>
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-									{t('adminPage.product.table.productName')}
+                  {t('adminPage.product.table.productName')}
                 </Typography>
                 <TextField variant="outlined" size="small" fullWidth inputRef={titleRef} />
               </div>
 
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-									{t('adminPage.product.table.category')}
+                  {t('adminPage.product.table.category')}
                 </Typography>
                 <FormControl variant="outlined" size="small" fullWidth>
                   <Select
@@ -209,7 +207,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
               </div>
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-									{t('adminPage.product.table.price')}
+                  {t('adminPage.product.table.price')}
                 </Typography>
                 <TextField
                   variant="outlined"
@@ -221,7 +219,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
               </div>
               <div className={classes.textField}>
                 <Typography variant="body1" component="p">
-									{t('adminPage.product.table.quantity')}
+                  {t('adminPage.product.table.quantity')}
                 </Typography>
                 <TextField
                   variant="outlined"
@@ -233,7 +231,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
               </div>
               <FormControl color="primary" fullWidth className={classes.textField}>
                 <Typography variant="body1" component="p">
-									{t('adminPage.product.table.description')}
+                  {t('adminPage.product.table.description')}
                 </Typography>
                 <TextareaAutosize
                   variant="outlined"
@@ -246,9 +244,10 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
               </FormControl>
               {!submitIsValid && (
                 <FormHelperText error style={{ marginBottom: 8 }}>
-                  All text field must not be null or empty. <br /> Title must be less than 60
-                  characters. <br />
-                  Price, Amount must be greater 0.
+                  All text field must not be null or empty. <br />
+                  Title must be less than or equals 100 characters. <br />
+                  Price must be smaller than 1000000000 or greater than 1000 !. <br />
+                  Amount must be smaller than 10000 and greater than 0!
                 </FormHelperText>
               )}
               {error.length > 0 && (
@@ -266,7 +265,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
                 </ButtonWithLoading>
 
                 <Button variant="contained" onClick={onClose}>
-									{t('generalButtons.cancel')}
+                  {t('generalButtons.cancel')}
                 </Button>
               </Box>
             </Box>
