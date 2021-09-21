@@ -280,11 +280,18 @@ const Checkout = () => {
                       size="small"
                       label={t('checkoutPage.address.form.namePlaceHolder')}
                       variant="filled"
+                      type="text"
                       fullWidth
                       value={fullnameEntered}
                       error={fullnameHasError}
                       onChange={fullnameChangeHandler}
                       onBlur={fullnameBlurHandler}
+                      inputProps={{
+                        autoComplete: 'new-password',
+                        form: {
+                          autoComplete: 'off',
+                        },
+                      }}
                     />
                     {fullnameHasError && <FormHelperText error>Họ tên không hợp lệ</FormHelperText>}
                   </div>
@@ -294,11 +301,17 @@ const Checkout = () => {
                       label={t('checkoutPage.address.form.phoneNumberPlaceHolder')}
                       variant="filled"
                       fullWidth
-                      type="number"
+                      type="text"
                       value={phoneNumberEntered}
                       error={phoneNumberHasError}
                       onChange={phoneNumberChangeHandler}
                       onBlur={phoneNumberBlurHandler}
+                      inputProps={{
+                        autoComplete: 'new-password',
+                        form: {
+                          autoComplete: 'off',
+                        },
+                      }}
                     />
                     {phoneNumberHasError && (
                       <FormHelperText error>Số điện thoại không hợp lệ</FormHelperText>
