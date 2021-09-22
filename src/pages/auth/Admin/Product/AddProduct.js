@@ -76,7 +76,7 @@ const AddProduct = ({ isOpen, onClose, getList }) => {
     let formData = new FormData();
 
     if (
-      enteredTitle.length > 100 ||
+      enteredTitle.length > 60 ||
       enteredTitle.length <= 0 ||
       +enteredAmount > 10000 ||
       +enteredAmount <= 0 ||

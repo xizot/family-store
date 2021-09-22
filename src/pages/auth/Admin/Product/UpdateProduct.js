@@ -137,12 +137,12 @@ const UpdateProduct = ({ prodId, itemInfo, isOpen, onClose, getList }) => {
     setSubmitIsValid(true);
     try {
       if (
-        title.length > 100 ||
+        title.length > 60 ||
         title.length <= 0 ||
         +amount > 10000 ||
         +amount <= 0 ||
         +price >= 1000000000 ||
-        +price <= 1000
+        +price < 1000
       ) {
         setSubmitIsValid(false);
         return;
