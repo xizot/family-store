@@ -13,7 +13,6 @@ import {
   getAllOrder,
   getDeliveringOrder,
   getDeliveredOrder,
-  getConfirmOrder,
   getCancelOrder,
 } from '../../reducers/order.reducer';
 import { useTranslation } from 'react-i18next';
@@ -102,16 +101,7 @@ const OrderPage = () => {
     [dispatch]
   );
 
-  const getConfirmOrderHandler = useCallback(
-    async (selectedPage) => {
-      try {
-        await dispatch(getConfirmOrder(selectedPage)).unwrap();
-      } catch (err) {
-        setError(err);
-      }
-    },
-    [dispatch]
-  );
+
 
   const getCancelOrderHandler = useCallback(
     async (selectedPage) => {
@@ -134,9 +124,6 @@ const OrderPage = () => {
     }
     if (newValue === '3') {
       getDeliveredOrderHandler(page);
-    }
-    if (newValue === '1') {
-      getConfirmOrderHandler(page);
     }
     if (newValue === '4') {
       getCancelOrderHandler(page);
@@ -171,7 +158,6 @@ const OrderPage = () => {
                   indicatorColor="primary"
                   variant="fullWidth">
                   <Tab label={t('ordersPage.all')} value="0" />
-                  <Tab label={t('ordersPage.await')} value="1" />
                   <Tab label={t('ordersPage.delivering')} value="2" />
                   <Tab label={t('ordersPage.delivered')} value="3" />
                   <Tab label={t('ordersPage.canceled')} value="4" />
@@ -181,21 +167,6 @@ const OrderPage = () => {
                 <TabPanel value="0">
                   {data?.length > 0 &&
                     data.map((item, index) => (
-                      <OrderItem
-                        key={index}
-                        id={item.billId}
-                        img={img}
-                        status={item.billStatus}
-                        date={item.createDate}
-                        expected={item.expectedDate}
-                        total={item.totalPrice}
-                        detail={item.billDetailList}
-                      />
-                    ))}
-                </TabPanel>
-                <TabPanel value="1">
-                  {confirm?.length > 0 &&
-                    confirm.map((item, index) => (
                       <OrderItem
                         key={index}
                         id={item.billId}
